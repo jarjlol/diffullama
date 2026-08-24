@@ -1,0 +1,87 @@
+{
+  "citation_quality": {
+    "matched": 9,
+    "ground_truth_total": 33,
+    "generated_total": 48,
+    "precision": 0.1875,
+    "recall": 0.2727272727272727,
+    "f1": 0.2222222222222222,
+    "matches": [
+      {
+        "gt_title": "Continual Pre-training of Language Models",
+        "generated_title": "Continual Pre-training of Language Models",
+        "score": 1.0
+      },
+      {
+        "gt_title": "Mamba: Linear-Time Sequence Modeling with Selective State Spaces",
+        "generated_title": "Mamba: Linear-Time Sequence Modeling with Selective State Spaces",
+        "score": 1.0
+      },
+      {
+        "gt_title": "Diffusion-LM Improves Controllable Text Generation",
+        "generated_title": "Diffusion-LM Improves Controllable Text Generation",
+        "score": 1.0
+      },
+      {
+        "gt_title": "A Reparameterized Discrete Diffusion Model for Text Generation",
+        "generated_title": "A Reparameterized Discrete Diffusion Model for Text Generation",
+        "score": 1.0
+      },
+      {
+        "gt_title": "Simple and Effective Masked Diffusion Language Models",
+        "generated_title": "Simple and Effective Masked Diffusion Language Models",
+        "score": 1.0
+      },
+      {
+        "gt_title": "DiffusionBERT: Improving Generative Masked Language Models with Diffusion Models",
+        "generated_title": "DiffusionBERT: Improving Generative Masked Language Models with Diffusion Models",
+        "score": 1.0
+      },
+      {
+        "gt_title": "Non-Autoregressive Neural Machine Translation",
+        "generated_title": "Non-Autoregressive Neural Machine Translation",
+        "score": 1.0
+      },
+      {
+        "gt_title": "SSD-LM: Semi-autoregressive Simplex-based Diffusion Language Model for Text Generation and Modular Control",
+        "generated_title": "SSD-LM: Semi-autoregressive Simplex-based Diffusion Language Model for Text Generation and Modular Control",
+        "score": 1.0
+      },
+      {
+        "gt_title": "Text Generation with Diffusion Language Models: A Pre-training Approach with Continuous Paragraph Denoise (GENIE)",
+        "generated_title": "Text Generation with Diffusion Language Models: A Pre-training Approach with Continuous Paragraph Denoise",
+        "score": 0.9285714285714286
+      }
+    ],
+    "unmatched_gt": [
+      "LongLoRA: Efficient Fine-tuning of Long-context Large Language Models",
+      "Lemur: Harmonizing Natural Language and Code for Language Agents",
+      "Scaling Smart: Accelerating Large Language Model Pre-training with Small Model Initialization",
+      "The Mamba in the Llama: Distilling and Accelerating Hybrid Models",
+      "Gated Slot Attention for Efficient Linear-Time Sequence Modeling",
+      "DiffuSeq-v2: Bridging Discrete and Continuous Text Spaces for Accelerated Seq2Seq Diffusion Models",
+      "Continuous Diffusion for Categorical Data",
+      "Likelihood-Based Diffusion Language Models",
+      "Structured Denoising Diffusion Models in Discrete State-Spaces",
+      "Argmax Flows and Multinomial Diffusion: Learning Categorical Distributions",
+      "Discrete Diffusion Language Modeling by Estimating the Ratios of the Data Distribution",
+      "Simplified and Generalized Masked Diffusion for Discrete Data",
+      "Your Absorbing Discrete Diffusion Secretly Models the Conditional Distributions of Clean Data",
+      "(unresolved -- discrete diffusion for text; no confident match found in the anchor References text or the S2 citation graph)",
+      "Diffusion Language Models Can Perform Many Tasks with Scaling and Instruction-Finetuning",
+      "Autoregressive Image Generation without Vector Quantization",
+      "Denoising Diffusion Probabilistic Models",
+      "Score-Based Generative Modeling through Stochastic Differential Equations",
+      "Zero-Shot Text-to-Image Generation",
+      "Do Language Models Plan Ahead for Future Tokens?",
+      "CLLMs: Consistency Large Language Models",
+      "FiLM: Fill-in Language Models for Any-Order Generation",
+      "Fine-Tuning by Curriculum Learning for Non-Autoregressive Neural Machine Translation",
+      "Better & Faster Large Language Models via Multi-token Prediction"
+    ]
+  },
+  "content_quality": {
+    "tfidf_cosine": 0.2209454860303033,
+    "rouge_l": 0.07978174461258647
+  }
+}

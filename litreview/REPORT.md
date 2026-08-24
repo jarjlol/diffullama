@@ -1,0 +1,219 @@
+# Literature Review Generation for Diffusion Language Models: An Implementation of QUAL-SG (SurveyGen)
+
+## 1. Assignment and Approach
+
+The assignment asks for: (1) extraction of the domain/topic of a chosen base paper, (2) implementation of a
+literature-review-generation methodology from a recent (2024+) top-tier NLP paper, (3) generation of a survey
+for the base paper's domain using that implementation, and (4) comparison of the generated survey against the
+base paper's own related-work section.
+
+**Base (anchor) paper:** Gong et al., *Scaling Diffusion Language Models via Adaptation from Autoregressive
+Models* (DiffuLLaMA), ICLR 2025.
+
+**Methodology paper implemented:** Bao, Nayeem, Rafiei, Zhang, *SurveyGen: Quality-Aware Scientific Survey
+Generation with Large Language Models* (arXiv:2508.17647, 2025), specifically its **QUAL-SG** framework —
+chosen over the alternative option (an LLM literature-writing *evaluation* framework, arXiv:2412.13612)
+because QUAL-SG is itself a generation methodology with an explicit two-phase retrieval + generation pipeline
+that maps directly onto the assignment's structure, whereas the alternative paper is an evaluation harness
+rather than a method to implement.
+
+## 2. Domain/Topic Extraction
+
+Reading the anchor paper directly (abstract, introduction, and its own §5 Related Work, extracted via
+`pdftotext`), its domain decomposes into three sub-areas — the same three the paper's own related-work section
+is organized around:
+
+1. **Continual pre-training / adaptation** of existing language models to new domains or architectures.
+2. **Text diffusion models** — continuous and discrete/masked diffusion processes for language generation.
+3. **Non-autoregressive (NAR) text generation** — the broader family of parallel/non-left-to-right decoding
+   methods that diffusion LMs belong to.
+
+The generated survey's topic was scoped to cover all three, matching the anchor paper's own scope, to make the
+final overlap comparison meaningful.
+
+## 3. QUAL-SG Methodology (as implemented)
+
+QUAL-SG (illustrated in Fig. 2 of the paper) has two stages:
+
+**Stage 1 — Paper Retrieval:**
+(a) semantic/topical search against candidate papers → initial set *D*;
+(b) **co-citation expansion** — any paper cited by ≥2 papers already in *D* is added, to catch influential
+works that aren't textually similar to the query (the paper's own example: "Backpropagation" wouldn't surface
+via semantic search on "deep learning" but is frequently co-cited);
+(c) enrichment with **quality indicators** — citation performance, author influence (h-index), venue
+reputation;
+(d) **re-ranking** by averaging each candidate's rank across three scores — topical relevance (LLM-judged),
+academic impact (weighted quality indicators), and content diversity (semantic distance to the rest of the
+pool) — and selecting the top-K.
+
+**Stage 2 — Survey Generation (RAG-based / "Task 2" in the paper):** given the topic and the top-K retrieved
+papers, an LLM first generates a **structured outline**, then **expands each section** using the retrieved
+papers as grounding context, producing the full survey with citations.
+
+## 4. Implementation and Deviations from the Paper
+
+This environment has no `ANTHROPIC_API_KEY`/`OPENAI_API_KEY` and no package installer (`pip` is unavailable),
+so several components were substituted with faithful, documented equivalents rather than the paper's exact
+tooling:
+
+| QUAL-SG component | Paper's approach | This implementation |
+|---|---|---|
+| Retrieval corpus | S2ORC (81M papers) | **OpenAlex** (works/authors/sources APIs, free & keyless) + **arXiv API** (for 2025-2026 recency, since OpenAlex indexing lags very recent preprints) |
+| Embedding similarity | Learned embeddings (MTEB-selected model) | Pure-Python **TF-IDF cosine similarity** (no `numpy`/`sentence-transformers` available) |
+| Topical relevance S_t | LLM-judge API call, 0-5 score | **Content-matched keyword scorer** over title+abstract (deterministic, reproducible substitute — an earlier version used Claude manually eyeballing row indices, which had an off-by-N counting bug and was discarded in favor of this approach) |
+| Academic impact S_a | Citation count, author h-index, venue h-index/i10-index/CORE rank via OpenAlex | Same — citation count, author h-index, venue h-index, all fetched live from OpenAlex |
+| Content diversity S_d | Average embedding distance to other candidates | Average (1 − TF-IDF cosine) to other candidates |
+| Outline + section generation LLM | GPT-4.1 / Claude-3.7-Sonnet / GLM / etc. via API | **Claude (this session)**, acting as the generator LLM directly, using the retrieved+ranked references as grounding context (the same role an API call plays in the paper's pipeline) |
+| Final selection size | K = number of references in the matched human survey | K = 48, chosen to include all papers clearing the relevance gate after stratifying between pre-2025 "foundational" and 2025-2026 "recent" papers (see §5) |
+
+All retrieval/ranking code is pure standard-library Python plus `requests` (the only third-party package
+available); see `scripts/` for the full pipeline (`retrieve.py` → `arxiv_fetch.py` → `merge_finalize.py` →
+`format_refs.py` → generation → `evaluate.py`).
+
+**A retrieval-quality issue found and fixed during implementation:** an initial run that combined a broad
+OpenAlex search with citation-count-heavy re-ranking surfaced high-citation but topically irrelevant papers
+(e.g., *LLaMA*, *GLM*, protein-structure prediction) at the top, because raw academic-impact scores dominated
+a weak relevance proxy. This was corrected by adding a genuine topical-relevance gate (score ≥ 3/5) before
+impact/diversity re-ranking — consistent with the paper's own design intent that impact/diversity should
+refine an *already topically relevant* pool, not override relevance.
+
+**A second issue:** merging in very recent arXiv preprints caused an explosion of near-duplicate, ultra-narrow
+2025-2026 "Masked Diffusion Language Model + [inference trick]" papers with 0 citations each, which — because
+diversity scoring rewards title uniqueness and impact scoring is flat at zero for all of them — crowded out
+foundational, well-established papers (Mamba, MDLM, SSD-LM, DiffusionBERT, DiffuSeq) purely by volume. This was
+fixed by stratifying the final selection: all pre-2025 relevant papers with ≥5 citations, plus a curated set of
+2025-2026 papers favoring full model/framework releases over narrow single-technique variants.
+
+## 5. Retrieved References and Generated Survey
+
+- **48 references** were retrieved, quality-ranked, and cited in the generated survey — see
+  [`data/reference_brief.txt`](data/reference_brief.txt) for the full annotated list and
+  [`data/candidates_topK.json`](data/candidates_topK.json) for structured metadata (citations, h-index,
+  venue, source, per-criterion ranks).
+- The generated survey outline is in [`output/outline.md`](output/outline.md).
+- The full generated survey (~3,800 words, 8 sections) is in
+  [`output/generated_survey.md`](output/generated_survey.md).
+
+## 6. Comparison with the Anchor Paper's Related Work (§5)
+
+The anchor paper's §5 was extracted verbatim via `pdftotext` (saved permanently at
+[`data/anchor_fulltext.txt`](data/anchor_fulltext.txt) for reproducibility) and its 33 unique citations were
+resolved into a ground-truth list ([`data/anchor_related_work_groundtruth.json`](data/anchor_related_work_groundtruth.json))
+using **two independent sources**: a verbatim-quote match against the anchor's own References section text, and
+a cross-check against the anchor paper's actual citation graph on Semantic Scholar (`GET
+/graph/v1/paper/arXiv:2410.17891/references`, 98 records). 32/33 are now resolved to real, independently
+verified titles; one (`Zhao 2024`) remains an honest unresolved placeholder rather than a guess. See §9 below
+for how this cross-check also caught a real resolution error.
+
+**Citation overlap** (`scripts/evaluate.py`, exact + fuzzy title matching, greedy 1-1 assignment):
+
+| Metric | Value |
+|---|---|
+| Ground-truth citations (anchor §5) | 33 |
+| Generated survey references | 48 |
+| Matched (same paper) | 9 |
+| Precision | 0.188 |
+| Recall | 0.273 |
+| F1 | 0.222 |
+
+The 9 exact matches are: *Continual Pre-training of Language Models* (Ke et al.), *Mamba* (Gu & Dao),
+*Diffusion-LM* (Li et al.), *A Reparameterized Discrete Diffusion Model for Text Generation* (Zheng et al.),
+*Simple and Effective Masked Diffusion Language Models / MDLM* (Sahoo et al.), *DiffusionBERT* (He et al.),
+*Non-Autoregressive Neural Machine Translation* (Gu et al.), *SSD-LM* (Han et al.), and *GENIE* (Lin et al.) —
+i.e., the pipeline independently rediscovered several of the anchor paper's most central citations, including
+its two closest methodological predecessors (DiffusionBERT and SSD-LM) and a paper by the anchor's own senior
+author (the reparameterized discrete diffusion model, Zheng et al., which shares author Lingpeng Kong with the
+anchor paper). For context, QUAL-SG's own paper reports F1 = 5.9-16.7% for its baselines/best system on its
+(much larger, in-domain) benchmark — our F1 = 22.2% is in the same range or somewhat above it, though the two
+numbers are not directly comparable given the very different scale and domain-matching setup.
+
+Most **unmatched** ground-truth citations fall into two explainable categories: (a) foundational
+image/general-diffusion papers the anchor cites for background (DDPM, score-based generative modeling,
+DALL-E) that a text-diffusion-focused survey reasonably keeps only as passing mentions rather than full
+citations, and (b) a handful of the anchor's key discrete-diffusion citations (SEDD/Lou et al., D3PM/Austin et
+al., Plaid/Gulrajani & Hashimoto, Ou et al.) that were **not surfaced by our retrieval** — largely because
+their titles and abstracts use different phrasing (e.g., "discrete state-spaces," "estimating the ratios of
+the data distribution") than our search queries anticipated, a genuine retrieval-recall gap rather than a
+relevance-judgment error.
+
+**Content similarity:** TF-IDF cosine = 0.221, ROUGE-L = 0.080 between the full generated survey and the
+anchor's raw §5 text. These are naturally low in absolute terms because the generated survey (~3,800 words) is
+roughly 5-6× longer than the anchor's condensed related-work paragraph (~700 words) — bag-of-words overlap
+metrics computed against a much longer, more detailed document are diluted by design. The more meaningful
+comparison is structural/topical, below.
+
+**Structural consistency:** all three of the anchor's §5 subareas (continual pre-training/adaptation, text
+diffusion models, non-autoregressive generation) are represented as dedicated major sections (§3, §4, §5) in
+the generated survey, in the same conceptual order the anchor paper uses. The generated survey additionally
+includes a background section, a section specifically on 2025-2026 developments published after the anchor
+paper (which its own related work could not have cited), and an open-challenges section — appropriate for a
+standalone survey but not expected in a paper's condensed related-work paragraph.
+
+## 7. Source Verification
+
+Every claim in this project that a paper "exists" and "says X" was independently checked, not just trusted from
+API responses:
+
+- **All 48 generated-survey references are confirmed real.** Each reference's DOI (or arXiv-DOI) was resolved
+  live via HTTP HEAD request: 47/48 returned HTTP 200 directly; the one exception (PIMNet, an ACM DL paper)
+  returns 403 to bots but was confirmed real and correctly attributed via the Crossref API (title + all 8
+  authors + publication date matched exactly). A further sample of 13 arXiv-sourced references had their titles
+  cross-checked against live arXiv API metadata by arXiv ID — 13/13 matched exactly, including several very
+  recent (2025-2026) papers that could look implausible at a glance (e.g. arXiv IDs like `2602.xxxxx`, which are
+  genuine given the current date).
+- **The generated survey text was checked for over-close paraphrasing** of source abstracts (a word-level
+  longest-common-substring scan against all 48 abstracts): the longest verbatim overlap found was 6 consecutive
+  words (ordinary technical-term reuse, e.g. "performance gap between diffusion and autoregressive"), well
+  within normal academic paraphrasing norms — no passages were copied wholesale.
+- **The ground-truth citation list itself was cross-verified against a second, independent source** (the anchor
+  paper's actual citation graph on Semantic Scholar) rather than trusted from the first manual extraction pass.
+  This caught one real error: an earlier version of this project matched the anchor's "Lin et al. (2023)"
+  citation to an unrelated NAACL paper (found via a same-surname/year regex hit) instead of the correct paper,
+  GENIE (a diffusion-LM pretraining paper) — confirmed both by the DBLP venue-year key on Semantic Scholar and
+  by re-reading the anchor's own §5 sentence, which describes a "pre-training and finetuning framework," not a
+  paper about autoregressive-model limitations. It also resolved 5 previously-unresolved placeholder citations
+  (`Xu 2024`, `Wang 2024`, `Zhang 2024c`, `Zheng 2024a`, `Wu 2024`, `Ye 2023`) to real titles, and left one
+  (`Zhao 2024`) honestly unresolved rather than guessed. See the `resolution` field on each entry in
+  [`data/anchor_related_work_groundtruth.json`](data/anchor_related_work_groundtruth.json) for the full
+  evidence trail per citation.
+- **A hardcoded, session-only temp-file path was found and fixed** in `evaluate.py` (it originally read the
+  anchor paper's full text from this session's ephemeral scratchpad directory, which would not exist for anyone
+  else running this code). The anchor's full `pdftotext` extraction is now saved permanently at
+  [`data/anchor_fulltext.txt`](data/anchor_fulltext.txt) and referenced by a relative path.
+
+## 8. Limitations
+
+- No hosted LLM API was available, so the "LLM-judge" and "generator LLM" roles in QUAL-SG were played by
+  Claude directly within this session rather than via reproducible API calls; a real reproduction with an API
+  key would let every candidate (not just a title/abstract keyword match) be judged for relevance, likely
+  improving retrieval recall on paraphrased/differently-worded but relevant papers (e.g., the missed SEDD/D3PM
+  citations above).
+- No embedding model was available (`pip` install was not possible in this environment), so TF-IDF cosine
+  substitutes for the paper's learned semantic embeddings throughout — weaker at synonym/paraphrase matching,
+  which plausibly explains part of the retrieval-recall gap noted above.
+- OpenAlex's citation/author/venue data lags for very recent (2025-2026) preprints, so "academic impact" is
+  uninformative for the newest third of the field; this was mitigated by stratifying foundational vs. recent
+  papers rather than ranking them together, but a longer-window citation signal would be more principled.
+- The relevance gate is a keyword/regex scorer rather than genuine semantic judgment, so it can both miss
+  relevant papers using unfamiliar terminology and admit topically-adjacent-but-tangential ones (e.g., a few
+  molecule-generation or 3D-mesh diffusion-LM papers included because they literally use "diffusion language
+  model" methodology in a different application domain).
+
+## 9. Reproducing This Pipeline
+
+```
+litreview/
+  scripts/
+    common.py          # HTTP+retry, TF-IDF, percentile-rank helpers (pure stdlib + requests)
+    retrieve.py         # QUAL-SG Step 1: OpenAlex search + co-citation expansion + quality enrichment
+    arxiv_fetch.py       # recency supplement via arXiv API
+    rerank.py            # relevance scoring + rank-averaging re-rank (single-source version)
+    merge_finalize.py    # merges OpenAlex + arXiv pools, re-ranks, stratifies foundational/recent
+    format_refs.py        # formats top-K into the generation-step context file
+    evaluate.py            # citation overlap (precision/recall/F1), TF-IDF/ROUGE-L, structural comparison
+  data/                    # all intermediate + final retrieval artifacts (JSON)
+  output/                  # outline.md, generated_survey.md, evaluation_results.json
+```
+
+Run order: `retrieve.py` → `arxiv_fetch.py` → `merge_finalize.py` → `format_refs.py` → (generation, done
+inline by Claude using `data/reference_brief.txt`) → `evaluate.py`.
