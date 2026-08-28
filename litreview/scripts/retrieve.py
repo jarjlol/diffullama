@@ -24,6 +24,10 @@ SUBTOPIC_QUERIES = {
         "masked diffusion language model scaling",
         "adapting autoregressive language model into diffusion model",
         "large diffusion language model instruction tuning reasoning",
+        "discrete state-space denoising diffusion model",
+        "categorical multinomial diffusion generative model discrete data",
+        "estimating ratios data distribution discrete diffusion score entropy",
+        "absorbing state diffusion generative model discrete data",
     ],
     "non-autoregressive generation": [
         "non-autoregressive text generation parallel decoding",

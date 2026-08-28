@@ -18,6 +18,10 @@ QUERIES = [
     'all:"semi-autoregressive" AND all:"generation"',
     'all:"continual pre-training" AND all:"language model"',
     'all:"adapting" AND all:"autoregressive" AND all:"diffusion"',
+    'all:"discrete state-space" AND all:"diffusion"',
+    'all:"multinomial diffusion" OR all:"categorical diffusion"',
+    'all:"absorbing" AND all:"diffusion" AND all:"discrete"',
+    'all:"estimating the ratios" AND all:"diffusion"',
 ]
 
 

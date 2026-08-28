@@ -71,20 +71,6 @@
     "doi": "https://doi.org/10.48550/arxiv.2603.20466"
   },
   {
-    "arxiv_id": "2606.08408",
-    "title": "TimpaTeks: Automatic In-place Text Sequence Modification via Diffusion Language Model Steering",
-    "abstract": "We extend activation steering to diffusion language models (DLMs) and study a novel problem that arose due to the inference mechanism of DLMs: Modifying a text in-place to manifest a different concept. We propose TimpaTeks, an automatic in-place text modification mechanism using DLMs. Experiments on IMDB movie reviews (sentiment) and a synthetic Cats and Dogs Dataset (arbitrary, more unconventional concept steering) show that TimpaTeks provides a feasible novel mechanism to steer diffusion language model outputs in-place. TimpaTeks enables in-place modification while simultaneously lowers sentence perplexity and retaining the original sentence structre without the need of instruction tuned models. TimpaTeks is also computationally cheaper than prompt-based DLM steering, as it performs denoising in-place rather than constructing an additional prompt-conditioned output sequence.",
-    "year": 2026,
-    "authors": [
-      "Ryandito Diandaru",
-      "Ikhlasul Akmal Hanif",
-      "Fadli Aulawi Al Ghiffari",
-      "Ahmed Elshabrawy",
-      "Alham Fikri Aji"
-    ],
-    "doi": "https://doi.org/10.48550/arxiv.2606.08408"
-  },
-  {
     "arxiv_id": "2606.06474",
     "title": "Self-Augmenting Retrieval for Diffusion Language Models",
     "abstract": "Discrete diffusion language models generate text by iteratively denoising an entire response in parallel. At each step, they predict tentative tokens for every masked position, committing the confident predictions to the output and discarding the unconfident ones. We show that the discarded tokens are in fact a useful lookahead signal for retrieval-augmented generation: even low-confidence tokens often surface salient entities early in the denoising trajectory, enabling retrieval of stronger evidence before the output is finalized. We exploit this through Self-Augmenting Retrieval for Diffusion Language Models (SARDI), a dynamic RAG framework that uses these lookahead tokens to guide retrieval during denoising. SARDI is training-free, retriever-agnostic, and applicable to any reasoning-capable discrete diffusion language model. Across five multi-hop QA benchmarks, SARDI outperforms current training-free diffusion and autoregressive retrieval baselines at up to $8\\times$ higher throughput.",
@@ -97,6 +83,20 @@
       "Kilian Q. Weinberger"
     ],
     "doi": "https://doi.org/10.48550/arxiv.2606.06474"
+  },
+  {
+    "arxiv_id": "2606.08408",
+    "title": "TimpaTeks: Automatic In-place Text Sequence Modification via Diffusion Language Model Steering",
+    "abstract": "We extend activation steering to diffusion language models (DLMs) and study a novel problem that arose due to the inference mechanism of DLMs: Modifying a text in-place to manifest a different concept. We propose TimpaTeks, an automatic in-place text modification mechanism using DLMs. Experiments on IMDB movie reviews (sentiment) and a synthetic Cats and Dogs Dataset (arbitrary, more unconventional concept steering) show that TimpaTeks provides a feasible novel mechanism to steer diffusion language model outputs in-place. TimpaTeks enables in-place modification while simultaneously lowers sentence perplexity and retaining the original sentence structre without the need of instruction tuned models. TimpaTeks is also computationally cheaper than prompt-based DLM steering, as it performs denoising in-place rather than constructing an additional prompt-conditioned output sequence.",
+    "year": 2026,
+    "authors": [
+      "Ryandito Diandaru",
+      "Ikhlasul Akmal Hanif",
+      "Fadli Aulawi Al Ghiffari",
+      "Ahmed Elshabrawy",
+      "Alham Fikri Aji"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2606.08408"
   },
   {
     "arxiv_id": "2502.09622",
@@ -114,19 +114,6 @@
     "doi": "https://doi.org/10.48550/arxiv.2502.09622"
   },
   {
-    "arxiv_id": "2606.08357",
-    "title": "Forward-Free Diffusion Language Models",
-    "abstract": "Diffusion language models generate text through iterative denoising, offering a powerful alternative to autoregressive generation. However, discrete language spaces lack a natural neighborhood structure for defining effective perturbations, so some artificial corruption schemes are proposed in the forward process. Such prescribed forward processes often produce states that are mathematically convenient but misaligned with drafts and errors encountered during generation, resulting in degraded sample quality. To address this limitation, we propose FReDA, a forward-free diffusion language model that eliminates the need for a hand-designed forward process. We formulate diffusion language modeling as recursive distribution refinement, in which model-generated drafts serve as implicit intermediate states, and the learned refinement model progressively moves the draft distribution toward the target distribution. Concretely, FReDA refines drafts by proposing candidate draft sequences and either directly performing self-refinement or selecting among parallel candidates via best-of-N refinement. With this design, FReDA is neighborhood-agnostic, model-complexity-aware, and compatible with flexible refinement parameterizations. Extensive evaluations in the sub-8B regime show that FReDA-4B outperforms larger diffusion base models on reasoning and coding benchmarks, achieving absolute gains of up to 15%, while reaching a 1.5-1.8x average speedup over diffusion baselines and scaling effectively with additional refinement computation.",
-    "year": 2026,
-    "authors": [
-      "Haotian Sun",
-      "Rushi Qiang",
-      "Yuqian Zheng",
-      "Bo Dai"
-    ],
-    "doi": "https://doi.org/10.48550/arxiv.2606.08357"
-  },
-  {
     "arxiv_id": "2606.19005",
     "title": "Sumi: Open Uniform Diffusion Language Model from Scratch",
     "abstract": "Diffusion models have become a promising alternative to autoregressive models. Among these, uniform diffusion language models (UDLMs) permit any token to be updated at any step, in principle enabling more flexible generation. However, no UDLM has yet been pretrained from scratch at both large parameter scale and large token budget. Both autoregressive modeling and masked diffusion modeling already have capable models at scale that the community can study and build on; uniform diffusion has none. A scratch-pretrained UDLM at scale would provide a clean reference point for studying scaling behavior, generation dynamics, controllability, and trade-offs against established autoregressive and masked diffusion models. To this end, we introduce Sumi (\"ink\" in Japanese), a fully open 7B uniform diffusion language model pretrained from scratch on 1.5T tokens. Sumi performs competitively with autoregressive models trained at comparable token budgets on knowledge, reasoning, and coding benchmarks, while under-performing on commonsense benchmarks, where our education-heavy data mixture is a likely contributor. We release our model weights, checkpoints, and full training recipe, including a complete specification of the data mixture over publicly available corpora. We hope this release enables the community to study native uniform diffusion at scale and catalyzes work on its as-yet poorly understood aspects.",
@@ -140,6 +127,19 @@
       "Jun Suzuki"
     ],
     "doi": "https://doi.org/10.48550/arxiv.2606.19005"
+  },
+  {
+    "arxiv_id": "2502.13917",
+    "title": "TESS 2: A Large-Scale Generalist Diffusion Language Model",
+    "abstract": "We introduce TESS 2, a general instruction-following diffusion language model that outperforms contemporary instruction-tuned diffusion models, as well as matches and sometimes exceeds strong autoregressive (AR) models. We train TESS 2 by first adapting a strong AR model via continued pretraining with the usual cross-entropy as diffusion loss, and then performing further instruction tuning. We find that adaptation training as well as the choice of the base model is crucial for training good instruction-following diffusion models. We further propose reward guidance, a novel and modular inference-time guidance procedure to align model outputs without needing to train the underlying model. Finally, we show that TESS 2 further improves with increased inference-time compute, highlighting the utility of diffusion LMs in having fine-grained controllability over the amount of compute used at inference time. Code and models are available at https://github.com/hamishivi/tess-2.",
+    "year": 2025,
+    "authors": [
+      "Jaesung Tae",
+      "Hamish Ivison",
+      "Sachin Kumar",
+      "Arman Cohan"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2502.13917"
   },
   {
     "arxiv_id": "2509.24007",
@@ -165,19 +165,6 @@
       "Wenhai Wang"
     ],
     "doi": "https://doi.org/10.48550/arxiv.2509.24007"
-  },
-  {
-    "arxiv_id": "2502.13917",
-    "title": "TESS 2: A Large-Scale Generalist Diffusion Language Model",
-    "abstract": "We introduce TESS 2, a general instruction-following diffusion language model that outperforms contemporary instruction-tuned diffusion models, as well as matches and sometimes exceeds strong autoregressive (AR) models. We train TESS 2 by first adapting a strong AR model via continued pretraining with the usual cross-entropy as diffusion loss, and then performing further instruction tuning. We find that adaptation training as well as the choice of the base model is crucial for training good instruction-following diffusion models. We further propose reward guidance, a novel and modular inference-time guidance procedure to align model outputs without needing to train the underlying model. Finally, we show that TESS 2 further improves with increased inference-time compute, highlighting the utility of diffusion LMs in having fine-grained controllability over the amount of compute used at inference time. Code and models are available at https://github.com/hamishivi/tess-2.",
-    "year": 2025,
-    "authors": [
-      "Jaesung Tae",
-      "Hamish Ivison",
-      "Sachin Kumar",
-      "Arman Cohan"
-    ],
-    "doi": "https://doi.org/10.48550/arxiv.2502.13917"
   },
   {
     "arxiv_id": "2605.14305",
@@ -375,20 +362,6 @@
     "doi": "https://doi.org/10.48550/arxiv.2605.06548"
   },
   {
-    "arxiv_id": "2505.10446",
-    "title": "Reinforcing the Diffusion Chain of Lateral Thought with Diffusion Language Models",
-    "abstract": "We introduce the Diffusion Chain of Lateral Thought (DCoLT), a reasoning framework for diffusion language models. DCoLT treats each intermediate step in the reverse diffusion process as a latent \"thinking\" action and optimizes the entire reasoning trajectory to maximize the reward on the correctness of the final answer with outcome-based Reinforcement Learning (RL). Unlike traditional Chain-of-Thought (CoT) methods that follow a causal, linear thinking process, DCoLT allows bidirectional, non-linear reasoning with no strict rule on grammatical correctness amid its intermediate steps of thought. We implement DCoLT on two representative Diffusion Language Models (DLMs). First, we choose SEDD as a representative continuous-time discrete diffusion model, where its concrete score derives a probabilistic policy to maximize the RL reward over the entire sequence of intermediate diffusion steps. We further consider the discrete-time masked diffusion language model -- LLaDA, and find that the order to predict and unmask tokens plays an essential role to optimize its RL action resulting from the ranking-based Unmasking Policy Module (UPM) defined by the Plackett-Luce model. Experiments on both math and code generation tasks show that using only public data and 16 H800 GPUs, DCoLT-reinforced DLMs outperform other DLMs trained by SFT or RL or even both. Notably, DCoLT-reinforced LLaDA boosts its reasoning accuracy by +9.8%, +5.7%, +11.4%, +19.5% on GSM8K, MATH, MBPP, and HumanEval.",
-    "year": 2025,
-    "authors": [
-      "Zemin Huang",
-      "Zhiyang Chen",
-      "Zijun Wang",
-      "Tiancheng Li",
-      "Guo-Jun Qi"
-    ],
-    "doi": "https://doi.org/10.48550/arxiv.2505.10446"
-  },
-  {
     "arxiv_id": "2212.11685",
     "title": "Text Generation with Diffusion Language Models: A Pre-training Approach with Continuous Paragraph Denoise",
     "abstract": "In this paper, we introduce a novel dIffusion language modEl pre-training framework for text generation, which we call GENIE. GENIE is a large-scale pretrained diffusion language model that consists of an encoder and a diffusion-based decoder, which can generate text by gradually transforming a random noise sequence into a coherent text sequence. To pre-train GENIE on a large-scale language corpus, we design a new continuous paragraph denoise objective, which encourages the diffusion-decoder to reconstruct a clean text paragraph from a corrupted version, while preserving the semantic and syntactic coherence. We evaluate GENIE on four downstream text generation benchmarks, namely XSum, CNN/DailyMail, Gigaword, and CommonGen. Our experimental results show that GENIE achieves comparable performance with the state-of-the-art autoregressive models on these benchmarks, and generates more diverse text samples. The code and models of GENIE are available at https://github.com/microsoft/ProphetNet/tree/master/GENIE.",
@@ -404,6 +377,30 @@
       "Weizhu Chen"
     ],
     "doi": "https://doi.org/10.48550/arxiv.2212.11685"
+  },
+  {
+    "arxiv_id": "2505.10446",
+    "title": "Reinforcing the Diffusion Chain of Lateral Thought with Diffusion Language Models",
+    "abstract": "We introduce the Diffusion Chain of Lateral Thought (DCoLT), a reasoning framework for diffusion language models. DCoLT treats each intermediate step in the reverse diffusion process as a latent \"thinking\" action and optimizes the entire reasoning trajectory to maximize the reward on the correctness of the final answer with outcome-based Reinforcement Learning (RL). Unlike traditional Chain-of-Thought (CoT) methods that follow a causal, linear thinking process, DCoLT allows bidirectional, non-linear reasoning with no strict rule on grammatical correctness amid its intermediate steps of thought. We implement DCoLT on two representative Diffusion Language Models (DLMs). First, we choose SEDD as a representative continuous-time discrete diffusion model, where its concrete score derives a probabilistic policy to maximize the RL reward over the entire sequence of intermediate diffusion steps. We further consider the discrete-time masked diffusion language model -- LLaDA, and find that the order to predict and unmask tokens plays an essential role to optimize its RL action resulting from the ranking-based Unmasking Policy Module (UPM) defined by the Plackett-Luce model. Experiments on both math and code generation tasks show that using only public data and 16 H800 GPUs, DCoLT-reinforced DLMs outperform other DLMs trained by SFT or RL or even both. Notably, DCoLT-reinforced LLaDA boosts its reasoning accuracy by +9.8%, +5.7%, +11.4%, +19.5% on GSM8K, MATH, MBPP, and HumanEval.",
+    "year": 2025,
+    "authors": [
+      "Zemin Huang",
+      "Zhiyang Chen",
+      "Zijun Wang",
+      "Tiancheng Li",
+      "Guo-Jun Qi"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2505.10446"
+  },
+  {
+    "arxiv_id": "2602.11047",
+    "title": "Embedding Inversion via Conditional Masked Diffusion Language Models",
+    "abstract": "We frame embedding inversion as conditional masked diffusion, recovering all tokens in parallel through iterative denoising rather than sequential autoregressive generation. A masked diffusion language model is conditioned on the target embedding via adaptive layer normalization, requiring only 8 forward passes with no access to the target encoder at inference time. On 32-token sequences across three embedding models, the method achieves token recovery through parallel denoising without requiring encoder access, iterative correction, or architecture-specific alignment. Source code and live demo are available at https://github.com/jina-ai/embedding-inversion-demo.",
+    "year": 2026,
+    "authors": [
+      "Han Xiao"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2602.11047"
   },
   {
     "arxiv_id": "2302.05737",
@@ -792,16 +789,6 @@
       "Volodymyr Kuleshov"
     ],
     "doi": "https://doi.org/10.48550/arxiv.2406.07524"
-  },
-  {
-    "arxiv_id": "2602.11047",
-    "title": "Embedding Inversion via Conditional Masked Diffusion Language Models",
-    "abstract": "We frame embedding inversion as conditional masked diffusion, recovering all tokens in parallel through iterative denoising rather than sequential autoregressive generation. A masked diffusion language model is conditioned on the target embedding via adaptive layer normalization, requiring only 8 forward passes with no access to the target encoder at inference time. On 32-token sequences across three embedding models, the method achieves token recovery through parallel denoising without requiring encoder access, iterative correction, or architecture-specific alignment. Source code and live demo are available at https://github.com/jina-ai/embedding-inversion-demo.",
-    "year": 2026,
-    "authors": [
-      "Han Xiao"
-    ],
-    "doi": "https://doi.org/10.48550/arxiv.2602.11047"
   },
   {
     "arxiv_id": "2510.17206",
@@ -2300,6 +2287,22 @@
     "doi": "https://doi.org/10.48550/arxiv.2511.12099"
   },
   {
+    "arxiv_id": "2607.04140",
+    "title": "DELTA-TTS: Adapting Autoregressive Model into Diffusion Language Model for Text-to-Speech",
+    "abstract": "Autoregressive (AR) text-to-speech (TTS) models generate discrete speech tokens sequentially, which makes inference slow and can degrade robustness, since local errors propagate to later positions and can escalate into hallucination. This limitation stems from their left-to-right AR commitment: each token must be determined before future speech-token context is available. However, such ordering is not an inherent requirement for TTS, since the model receives the full input text before synthesis. In this paper, we introduce DELTA-TTS, a lightweight LoRA-based adaptation framework that converts a pretrained AR TTS model into a discrete diffusion language model (dLLM) for confidence-ordered speech-token decoding. To better capture the local structure of speech, DELTA-TTS incorporates a convolution module that injects local acoustic context, together with a 1/t-weighted training objective and a time-shifted inference schedule that together defer low-confidence positions to later steps. Trained on only 585 hours of LibriTTS, DELTA-TTS achieves a 1.75% WER on Seed-TTS test-en, outperforming its AR backbone while generating tokens 3.3x faster. Further analysis shows that DELTA-TTS produces sharper text--speech alignment, increases overall decoding confidence, and mitigates the hallucinations observed in AR generation.",
+    "year": 2026,
+    "authors": [
+      "Junwon Moon",
+      "Yejin Lee",
+      "Seungbeom Kim",
+      "Hoseong Ahn",
+      "Sewoong Park",
+      "Heeseung Kim",
+      "Kyuhong Shim"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2607.04140"
+  },
+  {
     "arxiv_id": "2510.06303",
     "title": "SDAR: A Synergistic Diffusion-AutoRegression Paradigm for Scalable Sequence Generation",
     "abstract": "We propose SDAR, a Synergistic Diffusion-Autoregression paradigm that unifies the training efficiency of autoregressive models with the parallel inference capability of diffusion. Instead of costly end-to-end diffusion training, SDAR performs a lightweight paradigm conversion that transforms a well-trained autoregressive (AR) model into a blockwise diffusion model through brief, data-efficient adaptation. During inference, SDAR generates sequences autoregressively across blocks for global coherence while decoding all tokens within each block in parallel via a discrete diffusion process. Extensive experiments show that AR models remain substantially more compute-efficient than masked diffusion models, providing a strong foundation for adaptation. Building on this insight, SDAR achieves efficient AR-to-diffusion conversion with minimal cost, preserving AR-level performance while enabling parallel generation. Scaling studies across dense and Mixture-of-Experts architectures confirm that SDAR scales without compromise: larger models exhibit stronger robustness to block size and decoding thresholds, yielding greater speedups without accuracy loss. Beyond efficiency, SDAR demonstrates enhanced reasoning and domain adaptability. Our 30B MoE model surpasses its AR counterpart on challenging scientific reasoning benchmarks such as GPQA and ChemBench, and gains further improvements under test-time scaling methods like majority voting and pass@k. Together, these results establish SDAR as a practical paradigm that combines the strengths of autoregression and diffusion for scalable, high-throughput reasoning.",
@@ -2318,22 +2321,6 @@
       "Bowen Zhou"
     ],
     "doi": "https://doi.org/10.48550/arxiv.2510.06303"
-  },
-  {
-    "arxiv_id": "2607.04140",
-    "title": "DELTA-TTS: Adapting Autoregressive Model into Diffusion Language Model for Text-to-Speech",
-    "abstract": "Autoregressive (AR) text-to-speech (TTS) models generate discrete speech tokens sequentially, which makes inference slow and can degrade robustness, since local errors propagate to later positions and can escalate into hallucination. This limitation stems from their left-to-right AR commitment: each token must be determined before future speech-token context is available. However, such ordering is not an inherent requirement for TTS, since the model receives the full input text before synthesis. In this paper, we introduce DELTA-TTS, a lightweight LoRA-based adaptation framework that converts a pretrained AR TTS model into a discrete diffusion language model (dLLM) for confidence-ordered speech-token decoding. To better capture the local structure of speech, DELTA-TTS incorporates a convolution module that injects local acoustic context, together with a 1/t-weighted training objective and a time-shifted inference schedule that together defer low-confidence positions to later steps. Trained on only 585 hours of LibriTTS, DELTA-TTS achieves a 1.75% WER on Seed-TTS test-en, outperforming its AR backbone while generating tokens 3.3x faster. Further analysis shows that DELTA-TTS produces sharper text--speech alignment, increases overall decoding confidence, and mitigates the hallucinations observed in AR generation.",
-    "year": 2026,
-    "authors": [
-      "Junwon Moon",
-      "Yejin Lee",
-      "Seungbeom Kim",
-      "Hoseong Ahn",
-      "Sewoong Park",
-      "Heeseung Kim",
-      "Kyuhong Shim"
-    ],
-    "doi": "https://doi.org/10.48550/arxiv.2607.04140"
   },
   {
     "arxiv_id": "2306.05043",
@@ -2569,5 +2556,988 @@
       "Qi Tian"
     ],
     "doi": "https://doi.org/10.48550/arxiv.2606.22371"
+  },
+  {
+    "arxiv_id": "2406.01572",
+    "title": "Unlocking Guidance for Discrete State-Space Diffusion and Flow Models",
+    "abstract": "Generative models on discrete state-spaces have a wide range of potential applications, particularly in the domain of natural sciences. In continuous state-spaces, controllable and flexible generation of samples with desired properties has been realized using guidance on diffusion and flow models. However, these guidance approaches are not readily amenable to discrete state-space models. Consequently, we introduce a general and principled method for applying guidance on such models. Our method depends on leveraging continuous-time Markov processes on discrete state-spaces, which unlocks computational tractability for sampling from a desired guided distribution. We demonstrate the utility of our approach, Discrete Guidance, on a range of applications including guided generation of small-molecules, DNA sequences and protein sequences.",
+    "year": 2024,
+    "authors": [
+      "Hunter Nisonoff",
+      "Junhao Xiong",
+      "Stephan Allenspach",
+      "Jennifer Listgarten"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2406.01572"
+  },
+  {
+    "arxiv_id": "2305.11089",
+    "title": "Blackout Diffusion: Generative Diffusion Models in Discrete-State Spaces",
+    "abstract": "Typical generative diffusion models rely on a Gaussian diffusion process for training the backward transformations, which can then be used to generate samples from Gaussian noise. However, real world data often takes place in discrete-state spaces, including many scientific applications. Here, we develop a theoretical formulation for arbitrary discrete-state Markov processes in the forward diffusion process using exact (as opposed to variational) analysis. We relate the theory to the existing continuous-state Gaussian diffusion as well as other approaches to discrete diffusion, and identify the corresponding reverse-time stochastic process and score function in the continuous-time setting, and the reverse-time mapping in the discrete-time setting. As an example of this framework, we introduce ``Blackout Diffusion'', which learns to produce samples from an empty image instead of from noise. Numerical experiments on the CIFAR-10, Binarized MNIST, and CelebA datasets confirm the feasibility of our approach. Generalizing from specific (Gaussian) forward processes to discrete-state processes without a variational approximation sheds light on how to interpret diffusion models, which we discuss.",
+    "year": 2023,
+    "authors": [
+      "Javier E Santos",
+      "Zachary R. Fox",
+      "Nicholas Lubbers",
+      "Yen Ting Lin"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2305.11089"
+  },
+  {
+    "arxiv_id": "2410.23994",
+    "title": "Breaking Determinism: Fuzzy Modeling of Sequential Recommendation Using Discrete State Space Diffusion Model",
+    "abstract": "Sequential recommendation (SR) aims to predict items that users may be interested in based on their historical behavior sequences. We revisit SR from a novel information-theoretic perspective and find that conventional sequential modeling methods fail to adequately capture the randomness and unpredictability of user behavior. Inspired by fuzzy information processing theory, this paper introduces the DDSR model, which uses fuzzy sets of interaction sequences to overcome the limitations and better capture the evolution of users' real interests. Formally based on diffusion transition processes in discrete state spaces, which is unlike common diffusion models such as DDPM that operate in continuous domains. It is better suited for discrete data, using structured transitions instead of arbitrary noise introduction to avoid information loss. Additionally, to address the inefficiency of matrix transformations due to the vast discrete space, we use semantic labels derived from quantization or RQ-VAE to replace item IDs, enhancing efficiency and improving cold start issues. Testing on three public benchmark datasets shows that DDSR outperforms existing state-of-the-art methods in various settings, demonstrating its potential and effectiveness in handling SR tasks.",
+    "year": 2024,
+    "authors": [
+      "Wenjia Xie",
+      "Hao Wang",
+      "Luankang Zhang",
+      "Rui Zhou",
+      "Defu Lian",
+      "Enhong Chen"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2410.23994"
+  },
+  {
+    "arxiv_id": "2407.15666",
+    "title": "Particle Based Inference for Continuous-Discrete State Space Models",
+    "abstract": "This article develops a methodology allowing application of the complete machinery of particle-based inference methods upon the class of continuous-discrete State Space Models (CD-SSMs). Such models correspond to a latent continuous-time Itô diffusion process which is observed with noise at discrete time instances. Due to the continuous-time nature of the hidden signal, standard Feynman-Kac formulations and their accompanying particle-based approximations have to overcome several challenges, arising mainly due to the following considerations: (i) finite-time transition densities of the signal are typically intractable; (ii) ancestors of sampled signals are determined w.p.~1, thus cannot be resampled; (iii) diffusivity parameters given a sampled signal yield Dirac distributions. We overcome all above issues by introducing a framework based on carefully designed path proposals and reparameterisations thereof. That is, we obtain new expressions for the Feynman-Kac model that accommodate the effects of a continuous-time signal and overcome induced degeneracies. The constructed formulations enable use of the full range of particle-based algorithms for CD-SSMs: for filtering/smoothing and parameter inference, whether online or offline. Our framework is compatible with guided proposals in the filtering steps that are essential for efficient algorithmic performance in the presence of informative observations or in higher dimensions, and is applicable for a very general class of CD-SSMs, including the case when the signal is modelled as a hypo-elliptic diffusion. We incorporate our methods into an established probabilistic programming package and present several numerical examples.",
+    "year": 2024,
+    "authors": [
+      "Christopher Stanton",
+      "Alexandros Beskos"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2407.15666"
+  },
+  {
+    "arxiv_id": "2107.03006",
+    "title": "Structured Denoising Diffusion Models in Discrete State-Spaces",
+    "abstract": "Denoising diffusion probabilistic models (DDPMs) (Ho et al. 2020) have shown impressive results on image and waveform generation in continuous state spaces. Here, we introduce Discrete Denoising Diffusion Probabilistic Models (D3PMs), diffusion-like generative models for discrete data that generalize the multinomial diffusion model of Hoogeboom et al. 2021, by going beyond corruption processes with uniform transition probabilities. This includes corruption with transition matrices that mimic Gaussian kernels in continuous space, matrices based on nearest neighbors in embedding space, and matrices that introduce absorbing states. The third allows us to draw a connection between diffusion models and autoregressive and mask-based generative models. We show that the choice of transition matrix is an important design decision that leads to improved results in image and text domains. We also introduce a new loss function that combines the variational lower bound with an auxiliary cross entropy loss. For text, this model class achieves strong results on character-level text generation while scaling to large vocabularies on LM1B. On the image dataset CIFAR-10, our models approach the sample quality and exceed the log-likelihood of the continuous-space DDPM model.",
+    "year": 2021,
+    "authors": [
+      "Jacob Austin",
+      "Daniel D. Johnson",
+      "Jonathan Ho",
+      "Daniel Tarlow",
+      "Rianne van den Berg"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2107.03006"
+  },
+  {
+    "arxiv_id": "2510.07570",
+    "title": "Symbolic-Diffusion: Deep Learning Based Symbolic Regression with D3PM Discrete Token Diffusion",
+    "abstract": "Symbolic regression refers to the task of finding a closed-form mathematical expression to fit a set of data points. Genetic programming based techniques are the most common algorithms used to tackle this problem, but recently, neural-network based approaches have gained popularity. Most of the leading neural-network based models used for symbolic regression utilize transformer-based autoregressive models to generate an equation conditioned on encoded input points. However, autoregressive generation is limited to generating tokens left-to-right, and future generated tokens are conditioned only on previously generated tokens. Motivated by the desire to generate all tokens simultaneously to produce improved closed-form equations, we propose Symbolic Diffusion, a D3PM based discrete state-space diffusion model which simultaneously generates all tokens of the equation at once using discrete token diffusion. Using the bivariate dataset developed for SymbolicGPT, we compared our diffusion-based generation approach to an autoregressive model based on SymbolicGPT, using equivalent encoder and transformer architectures. We demonstrate that our novel approach of using diffusion-based generation for symbolic regression can offer comparable and, by some metrics, improved performance over autoregressive generation in models using similar underlying architectures, opening new research opportunities in neural-network based symbolic regression.",
+    "year": 2025,
+    "authors": [
+      "Ryan T. Tymkow",
+      "Benjamin D. Schnapp",
+      "Mojtaba Valipour",
+      "Ali Ghodshi"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2510.07570"
+  },
+  {
+    "arxiv_id": "2303.08137",
+    "title": "LayoutDM: Discrete Diffusion Model for Controllable Layout Generation",
+    "abstract": "Controllable layout generation aims at synthesizing plausible arrangement of element bounding boxes with optional constraints, such as type or position of a specific element. In this work, we try to solve a broad range of layout generation tasks in a single model that is based on discrete state-space diffusion models. Our model, named LayoutDM, naturally handles the structured layout data in the discrete representation and learns to progressively infer a noiseless layout from the initial input, where we model the layout corruption process by modality-wise discrete diffusion. For conditional generation, we propose to inject layout constraints in the form of masking or logit adjustment during inference. We show in the experiments that our LayoutDM successfully generates high-quality layouts and outperforms both task-specific and task-agnostic baselines on several layout tasks.",
+    "year": 2023,
+    "authors": [
+      "Naoto Inoue",
+      "Kotaro Kikuchi",
+      "Edgar Simo-Serra",
+      "Mayu Otani",
+      "Kota Yamaguchi"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2303.08137"
+  },
+  {
+    "arxiv_id": "2503.01161",
+    "title": "Split Gibbs Discrete Diffusion Posterior Sampling",
+    "abstract": "We study the problem of posterior sampling in discrete-state spaces using discrete diffusion models. While posterior sampling methods for continuous diffusion models have achieved remarkable progress, analogous methods for discrete diffusion models remain challenging. In this work, we introduce a principled plug-and-play discrete diffusion posterior sampling algorithm based on split Gibbs sampling, which we call SGDD. Our algorithm enables reward-guided generation and solving inverse problems in discrete-state spaces. We demonstrate the convergence of SGDD to the target posterior distribution and verify this through controlled experiments on synthetic benchmarks. Our method enjoys state-of-the-art posterior sampling performance on a range of benchmarks for discrete data, including DNA sequence design, discrete image inverse problems, and music infilling, achieving more than 30% improved performance compared to existing baselines. Our code is available at https://github.com/chuwd19/Split-Gibbs-Discrete-Diffusion-Posterior-Sampling.",
+    "year": 2025,
+    "authors": [
+      "Wenda Chu",
+      "Zihui Wu",
+      "Yifan Chen",
+      "Yang Song",
+      "Yisong Yue"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2503.01161"
+  },
+  {
+    "arxiv_id": "2601.16220",
+    "title": "Towards Latent Diffusion Suitable For Text",
+    "abstract": "Language diffusion models aim to improve sampling speed and coherence over autoregressive LLMs. We introduce Neural Flow Diffusion Models for language generation, an extension of NFDM that enables the straightforward application of continuous diffusion models to discrete state spaces. NFDM learns a multivariate forward process from the data, ensuring that the forward process and generative trajectory are a good fit for language modeling. Our model substantially reduces the likelihood gap with autoregressive models of the same size, while achieving sample quality comparable to that of previous latent diffusion models.",
+    "year": 2026,
+    "authors": [
+      "Nesta Midavaine",
+      "Christian A. Naesseth",
+      "Grigory Bartosh"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2601.16220"
+  },
+  {
+    "arxiv_id": "2603.21342",
+    "title": "Generalized Discrete Diffusion from Snapshots",
+    "abstract": "We introduce Generalized Discrete Diffusion from Snapshots (GDDS), a unified framework for discrete diffusion modeling that supports arbitrary noising processes over large discrete state spaces. Our formulation encompasses all existing discrete diffusion approaches, while allowing significantly greater flexibility in the choice of corruption dynamics. The forward noising process relies on uniformization and enables fast arbitrary corruption. For the reverse process, we derive a simple evidence lower bound (ELBO) based on snapshot latents, instead of the entire noising path, that allows efficient training of standard generative modeling architectures with clear probabilistic interpretation. Our experiments on large-vocabulary discrete generation tasks suggest that the proposed framework outperforms existing discrete diffusion methods in terms of training efficiency and generation quality, and beats autoregressive models for the first time at this scale. We provide the code along with a blog post on the project page : \\href{https://oussamazekri.fr/gdds}{https://oussamazekri.fr/gdds}.",
+    "year": 2026,
+    "authors": [
+      "Oussama Zekri",
+      "Théo Uscidda",
+      "Nicolas Boullé",
+      "Anna Korba"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2603.21342"
+  },
+  {
+    "arxiv_id": "2607.13431",
+    "title": "Discrete Diffusion Models: A Unified Framework from Tokenization to Generation",
+    "abstract": "Discrete denoising diffusion models (DDMs) have recently emerged as a compelling alternative to autoregressive (AR) modeling for discrete data, offering parallel generation and iterative global refinement capabilities. Unlike continuous diffusion, where the state space is fixed, DDMs are fundamentally shaped by how the discrete state space is constructed: the tokenization scheme, the vocabulary topology, and domain-specific structural alphabets. This work introduces a unified conceptual framework that views discrete diffusion models through the construction of the underlying discrete state space. Within this framework, existing formulations, including transition-matrix, masking/absorbing-state, and score/ratio-based approaches, emerge as different instantiations of a common design space. The framework further exposes common design trade-offs across training objectives, inference algorithms, scaling behavior, systems optimization, and evaluation protocols, suggesting several promising directions for future research.",
+    "year": 2026,
+    "authors": [
+      "Ye Yuan",
+      "Weien Li",
+      "Rui Song",
+      "Zeyu Li",
+      "Haochen Liu",
+      "Xiangyu Kong",
+      "Zixuan Dong",
+      "Linfeng Du",
+      "Zipeng Sun",
+      "Weixu Zhang",
+      "Jiaxin Huang",
+      "Changjiang Han",
+      "Yonghan Yang",
+      "Zichen Zhao",
+      "Xiuyuan Hu",
+      "Haolun Wu",
+      "Yankai Chen",
+      "Fengran Mo",
+      "Jikun Kang",
+      "Bowei He",
+      "Dawn Song",
+      "Philip S. Yu",
+      "Xue Liu"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2607.13431"
+  },
+  {
+    "arxiv_id": "1403.0705",
+    "title": "Convergence of switching diffusions",
+    "abstract": "This paper studies the asymptotic behavior of processes with switching. More precisely, the stability under fast switching for diffusion processes and discrete state space Markovian processes is considered. The proofs are based on semimartingale techniques, so that no Markovian assumption for the modulating process is needed.",
+    "year": 2014,
+    "authors": [
+      "Sören Christensen",
+      "Albrecht Irle"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.1403.0705"
+  },
+  {
+    "arxiv_id": "2402.08095",
+    "title": "Convergence Analysis of Discrete Diffusion Model: Exact Implementation through Uniformization",
+    "abstract": "Diffusion models have achieved huge empirical success in data generation tasks. Recently, some efforts have been made to adapt the framework of diffusion models to discrete state space, providing a more natural approach for modeling intrinsically discrete data, such as language and graphs. This is achieved by formulating both the forward noising process and the corresponding reversed process as Continuous Time Markov Chains (CTMCs). In this paper, we investigate the theoretical properties of the discrete diffusion model. Specifically, we introduce an algorithm leveraging the uniformization of continuous Markov chains, implementing transitions on random time points. Under reasonable assumptions on the learning of the discrete score function, we derive Total Variation distance and KL divergence guarantees for sampling from any distribution on a hypercube. Our results align with state-of-the-art achievements for diffusion models in $\\mathbb{R}^d$ and further underscore the advantages of discrete diffusion models in comparison to the $\\mathbb{R}^d$ setting.",
+    "year": 2024,
+    "authors": [
+      "Hongrui Chen",
+      "Lexing Ying"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2402.08095"
+  },
+  {
+    "arxiv_id": "2605.04291",
+    "title": "Leveraging Pretrained Language Models as Energy Functions for Glauber Dynamics Text Diffusion",
+    "abstract": "We present a discrete diffusion-based language model using Glauber dynamics from statistical physics. Our main insight is that instead of trying to train a discrete state space diffusion model using Glauber dynamics with a uniform transition kernel as the forward process, one can set up an ``energy function'' based on pretrained causal/masked language models. When viewed as the stationary distribution, this energy function allows us to significantly improve the quality of the generated text. Incorporating UL2 as the pretrained model into our diffusion pipeline, we outperform prior diffusion based LMs and perform competitively with autoregressive models of comparable model sizes. Furthermore, our models are competitive with or outperform prior diffusion models and GPT-2 style auto-regressive models on zero-shot common sense reasoning tasks as well as planning and search tasks like Sudoku and Zebra puzzles.",
+    "year": 2026,
+    "authors": [
+      "Tarun Kathuria",
+      "Sachin Kumar"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2605.04291"
+  },
+  {
+    "arxiv_id": "2210.01549",
+    "title": "Diffusion Models for Graphs Benefit From Discrete State Spaces",
+    "abstract": "Denoising diffusion probabilistic models and score-matching models have proven to be very powerful for generative tasks. While these approaches have also been applied to the generation of discrete graphs, they have, so far, relied on continuous Gaussian perturbations. Instead, in this work, we suggest using discrete noise for the forward Markov process. This ensures that in every intermediate step the graph remains discrete. Compared to the previous approach, our experimental results on four datasets and multiple architectures show that using a discrete noising process results in higher quality generated samples indicated with an average MMDs reduced by a factor of 1.5. Furthermore, the number of denoising steps is reduced from 1000 to 32 steps, leading to a 30 times faster sampling procedure.",
+    "year": 2022,
+    "authors": [
+      "Kilian Konstantin Haefeli",
+      "Karolis Martinkus",
+      "Nathanaël Perraudin",
+      "Roger Wattenhofer"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2210.01549"
+  },
+  {
+    "arxiv_id": "2602.20293",
+    "title": "Discrete Diffusion with Sample-Efficient Estimators for Conditionals",
+    "abstract": "We study a discrete denoising diffusion framework that integrates a sample-efficient estimator of single-site conditionals with round-robin noising and denoising dynamics for generative modeling over discrete state spaces. Rather than approximating a discrete analog of a score function, our formulation treats single-site conditional probabilities as the fundamental objects that parameterize the reverse diffusion process. We employ a sample-efficient method known as Neural Interaction Screening Estimator (NeurISE) to estimate these conditionals in the diffusion dynamics. Controlled experiments on synthetic Ising models, MNIST, and scientific data sets produced by a D-Wave quantum annealer, synthetic Potts model and one dimensional quantum systems demonstrate the proposed approach. On the binary data sets, these experiments demonstrate that the proposed approach outperforms popular existing methods including ratio-based approaches, achieving improved performance in total variation, cross-correlations, and kernel density estimation metrics.",
+    "year": 2026,
+    "authors": [
+      "Karthik Elamvazhuthi",
+      "Abhijith Jayakumar",
+      "Andrey Y. Lokhov"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2602.20293"
+  },
+  {
+    "arxiv_id": "2605.30046",
+    "title": "Masked Diffusion Modeling for Anomaly Detection",
+    "abstract": "Anomaly detection aims to identify samples that deviate from the nominal data distribution and is central to many safety-critical applications. However, developing effective anomaly detection methods for categorical, mixed-type, and discrete sequence data remains challenging and relatively underexplored. Masked diffusion models provide a natural way to model such data by learning to recover masked values from the remaining visible context. In this paper, we propose Masked Diffusion for Anomaly Detection (MaskDiff-AD), a forward-only method based on masked diffusion models trained only on nominal data. Given a test sample, MaskDiff-AD constructs anomaly scores from the difficulty of reconstructing randomly masked coordinates, yielding a content-sensitive score that operates directly on discrete state spaces while avoiding reverse-time sampling. We also develop a non-parametric variant of MaskDiff-AD and provide theoretical guarantees by characterizing Type-I and Type-II errors under a fixed detection threshold. Experiments on fourteen categorical and mixed-type tabular datasets from ADBench and UADAD, as well as four text anomaly detection datasets from NLP-ADBench, show that MaskDiff-AD achieves competitive performance against classical, diffusion-based, and recent tabular/text anomaly detection baselines. Notably, MaskDiff-AD achieves the best overall average rank, outperforming all twelve tabular baseline methods.",
+    "year": 2026,
+    "authors": [
+      "Lixing Zhang",
+      "Yuchen Liang",
+      "Liyan Xie"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2605.30046"
+  },
+  {
+    "arxiv_id": "2412.17780",
+    "title": "PepTune: De Novo Generation of Therapeutic Peptides with Multi-Objective-Guided Discrete Diffusion",
+    "abstract": "We present PepTune, a multi-objective discrete diffusion model for simultaneous generation and optimization of therapeutic peptide SMILES. Built on the Masked Discrete Language Model (MDLM) framework, PepTune ensures valid peptide structures with a novel bond-dependent masking schedule and invalid loss function. To guide the diffusion process, we introduce Monte Carlo Tree Guidance (MCTG), an inference-time multi-objective guidance algorithm that balances exploration and exploitation to iteratively refine Pareto-optimal sequences. MCTG integrates classifier-based rewards with search-tree expansion, overcoming gradient estimation challenges and data sparsity. Using PepTune, we generate diverse, chemically-modified peptides simultaneously optimized for multiple therapeutic properties, including target binding affinity, membrane permeability, solubility, hemolysis, and non-fouling for various disease-relevant targets. In total, our results demonstrate that MCTG for masked discrete diffusion is a powerful and modular approach for multi-objective sequence design in discrete state spaces.",
+    "year": 2024,
+    "authors": [
+      "Sophia Tang",
+      "Yinuo Zhang",
+      "Pranam Chatterjee"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2412.17780"
+  },
+  {
+    "arxiv_id": "2410.01500",
+    "title": "Discrete Diffusion Schrödinger Bridge Matching for Graph Transformation",
+    "abstract": "Transporting between arbitrary distributions is a fundamental goal in generative modeling. Recently proposed diffusion bridge models provide a potential solution, but they rely on a joint distribution that is difficult to obtain in practice. Furthermore, formulations based on continuous domains limit their applicability to discrete domains such as graphs. To overcome these limitations, we propose Discrete Diffusion Schrödinger Bridge Matching (DDSBM), a novel framework that utilizes continuous-time Markov chains to solve the SB problem in a high-dimensional discrete state space. Our approach extends Iterative Markovian Fitting to discrete domains, and we have proved its convergence to the SB. Furthermore, we adapt our framework for the graph transformation, and show that our design choice of underlying dynamics characterized by independent modifications of nodes and edges can be interpreted as the entropy-regularized version of optimal transport with a cost function described by the graph edit distance. To demonstrate the effectiveness of our framework, we have applied DDSBM to molecular optimization in the field of chemistry. Experimental results demonstrate that DDSBM effectively optimizes molecules' property-of-interest with minimal graph transformation, successfully retaining other features. Source code is available $\\href{https://github.com/junhkim1226/DDSBM}{here}$.",
+    "year": 2024,
+    "authors": [
+      "Jun Hyeong Kim",
+      "Seonghwan Kim",
+      "Seokhyun Moon",
+      "Hyeongwoo Kim",
+      "Jeheon Woo",
+      "Woo Youn Kim"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2410.01500"
+  },
+  {
+    "arxiv_id": "2506.02318",
+    "title": "Absorb and Converge: Provable Convergence Guarantee for Absorbing Discrete Diffusion Models",
+    "abstract": "Discrete state space diffusion models have shown significant advantages in applications involving discrete data, such as text and image generation. It has also been observed that their performance is highly sensitive to the choice of rate matrices, particularly between uniform and absorbing rate matrices. While empirical results suggest that absorbing rate matrices often yield better generation quality compared to uniform rate matrices, existing theoretical works have largely focused on the uniform rate matrices case. Notably, convergence guarantees and error analyses for absorbing diffusion models are still missing. In this work, we provide the first finite-time error bounds and convergence rate analysis for discrete diffusion models using absorbing rate matrices. We begin by deriving an upper bound on the KL divergence of the forward process, introducing a surrogate initialization distribution to address the challenge posed by the absorbing stationary distribution, which is a singleton and causes the KL divergence to be ill-defined. We then establish the first convergence guarantees for both the $τ$-leaping and uniformization samplers under absorbing rate matrices, demonstrating improved rates over their counterparts using uniform rate matrices. Furthermore, under suitable assumptions, we provide convergence guarantees without early stopping. Our analysis introduces several new technical tools to address challenges unique to absorbing rate matrices. These include a Jensen-type argument for bounding forward process convergence, novel techniques for bounding absorbing score functions, and a non-divergent upper bound on the score near initialization that removes the need of early-stopping.",
+    "year": 2025,
+    "authors": [
+      "Yuchen Liang",
+      "Renxiang Huang",
+      "Lifeng Lai",
+      "Ness Shroff",
+      "Yingbin Liang"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2506.02318"
+  },
+  {
+    "arxiv_id": "2607.14522",
+    "title": "A Continuous-Time Reinforcement Learning Framework for Fine-Tuning Discrete Diffusion Models",
+    "abstract": "We formulate reinforcement learning (RL) in continuous time with discrete state spaces and possibly arbitrary action spaces via a stochastic control approach, where the state dynamics are modeled as a controlled continuous-time Markov chain (CTMC). We consider policy optimization problems and derive the corresponding policy gradient methods, leading to continuous-time variants of proximal policy optimization (PPO) and group relative policy optimization (GRPO). As a primary application, we develop a complete continuous-time RL framework for fine-tuning score-based discrete diffusion models. The proposed framework enables reward-driven optimization without requiring differentiability on the reward signals. In contrast to the existing GRPO-based approaches that only rely on terminal rewards, our formulation allows intermediate reward or advantage signals to be incorporated throughout the denoising trajectory. Importantly, when specialized to masked diffusion models (MDMs), our framework encompasses a rich class of policy parameterizations over the vocabulary simplex with analytically tractable probability ratios, providing a unified perspective on exploration and policy optimization in MDMs. For masked diffusion large language models (dLLMs), we further propose trajectory subsampling techniques to efficiently estimate computationally prohibitive trajectory likelihoods, reducing the computational cost of computing per-position probability ratios. We showcase the effectiveness of our methods on both low-dimensional entropy-regularized optimization problems and RL post-training of dLLMs on mathematical reasoning and coding tasks.",
+    "year": 2026,
+    "authors": [
+      "Zikun Zhang",
+      "Jiayuan Sheng",
+      "David D. Yao",
+      "Wenpin Tang"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2607.14522"
+  },
+  {
+    "arxiv_id": "2102.05379",
+    "title": "Argmax Flows and Multinomial Diffusion: Learning Categorical Distributions",
+    "abstract": "Generative flows and diffusion models have been predominantly trained on ordinal data, for example natural images. This paper introduces two extensions of flows and diffusion for categorical data such as language or image segmentation: Argmax Flows and Multinomial Diffusion. Argmax Flows are defined by a composition of a continuous distribution (such as a normalizing flow), and an argmax function. To optimize this model, we learn a probabilistic inverse for the argmax that lifts the categorical data to a continuous space. Multinomial Diffusion gradually adds categorical noise in a diffusion process, for which the generative denoising process is learned. We demonstrate that our method outperforms existing dequantization approaches on text modelling and modelling on image segmentation maps in log-likelihood.",
+    "year": 2021,
+    "authors": [
+      "Emiel Hoogeboom",
+      "Didrik Nielsen",
+      "Priyank Jaini",
+      "Patrick Forré",
+      "Max Welling"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2102.05379"
+  },
+  {
+    "arxiv_id": "2505.23721",
+    "title": "DiffER: Categorical Diffusion for Chemical Retrosynthesis",
+    "abstract": "Methods for automatic chemical retrosynthesis have found recent success through the application of models traditionally built for natural language processing, primarily through transformer neural networks. These models have demonstrated significant ability to translate between the SMILES encodings of chemical products and reactants, but are constrained as a result of their autoregressive nature. We propose DiffER, an alternative template-free method for retrosynthesis prediction in the form of categorical diffusion, which allows the entire output SMILES sequence to be predicted in unison. We construct an ensemble of diffusion models which achieves state-of-the-art performance for top-1 accuracy and competitive performance for top-3, top-5, and top-10 accuracy among template-free methods. We prove that DiffER is a strong baseline for a new class of template-free model, capable of learning a variety of synthetic techniques used in laboratory settings and outperforming a variety of other template-free methods on top-k accuracy metrics. By constructing an ensemble of categorical diffusion models with a novel length prediction component with variance, our method is able to approximately sample from the posterior distribution of reactants, producing results with strong metrics of confidence and likelihood. Furthermore, our analyses demonstrate that accurate prediction of the SMILES sequence length is key to further boosting the performance of categorical diffusion models.",
+    "year": 2025,
+    "authors": [
+      "Sean Current",
+      "Ziqi Chen",
+      "Daniel Adu-Ampratwum",
+      "Xia Ning",
+      "Srinivasan Parthasarathy"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2505.23721"
+  },
+  {
+    "arxiv_id": "2303.02737",
+    "title": "SePaint: Semantic Map Inpainting via Multinomial Diffusion",
+    "abstract": "Prediction beyond partial observations is crucial for robots to navigate in unknown environments because it can provide extra information regarding the surroundings beyond the current sensing range or resolution. In this work, we consider the inpainting of semantic Bird's-Eye-View maps. We propose SePaint, an inpainting model for semantic data based on generative multinomial diffusion. To maintain semantic consistency, we need to condition the prediction for the missing regions on the known regions. We propose a novel and efficient condition strategy, Look-Back Condition (LB-Con), which performs one-step look-back operations during the reverse diffusion process. By doing so, we are able to strengthen the harmonization between unknown and known parts, leading to better completion performance. We have conducted extensive experiments on different datasets, showing our proposed model outperforms commonly used interpolation methods in various robotic applications.",
+    "year": 2023,
+    "authors": [
+      "Zheng Chen",
+      "Deepak Duggirala",
+      "David Crandall",
+      "Lei Jiang",
+      "Lantao Liu"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2303.02737"
+  },
+  {
+    "arxiv_id": "2210.07677",
+    "title": "TransFusion: Transcribing Speech with Multinomial Diffusion",
+    "abstract": "Diffusion models have shown exceptional scaling properties in the image synthesis domain, and initial attempts have shown similar benefits for applying diffusion to unconditional text synthesis. Denoising diffusion models attempt to iteratively refine a sampled noise signal until it resembles a coherent signal (such as an image or written sentence). In this work we aim to see whether the benefits of diffusion models can also be realized for speech recognition. To this end, we propose a new way to perform speech recognition using a diffusion model conditioned on pretrained speech features. Specifically, we propose TransFusion: a transcribing diffusion model which iteratively denoises a random character sequence into coherent text corresponding to the transcript of a conditioning utterance. We demonstrate comparable performance to existing high-performing contrastive models on the LibriSpeech speech recognition benchmark. To the best of our knowledge, we are the first to apply denoising diffusion to speech recognition. We also propose new techniques for effectively sampling and decoding multinomial diffusion models. These are required because traditional methods of sampling from acoustic models are not possible with our new discrete diffusion approach. Code and trained models are available: https://github.com/RF5/transfusion-asr",
+    "year": 2022,
+    "authors": [
+      "Matthew Baas",
+      "Kevin Eloff",
+      "Herman Kamper"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2210.07677"
+  },
+  {
+    "arxiv_id": "2410.08207",
+    "title": "DICE: Discrete Inversion Enabling Controllable Editing for Multinomial Diffusion and Masked Generative Models",
+    "abstract": "Discrete diffusion models have achieved success in tasks like image generation and masked language modeling but face limitations in controlled content editing. We introduce DICE (Discrete Inversion for Controllable Editing), the first approach to enable precise inversion for discrete diffusion models, including multinomial diffusion and masked generative models. By recording noise sequences and masking patterns during the reverse diffusion process, DICE enables accurate reconstruction and flexible editing of discrete data without the need for predefined masks or attention manipulation. We demonstrate the effectiveness of DICE across both image and text domains, evaluating it on models such as VQ-Diffusion, Paella, and RoBERTa. Our results show that DICE preserves high data fidelity while enhancing editing capabilities, offering new opportunities for fine-grained content manipulation in discrete spaces.",
+    "year": 2024,
+    "authors": [
+      "Xiaoxiao He",
+      "Quan Dao",
+      "Ligong Han",
+      "Song Wen",
+      "Minhao Bai",
+      "Di Liu",
+      "Han Zhang",
+      "Martin Renqiang Min",
+      "Felix Juefei-Xu",
+      "Chaowei Tan",
+      "Bo Liu",
+      "Kang Li",
+      "Hongdong Li",
+      "Junzhou Huang",
+      "Faez Ahmed",
+      "Akash Srivastava",
+      "Dimitris Metaxas"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2410.08207"
+  },
+  {
+    "arxiv_id": "2108.08827",
+    "title": "ImageBART: Bidirectional Context with Multinomial Diffusion for Autoregressive Image Synthesis",
+    "abstract": "Autoregressive models and their sequential factorization of the data likelihood have recently demonstrated great potential for image representation and synthesis. Nevertheless, they incorporate image context in a linear 1D order by attending only to previously synthesized image patches above or to the left. Not only is this unidirectional, sequential bias of attention unnatural for images as it disregards large parts of a scene until synthesis is almost complete. It also processes the entire image on a single scale, thus ignoring more global contextual information up to the gist of the entire scene. As a remedy we incorporate a coarse-to-fine hierarchy of context by combining the autoregressive formulation with a multinomial diffusion process: Whereas a multistage diffusion process successively removes information to coarsen an image, we train a (short) Markov chain to invert this process. In each stage, the resulting autoregressive ImageBART model progressively incorporates context from previous stages in a coarse-to-fine manner. Experiments show greatly improved image modification capabilities over autoregressive models while also providing high-fidelity image generation, both of which are enabled through efficient training in a compressed latent space. Specifically, our approach can take unrestricted, user-provided masks into account to perform local image editing. Thus, in contrast to pure autoregressive models, it can solve free-form image inpainting and, in the case of conditional models, local, text-guided image modification without requiring mask-specific training.",
+    "year": 2021,
+    "authors": [
+      "Patrick Esser",
+      "Robin Rombach",
+      "Andreas Blattmann",
+      "Björn Ommer"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2108.08827"
+  },
+  {
+    "arxiv_id": "2303.08888",
+    "title": "Stochastic Segmentation with Conditional Categorical Diffusion Models",
+    "abstract": "Semantic segmentation has made significant progress in recent years thanks to deep neural networks, but the common objective of generating a single segmentation output that accurately matches the image's content may not be suitable for safety-critical domains such as medical diagnostics and autonomous driving. Instead, multiple possible correct segmentation maps may be required to reflect the true distribution of annotation maps. In this context, stochastic semantic segmentation methods must learn to predict conditional distributions of labels given the image, but this is challenging due to the typically multimodal distributions, high-dimensional output spaces, and limited annotation data. To address these challenges, we propose a conditional categorical diffusion model (CCDM) for semantic segmentation based on Denoising Diffusion Probabilistic Models. Our model is conditioned to the input image, enabling it to generate multiple segmentation label maps that account for the aleatoric uncertainty arising from divergent ground truth annotations. Our experimental results show that CCDM achieves state-of-the-art performance on LIDC, a stochastic semantic segmentation dataset, and outperforms established baselines on the classical segmentation dataset Cityscapes.",
+    "year": 2023,
+    "authors": [
+      "Lukas Zbinden",
+      "Lars Doorenbos",
+      "Theodoros Pissas",
+      "Adrian Thomas Huber",
+      "Raphael Sznitman",
+      "Pablo Márquez-Neila"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2303.08888"
+  },
+  {
+    "arxiv_id": "2410.17173",
+    "title": "Reinforcement learning on structure-conditioned categorical diffusion for protein inverse folding",
+    "abstract": "Protein inverse folding-that is, predicting an amino acid sequence that will fold into the desired 3D structure-is an important problem for structure-based protein design. Machine learning based methods for inverse folding typically use recovery of the original sequence as the optimization objective. However, inverse folding is a one-to-many problem where several sequences can fold to the same structure. Moreover, for many practical applications, it is often desirable to have multiple, diverse sequences that fold into the target structure since it allows for more candidate sequences for downstream optimizations. Here, we demonstrate that although recent inverse folding methods show increased sequence recovery, their \"foldable diversity\"-i.e. their ability to generate multiple non-similar sequences that fold into the structures consistent with the target-does not increase. To address this, we present RL-DIF, a categorical diffusion model for inverse folding that is pre-trained on sequence recovery and tuned via reinforcement learning on structural consistency. We find that RL-DIF achieves comparable sequence recovery and structural consistency to benchmark models but shows greater foldable diversity: experiments show RL-DIF can achieve an foldable diversity of 29% on CATH 4.2, compared to 23% from models trained on the same dataset. The PyTorch model weights and sampling code are available on GitHub.",
+    "year": 2024,
+    "authors": [
+      "Yasha Ektefaie",
+      "Olivia Viessmann",
+      "Siddharth Narayanan",
+      "Drew Dresser",
+      "J. Mark Kim",
+      "Armen Mkrtchyan"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2410.17173"
+  },
+  {
+    "arxiv_id": "1010.0719",
+    "title": "Multinomial Diffusion Equation",
+    "abstract": "We describe a new, microscopic model for diffusion that captures diffusion induced fluctuations at scales where the concept of concentration gives way to discrete particles. We show that in the limit as the number of particles $N \\to \\infty$, our model is equivalent to the classical stochastic diffusion equation (SDE). We test our new model and the SDE against Langevin dynamics in numerical simulations, and show that our model successfully reproduces the correct ensemble statistics, while the classical model fails.",
+    "year": 2010,
+    "authors": [
+      "Ariel Balter",
+      "Alexandre Tartakovsky"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.1010.0719"
+  },
+  {
+    "arxiv_id": "2501.03890",
+    "title": "Categorical Diffusion of Weighted Lattices",
+    "abstract": "We introduce a categorical formalization of diffusion processes for network-structured data, motivated by applications in data science and information dynamics. At the heart of our construction is the Lawvere Laplacian, an endofunctor on a product category indexed by a graph and enriched in a quantale. This framework enables the systematic study of diffusion processes on network sheaves taking values in categories enriched in quantales, analogous to classical diffusion operators on metric spaces and vector spaces. Our main theoretical contribution extends Tarski's fixed point theorem to the quantale-enriched categorical setting, establishing that both prefix and suffix points of the Lawvere Laplacian form complete quantale-enriched categories. We develop a discrete-time distributed algorithm - harmonic flow - that provably converges to these fixed points, providing a constructive method for computing fuzzy global sections. This computational approach bridges sheaf-theoretic and dynamical perspectives on network diffusion, with applications ranging from discrete event systems to preference dynamics and path-finding problems.",
+    "year": 2025,
+    "authors": [
+      "Robert Ghrist",
+      "Miguel Lopez",
+      "Paige Randall North",
+      "Hans Riess"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2501.03890"
+  },
+  {
+    "arxiv_id": "2402.12242",
+    "title": "Synthetic location trajectory generation using categorical diffusion models",
+    "abstract": "Diffusion probabilistic models (DPMs) have rapidly evolved to be one of the predominant generative models for the simulation of synthetic data, for instance, for computer vision, audio, natural language processing, or biomolecule generation. Here, we propose using DPMs for the generation of synthetic individual location trajectories (ILTs) which are sequences of variables representing physical locations visited by individuals. ILTs are of major importance in mobility research to understand the mobility behavior of populations and to ultimately inform political decision-making. We represent ILTs as multi-dimensional categorical random variables and propose to model their joint distribution using a continuous DPM by first applying the diffusion process in a continuous unconstrained space and then mapping the continuous variables into a discrete space. We demonstrate that our model can synthesize realistic ILPs by comparing conditionally and unconditionally generated sequences to real-world ILPs from a GNSS tracking data set which suggests the potential use of our model for synthetic data generation, for example, for benchmarking models used in mobility research.",
+    "year": 2024,
+    "authors": [
+      "Simon Dirmeier",
+      "Ye Hong",
+      "Fernando Perez-Cruz"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2402.12242"
+  },
+  {
+    "arxiv_id": "2309.17196",
+    "title": "ResBit: Residual Bit Vector for Categorical Values",
+    "abstract": "One-hot vectors, a common method for representing discrete/categorical data, in machine learning are widely used because of their simplicity and intuitiveness. However, one-hot vectors suffer from a linear increase in dimensionality, posing computational and memory challenges, especially when dealing with datasets containing numerous categories. In this paper, we focus on tabular data generation, and reveal the multinomial diffusion faces the mode collapse phenomenon when the cardinality is high. Moreover, due to the limitations of one-hot vectors, the training phase takes time longer in such a situation. To address these issues, we propose Residual Bit Vectors (ResBit), a technique for densely representing categorical data. ResBit is an extension of analog bits and overcomes limitations of analog bits when applied to tabular data generation. Our experiments demonstrate that ResBit not only accelerates training but also maintains performance when compared with the situations before applying ResBit. Furthermore, our results indicate that many existing methods struggle with high-cardinality data, underscoring the need for lower-dimensional representations, such as ResBit and latent vectors.",
+    "year": 2023,
+    "authors": [
+      "Masane Fuchi",
+      "Amar Zanashir",
+      "Hiroto Minami",
+      "Tomohiro Takagi"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2309.17196"
+  },
+  {
+    "arxiv_id": "2508.18597",
+    "title": "SemLayoutDiff: Semantic Layout Generation with Diffusion Model for Indoor Scene Synthesis",
+    "abstract": "We present SemLayoutDiff, a unified model for synthesizing diverse 3D indoor scenes across multiple room types. The model introduces a scene layout representation combining a top-down semantic map and attributes for each object. Unlike prior approaches, which cannot condition on architectural constraints, SemLayoutDiff employs a categorical diffusion model capable of conditioning scene synthesis explicitly on room masks. It first generates a coherent semantic map, followed by a cross-attention-based network to predict furniture placements that respect the synthesized layout. Our method also accounts for architectural elements such as doors and windows, ensuring that generated furniture arrangements remain practical and unobstructed. Experiments on the 3D-FRONT dataset show that SemLayoutDiff produces spatially coherent, realistic, and varied scenes, outperforming previous methods.",
+    "year": 2025,
+    "authors": [
+      "Xiaohao Sun",
+      "Divyam Goel",
+      "Angel X. Chang"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2508.18597"
+  },
+  {
+    "arxiv_id": "2507.11639",
+    "title": "Deep Generative Methods and Tire Architecture Design",
+    "abstract": "As deep generative models proliferate across the AI landscape, industrial practitioners still face critical yet unanswered questions about which deep generative models best suit complex manufacturing design tasks. This work addresses this question through a complete study of five representative models (Variational Autoencoder, Generative Adversarial Network, multimodal Variational Autoencoder, Denoising Diffusion Probabilistic Model, and Multinomial Diffusion Model) on industrial tire architecture generation. Our evaluation spans three key industrial scenarios: (i) unconditional generation of complete multi-component designs, (ii) component-conditioned generation (reconstructing architectures from partial observations), and (iii) dimension-constrained generation (creating designs that satisfy specific dimensional requirements). To enable discrete diffusion models to handle conditional scenarios, we introduce categorical inpainting, a mask-aware reverse diffusion process that preserves known labels without requiring additional training. Our evaluation employs geometry-aware metrics specifically calibrated for industrial requirements, quantifying spatial coherence, component interaction, structural connectivity, and perceptual fidelity. Our findings reveal that diffusion models achieve the strongest overall performance; a masking-trained VAE nonetheless outperforms the multimodal variant MMVAE\\textsuperscript{+} on nearly all component-conditioned metrics, and within the diffusion family MDM leads in-distribution whereas DDPM generalises better to out-of-distribution dimensional constraints.",
+    "year": 2025,
+    "authors": [
+      "Fouad Oubari",
+      "Raphael Meunier",
+      "Rodrigue Décatoire",
+      "Mathilde Mougeot"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2507.11639"
+  },
+  {
+    "arxiv_id": "2603.06904",
+    "title": "XGenBoost: Synthesizing Small and Large Tabular Datasets with XGBoost",
+    "abstract": "Tree ensembles such as XGBoost are often preferred for discriminative tasks in mixed-type tabular data, due to their inductive biases, minimal hyperparameter tuning, and training efficiency. We argue that these qualities, when leveraged correctly, can make for better generative models as well. As such, we present XGenBoost, a pair of generative models based on XGBoost: i) a Denoising Diffusion Implicit Model (DDIM) with XGBoost as score-estimator suited for smaller datasets, and ii) a hierarchical autoregressive model whose conditionals are learned via XGBoost classifiers, suited for large-scale tabular synthesis. The architectures follow from the natural constraints imposed by tree-based learners, e.g., in the diffusion model, combining Gaussian and multinomial diffusion to leverage native categorical splits and avoid one-hot encoding while accurately modelling mixed data types. In the autoregressive model, we use a fixed-order factorization, a hierarchical classifier to impose ordinal inductive biases when modelling numerical features, and de-quantization based on empirical quantile functions to model the non-continuous nature of most real-world tabular datasets. Through two benchmarks, one containing smaller and the other larger datasets, we show that our proposed architectures outperform previous neural- and tree-based generative models for mixed-type tabular synthesis at lower training cost.",
+    "year": 2026,
+    "authors": [
+      "Jim Achterberg",
+      "Marcel Haas",
+      "Bram van Dijk",
+      "Marco Spruit"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2603.06904"
+  },
+  {
+    "arxiv_id": "2504.04454",
+    "title": "PRISM: Probabilistic Representation for Integrated Shape Modeling and Generation",
+    "abstract": "Despite the advancements in 3D full-shape generation, accurately modeling complex geometries and semantics of shape parts remains a significant challenge, particularly for shapes with varying numbers of parts. Current methods struggle to effectively integrate the contextual and structural information of 3D shapes into their generative processes. We address these limitations with PRISM, a novel compositional approach for 3D shape generation that integrates categorical diffusion models with Statistical Shape Models (SSM) and Gaussian Mixture Models (GMM). Our method employs compositional SSMs to capture part-level geometric variations and uses GMM to represent part semantics in a continuous space. This integration enables both high fidelity and diversity in generated shapes while preserving structural coherence. Through extensive experiments on shape generation and manipulation tasks, we demonstrate that our approach significantly outperforms previous methods in both quality and controllability of part-level operations. Our code will be made publicly available.",
+    "year": 2025,
+    "authors": [
+      "Lei Cheng",
+      "Mahdi Saleh",
+      "Qing Cheng",
+      "Lu Sang",
+      "Hongli Xu",
+      "Daniel Cremers",
+      "Federico Tombari"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2504.04454"
+  },
+  {
+    "arxiv_id": "2406.09357",
+    "title": "Advancing Graph Generation through Beta Diffusion",
+    "abstract": "Diffusion models have excelled in generating natural images and are now being adapted to a variety of data types, including graphs. However, conventional models often rely on Gaussian or categorical diffusion processes, which can struggle to accommodate the mixed discrete and continuous components characteristic of graph data. Graphs typically feature discrete structures and continuous node attributes that often exhibit rich statistical patterns, including sparsity, bounded ranges, skewed distributions, and long-tailed behavior. To address these challenges, we introduce Graph Beta Diffusion (GBD), a generative model specifically designed to handle the diverse nature of graph data. GBD leverages a beta diffusion process, effectively modeling both continuous and discrete elements. Additionally, we propose a modulation technique that enhances the realism of generated graphs by stabilizing critical graph topology while maintaining flexibility for other components. GBD competes strongly with existing models across multiple general and biochemical graph benchmarks, showcasing its ability to capture the intricate balance between discrete and continuous features inherent in real-world graph data. The PyTorch code is available on GitHub.",
+    "year": 2024,
+    "authors": [
+      "Xinyang Liu",
+      "Yilin He",
+      "Bo Chen",
+      "Mingyuan Zhou"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2406.09357"
+  },
+  {
+    "arxiv_id": "2308.08157",
+    "title": "Learning to Generate Semantic Layouts for Higher Text-Image Correspondence in Text-to-Image Synthesis",
+    "abstract": "Existing text-to-image generation approaches have set high standards for photorealism and text-image correspondence, largely benefiting from web-scale text-image datasets, which can include up to 5~billion pairs. However, text-to-image generation models trained on domain-specific datasets, such as urban scenes, medical images, and faces, still suffer from low text-image correspondence due to the lack of text-image pairs. Additionally, collecting billions of text-image pairs for a specific domain can be time-consuming and costly. Thus, ensuring high text-image correspondence without relying on web-scale text-image datasets remains a challenging task. In this paper, we present a novel approach for enhancing text-image correspondence by leveraging available semantic layouts. Specifically, we propose a Gaussian-categorical diffusion process that simultaneously generates both images and corresponding layout pairs. Our experiments reveal that we can guide text-to-image generation models to be aware of the semantics of different image regions, by training the model to generate semantic labels for each pixel. We demonstrate that our approach achieves higher text-image correspondence compared to existing text-to-image generation approaches in the Multi-Modal CelebA-HQ and the Cityscapes dataset, where text-image pairs are scarce. Codes are available in this https://pmh9960.github.io/research/GCDP",
+    "year": 2023,
+    "authors": [
+      "Minho Park",
+      "Jooyeol Yun",
+      "Seunghwan Choi",
+      "Jaegul Choo"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2308.08157"
+  },
+  {
+    "arxiv_id": "2509.21835",
+    "title": "On the $ε$-Free Inference Complexity of Absorbing Discrete Diffusion",
+    "abstract": "Absorbing discrete diffusion has emerged as a dominant framework for discrete data generation. However, a significant disparity remains between its empirical success and theoretical understanding: existing analyses fail to demonstrate a complexity advantage over the $\\mathcal{O}(d \\ln(d/ε))$ baseline established for \\emph{uniform} discrete diffusion. We bridge this gap by identifying a critical structural advantage: whereas uniform diffusion redundantly re-denoises valid elements, the absorbing scheme denoises each absorbing state exactly once. Leveraging this insight, we introduce \\emph{Absorbing-Aware Truncated Uniformization} (AATU). We prove that AATU achieves $ε$-TV convergence with $\\mathcal{O}(d \\ln d)$ complexity-\\emph{independent} of the error tolerance $ε$-thereby strictly outperforming existing uniform baselines. Beyond improving convergence rates, our analysis eliminates the restrictive bounded-score assumption commonly required in prior studies of uniformization-based inference. Furthermore, we extend AATU to time-invariant parameterizations, showing that it naturally adopts an imputation-type inference with a uniformly randomized denoising order. When combined with a lazy update strategy, TV convergence requires only $\\mathcal{O}(d)$ discrete score evaluations. These results not only establish a rigorous foundation for absorbing discrete diffusion -- confirming its efficiency in high-accuracy generation -- but also open new avenues for analyzing diffusion-based language models under the masking paradigm.",
+    "year": 2025,
+    "authors": [
+      "Xunpeng Huang",
+      "Yingyu Lin",
+      "Nishant Jain",
+      "Kaibo Wang",
+      "Difan Zou",
+      "Yian Ma",
+      "Tong Zhang"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2509.21835"
+  },
+  {
+    "arxiv_id": "2406.03736",
+    "title": "Your Absorbing Discrete Diffusion Secretly Models the Conditional Distributions of Clean Data",
+    "abstract": "Discrete diffusion models with absorbing processes have shown promise in language modeling. The key quantities to be estimated are the ratios between the marginal probabilities of two transitive states at all timesteps, called the concrete score. In this paper, we reveal that the concrete score in absorbing diffusion can be expressed as conditional probabilities of clean data, multiplied by a time-dependent scalar in an analytic form. Motivated by this finding, we propose reparameterized absorbing discrete diffusion (RADD), a dedicated diffusion model without time-condition that characterizes the time-independent conditional probabilities. Besides its simplicity, RADD can reduce the number of function evaluations (NFEs) by caching the output of the time-independent network when the noisy sample remains unchanged in a sampling interval, which enables sampling acceleration. Built upon the new perspective of conditional distributions, we further unify absorbing discrete diffusion and any-order autoregressive models (AO-ARMs), showing that the upper bound on the negative log-likelihood for the diffusion model can be interpreted as an expected negative log-likelihood for AO-ARMs. Further, our RADD models achieve SOTA performance among diffusion models on 5 zero-shot language modeling benchmarks (measured by perplexity) at the GPT-2 scale. Our code is available at https://github.com/ML-GSAI/RADD.",
+    "year": 2024,
+    "authors": [
+      "Jingyang Ou",
+      "Shen Nie",
+      "Kaiwen Xue",
+      "Fengqi Zhu",
+      "Jiacheng Sun",
+      "Zhenguo Li",
+      "Chongxuan Li"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2406.03736"
+  },
+  {
+    "arxiv_id": "2602.22417",
+    "title": "Absorbing Discrete Diffusion for Speech Enhancement",
+    "abstract": "Inspired by recent developments in neural speech coding and diffusion-based language modeling, we tackle speech enhancement by modeling the conditional distribution of clean speech codes given noisy speech codes using absorbing discrete diffusion. The proposed approach, which we call ADDSE, leverages both the expressive latent space of neural audio codecs and the non-autoregressive sampling procedure of diffusion models. To efficiently model the hierarchical structure of residual vector quantization codes, we propose RQDiT, which combines techniques from RQ-Transformer and diffusion Transformers for non-autoregressive modeling. Results show competitive performance in terms of non-intrusive objective metrics on two datasets, especially at low signal-to-noise ratios and with few sampling steps. Code and audio examples are available online.",
+    "year": 2026,
+    "authors": [
+      "Philippe Gonzalez"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2602.22417"
+  },
+  {
+    "arxiv_id": "2605.06720",
+    "title": "Conditional generation of antibody sequences with classifier-guided germline-absorbing discrete diffusion",
+    "abstract": "Antibody therapeutics are among the most successful modern medicines, yet computationally designing antibodies with desirable binding and developability properties remains challenging. While protein language models (pLMs) have emerged as powerful tools for antibody sequence design, existing approaches largely suffer from two key limitations: they predominantly memorize germline sequences rather than modeling biologically meaningful somatic variation, and they offer limited support for flexible classifier-guided conditional generation. We address these challenges through two primary contributions. First, we demonstrate that discrete diffusion fine-tuning achieves strong language modeling performance on antibody sequences while allowing for generation conditioned on any off-the-shelf classifier. Second, we introduce germline absorbing diffusion, a novel modification of the discrete diffusion noise process in which the germline sequence - rather than a masked sequence - serves as the absorbing state. This biologically motivated inductive bias restricts the model to learning the trajectory from germline to observed sequence, effectively excluding genetic variation and V(D)J recombination statistics from the learned distribution and dramatically mitigating germline bias. We show that germline diffusion improves non-germline residue prediction accuracy from 26 percent to 46 percent, approaching the theoretical upper bound set by true biological variability. We then demonstrate the utility of our germline diffusion model on the conditional generation tasks of sampling antibodies with improved hydrophobicity and predicted binding affinity. On both tasks our model shows an improved tradeoff between class adherence and sample quality, significantly outperforming EvoProtGrad, a popular strategy to sample from pLMs with gradient-based discrete Markov Chain Monte Carlo.",
+    "year": 2026,
+    "authors": [
+      "Justin Sanders",
+      "Luca Giancardo",
+      "Lan Guo",
+      "Yue Zhao",
+      "Kemal Sonmez",
+      "Nina Cheng",
+      "Melih Yilmaz"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2605.06720"
+  },
+  {
+    "arxiv_id": "2601.04056",
+    "title": "Bridging the Discrete-Continuous Gap: Unified Multimodal Generation via Coupled Manifold Discrete Absorbing Diffusion",
+    "abstract": "The bifurcation of generative modeling into autoregressive approaches for discrete data (text) and diffusion approaches for continuous data (images) hinders the development of truly unified multimodal systems. While Masked Language Models (MLMs) offer efficient bidirectional context, they traditionally lack the generative fidelity of autoregressive models and the semantic continuity of diffusion models. Furthermore, extending masked generation to multimodal settings introduces severe alignment challenges and training instability. In this work, we propose \\textbf{CoM-DAD} (\\textbf{Co}upled \\textbf{M}anifold \\textbf{D}iscrete \\textbf{A}bsorbing \\textbf{D}iffusion), a novel probabilistic framework that reformulates multimodal generation as a hierarchical dual-process. CoM-DAD decouples high-level semantic planning from low-level token synthesis. First, we model the semantic manifold via a continuous latent diffusion process; second, we treat token generation as a discrete absorbing diffusion process, regulated by a \\textbf{Variable-Rate Noise Schedule}, conditioned on these evolving semantic priors. Crucially, we introduce a \\textbf{Stochastic Mixed-Modal Transport} strategy that aligns disparate modalities without requiring heavy contrastive dual-encoders. Our method demonstrates superior stability over standard masked modeling, establishing a new paradigm for scalable, unified text-image generation.",
+    "year": 2026,
+    "authors": [
+      "Yuanfeng Xu",
+      "Yuhao Chen",
+      "Liang Lin",
+      "Guangrun Wang"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2601.04056"
+  },
+  {
+    "arxiv_id": "2211.15029",
+    "title": "DiffusionBERT: Improving Generative Masked Language Models with Diffusion Models",
+    "abstract": "We present DiffusionBERT, a new generative masked language model based on discrete diffusion models. Diffusion models and many pre-trained language models have a shared training objective, i.e., denoising, making it possible to combine the two powerful models and enjoy the best of both worlds. On the one hand, diffusion models offer a promising training strategy that helps improve the generation quality. On the other hand, pre-trained denoising language models (e.g., BERT) can be used as a good initialization that accelerates convergence. We explore training BERT to learn the reverse process of a discrete diffusion process with an absorbing state and elucidate several designs to improve it. First, we propose a new noise schedule for the forward diffusion process that controls the degree of noise added at each step based on the information of each token. Second, we investigate several designs of incorporating the time step into BERT. Experiments on unconditional text generation demonstrate that DiffusionBERT achieves significant improvement over existing diffusion models for text (e.g., D3PM and Diffusion-LM) and previous generative masked language models in terms of perplexity and BLEU score.",
+    "year": 2022,
+    "authors": [
+      "Zhengfu He",
+      "Tianxiang Sun",
+      "Kuanning Wang",
+      "Xuanjing Huang",
+      "Xipeng Qiu"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2211.15029"
+  },
+  {
+    "arxiv_id": "2605.13999",
+    "title": "Support Before Frequency in Discrete Diffusion",
+    "abstract": "Discrete diffusion models are increasingly competitive for language modeling, yet it remains unclear how their denoising objectives organize learning. Although these objectives target the full data distribution, we show that the exact reverse process induces a hierarchy between coarse support information and finer frequency information. For uniform and absorbing (a.k.a. masking) diffusion, we prove that, in the small-noise regime of the final denoising steps, each single-token reverse edit decomposes into a leading scale, determined by whether it moves toward the data support (e.g., grammatically valid sentences), and a finer coefficient, determining relative probabilities within the same scale. Thus, recovering validity structure only requires learning the correct order of magnitude of reverse probabilities, whereas recovering data frequencies requires coefficient-level estimation. The separation is mechanism-dependent: uniform diffusion exhibits a trichotomy into validity-improving, validity-preserving, and validity-worsening edits, while absorbing diffusion places its leading-order mass on validity-improving moves. Experiments on a masked language diffusion model and synthetic regular-language tasks support these predictions: support-localization emerges earlier than within-support frequency ranking, and the contrast between uniform and absorbing diffusion matches the predicted rate separation. Together, our results suggest that discrete diffusion models learn data support before data frequencies.",
+    "year": 2026,
+    "authors": [
+      "Adrian Müller",
+      "Antoine Gonon",
+      "Zebang Shen",
+      "Ya-Ping Hsieh",
+      "Niao He"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2605.13999"
+  },
+  {
+    "arxiv_id": "2605.22765",
+    "title": "Uniform Diffusion Models Revisited: Leave-One-Out Denoiser and Absorbing State Reformulation",
+    "abstract": "Discrete diffusion models are often trained through clean-data prediction, but the prediction can be used in different ways to define the reverse dynamics. In Masked Diffusion Models (MDM) these choices largely coincide, whereas in Uniform Diffusion Models (UDM) they do not. We show that the standard plug-in bridge parameterization for UDM is not optimized by the denoising posterior, but by a leave-one-out posterior that predicts each clean token without using its own noisy observation. This identifies a mismatch between the plug-in ELBO and the usual cross-entropy denoising objective. We characterize the leave-one-out target and derive exact conversions between the denoiser, the leave-one-out posterior, and the score. These conversions allow us to disentangle parameterization and training objective. Our results also lead to inference improvements without any additional training through an informed predictor-corrector sampler and improved temperature sampling based on the leave-one-out predictor.   We further introduce an absorbing-state reformulation of uniform diffusion that preserves the UDM joint law while decomposing it into masked-diffusion-like sampling operations, with simpler denoising posteriors, carry-over unmasking, and a natural remasking mechanism. On language modeling, leave-one-out parameterizations consistently improve UDM generation, while the absorbing construction matches or surpasses masked diffusion. These results suggest that the empirical gap between masked and uniform diffusion is driven less by the choice of marginals themselves than by parameterization and sampling design. The code and models can be found at https://github.com/samsongourevitch/rev_udm.",
+    "year": 2026,
+    "authors": [
+      "Samson Gourevitch",
+      "Yazid Janati",
+      "Dario Shariatian",
+      "Umut Simsekli",
+      "Eric Moulines",
+      "Eric P. Xing",
+      "Alain Durmus"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2605.22765"
+  },
+  {
+    "arxiv_id": "2410.14710",
+    "title": "G2D2: Gradient-Guided Discrete Diffusion for Inverse Problem Solving",
+    "abstract": "Recent literature has effectively leveraged diffusion models trained on continuous variables as priors for solving inverse problems. Notably, discrete diffusion models with discrete latent codes have shown strong performance, particularly in modalities suited for discrete compressed representations, such as image and motion generation. However, their discrete and non-differentiable nature has limited their application to inverse problems formulated in continuous spaces. This paper presents a novel method for addressing linear inverse problems by leveraging generative models based on discrete diffusion as priors. We overcome these limitations by approximating the true posterior distribution with a variational distribution constructed from categorical distributions and continuous relaxation techniques. Furthermore, we employ a star-shaped noise process to mitigate the drawbacks of traditional discrete diffusion models with absorbing states, demonstrating that our method performs comparably to continuous diffusion techniques with a lower GPU memory consumption. Our code is available at https://github.com/sony/g2d2.",
+    "year": 2024,
+    "authors": [
+      "Naoki Murata",
+      "Chieh-Hsin Lai",
+      "Yuhta Takida",
+      "Toshimitsu Uesaka",
+      "Bac Nguyen",
+      "Stefano Ermon",
+      "Yuki Mitsufuji"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2410.14710"
+  },
+  {
+    "arxiv_id": "2607.00773",
+    "title": "Accelerating Discrete Diffusion Models with Parallel-In-Time Sampling",
+    "abstract": "Discrete diffusion models are widely used for learning and generating discrete distributions. As the generation process is inherently sequential, the acceleration of sampling is of significant importance. In this work, we parallelize the mainstream $τ$-leaping algorithm for absorbing discrete diffusion in a Continuous-Time Markov Chain (CTMC) framework. By leveraging the continuous-time stochastic integral form of the $τ$-leaping algorithm and the Picard iteration method, we achieve parallel-in-time sampling acceleration and provide a proof of exponential-factorial convergence for our algorithm. We improve the overall time complexity of $τ$-leaping under absorbing settings from ${\\mathcal{O}}(d \\log S)$ to ${\\mathcal{O}}(\\log (d\\log S)\\cdot \\log d)$ with respect to NFE. Empirically, our method shows consistent acceleration across synthetic and real-data settings. The new sampler achieves at most $7$--$9\\times$ runtime speedup for synthetic distribution, and maintains the same quality with $50\\%$ fewer NFE and $1.45$--$1.86\\times$ runtime speedups in image/text tasks on a single GPU. Our research expands the potential of discrete diffusion models for efficient parallel inference, with broader implications for applications such as molecular structure and language generation.",
+    "year": 2026,
+    "authors": [
+      "Yu Yao",
+      "Huanjian Zhou",
+      "Andi Han",
+      "Wei Huang",
+      "Masashi Sugiyama"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2607.00773"
+  },
+  {
+    "arxiv_id": "2603.02230",
+    "title": "Generalized Discrete Diffusion with Self-Correction",
+    "abstract": "Self-correction is an effective technique for maintaining parallel sampling in discrete diffusion models with minimal performance degradation. Prior work has explored self-correction at inference time or during post-training; however, such approaches often suffer from limited generalization and may impair reasoning performance. GIDD pioneers pretraining-based self-correction via a multi-step BERT-style uniform-absorbing objective. However, GIDD relies on a continuous interpolation-based pipeline with opaque interactions between uniform transitions and absorbing masks, which complicates hyperparameter tuning and hinders practical performance. In this work, we propose a Self-Correcting Discrete Diffusion (SCDD) model to reformulate pretrained self-correction with explicit state transitions and learn directly in discrete time. Our framework also simplifies the training noise schedule, eliminates a redundant remasking step, and relies exclusively on uniform transitions to learn self-correction. Experiments at the GPT-2 scale demonstrate that our method enables more efficient parallel decoding while preserving generation quality.",
+    "year": 2026,
+    "authors": [
+      "Linxuan Wang",
+      "Ziyi Wang",
+      "Yikun Bai",
+      "Wei Deng",
+      "Guang Lin",
+      "Qifan Song"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2603.02230"
+  },
+  {
+    "arxiv_id": "2308.10187",
+    "title": "Spiking-Diffusion: Vector Quantized Discrete Diffusion Model with Spiking Neural Networks",
+    "abstract": "Spiking neural networks (SNNs) have tremendous potential for energy-efficient neuromorphic chips due to their binary and event-driven architecture. SNNs have been primarily used in classification tasks, but limited exploration on image generation tasks. To fill the gap, we propose a Spiking-Diffusion model, which is based on the vector quantized discrete diffusion model. First, we develop a vector quantized variational autoencoder with SNNs (VQ-SVAE) to learn a discrete latent space for images. In VQ-SVAE, image features are encoded using both the spike firing rate and postsynaptic potential, and an adaptive spike generator is designed to restore embedding features in the form of spike trains. Next, we perform absorbing state diffusion in the discrete latent space and construct a spiking diffusion image decoder (SDID) with SNNs to denoise the image. Our work is the first to build the diffusion model entirely from SNN layers. Experimental results on MNIST, FMNIST, KMNIST, Letters, and Cifar10 demonstrate that Spiking-Diffusion outperforms the existing SNN-based generation model. We achieve FIDs of 37.50, 91.98, 59.23, 67.41, and 120.5 on the above datasets respectively, with reductions of 58.60\\%, 18.75\\%, 64.51\\%, 29.75\\%, and 44.88\\% in FIDs compared with the state-of-art work. Our code will be available at \\url{https://github.com/Arktis2022/Spiking-Diffusion}.",
+    "year": 2023,
+    "authors": [
+      "Mingxuan Liu",
+      "Jie Gan",
+      "Rui Wen",
+      "Tao Li",
+      "Yongli Chen",
+      "Hong Chen"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2308.10187"
+  },
+  {
+    "arxiv_id": "http://arxiv.org/abs/cond-mat/0602345v1",
+    "title": "Numerical Modeling of Coexistence, Competition and Collapse of Rotating Spiral Waves in Three-Level Excitable Media with Discrete Active Centers and Absorbing Boundaries",
+    "abstract": "Spatio-temporal dynamics of excitable media with discrete three-level active centers (ACs) and absorbing boundaries is studied numerically by means of a deterministic three-level model (see S. D. Makovetskiy and D. N. Makovetskii, on-line preprint cond-mat/0410460 ), which is a generalization of Zykov- Mikhailov model (see Sov. Phys. -- Doklady, 1986, Vol.31, No.1, P.51) for the case of two-channel diffusion of excitations. In particular, we revealed some qualitatively new features of coexistence, competition and collapse of rotating spiral waves (RSWs) in three-level excitable media under conditions of strong influence of the second channel of diffusion. Part of these features are caused by unusual mechanism of RSWs evolution when RSW's cores get into the surface layer of an active medium (i.~e. the layer of ACs resided at the absorbing boundary). Instead of well known scenario of RSW collapse, which takes place after collision of RSW's core with absorbing boundary, we observed complicated transformations of the core leading to nonlinear ''reflection'' of the RSW from the boundary or even to birth of several new RSWs in the surface layer. To our knowledge, such nonlinear ''reflections'' of RSWs and resulting die hard vorticity in excitable media with absorbing boundaries were unknown earlier. ACM classes: F.1.1, I.6, J.2; PACS numbers: 05.65.+b, 07.05.Tp, 82.20.Wt",
+    "year": 2006,
+    "authors": [
+      "S. D. Makovetskiy"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.http://arxiv.org/abs/cond-mat/0602345v1"
+  },
+  {
+    "arxiv_id": "2507.08333",
+    "title": "Token-Based Audio Inpainting via Discrete Diffusion",
+    "abstract": "Audio inpainting seeks to restore missing segments in degraded recordings. Previous diffusion-based methods exhibit impaired performance when the missing region is large. We introduce the first approach that applies discrete diffusion over tokenized music representations from a pre-trained audio tokenizer, enabling stable and semantically coherent restoration of long gaps. Our method further incorporates two training approaches: a derivative-based regularization loss that enforces smooth temporal dynamics, and a span-based absorbing transition that provides structured corruption during diffusion. Experiments on the MusicNet and MAESTRO datasets with gaps up to 750 ms show that our approach consistently outperforms strong baselines across range of gap lengths, for gaps of 150 ms and above. This work advances musical audio restoration and introduces new directions for discrete diffusion model training. Visit our project page for examples and code.",
+    "year": 2025,
+    "authors": [
+      "Tali Dror",
+      "Iftach Shoham",
+      "Moshe Buchris",
+      "Oren Gal",
+      "Haim Permuter",
+      "Gilad Katz",
+      "Eliya Nachmani"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2507.08333"
+  },
+  {
+    "arxiv_id": "2507.07586",
+    "title": "Your Absorbing Discrete Diffusion Secretly Models the Bayesian Posterior",
+    "abstract": "Discrete diffusion language models learn to reconstruct text from randomly masked inputs, yet under mild assumptions their denoiser already implements the exact Bayesian posterior over the original tokens. We prove that the expected denoiser output under the forward corruption distribution recovers the true posterior, and that a simple Monte Carlo estimator converges to this posterior at rate O(1/sqrt(K)) with finite-sample concentration bounds. Building on this insight, we introduce an inference-time ensemble that runs K independent denoising passes and aggregates both posterior means and variances without any extra training. On WikiText-2, our MC-marginal sampler recovers the analytic lambda-DCE zero-shot perplexity (approximately 39) to within a few points at K=128, and its per-token variance shows a strong rank correlation with reconstruction error (Spearman rho = 0.996). This cost-proportional procedure yields calibrated uncertainty estimates and a direct trade-off between compute and posterior fidelity in discrete diffusion LMs.",
+    "year": 2025,
+    "authors": [
+      "Cooper Doyle"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2507.07586"
+  },
+  {
+    "arxiv_id": "2402.06079",
+    "title": "DiscDiff: Latent Diffusion Model for DNA Sequence Generation",
+    "abstract": "This paper introduces a novel framework for DNA sequence generation, comprising two key components: DiscDiff, a Latent Diffusion Model (LDM) tailored for generating discrete DNA sequences, and Absorb-Escape, a post-training algorithm designed to refine these sequences. Absorb-Escape enhances the realism of the generated sequences by correcting `round errors' inherent in the conversion process between latent and input spaces. Our approach not only sets new standards in DNA sequence generation but also demonstrates superior performance over existing diffusion models, in generating both short and long DNA sequences. Additionally, we introduce EPD-GenDNA, the first comprehensive, multi-species dataset for DNA generation, encompassing 160,000 unique sequences from 15 species. We hope this study will advance the generative modelling of DNA, with potential implications for gene therapy and protein production.",
+    "year": 2024,
+    "authors": [
+      "Zehui Li",
+      "Yuhao Ni",
+      "William A V Beardall",
+      "Guoxuan Xia",
+      "Akashaditya Das",
+      "Guy-Bart Stan",
+      "Yiren Zhao"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2402.06079"
+  },
+  {
+    "arxiv_id": "2406.04329",
+    "title": "Simplified and Generalized Masked Diffusion for Discrete Data",
+    "abstract": "Masked (or absorbing) diffusion is actively explored as an alternative to autoregressive models for generative modeling of discrete data. However, existing work in this area has been hindered by unnecessarily complex model formulations and unclear relationships between different perspectives, leading to suboptimal parameterization, training objectives, and ad hoc adjustments to counteract these issues. In this work, we aim to provide a simple and general framework that unlocks the full potential of masked diffusion models. We show that the continuous-time variational objective of masked diffusion models is a simple weighted integral of cross-entropy losses. Our framework also enables training generalized masked diffusion models with state-dependent masking schedules. When evaluated by perplexity, our models trained on OpenWebText surpass prior diffusion language models at GPT-2 scale and demonstrate superior performance on 4 out of 5 zero-shot language modeling tasks. Furthermore, our models vastly outperform previous discrete diffusion models on pixel-level image modeling, achieving 2.75 (CIFAR-10) and 3.40 (ImageNet 64x64) bits per dimension that are better than autoregressive models of similar sizes. Our code is available at https://github.com/google-deepmind/md4.",
+    "year": 2024,
+    "authors": [
+      "Jiaxin Shi",
+      "Kehang Han",
+      "Zhe Wang",
+      "Arnaud Doucet",
+      "Michalis K. Titsias"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2406.04329"
+  },
+  {
+    "arxiv_id": "2310.05793",
+    "title": "DiffuSeq-v2: Bridging Discrete and Continuous Text Spaces for Accelerated Seq2Seq Diffusion Models",
+    "abstract": "Diffusion models have gained prominence in generating high-quality sequences of text. Nevertheless, current approaches predominantly represent discrete text within a continuous diffusion space, which incurs substantial computational overhead during training and results in slower sampling speeds. In this paper, we introduce a soft absorbing state that facilitates the diffusion model in learning to reconstruct discrete mutations based on the underlying Gaussian space, thereby enhancing its capacity to recover conditional signals. During the sampling phase, we employ state-of-the-art ODE solvers within the continuous space to expedite the sampling process. Comprehensive experimental evaluations reveal that our proposed method effectively accelerates the training convergence by 4x and generates samples of similar quality 800x faster, rendering it significantly closer to practical application. \\footnote{The code is released at \\url{https://github.com/Shark-NLP/DiffuSeq}",
+    "year": 2023,
+    "authors": [
+      "Shansan Gong",
+      "Mukai Li",
+      "Jiangtao Feng",
+      "Zhiyong Wu",
+      "Lingpeng Kong"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2310.05793"
+  },
+  {
+    "arxiv_id": "2605.05031",
+    "title": "Computer-Aided Design Generation by Cascaded Discrete Diffusion Model",
+    "abstract": "Recent deep learning approaches seek to automate CAD creation by representing a model as a sequence of discrete commands and parameters, and then generating them using autoregressive models or continuous diffusion operating in Euclidean embedding space. However, continuous diffusion perturbs representations in a continuous Euclidean domain that does not reflect the inherently discrete and heterogeneous nature of CAD tokens, often producing perturbed representations that map to semantically invalid symbols. To overcome this limitation, we propose a cascaded discrete diffusion framework for CAD generation, which consists of a command diffusion for generating CAD commands and a parameter diffusion conditioned on CAD commands. Unlike isotropic Gaussian perturbation, the forward process of our approach operates directly over categorical token distributions using delicate transition matrices. For commands, we adopt an absorbing-state transition matrix that progressively corrupts tokens to a designated symbol; for parameters, we introduce specific transition matrices tailored to heterogeneous attributes: a Gaussian kernel for coordinate continuity, a scale-invariant kernel for dimensional values, and a prior-preserving kernel for boolean attributes. The reverse process is achieved by two denoising networks: a Transformer-based encoder for command recovery, and a parameter network with extra local self-attention for command-level interaction and cross-attention for conditional injection. Experiments on the DeepCAD dataset show that the proposed approach surpasses existing autoregressive and continuous diffusion models on unconditional generation metrics, while qualitative results validate effective controllability in conditional generation tasks. Source codes will be released.",
+    "year": 2026,
+    "authors": [
+      "Honghu Pan",
+      "Xiaoling Luo",
+      "Yongyong Chen",
+      "Zhenyu He",
+      "Pengyang Wang"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2605.05031"
+  },
+  {
+    "arxiv_id": "http://arxiv.org/abs/cond-mat/0105591v1",
+    "title": "Interface depinning versus absorbing-state phase transitions",
+    "abstract": "According to recent numerical results from lattice models, the critical exponents of systems with many absorbing states and an order parameter coupled to a non-diffusive conserved field coincide with those of the linear interface depinning model within computational accuracy. In this paper the connection between absorbing state phase transitions and interface pinning in quenched disordered media is investigated. For that, we present a mapping of the interface dynamics in a disordered medium into a Langevin equation for the active-site density and show that a Reggeon-field-theory like description, coupled to an additional non-diffusive conserved field, appears rather naturally. Reciprocally, we construct a mapping from a discrete model belonging in the absorbing state with-a-conserved-field class to a discrete interface equation, and show how a quenched disorder is originated.  We discuss the character of the possible noise terms in both representations, and overview the critical exponent relations. Evidence is provided that, at least for dimensions larger that one, both universality classes are just two different representations of the same underlying physics.",
+    "year": 2001,
+    "authors": [
+      "Mikko Alava",
+      "Miguel A. Munoz"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.http://arxiv.org/abs/cond-mat/0105591v1"
+  },
+  {
+    "arxiv_id": "2310.16834",
+    "title": "Discrete Diffusion Modeling by Estimating the Ratios of the Data Distribution",
+    "abstract": "Despite their groundbreaking performance for many generative modeling tasks, diffusion models have fallen short on discrete data domains such as natural language. Crucially, standard diffusion models rely on the well-established theory of score matching, but efforts to generalize this to discrete structures have not yielded the same empirical gains. In this work, we bridge this gap by proposing score entropy, a novel loss that naturally extends score matching to discrete spaces, integrates seamlessly to build discrete diffusion models, and significantly boosts performance. Experimentally, we test our Score Entropy Discrete Diffusion models (SEDD) on standard language modeling tasks. For comparable model sizes, SEDD beats existing language diffusion paradigms (reducing perplexity by $25$-$75$\\%) and is competitive with autoregressive models, in particular outperforming GPT-2. Furthermore, compared to autoregressive mdoels, SEDD generates faithful text without requiring distribution annealing techniques like temperature scaling (around $6$-$8\\times$ better generative perplexity than un-annealed GPT-2), can trade compute and quality (similar quality with $32\\times$ fewer network evaluations), and enables controllable infilling (matching nucleus sampling quality while enabling other strategies besides left to right prompting).",
+    "year": 2023,
+    "authors": [
+      "Aaron Lou",
+      "Chenlin Meng",
+      "Stefano Ermon"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2310.16834"
+  },
+  {
+    "arxiv_id": "2509.04852",
+    "title": "Diffusion Secant Alignment for Score-Based Density Ratio Estimation",
+    "abstract": "Estimating density ratios has become increasingly important with the recent rise of score-based and diffusion-inspired methods. However, current tangent-based approaches rely on a high-variance learning objective, which leads to unstable training and costly numerical integration during inference. We propose \\textit{Interval-annealed Secant Alignment Density Ratio Estimation (ISA-DRE)}, a score-based framework along diffusion interpolants that replaces the instantaneous tangent with its interval integral, the secant, as the learning target. We show theoretically that the secant is a provably lower variance and smoother target for neural approximation, and also a strictly more general representation that contains the tangent as the infinitesimal limit. To make secant learning feasible, we introduce the \\textit{Secant Alignment Identity (SAI)} to enforce self consistency between secant and tangent representations, and \\textit{Contraction Interval Annealing (CIA)} to ensure stable convergence. Empirically, this stability-first formulation produces high efficiency and accuracy. ISA-DRE achieves comparable or superior results with fewer function evaluations, demonstrating robustness under large distribution discrepancies and effectively mitigating the density-chasm problem.",
+    "year": 2025,
+    "authors": [
+      "Wei Chen",
+      "Shigui Li",
+      "Jiacheng Li",
+      "Jian Xu",
+      "Zhiqi Lin",
+      "Junmei Yang",
+      "Delu Zeng",
+      "John Paisley",
+      "Qibin Zhao"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2509.04852"
+  },
+  {
+    "arxiv_id": "2606.06283",
+    "title": "Diffusion of multiple conserved charges from entropy production",
+    "abstract": "We derive dissipative relativistic hydrodynamic equations in the presence of multiple conserved charges, i.e., baryon number ($B$), electric charge ($Q$), and strangeness ($S$), using the Chapman-Enskog (CE) method within the kinetic theory approach. The relativistic Boltzmann equation is solved within the relaxation-time approximation with a momentum-independent relaxation time in the collision term. We derive both first-order (Navier-Stokes limit) and second-order dissipative hydrodynamic equations. Within the kinetic theory framework, using the Boltzmann's H-theorem, and by demanding that for a dissipative system, the entropy must be produced, we find different transport coefficients at the first-order and second-order gradient expansion of the out-of-equilibrium distribution function around the local equilibrium. Apart from the well-known transport coefficients, the shear ($η$) and the bulk ($ζ$) viscosities , we also find the diffusion matrix elements ($κ_{qq^{\\prime}}$) for the conserved charges $B$, $Q$ and $S$. The diffusion matrix elements ($κ_{qq^{\\prime}}$) are important to model the multi-component diffusion dynamics sourced by inhomogeneous baryon stopping in the initial state of heavy-ion collisions. We estimate the temperature ($T$) and chemical potential dependence of diagonal and off-diagonal elements of the diffusion matrix elements for the (2+1) flavor quark-gluon plasma. We further estimate the ratio $κ_{qq^{\\prime}}T/η$ for a wide range of temperature and chemical potentials to show the relative importance of the diffusion matrix elements compared to other transport coefficients.",
+    "year": 2026,
+    "authors": [
+      "Samapan Bhadury",
+      "Arpan Das",
+      "Sandeep Chatterjee",
+      "Hiranmaya Mishra"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2606.06283"
+  },
+  {
+    "arxiv_id": "2402.00082",
+    "title": "Enhancing Grover's Search Algorithm: A Modified Approach to Increase the Probability of Good States",
+    "abstract": "This article introduces an enhancement to the Grover search algorithm to speed up computing the probability of finding good states. It suggests incorporating a rotation phase angle determined mathematically from the derivative of the model during the initial iteration. At each iteration, a new phase angle is computed and used in a rotation gate around y+z axis in the diffusion operator. The computed phase angles are optimized through an adaptive adjustment based on the estimated increasing ratio of the consecutive amplitudes. The findings indicate an average decrease of 28% in the required number of iterations resulting in a faster overall process and fewer number of quantum gates. For large search space, this improvement rises to 29.58%. Given the computational capabilities of the computer utilized for the simulation, the approach is applied to instances with up to 12 qubits or 4096 possible combination of search entries.",
+    "year": 2024,
+    "authors": [
+      "Ismael Abdulrahman"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2402.00082"
+  },
+  {
+    "arxiv_id": "2405.17965",
+    "title": "AttenCraft: Attention-guided Disentanglement of Multiple Concepts for Text-to-Image Customization",
+    "abstract": "Text-to-image (T2I) customization empowers users to adapt the T2I diffusion model to new concepts absent in the pre-training dataset. On this basis, capturing multiple new concepts from a single image has emerged as a new task, allowing the model to learn multiple concepts simultaneously or discard unwanted concepts. However, multiple-concept disentanglement remains a key challenge. Existing disentanglement models often exhibit two main issues: feature fusion and asynchronous learning across different concepts. To address these issues, we propose AttenCraft, an attention-based method for multiple-concept disentanglement. Our method uses attention maps to generate accurate masks for each concept in a single initialization step, aiding in concept disentanglement without requiring mask preparation from humans or specialized models. Moreover, we introduce an adaptive algorithm based on attention scores to estimate sampling ratios for different concepts, promoting balanced feature acquisition and synchronized learning. AttenCraft also introduces a feature-retaining training framework that employs various loss functions to enhance feature recognition and prevent fusion. Extensive experiments show that our model effectively mitigates these two issues, achieving state-of-the-art image fidelity and comparable prompt fidelity to baseline models.",
+    "year": 2024,
+    "authors": [
+      "Junjie Shentu",
+      "Matthew Watson",
+      "Noura Al Moubayed"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2405.17965"
+  },
+  {
+    "arxiv_id": "http://arxiv.org/abs/astro-ph/0111253v1",
+    "title": "Dust Polarization From Starlight Data",
+    "abstract": "We present a statistical analysis of the interstellar medium (ISM) polarization from the largest compilation available of starlight data, which comprises ~ 5500 stars. The measured correlation between the mean polarization degree and extinction indicates that ISM dust grains are not fully aligned with the uniform component of the large-scale Galactic magnetic field. Moreover, we estimate the ratio of the uniform to the random plane-of-the-sky components of the magnetic field to be B_u/B_r = 0.8. From the analysis of starlight polarization degree and position angle we find that the magnetic field broadly follows Galactic structures on large-scales. On the other hand, the angular power spectrum C_l of the polarization degree for Galactic plane data is found to be consistent with a power-law, C_l ~ l^{-1.5} (where l = 180 deg/θis the multipole order), for angular scales θ> 10 arcmin. We argue that this data set can be used to estimate diffuse polarized emission at microwave frequencies.",
+    "year": 2001,
+    "authors": [
+      "Pablo Fosalba",
+      "Alex Lazarian",
+      "Simon Prunet",
+      "Jan A. Tauber"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.http://arxiv.org/abs/astro-ph/0111253v1"
+  },
+  {
+    "arxiv_id": "2302.10353",
+    "title": "Ratio Shift Keying Modulation for Time-Varying Molecular Communication Channels",
+    "abstract": "Molecular Communications (MC) is a bio-inspired communication technique that uses molecules to encode and transfer information. Many efforts have been devoted to developing novel modulation techniques for MC based on various distinguishable characteristics of molecules, such as their concentrations or types. In this paper, we investigate a particular modulation scheme called Ratio Shift Keying (RSK), where the information is encoded in the concentration ratio of two different types of molecules. RSK modulation is hypothesized to enable accurate information transfer in dynamic MC scenarios where the time-varying channel characteristics affect both types of molecules equally. To validate this hypothesis, we first conduct an information-theoretical analysis of RSK modulation and derive the capacity of the end-to-end MC channel where the receiver estimates concentration ratio based on ligand-receptor binding statistics in an optimal or suboptimal manner. We then analyze the error performance of RSK modulation in a practical time-varying MC scenario, that is mobile MC, in which both the transmitter and the receiver undergo diffusion-based propagation. Our numerical and analytical results, obtained for varying levels of similarity between the ligand types used for ratio-encoding, and varying number of receptors, show that RSK can significantly outperform the most commonly considered MC modulation technique, concentration shift keying (CSK), in dynamic MC scenarios.",
+    "year": 2023,
+    "authors": [
+      "M. Okan Araz",
+      "Ahmet R. Emirdagi",
+      "M. Serkan Kopuzlu",
+      "Murat Kuscu"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.2302.10353"
+  },
+  {
+    "arxiv_id": "1002.2020",
+    "title": "The JCMT Legacy Survey of the Gould Belt: a first look at Taurus with HARP",
+    "abstract": "As part of a JCMT Legacy Survey of star formation in the Gould Belt, we present early science results for Taurus. CO J=3-2 maps have been secured along the north-west ridge and bowl, collectively known as L 1495, along with deep 13CO and C18O J=3-2 maps in two sub-regions. With these data we search for molecular outflows, and use the distribution of flows, HH objects and shocked H2 line emission features, together with the population of young stars, protostellar cores and starless condensations to map star formation across this extensive region. In total 21 outflows are identified. It is clear that the bowl is more evolved than the ridge, harbouring a greater population of T Tauri stars and a more diffuse, more turbulent ambient medium. By comparison, the ridge contains a much younger, less widely distributed population of protostars which, in turn, is associated with a greater number of molecular outflows. We estimate the ratio of the numbers of prestellar to protostellar cores in L 1495 to be ~ 1.3-2.3, and of gravitationally unbound starless cores to (gravitationally bound) prestellar cores to be ~ 1. If we take previous estimates of the protostellar lifetime of ~ 5 x 10^5 yrs, this indicates a prestellar lifetime of 9(+/-3) x 10^5 yrs. From the number of outflows we also crudely estimate the star formation efficiency in L 1495, finding it to be compatible with a canonical value of 10-15 %. We note that molecular outflow-driving sources have redder near-IR colours than their HH jet-driving counterparts. We also find that the smaller, denser cores are associated with the more massive outflows, as one might expect if mass build-up in the flow increases with the collapse and contraction of the protostellar envelope.",
+    "year": 2010,
+    "authors": [
+      "C. J. Davis",
+      "A. Chrysostomou",
+      "J. Hatchell",
+      "J. G. A. Wouterloot",
+      "J. V. Buckle",
+      "D. Nutter",
+      "M. Fich",
+      "C. Brunt",
+      "H. Butner",
+      "B. Cavanagh",
+      "E. I. Curtis",
+      "A. Duarte-Cabral",
+      "J. Di Francesco",
+      "M. Etxaluze",
+      "P. Friberg",
+      "R. Friesen",
+      "G. A. Fuller",
+      "S. Graves",
+      "J. S. Greaves",
+      "M. R. Hogerheijde",
+      "D. Johnstone",
+      "B. Matthews",
+      "H. Matthews",
+      "J. M. C. Rawlings",
+      "J. S. Richer",
+      "J. Roberts",
+      "S. Sadavoy",
+      "R. J. Simpson",
+      "N. Tothill",
+      "Y. Tsamis",
+      "S. Viti",
+      "D. Ward-Thompson",
+      "Glenn J. White",
+      "J. Yates"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.1002.2020"
+  },
+  {
+    "arxiv_id": "http://arxiv.org/abs/astro-ph/0305164v1",
+    "title": "Cosmological Shock Waves and Their Role in the Large Scale Structure of the Universe",
+    "abstract": "We study the properties of cosmological shock waves identified in high-resolution, N-body/hydrodynamic simulations of a $Λ$CDM universe and their role on thermalization of gas and acceleration of nonthermal, cosmic ray (CR) particles. External shocks form around sheets, filaments and knots of mass distribution when the gas in void regions accretes onto them. Within those nonlinear structures, internal shocks are produced by infall of previously shocked gas to filaments and knots, and during subclump mergers, as well as by chaotic flow motions. Due to the low temperature of the accreting gas, the Mach number of external shocks is high, extending up to $M\\sim 100$ or higher. In contrast, internal shocks have mostly low Mach numbers. For all shocks of $M\\ge1.5$ the mean distance between shock surfaces over the entire computed volume is $\\sim4 h^{-1}$ Mpc at present, or $\\sim 1 h^{-1}$ Mpc for internal shocks within nonlinear structures. Identified external shocks are more extensive, with their surface area $\\sim2$ times larger than that of identified internal shocks at present. However, especially because of higher preshock densities, but also due to higher shock speeds, internal shocks dissipate more energy. Hence, the internal shocks are mainly responsible for gas thermalization as well as CR acceleration. In fact, internal shocks with $2 \\la M \\la 4$ contribute $\\sim 1/2$ of the total dissipation. Using a nonlinear diffusive shock acceleration model for CR protons, we estimate the ratio of CR energy to gas thermal energy dissipated at cosmological shock waves to be $\\sim1/2$ through the history of the universe. Our result supports scenarios in which the intracluster medium contains energetically significant populations of CRs.",
+    "year": 2003,
+    "authors": [
+      "Dongsu Ryu",
+      "Hyesung Kang",
+      "Eric Hallman",
+      "T. W. Jones"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.http://arxiv.org/abs/astro-ph/0305164v1"
+  },
+  {
+    "arxiv_id": "1205.3384",
+    "title": "Dark gas in the solar neighnorhood from extinction data",
+    "abstract": "When modeling infrared or gamma-ray data as a linear combination of observed gas tracers, excess emission has been detected compared to expectations from known neutral and atomic gas as traced by HI and CO measurements, respectively. This excess might correspond to an additional gas component. This so-called \"dark gas\" (DG) has been observed in our Galaxy, as well as the Magellanic Clouds. For the first time, we investigate the correlation between visible extinction (Av) data and gas tracers on large scales in the solar neighborhood. Our work focuses on both the solar neighborhood ($|b|>10\\degr$), and the inner and outer Galaxy, as well as on four individual regions: Taurus, Orion, Cepheus-Polaris and Aquila-Ophiuchus. Thanks to the recent production of an all-sky Av map, we first perform the correlation between Av and both HI and CO emission over the most diffuse regions, to derive the optimal (Av/NH)^(ref) ratio. We then iterate the analysis over the entire regions to estimate the CO-to-H2 conversion factor as well as the DG mass fraction. The average extinction to gas column-density ratio in the solar neighborhood is found to be (Av/NH)^(ref)=6.53 10^(-22) mag. cm^2, with significant differences between the inner and outer Galaxy. We derive an average XCO value of 1.67 10^(20) H2 cm^(-2)/(K km s^(-1)). In the solar neighborhood, the gas mass in the dark component is found to be 19% relative to that in the atomic component and 164$%$ relative to the one traced by CO. These results are compatible with the recent analysis using Planck data within the uncertainties of our measurements. We estimate the ratio of dark gas to total molecular gas to be 0.62 in the solar neighborhood. The HI-to-H2 and H2-to-CO transitions appear for Av $\\simeq$0.2 mag and Av$\\simeq1.5$ mag, respectively, in agreement with theoretical models of dark-H2 gas.",
+    "year": 2012,
+    "authors": [
+      "D. Paradis",
+      "K. Dobashi",
+      "T. Shimoikura",
+      "A. Kawamura",
+      "T. Onishi",
+      "Y. Fukui",
+      "J. -P. Bernard"
+    ],
+    "doi": "https://doi.org/10.48550/arxiv.1205.3384"
   }
 ]

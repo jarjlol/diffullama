@@ -77,3 +77,10 @@ assistant building this, rather than through a scripted, repeatable API call. An
 with an API key available should prioritize replacing `scripts/rerank.py`'s keyword-based relevance scorer with
 a real LLM-judge call — this is the single change most likely to close the retrieval-recall gap documented in
 REPORT.md §6.
+
+**Update:** this was done as a follow-up — see REPORT.md §10 (`scripts/apply_llm_judge.py`,
+`data/llm_relevance_scores.json`). F1 against the anchor's ground truth improved 0.222 → 0.272 and every
+off-topic domain paper (protein, RNA, tire design, ...) that the keyword scorer let through disappeared from
+the top-48. Kept in separate `*_llm_judged` files rather than overwriting the submitted survey/reference set,
+since the survey's `[1]`-`[48]` citation markers are positionally tied to the original `reference_brief.txt` —
+see REPORT.md §10 for why, and what fully adopting it would require.

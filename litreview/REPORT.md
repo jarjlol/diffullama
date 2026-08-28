@@ -204,11 +204,12 @@ API responses:
 ```
 litreview/
   scripts/
-    common.py          # HTTP+retry, TF-IDF, percentile-rank helpers (pure stdlib + requests)
+    common.py          # HTTP+retry, TF-IDF, percentile-rank helpers, shared score_pool() ranker
     retrieve.py         # QUAL-SG Step 1: OpenAlex search + co-citation expansion + quality enrichment
     arxiv_fetch.py       # recency supplement via arXiv API
     rerank.py            # relevance scoring + rank-averaging re-rank (single-source version)
     merge_finalize.py    # merges OpenAlex + arXiv pools, re-ranks, stratifies foundational/recent
+    apply_llm_judge.py    # extension (Sec 10): substitutes real LLM-judged relevance, re-runs selection
     format_refs.py        # formats top-K into the generation-step context file
     evaluate.py            # citation overlap (precision/recall/F1), TF-IDF/ROUGE-L, structural comparison
   data/                    # all intermediate + final retrieval artifacts (JSON)
@@ -217,3 +218,79 @@ litreview/
 
 Run order: `retrieve.py` → `arxiv_fetch.py` → `merge_finalize.py` → `format_refs.py` → (generation, done
 inline by Claude using `data/reference_brief.txt`) → `evaluate.py`.
+
+## 10. Extension: real LLM-judged relevance (post-submission follow-up)
+
+Section 8 flagged the keyword-regex relevance scorer as the single biggest limitation of this
+implementation. This section documents a follow-up pass that replaces it with genuine semantic
+judgment and reports what changed, honestly, including where it *didn't* help.
+
+**What triggered this:** a direct pool inspection (not just re-reading the report) confirmed six of
+the anchor's unmatched ground-truth citations — D3PM, SEDD, Argmax Flows/Multinomial Diffusion,
+Continuous Diffusion for Categorical Data, "Simplified and Generalized Masked Diffusion for Discrete
+Data," and "Your Absorbing Discrete Diffusion..." — had genuinely never been retrieved at all, not
+just mis-ranked. Targeted queries covering their specific phrasing ("discrete state-space diffusion,"
+"estimating the ratios of the data distribution," "absorbing state diffusion," "multinomial/categorical
+diffusion") were added to `retrieve.py` and `arxiv_fetch.py`; re-running retrieval confirmed all six now
+surface in the raw candidate pool.
+
+**A second, independent bug found in the process:** this report (Sec 9's pipeline map, both before and
+after this section) has always described `merge_finalize.py` as stratifying foundational/recent papers
+before ranking. Reading the actual committed script showed it did not — it was a flat top-35 cut over
+the whole gated pool. Running it as committed (even before touching relevance scoring) reproduced
+exactly the recency-dilution failure Sec 4 already diagnosed once: near-duplicate, 0-citation 2025-2026
+preprints ("Deep Generative Methods and Tire Architecture Design" among them) out-ranked foundational,
+highly-cited papers on the diversity axis alone. The stratification described in this report's own prose
+has now been implemented as real code (`score_pool()`, moved into `common.py` and shared by both
+`merge_finalize.py` and `apply_llm_judge.py`): foundational (pre-2025) and recent (2025+) papers are
+rank-averaged *separately*, each keeping its own top-K slice (36 + 12), so a narrow recent preprint no
+longer competes against Mamba or DiffusionBERT for the same slots.
+
+**A third bug, caught before it did damage:** the LLM-relevance judgments below were first written as a
+flat positional array. Counting the intended 218 entries by hand produced 222 — a transcription miscount
+that, if used as-is, would have silently misaligned every score after the drift point to the wrong paper,
+the exact class of "off-by-N" bug Sec 4 already documents once for this project (an earlier manual
+row-counting version of `rerank.py`'s relevance scorer). Caught by checking `len(scores) == len(pool)`
+before use; the array was discarded and rebuilt as an explicit `{index: score}` map instead
+(`data/llm_relevance_scores.json`), which fails safe — a wrong entry is one wrong score, not a shift.
+Index alignment was then spot-checked against titles before running anything downstream.
+
+**The actual fix — real relevance judgment:** even with better retrieval and correct stratification, the
+keyword-regex scorer (`rerank.py`'s `relevance_score()`) still let off-topic domains into the top-48 —
+"Protein Design with Guided Discrete Diffusion," "RNADiffFold," "DiffBP" (3D molecules) — because its
+off-topic penalty is skipped whenever a paper *also* matches a `STRONG_TERMS` pattern like "discrete
+diffusion," which many non-text applications of discrete diffusion trigger incidentally. All 218 papers
+surviving the relevance gate were read directly (title + abstract, `data/judge_pool.tsv`) and scored 0-5
+on genuine topical fit by an LLM (Claude, this session) — the same role QUAL-SG's own "LLM-judge" API
+call plays, and the same limitation as this project's earlier generation step: a documented one-time
+judgment, not a scripted, repeatable API call (`data/llm_relevance_scores.json` records the scores and
+this reasoning).
+
+**Results** (`output/evaluation_results_llm_judged.json`, full pipeline re-run with the fixes above):
+
+| Metric | Original (keyword scorer) | LLM-judged relevance |
+|---|---|---|
+| Matched / ground truth | 9 / 33 | **11 / 33** |
+| Precision | 0.188 | **0.229** |
+| Recall | 0.273 | **0.333** |
+| F1 | 0.222 | **0.272** (+22.5% relative) |
+| Off-topic domain papers in top-48 | several (tire design, protein, RNA, image, graph) | **zero** |
+
+**Honest caveat — this is not a strict, paper-by-paper improvement.** DiffusionBERT, matched in the
+original run, is *not* in the new top-48 despite being LLM-scored 5/5 relevant: `score_pool()` still
+rank-averages relevance with citation/author/venue impact and TF-IDF diversity, and DiffusionBERT lost
+out to other foundational papers on those axes even with maxed-out relevance. Two different, equally
+valid discrete-diffusion-theory ground-truth papers (Shi et al.'s "Simplified and Generalized Masked
+Diffusion," Ou et al.'s "Your Absorbing Discrete Diffusion...") entered in its place. Net effect is
+positive (+2 matches, zero off-topic noise), but a paper scoring 5/5 relevance is still not guaranteed a
+slot — the natural next fix would be a relevance floor that exempts top-scored papers from
+impact/diversity competition entirely, not just weighting them more heavily in the average.
+
+**Why these results live in separate `_llm_judged`-suffixed files** rather than overwriting
+`candidates_topK.json` / `reference_brief.txt` / `evaluation_results.json`: the submitted
+`output/generated_survey.md` cites references by position (`[1]`-`[48]`) against the *original*
+`reference_brief.txt`. Swapping the underlying reference set would silently desync every citation marker
+in the already-written survey prose without redoing generation against the new list. This extension is
+additive evidence that the flagged fix works, not a replacement of the submitted deliverable — the
+correct way to fully adopt it would be regenerating the survey text from `reference_brief_llm_judged.txt`
+end to end, which is future work, not done here.

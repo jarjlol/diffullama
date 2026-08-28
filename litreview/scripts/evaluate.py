@@ -117,8 +117,8 @@ def main():
         print(f"  - {g['title'][:70]} ({g['subarea']})")
 
     # content quality
-    survey_text = open("../output/generated_survey.md").read()
-    with open("../data/anchor_fulltext.txt") as f:
+    survey_text = open("../output/generated_survey.md", encoding="utf-8").read()
+    with open("../data/anchor_fulltext.txt", encoding="utf-8") as f:
         anchor_full = f.read()
     start = anchor_full.index("5   R ELATED W ORK")
     end = anchor_full.index("6   C ONCLUSION")

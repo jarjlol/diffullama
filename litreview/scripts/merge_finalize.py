@@ -5,10 +5,13 @@ import re
 import sys
 import time
 
-from common import OPENALEX, get, tfidf_vectors, cosine, percentile_rank, save_json, load_json
+from common import OPENALEX, get, tfidf_vectors, cosine, percentile_rank, save_json, load_json, score_pool
 from rerank import relevance_score, RELEVANCE_GATE, norm_title
 
-FINAL_K = 35
+FINAL_K = 35  # legacy flat cut, kept for reference; real selection uses the tiered split below
+FOUNDATIONAL_K = 36  # pre-2025 papers ranked among themselves
+RECENT_K = 12  # 2025-2026 papers ranked among themselves
+STRATIFY_YEAR = 2025
 
 
 def enrich_from_openalex(doi):
@@ -98,33 +101,20 @@ def main():
     gated = [w for w in merged if w["llm_relevance"] >= RELEVANCE_GATE]
     print(f"After relevance gate (>= {RELEVANCE_GATE}): {len(gated)}", file=sys.stderr)
 
-    rel_ranks = percentile_rank([w["llm_relevance"] for w in gated])
-    cit_ranks = percentile_rank([w.get("cited_by_count", 0) for w in gated])
-    auth_ranks = percentile_rank([w.get("author_hindex", 0) for w in gated])
-    venue_ranks = percentile_rank([w.get("venue_hindex", 0) for w in gated])
-    impact_ranks = [(c + a + v) / 3 for c, a, v in zip(cit_ranks, auth_ranks, venue_ranks)]
+    foundational = score_pool([w for w in gated if (w.get("year") or 0) < STRATIFY_YEAR])
+    recent = score_pool([w for w in gated if (w.get("year") or 0) >= STRATIFY_YEAR])
+    print(f"Foundational (pre-{STRATIFY_YEAR}) pool: {len(foundational)}; "
+          f"Recent ({STRATIFY_YEAR}+) pool: {len(recent)}", file=sys.stderr)
 
-    vectors = tfidf_vectors([w["title"] + ". " + (w.get("abstract") or "") for w in gated])
-    n = len(vectors)
-    div_scores = []
-    for i in range(n):
-        others = [j for j in range(n) if j != i]
-        dists = [1 - cosine(vectors[i], vectors[j]) for j in others] or [0.0]
-        div_scores.append(sum(dists) / len(dists))
-    div_ranks = percentile_rank(div_scores)
+    all_scored = foundational + recent
+    all_scored.sort(key=lambda w: w["final_score"], reverse=True)
+    save_json("../data/candidates_merged_reranked.json", all_scored)
 
-    for i, w in enumerate(gated):
-        w["rank_relevance"] = rel_ranks[i]
-        w["rank_impact"] = impact_ranks[i]
-        w["rank_diversity"] = div_ranks[i]
-        w["final_score"] = (rel_ranks[i] + impact_ranks[i] + div_ranks[i]) / 3
-
-    gated.sort(key=lambda w: w["final_score"], reverse=True)
-    save_json("../data/candidates_merged_reranked.json", gated)
-
-    top_k = gated[:FINAL_K]
+    top_k = foundational[:FOUNDATIONAL_K] + recent[:RECENT_K]
+    top_k.sort(key=lambda w: w["final_score"], reverse=True)
     save_json("../data/candidates_topK.json", top_k)
-    print(f"\nFinal top-{len(top_k)} selection:", file=sys.stderr)
+    print(f"\nFinal stratified selection: {len(foundational[:FOUNDATIONAL_K])} foundational + "
+          f"{len(recent[:RECENT_K])} recent = {len(top_k)} total", file=sys.stderr)
     for w in top_k:
         src = w.get("source", "?")
         print(f"  [{w['final_score']:.3f} rel={w['llm_relevance']:.1f} {src}] {w['title'][:70]} ({w['year']}) cit={w.get('cited_by_count',0)}", file=sys.stderr)

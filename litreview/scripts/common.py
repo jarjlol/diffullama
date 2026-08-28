@@ -107,10 +107,43 @@ def percentile_rank(values):
 
 
 def save_json(path, obj):
-    with open(path, "w") as f:
+    with open(path, "w", encoding="utf-8") as f:
         json.dump(obj, f, indent=2, ensure_ascii=False)
 
 
 def load_json(path):
-    with open(path) as f:
+    with open(path, encoding="utf-8") as f:
         return json.load(f)
+
+
+def score_pool(pool):
+    """Rank-average relevance/impact/diversity WITHIN this pool only (mutates and
+    returns it, sorted by final_score descending). Shared by merge_finalize.py and
+    apply_llm_judge.py -- scoring a paper's diversity/impact against a pool mixing
+    highly-cited foundational work with a flood of 0-citation recent preprints
+    systematically favors the recent tier on diversity alone; stratifying by era
+    BEFORE calling this (not after) is what avoids that. See REPORT.md Sec 4/10."""
+    if not pool:
+        return pool
+    rel_ranks = percentile_rank([w["llm_relevance"] for w in pool])
+    cit_ranks = percentile_rank([w.get("cited_by_count", 0) for w in pool])
+    auth_ranks = percentile_rank([w.get("author_hindex", 0) for w in pool])
+    venue_ranks = percentile_rank([w.get("venue_hindex", 0) for w in pool])
+    impact_ranks = [(c + a + v) / 3 for c, a, v in zip(cit_ranks, auth_ranks, venue_ranks)]
+
+    vectors = tfidf_vectors([w["title"] + ". " + (w.get("abstract") or "") for w in pool])
+    n = len(vectors)
+    div_scores = []
+    for i in range(n):
+        others = [j for j in range(n) if j != i]
+        dists = [1 - cosine(vectors[i], vectors[j]) for j in others] or [0.0]
+        div_scores.append(sum(dists) / len(dists))
+    div_ranks = percentile_rank(div_scores)
+
+    for i, w in enumerate(pool):
+        w["rank_relevance"] = rel_ranks[i]
+        w["rank_impact"] = impact_ranks[i]
+        w["rank_diversity"] = div_ranks[i]
+        w["final_score"] = (rel_ranks[i] + impact_ranks[i] + div_ranks[i]) / 3
+    pool.sort(key=lambda w: w["final_score"], reverse=True)
+    return pool
