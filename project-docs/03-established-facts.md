@@ -35,6 +35,35 @@ test. *Checked by reading the paper's own extracted full text in `litreview/data
 ⚠️ **Common misreading to avoid:** several secondary sources state annealing "has minimal impact **on the
 7B model**." The paper says no such thing — annealing was **never tested at 7B**.
 
+### F-22 🟢 The only 7B annealing test targets a *different architecture* and a *modified* annealing
+**NBDiff** — *From Next-Token to Next-Block: A Principled Adaptation Path for Diffusion LLMs*,
+[arXiv:2512.06776](https://arxiv.org/abs/2512.06776), submitted 7 Dec 2025, revised 30 Jan 2026, 13 authors.
+This is the closest known work to Option B. **Read in full, not from a summary.** Four findings:
+
+1. **It ablates annealing only for block-diffusion adaptation.** There is **no full-sequence-diffusion
+   comparison anywhere in the paper** — the target architecture is Block-Diffusion, which is not what
+   DiffuLLaMA does.
+2. **Its "Annealed Attention Mask" baseline is not DiffuLLaMA's annealing.** They restructured it for
+   parallel block training: *"we 'chain' the randomness of M_BD and M_OBC such that each token will not
+   view each position twice in attention."* So the 7B number does **not** cleanly test the original method.
+3. **Their critique is theoretical, not empirical:** *"its transition is not 'natural.' In practice,
+   training sees unknown future corpora; sporadically granting early tokens access to a random subset of
+   future tokens yields incomplete and potentially misleading context."*
+4. **They never discuss DiffuLLaMA's 7B omission.** DiffuLLaMA is cited only as the source of the
+   annealing concept.
+
+Setup: Qwen3-4B-Base, Qwen3-8B-Base, openPangu-7B; 4000 iterations / ~30B tokens; GSM8K, MATH, HumanEval,
+MBPP. On openPangu-7B, annealing scores **44.34** average vs their method **54.94**.
+
+⚠️ *Number discrepancy to resolve:* a v1 fetch reported their comparison figure as 48.95; a v2 fetch
+reported 54.94. Possibly different table rows or a v1→v2 revision. **Confirm against the current PDF
+before citing.**
+
+**Consequence for Option B: the gap is cleaner than first assessed.** The only existing 7B annealing
+result uses a *modified* annealing, on a *different* adaptation target, trained for only 4000 iterations,
+and justified theoretically rather than by an architecture-matched ablation. Nobody has tested
+DiffuLLaMA's actual annealing at 7B for full-attention diffusion.
+
 ### F-2 🟢 The `[MASK]` token is a reused vocabulary word, inconsistently
 > "In theory, we should expand the original vocabulary... However, considering practical issues on
 > implementation, we can alternatively **select an existing word from the vocabulary** to serve as the

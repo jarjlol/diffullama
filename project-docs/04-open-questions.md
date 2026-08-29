@@ -73,10 +73,19 @@ both broader and tighter) holds for *functional* repair is unmeasured.
 than a reframing of a preempted one.
 
 ### Q-9 — How much does dropping annealing actually cost at 7B?
-The core of Option B. F-1 establishes that the gain grows +2.1 → +2.5 from 124M to 355M and was never
-tested at 7B for full-attention diffusion. [2512.06776](https://arxiv.org/abs/2512.06776) tested annealing
-at 7B but for **block**-diffusion (different target) and found it *hurts* — and its ablation runs only
-4,000 iterations. Two confounded variables (scale, adaptation target), neither resolved.
+**The core of Option B. Strengthened 2026-08-29 after reading NBDiff in full.**
+
+F-1: the annealing gain *grows* with scale (+2.1 at 124M → +2.5 at 355M), yet was called "minimal" and
+omitted at 7B — a ~20× extrapolation past the largest tested model.
+
+F-22: the only existing 7B annealing result ([2512.06776](https://arxiv.org/abs/2512.06776)) targets
+**block**-diffusion, uses a **modified** annealing restructured for parallel training, runs only 4000
+iterations, and critiques annealing on *theoretical* grounds. It never tests full-attention adaptation and
+never discusses DiffuLLaMA's omission.
+
+**So the cell is genuinely empty:** nobody has tested DiffuLLaMA's actual annealing at 7B for
+full-attention diffusion. Two confounded variables — scale and adaptation target — and this project's
+anchor sits exactly in the untested cell.
 
 ---
 
