@@ -70,23 +70,48 @@ The project brief names the **Stanford Agents4Science** workshop.
 
 | Resource | Spec | Status |
 |---|---|---|
-| Workstation | **2× RTX 6000 Pro Blackwell, 96 GB each (192 GB total)** | ✅ confirmed — **this is the real compute; plan around it** |
+| Workstation | 2× RTX 6000 Pro Blackwell, 96 GB each | ✅ accessible to **Aaditya, Aryan, Arjun** — but **shared and contended** |
 | Sharanga cluster (BITS Hyderabad) | see below | ⚠️ **access not approved; availability far narrower than raw specs suggest** |
+
+#### ⚠️ Plan for **one** 96 GB GPU, not two
+
+The workstation is shared between three team members **and** other users. **Both GPUs being idle
+simultaneously is rare.** Treat the realistic planning unit as **1 × 96 GB**, with 2 × 96 GB as an
+occasional bonus for a single large run — never as baseline capacity.
+
+Consequences for planning:
+
+- **Size every job to fit one 96 GB card.** A 774M–1.5B training run does fit comfortably in 96 GB, so
+  Option B remains feasible; expect roughly double the wall-clock versus a 2-GPU assumption.
+- **Checkpoint-and-resume is a hard requirement**, not a nicety. Any run that cannot survive being stopped
+  and restarted will eventually be lost to contention.
+- **Reinforces that multi-GPU work is off the table** — see decision D-2026-08-29-a. Even setting novelty
+  aside, a scaling study needs GPUs you can reliably hold, and these are not that.
+- **The three of you need a claiming convention** — a pinned message or shared note saying who is using
+  which GPU and until when. Two people launching simultaneously will OOM each other.
+
+> This is the **third** instance of the same pattern: raw hardware inventory does not equal available
+> capacity. See `05-mistakes-and-bugs.md` M-17.
 
 ### Per-member machines
 
 Seven people, seven different machines. **"The development laptop" is not one thing** — what runs locally
 depends on whose machine, so record them individually.
 
-| Member | GPU | VRAM | Verified? | Realistically runs |
-|---|---|---|---|---|
-| Aaditya | RTX 3050 Laptop | 4 GB | ✅ `nvidia-smi` 2026-08-29 | tokenizer work, DiffuGPT-S (124M) |
-| Neel | RTX 3060 | 6 GB | ⚠️ per design doc §5.5, not independently checked | DiffuGPT-S/M |
-| Aryan | ? | ? | ❌ unknown | — |
-| Aalhad | ? | ? | ❌ unknown | — |
-| Arjun | ? | ? | ❌ unknown | — |
-| Khushi | ? | ? | ❌ unknown | — |
-| Diya | ? | ? | ❌ unknown | — |
+| Member | GPU | VRAM | Verified? | Workstation access | Realistically runs locally |
+|---|---|---|---|---|---|
+| Aaditya | RTX 3050 Laptop | 4 GB | ✅ `nvidia-smi` 2026-08-29 | ✅ yes | tokenizer work, DiffuGPT-S (124M) |
+| Aryan | ? | ? | ❌ unknown | ✅ yes | — |
+| Arjun | ? | ? | ❌ unknown | ✅ yes | — |
+| Neel | RTX 3060 | 6 GB | ⚠️ per design doc §5.5, not independently checked | ❌ no | DiffuGPT-S/M |
+| Aalhad | ? | ? | ❌ unknown | ❌ no | — |
+| Khushi | ? | ? | ❌ unknown | ❌ no | — |
+| Diya | ? | ? | ❌ unknown | ❌ no | — |
+
+**Only three members can run experiments.** Aaditya, Aryan, and Arjun have workstation access; the other
+four are limited to their own machines. Work assignment should follow this split — the GPU-bound tasks
+(training runs, model inference) go to those three, and the substantial CPU-only work (tokenizer/AST
+verification, literature work, analysis, writing) to everyone else.
 
 **To fill in your row:** run `nvidia-smi --query-gpu=name,memory.total --format=csv` and paste the result.
 If you have no NVIDIA GPU, say so — CPU-only is fine for the tokenizer and AST work, which is a real chunk
