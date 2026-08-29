@@ -332,7 +332,210 @@ In descending order of survivability:
 
 ---
 
+# Part 2 — Scope assessment and cross-reference
+
+Added after Part 1. Cross-references Neel's design doc, Aryan's CDC finding, and Aalhad's six proposed
+research bets. The question this part answers, asked directly: **is the post-CDC reframe of
+Structure-Guided ReMasking real, or is it cope?**
+
+## 7. Coverage caveat — read this before trusting Part 2
+
+Two automated verification passes covering Aalhad's bets **1, 2, 5, and 6 died mid-run** (API spend limit)
+and returned nothing usable. What follows is therefore **unevenly verified**, and is marked as such:
+
+| Bet | Verification status |
+|---|---|
+| 3 — do dLLMs plan? | **Partially verified** — adjacent papers identified from an earlier retrieval pool, not individually fetched |
+| 4 — conversion / dropped training step | **Fully verified** against the anchor paper's own text, quoted below |
+| 1, 2, 5, 6 | **NOT VERIFIED.** No novelty search completed. Assessments below are reasoning-from-premises only |
+
+Do not treat bets 1, 2, 5, 6 as novelty-checked. They need the search re-run before anyone commits.
+
+## 8. Is the Structure-Guided ReMasking reframe cope?
+
+**Honest verdict: partially, yes.** The gap is real, but the effort-to-novelty ratio collapsed when CDC
+appeared, and the specific technical approach now has published evidence against it.
+
+### 8.1 The case that it is cope
+
+1. **The delta is one variable on someone else's pipeline.** CDC: static witness → graph neighbourhood →
+   token spans → budget → remask. Proposed: dynamic witness → graph neighbourhood → token spans → budget →
+   remask. Everything downstream of the seed is identical.
+2. **The engineering cost did not shrink with the claim.** To test that one-variable delta, the team must
+   still build ~80% of CDC's machinery — code property graph, neighbourhood lifting, budget capping, token
+   offset mapping across a shifted tokenizer — plus a sandbox and dynamic tracing CDC didn't need. Maximum
+   engineering, minimum claim.
+3. **The chosen structural signal has evidence against it.** CDC Fig. 8(b): Parent+Leaf AST **34.3** vs
+   Use–Def Slice **26.9**. §3.2 is built on backward slicing. Someone already published that the broader
+   slice is *worse*.
+4. **The fallback framing needs a surprising result.** "First controlled policy comparison at matched budget"
+   is a study paper. Study papers land when the result overturns something. A confirmatory result
+   ("structure helps somewhat") is a thin workshop paper.
+5. **Effort was already aggressive before CDC.** 3 backbones × 9 methods × 542 problems × 3 seeds, plus
+   sandboxing, AST/dataflow, dynamic tracing, offset mapping — for 5 undergraduates in ~14 weeks alongside
+   other coursework.
+
+### 8.2 The case that it is genuine
+
+1. **Execution-grounded seeding is verifiably unoccupied.** A dedicated search across arXiv, Semantic
+   Scholar, ACL Anthology, Springer and a dLLM survey list found **no** paper seeding a structural remask
+   from a failing test, traceback, or assertion.
+2. **CDC has no confidence baseline at matched budget.** That comparison genuinely does not exist anywhere.
+3. **Repair-after-failure for dLLMs does not exist.** No HumanEvalFix / DebugBench / QuixBugs / Defects4J
+   numbers in CDC or elsewhere in this space.
+4. **For a course project targeting a workshop, concurrent work is survivable.** "We identified this
+   independently, found concurrent work, and isolated the sub-question it left open" is a legitimate and
+   well-regarded framing at Agents4Science scale — this is *not* a top-tier venue submission where the
+   novelty bar would kill it.
+
+### 8.3 Net
+
+Not pure cope — the gap is real and verified. But it is now **a materially harder project for a materially
+smaller claim**, with a known-weak core signal. If the team keeps it, the honest version is:
+
+> *"CDC showed static-analysis witnesses can anchor structural remasking. We ask whether dynamic failure
+> evidence anchors it better, and we run the matched-budget policy comparison CDC does not."*
+
+That sentence is defensible. It is also visibly a follow-up, and should be written as one rather than
+dressed up as a first.
+
+## 9. Aalhad's six bets
+
+### Bet 4 — "what conversion does to the weights" — **VERIFIED, and stronger than stated**
+
+Aalhad's claim: *"The anchor paper dropped a key training step for engineering convenience and validated it
+only at small scale."*
+
+**Confirmed verbatim from the anchor paper.** Two quotes:
+
+> "For efficient implementation we enable flash-attention 2 (Dao, 2024) and directly use bi-directional
+> attention **without attention mask annealing**."
+
+> "For DD loss, removing attention mask annealing and shift operations both degrade performance, indicating
+> the efficacy of our approaches. **The mask annealing has minimal impact, so we choose to omit it for 7B
+> adaptation to simplify implementation using flash-attention 2.**"
+
+**The detail Aalhad did not state, and it is the whole opportunity.** The ablation (Table 3):
+
+| Setting | GPT2-S | GPT2-M |
+|---|---|---|
+| DD w/o anneal | 43.3 | 47.2 |
+| DD (full) | 45.4 | 49.7 |
+| **Annealing gain** | **+2.1** | **+2.5** |
+
+The benefit of annealing **grows** from 124M to 355M. The authors call this "minimal impact" and extrapolate
+to a model ~20× larger than the largest one they tested it on. The scaling trend runs *against* their own
+justification.
+
+Note also a widespread misreading in secondary sources (search-engine summaries and review sites state
+"annealing has minimal impact **on the 7B model**"). The paper says no such thing — annealing was **never
+tested at 7B**. The "minimal impact" finding is entirely from GPT2-S/M. That conflation is itself worth a
+paragraph in a write-up.
+
+**Adjacent work to check before committing** (found, not yet read in full):
+- *From Next-Token to Next-Block: A Principled Adaptation Path for Diffusion LLMs*,
+  [arXiv:2512.06776](https://arxiv.org/abs/2512.06776) — reportedly finds annealed attention mask "not
+  performant" for AR→**Block**-Diffusion adaptation. Different target architecture, but closest known work.
+  **Read this first.**
+- *UNIFUSION*, [arXiv:2607.24507](https://arxiv.org/abs/2607.24507) — AR→discrete-diffusion adaptation under a
+  unified reverse-rate objective. Adjacent.
+
+**Why this fits better than SGR for this specific team:**
+
+| | Structure-Guided ReMasking | Bet 4 (annealing audit) |
+|---|---|---|
+| Course fit | Tangential to anchor paper | **Directly interrogates the anchor paper** — literally "reproduce, then improve" |
+| Novelty grounding | Follow-up to a preprint | A quotable, verified inconsistency in the anchor's own text |
+| Engineering risk | Very high (CPG, tracing, sandbox, offset mapping) | Low — training runs + evaluation, no exotic infrastructure |
+| Silent-failure surface | Two known (off-by-one, `alg="origin"`) | Minimal |
+| Result value | Weak if confirmatory | **Interesting either way** — if annealing matters at scale, that's a finding against the anchor; if not, that's a validated scaling law |
+| Preemption risk | Already realised (CDC) | Low, and cheap to re-check |
+
+**Verdict: STRONG.** The single best-fitting direction on the table for this team.
+
+**Concrete shape:** train DiffuGPT-scale adaptations with and without annealing at ≥3 sizes (124M, 355M, and
+one larger — 774M/1.5B if compute allows), fit the trend in the annealing gain, and test whether the
+extrapolation to 7B holds. Everything needed is in this repo already. This also *is* a reproduction of the
+anchor paper, satisfying project stage 2 and stage 3 simultaneously.
+
+### Bet 3 — "do diffusion LLMs actually plan?" — **PARTIALLY OCCUPIED**
+
+Not verified in depth (agent died), but at least four papers already work this ground, all surfaced in this
+repo's own litreview retrieval pool:
+
+- *On the Reasoning Abilities of Masked Diffusion Language Models* (2025) — characterises what MDMs can
+  provably solve, connecting to CoT and padded looped transformers
+- *Theoretical Benefit and Limitation of Diffusion Language Model* (2025)
+- *Autoregressive Models Rival Diffusion Models at ANY-ORDER Generation* (2026) — a direct
+  falsification-shaped result on the any-order claim
+- *Do Language Models Plan Ahead for Future Tokens?* ([arXiv:2404.00859](https://arxiv.org/abs/2404.00859))
+  — cited by the anchor paper itself
+
+Aalhad's "low effort, publishable either way" is optimistic. The obvious version of this experiment is
+substantially done. A course-scale contribution would need a specific causal intervention nobody has run —
+which requires the novelty search that did not complete.
+
+**Verdict: RISKY until re-searched.** Good instinct, likely crowded. Do not commit before verifying.
+
+### Bets 1, 2, 5, 6 — **NOT ASSESSED**
+
+Novelty searches did not complete. Reasoning-from-premises only, flagged as unverified:
+
+- **Bet 1 (multi-GPU single-request decode).** One premise concern worth checking: AR models *can* split a
+  single request across GPUs (tensor/pipeline parallelism). The real distinction is presumably
+  *sequence-dimension* partitioning, which diffusion permits because positions have no sequential dependency.
+  As stated, the premise is at minimum imprecise. Also: MLSys/EuroSys framing sits awkwardly against a course
+  requiring NLP/CV with GenAI emphasis, and against an AI-for-science workshop target.
+- **Bet 2 (dual-mode serving).** "Untested" needs checking against block-diffusion work (BD3-LMs, SDAR,
+  CtrlDiff, Sequential Diffusion Language Models) and dLLM KV-cache work (Fast-dLLM, dLLM-Cache, FlashDLM),
+  several of which already interpolate AR and parallel decoding.
+- **Bets 5, 6.** Correctly self-ranked as supporting work. Bet 6 (mask-token handling) is worth 10 minutes of
+  checking — LLaMA-2 has no native mask token, and this repo does
+  `resize_token_embeddings(len(tokenizer), pad_to_multiple_of=2)`, so there is *something* real there, but
+  likely an implementation note rather than a project.
+
+## 10. Cross-reference — how the three teammates' work fits together
+
+- **Neel** built the QUAL-SG litreview pipeline and the SGR design doc. The design doc's code grounding is
+  excellent (all 7 references correct); its literature grounding is where the errors are (§4.1 sampler, §4.2
+  numbers) — the predictable failure mode when a doc is written from papers' prose rather than their code.
+- **Aryan** found CDC. This is the highest-value single contribution to the project so far: it prevents a
+  desk-rejectable novelty claim, and its Fig. 8(b) is a design correction the team would otherwise have paid
+  for in wasted implementation.
+- **Aalhad** proposed six alternatives. Bet 4 is verified and is, on this analysis, the strongest direction
+  available. His closing instruction — *"re-verify novelty against arXiv at kickoff: this field publishes ~10
+  preprints weekly"* — is exactly right and is precisely what Aryan's CDC find demonstrates.
+
+**These three artefacts are consistent with each other, not competing.** Aryan's finding constrains Neel's
+doc; Aalhad's bet 4 offers a lower-risk destination for the same anchor paper. The disagreement between them
+is about *how much risk to carry*, not about facts.
+
+Aalhad's own **novelty-verification skill** should be run against bet 4 before kickoff, and re-run at
+milestone boundaries — not once. CDC was posted three months before this audit; whatever preempts bet 4 may
+not exist yet today.
+
+## 11. Recommendation
+
+Stated plainly, as a judgement rather than a decree — the team invested real work in SGR and this is their
+call:
+
+1. **Primary: bet 4 (annealing / conversion audit).** Verified open, directly interrogates the anchor paper,
+   low engineering risk, interesting either way, and doubles as the reproduction stage the project requires.
+2. **Parallel de-risking: SGR Phase 0 only.** Run the failure taxonomy, slice-size distribution, and parse
+   rate — a few days of CPU work, no GPU. If the numbers are strong *and* CDC Fig. 8(b) does not replicate on
+   Python/functional bugs, SGR becomes viable again on evidence rather than hope. This is Aalhad's own "use a
+   fast parallel result to de-risk the timeline" logic, applied to the direction already invested in.
+3. **Before any commitment:** re-run the novelty search on bet 4 (read arXiv:2512.06776 first), and confirm
+   the 96 GB system actually exists.
+
+If the team prefers to keep SGR as primary, the honest framing in §8.3 is the one to use, the three claims in
+§3.1 must be deleted, and §3.2 should move from backward slicing to a tight AST neighbourhood in light of
+Fig. 8(b).
+
+---
+
 *Verification standard used throughout: every paper resolved to a working arXiv/proceedings link before
 inclusion; code claims checked by reading the files in this repository at this commit, not by trusting
 summaries. Where an automated verification pass reached a conclusion I disagreed with (§4.3), the
-disagreement is recorded rather than silently resolved.*
+disagreement is recorded rather than silently resolved. Where verification did not complete (§7), that is
+stated rather than papered over.*
