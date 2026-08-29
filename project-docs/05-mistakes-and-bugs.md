@@ -13,6 +13,7 @@ the same bug pattern appearing three separate times. Read this before starting n
 |---|---|---|
 | **Trusting a summary instead of the primary source** | 5× | Wrong citations, wrong design decisions |
 | **Off-by-N in hand-built index mappings** | 3× | Silent, invisible corruption |
+| **Windows cp1252 encoding** | 3× | Crashes, two different causes (read + write) |
 | **Documentation claiming behaviour the code does not have** | 2× | Building on a false premise |
 
 ---
@@ -101,10 +102,15 @@ of the proposed method** — exactly what a reviewer looks for.
 
 ## D. Plain bugs
 
-### M-11 — Windows `cp1252` decode crashes (twice)
-`json.load(open(path))` and `open(path).read()` without `encoding='utf-8'` crash on any non-ASCII
-character in a paper title or abstract. Hit once in `common.py`, once in `evaluate.py`.
-**Rule:** always pass `encoding='utf-8'` explicitly. The platform default is not UTF-8 on Windows.
+### M-11 — Windows `cp1252` crashes (**three** times, two different causes)
+1. `json.load(open(path))` in `common.py` — crashed **reading** non-ASCII paper titles.
+2. `open(path).read()` in `evaluate.py` — same cause.
+3. `print()` of a SentencePiece token — crashed **writing**, because `▁` (U+2581) has no cp1252
+   encoding. Different failure mode: stdout, not file I/O. Fixed with `PYTHONIOENCODING=utf-8`.
+
+**Rule:** pass `encoding='utf-8'` on every file open, **and** set `PYTHONIOENCODING=utf-8` when output
+may contain non-ASCII. On Windows neither defaults to UTF-8. Any script touching tokenizer output needs
+both.
 
 ### M-12 — Retrieval queries missed papers by phrasing
 **What happened:** six ground-truth papers (D3PM, SEDD, Argmax Flows, and others) were **never retrieved

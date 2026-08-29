@@ -50,15 +50,15 @@ an accepted version may have expanded scope.
 
 ## 🟢 Answerable with a few hours of work
 
-### Q-6 — Does the offset-mapping chain survive the *real* LLaMA tokenizer?
-`audit/test_shift_offset.py` proves the shift invariant (tokenizer-independent) and validates the
-AST→char→token logic against a **stub** tokenizer. The real LLaMA tokenizer is SentencePiece: it glues
-leading whitespace into tokens and uses U+2581 markers, and **Python indentation is semantic**.
+### ~~Q-6 — Does the offset-mapping chain survive the *real* LLaMA tokenizer?~~ ✅ RESOLVED 2026-08-29
 
-**To resolve:** re-run test step 5 with
-`AutoTokenizer.from_pretrained('diffusionfamily/diffullama', use_fast=True)` and
-`return_offsets_mapping=True`, asserting over a corpus of programs that decoded token spans cover each AST
-node's source. *Only matters if Option C is chosen.*
+**Answer: yes, with a caveat.** Tested via `audit/test_real_tokenizer.py` against the real tokenizer.
+All 26 statement nodes map to tokens that cover their source (no corruption), but **85% bleed one
+character of leading indentation** because SentencePiece glues the last indent space onto the following
+identifier. Whitespace only, never code.
+
+Not a blocker for Option C, but it forces an explicit design choice about indentation handling that the
+design doc currently makes silently. See `03-established-facts.md` F-21.
 
 ### Q-7 — Is the compute estimate right?
 F-17 is FLOPs arithmetic, not measurement. One hour of benchmarking on the actual hardware settles it.

@@ -82,6 +82,32 @@ With `attn_mask_ratio=1.0`, `get_anneal_attn_mask` returns an **all-zeros** addi
 identical to no mask. But it is a dense 4-D float tensor, and `inf_diffullama.py:24` defaults
 `_attn_implementation="eager"`. Passing `None` with flash attention instead should give a solid speedup.
 
+### F-21 🟢 The AST→token chain survives the real tokenizer, but bleeds indentation
+Tested against the real `diffusionfamily/diffullama` tokenizer (`audit/test_real_tokenizer.py`), 26
+statement nodes across 4 Python programs:
+
+| Measure | Result |
+|---|---|
+| Mapped tokens cover the node's source | **26/26** ✅ |
+| First mapped token starts *before* the node | **22/26 (85%)** |
+| ...where the bled text is whitespace | 22 |
+| ...where the bled text is real code | **0** ✅ |
+
+**Cause:** SentencePiece glues the final space of an indent onto the following identifier. A 4-space
+indent tokenizes as `▁▁▁` (3 spaces) + `▁disc` (space + text). So a statement at `col_offset=4` has its
+first character inside a token that *also* covers the 4th indent space.
+
+**Verdict: not fatal, but must be handled explicitly.** No code corruption — the bleed is always
+whitespace. But Python indentation is semantic, so masking a statement necessarily masks part of its own
+indent, and the model must regenerate the exact indent or the program breaks.
+
+Three options: (a) snap masks to line boundaries and regenerate whole lines; (b) exclude the
+leading-whitespace token and freeze the statement's first sub-token; (c) strip the indent, tokenize,
+re-attach. **The naive "mask every token overlapping the AST span" rule silently does (a) without saying
+so** — whichever is chosen must be stated in the design doc.
+
+*Only relevant if Option C is chosen.*
+
 ---
 
 ## About the competitive landscape
