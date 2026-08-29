@@ -69,6 +69,22 @@ bugs found and how they were fixed), it will be visible in that script's own pri
 - Citation overlap against the anchor paper's actual §5: **9/33 matched, F1 = 0.222**.
 - All 3 of the anchor's related-work sub-topics are represented as full sections in the generated survey.
 
+## Second methodology: evaluation framework of arXiv:2412.13612
+
+The assignment offered two papers; both are now implemented. QUAL-SG covers *generation*;
+[`scripts/eval_framework_2412.py`](scripts/eval_framework_2412.py) implements the other paper's
+*evaluation* framework (reference generation / abstract writing / review composition) and applies it to
+the generated survey. See **REPORT.md §11**.
+
+Headline: reference accuracy **1.000**, hallucination rate **0.000** over 47 scored references (40 via
+OpenAlex, 7 via an arXiv fallback). Task 2 vs Task 3 split is informative — the Introduction scores much
+higher on ROUGE-1 (0.357 vs 0.187, length-comparable to the anchor's §5) while the full survey scores much
+higher on coverage (0.705 vs 0.304).
+
+⚠️ Task 1 is close to tautological in our setting — our references are *retrieved*, not LLM-generated, and
+are verified against the same databases they came from. REPORT.md §11.5 explains why it is still worth
+reporting. Two measurement bugs found while building it are documented in §11.4.
+
 ## Known limitations (see REPORT.md §8 for full list)
 
 The biggest one: no hosted LLM API was available in the build environment, so QUAL-SG's "LLM-judge" (topical

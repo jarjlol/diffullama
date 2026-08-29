@@ -1,0 +1,457 @@
+{
+  "reference_set": "../data/candidates_topK.json",
+  "task1_reference_generation": {
+    "source": "openalex",
+    "n_references": 48,
+    "n_lookup_failed": 1,
+    "n_scored": 47,
+    "n_rescued_via_arxiv": 7,
+    "title_search_rate": 1.0,
+    "reference_accuracy": 1.0,
+    "hallucination_rate": 0.0,
+    "per_reference": [
+      {
+        "title": "Diffusion-LM Improves Controllable Text Generation",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 4,
+        "true": true
+      },
+      {
+        "title": "POS-Constrained Parallel Decoding for Non-autoregressive Generation",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 3,
+        "true": true
+      },
+      {
+        "title": "Diffusion-State Policy Optimization for Masked Diffusion Language Models",
+        "status": "FOUND",
+        "via": "arxiv",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 1,
+        "true": true
+      },
+      {
+        "title": "On the Reasoning Abilities of Masked Diffusion Language Models",
+        "status": "FOUND",
+        "via": "arxiv",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 1,
+        "true": true
+      },
+      {
+        "title": "Self-Augmenting Retrieval for Diffusion Language Models",
+        "status": "FOUND",
+        "via": "arxiv",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 1,
+        "true": true
+      },
+      {
+        "title": "T$^\\star$: Progressive Block Scaling for Masked Diffusion Language Models Through Trajectory Aware Reinforcement Learning",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 3,
+        "true": true
+      },
+      {
+        "title": "Non-autoregressive Conditional Diffusion Models for Time Series Prediction",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 4,
+        "true": true
+      },
+      {
+        "title": "A Generalized Framework of Sequence Generation with Application to Undirected Sequence Models",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 4,
+        "true": true
+      },
+      {
+        "title": "Dream-Coder 7B: An Open Diffusion Language Model for Code",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 4,
+        "true": true
+      },
+      {
+        "title": "Masked Diffusion Language Models with Frequency-Informed Training",
+        "status": "FOUND",
+        "via": "arxiv",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 1,
+        "true": true
+      },
+      {
+        "title": "PartDiffuser: Part-wise 3D Mesh Generation via Discrete Diffusion",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 2,
+        "true": true
+      },
+      {
+        "title": "A Reparameterized Discrete Diffusion Model for Text Generation",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 3,
+        "true": true
+      },
+      {
+        "title": "Flexible-length Text Infilling for Discrete Diffusion Models",
+        "status": "FOUND",
+        "via": "arxiv",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 1,
+        "true": true
+      },
+      {
+        "title": "TESS 2: A Large-Scale Generalist Diffusion Language Model",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 3,
+        "true": true
+      },
+      {
+        "title": "Cascaded Text Generation with Markov Transformers",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 4,
+        "true": true
+      },
+      {
+        "title": "Dependency-Guided Parallel Decoding in Discrete Diffusion Language Models",
+        "status": "FOUND",
+        "via": "arxiv",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 1,
+        "true": true
+      },
+      {
+        "title": "Text-Guided Molecule Generation with Diffusion Language Model",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 4,
+        "true": true
+      },
+      {
+        "title": "Muse: Text-To-Image Generation via Masked Generative Transformers",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 4,
+        "true": true
+      },
+      {
+        "title": "TAG-DLM: Diffusion Language Models for Text-Attributed Graph Learning",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 3,
+        "true": true
+      },
+      {
+        "title": "Continual Pre-Training for Cross-Lingual LLM Adaptation: Enhancing Japanese Language Capabilities",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 4,
+        "true": true
+      },
+      {
+        "title": "Planner and Executor: Collaboration between Discrete Diffusion And Autoregressive Models in Reasoning",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 4,
+        "true": true
+      },
+      {
+        "title": "Diffusion-NAT: Self-Prompting Discrete Diffusion for Non-Autoregressive Text Generation",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 4,
+        "true": true
+      },
+      {
+        "title": "Glancing Transformer for Non-Autoregressive Neural Machine Translation",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 3,
+        "true": true
+      },
+      {
+        "title": "Semi-Autoregressive Neural Machine Translation",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 3,
+        "true": true
+      },
+      {
+        "title": "SmBoP: Semi-autoregressive Bottom-up Semantic Parsing",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 3,
+        "true": true
+      },
+      {
+        "title": "AutoTemplate: A Simple Recipe for Lexically Constrained Text Generation",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 4,
+        "true": true
+      },
+      {
+        "title": "Efficient Continual Pre-training for Building Domain Specific Large Language Models",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 3,
+        "true": true
+      },
+      {
+        "title": "Mamba: Linear-Time Sequence Modeling with Selective State Spaces",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 4,
+        "true": true
+      },
+      {
+        "title": "Text Generation with Diffusion Language Models: A Pre-training Approach with Continuous Paragraph Denoise",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 4,
+        "true": true
+      },
+      {
+        "title": "Simple and Effective Masked Diffusion Language Models",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 3,
+        "true": true
+      },
+      {
+        "title": "SSD-LM: Semi-autoregressive Simplex-based Diffusion Language Model for Text Generation and Modular Control",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 3,
+        "true": true
+      },
+      {
+        "title": "Continual Pre-training of Language Models",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 4,
+        "true": true
+      },
+      {
+        "title": "Non-autoregressive Transformer by Position Learning",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 4,
+        "true": true
+      },
+      {
+        "title": "Learning Non-Autoregressive Models from Search for Unsupervised Sentence Summarization",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 4,
+        "true": true
+      },
+      {
+        "title": "On the Learning of Non-Autoregressive Transformers",
+        "status": "FOUND",
+        "via": "arxiv",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 1,
+        "true": true
+      },
+      {
+        "title": "Continual Pre-Training of Large Language Models: How to (re)warm your model?",
+        "status": "LOOKUP_FAILED",
+        "true": null
+      },
+      {
+        "title": "Non-Autoregressive Coarse-to-Fine Video Captioning",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 4,
+        "true": true
+      },
+      {
+        "title": "POINTER: Constrained Progressive Text Generation via Insertion-based Generative Pre-training",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 3,
+        "true": true
+      },
+      {
+        "title": "Non-Autoregressive Neural Machine Translation",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 4,
+        "true": true
+      },
+      {
+        "title": "DiffusionBERT: Improving Generative Masked Language Models with Diffusion Models",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 3,
+        "true": true
+      },
+      {
+        "title": "A Comparative Study on Non-Autoregressive Modelings for Speech-to-Text Generation",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 3,
+        "true": true
+      },
+      {
+        "title": "DiffuSeq: Sequence to Sequence Text Generation with Diffusion Models",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 4,
+        "true": true
+      },
+      {
+        "title": "Fully Non-autoregressive Neural Machine Translation: Tricks of the Trade",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 3,
+        "true": true
+      },
+      {
+        "title": "Non-Autoregressive Text Generation with Pre-trained Language Models",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 3,
+        "true": true
+      },
+      {
+        "title": "Paraformer: Fast and Accurate Parallel Transformer for Non-autoregressive End-to-End Speech Recognition",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 4,
+        "true": true
+      },
+      {
+        "title": "PIMNet: A Parallel, Iterative and Mimicking Network for Scene Text Recognition",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 3,
+        "true": true
+      },
+      {
+        "title": "Guiding Non-Autoregressive Neural Machine Translation Decoding with Reordering Information",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 4,
+        "true": true
+      },
+      {
+        "title": "A Cheaper and Better Diffusion Language Model with Soft-Masked Noise",
+        "status": "FOUND",
+        "via": "openalex",
+        "title_match": 1.0,
+        "title_correct": true,
+        "other_correct": 3,
+        "true": true
+      }
+    ]
+  },
+  "task2_abstract_writing": {
+    "semantic_similarity_tfidf": 0.1874,
+    "rouge_1": 0.357,
+    "rouge_2": 0.0664,
+    "rouge_l": 0.1172,
+    "lexical_entailment_proxy": 0.3039
+  },
+  "task3_review_composition": {
+    "semantic_similarity_tfidf": 0.2209,
+    "rouge_1": 0.1866,
+    "rouge_2": 0.0581,
+    "rouge_l": 0.0921,
+    "lexical_entailment_proxy": 0.7052
+  }
+}

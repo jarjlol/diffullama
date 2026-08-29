@@ -32,10 +32,8 @@ See `04-open-questions.md` Q-1. Agents4Science 2025 is over; no 2026 edition fou
 ## P-3 — Confirm Sharanga access with TTV
 Specs verified and excellent. Not a dependency — local 192 GB suffices for Option B — but a strong accelerator.
 
-## P-4 — Add the second SOTA paper, or submit as-is?
-[2412.13612](https://arxiv.org/abs/2412.13612)'s evaluation framework applied to the QUAL-SG survey would
-use both papers TTV provided and turn the assignment into generate-then-evaluate. Deadline not yet
-announced, so there is time.
+## ~~P-4 — Add the second SOTA paper, or submit as-is?~~ ✅ DONE 2026-08-29
+Implemented. See D-2026-08-29-d below.
 
 ---
 
@@ -109,6 +107,17 @@ scientific-text angle is partly absorbed by [2606.19475](https://arxiv.org/abs/2
 on the exact combination, but the resulting claim would be thinner than Option B's.
 **Caveat recorded:** this was two targeted searches, not a full novelty pass — two background agents died
 on an API spend limit. The crowded-sub-area finding is solid; the no-direct-hit finding is weak.
+
+## D-2026-08-29-d — Implement the second SOTA paper's evaluation framework
+**Decided:** implement [2412.13612](https://arxiv.org/abs/2412.13612)'s three-task evaluation framework and
+apply it to the QUAL-SG survey, rather than submitting generation-only.
+**Why:** uses both papers the instructor provided; converts the assignment from generate-only to
+generate-and-evaluate; costs no GPU and no direction decision.
+**Result:** reference accuracy 1.000, hallucination rate 0.000 over 47 scored references. Task 2 vs Task 3
+split is informative — Introduction wins on ROUGE-1 (0.357 vs 0.187), full survey wins on coverage (0.705
+vs 0.304).
+**Honest caveat recorded in REPORT.md §11.5:** Task 1 is close to tautological here, since our references
+are retrieved rather than LLM-generated and are verified against the same databases they came from.
 
 ## D-2026-08-29-c — Keep the audit on a throwaway branch
 **Decided:** all audit and verification work lives on `audit/opus-review`, to be deleted once P-1 is

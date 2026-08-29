@@ -15,6 +15,7 @@ the same bug pattern appearing three separate times. Read this before starting n
 | **Off-by-N in hand-built index mappings** | 3× | Silent, invisible corruption |
 | **Windows cp1252 encoding** | 3× | Crashes, two different causes (read + write) |
 | **Documentation claiming behaviour the code does not have** | 2× | Building on a false premise |
+| **Infrastructure failure mistaken for a real result** | 2× | Fails in the direction that looks like a finding |
 
 ---
 
@@ -111,6 +112,31 @@ of the proposed method** — exactly what a reviewer looks for.
 **Rule:** pass `encoding='utf-8'` on every file open, **and** set `PYTHONIOENCODING=utf-8` when output
 may contain non-ASCII. On Windows neither defaults to UTF-8. Any script touching tokenizer output needs
 both.
+
+### M-19 — A silent API failure would have been reported as a hallucination rate
+**What happened:** the reference-verification task used Semantic Scholar's search endpoint and treated
+*any* failed lookup as "reference not found." Unauthenticated S2 returns **HTTP 429** almost immediately,
+so it reported NOT FOUND for papers as well known as *Diffusion-LM* — and would have produced a
+hallucination rate near **1.0**.
+**Why this one is dangerous:** it fails in the direction that *looks like a finding*. "Our pipeline
+hallucinates 100% of references" is a dramatic result someone might have believed and written up.
+**Caught by:** noticing the output was implausible and querying the API directly — it returned
+`{"code": "429"}`, not an empty result set.
+**Fixes:** default to OpenAlex (keyless, tolerant at this volume), and **distinguish `LOOKUP_FAILED` from
+`NOT_FOUND`**, excluding infrastructure failures from the denominator entirely.
+**Rule:** never collapse "the lookup failed" into "the thing does not exist." Give infrastructure failures
+their own status and exclude them from metrics.
+
+### M-20 — An unrelated best-match counted as a successful find
+**What happened:** OpenAlex returns *something* for almost any query. Six genuine 2025-2026 arXiv preprints
+came back with best-match scores of 0.18–0.33 — i.e. a completely different paper — and the code counted
+them as `FOUND`, producing a spurious **12.8% hallucination rate**.
+**Root cause:** the same OpenAlex preprint lag `REPORT.md` §8 already documents for the retrieval stage.
+The code checked *whether results came back*, not *whether they matched*.
+**Fixes:** treat a below-threshold best match as `NOT_FOUND`, and add an **arXiv-by-ID fallback**. Seven
+references were recovered; hallucination rate went 0.128 → **0.000**.
+**Rule:** a search API returning a result is not a match. Always threshold the similarity, and have a
+second source for anything the first source is known to index poorly.
 
 ### M-12 — Retrieval queries missed papers by phrasing
 **What happened:** six ground-truth papers (D3PM, SEDD, Argmax Flows, and others) were **never retrieved

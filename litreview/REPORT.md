@@ -294,3 +294,94 @@ in the already-written survey prose without redoing generation against the new l
 additive evidence that the flagged fix works, not a replacement of the submitted deliverable — the
 correct way to fully adopt it would be regenerating the survey text from `reference_brief_llm_judged.txt`
 end to end, which is future work, not done here.
+
+## 11. Second methodology: implementing the evaluation framework of arXiv:2412.13612
+
+The assignment offered **two** papers. §1–§10 implement QUAL-SG ([2508.17647](https://arxiv.org/abs/2508.17647))
+as the *generation* method. This section implements the other one —
+*LLMs for Automated Literature Review: An Evaluation of Reference Generation, Abstract Writing, and Review
+Composition* ([2412.13612](https://arxiv.org/abs/2412.13612)) — as an *evaluation* framework, and applies it
+to the survey QUAL-SG produced. The assignment is therefore generate-**and**-evaluate rather than
+generate-only, using both provided papers.
+
+Code: [`scripts/eval_framework_2412.py`](scripts/eval_framework_2412.py) ·
+Results: [`output/eval_framework_2412.json`](output/eval_framework_2412.json)
+
+### 11.1 Task mapping
+
+| Their task | Their setting | Our analogue |
+|---|---|---|
+| 1. Reference generation | LLM asked to produce references | the 48 retrieved + ranked references |
+| 2. Abstract writing | LLM summarises a paper | the survey's §1 Introduction vs the anchor's §5 |
+| 3. Review composition | LLM writes a full review | the full survey vs the anchor's §5 |
+
+### 11.2 Faithful vs substituted
+
+| Metric | Paper | This implementation |
+|---|---|---|
+| Reference accuracy rule | `True(r) = 1 if (title correct AND ≥1 other field) OR (title incorrect AND ≥3 other fields)`, 80% title match | **faithful** |
+| Title Search Rate | retrievability from Semantic Scholar | **source substituted** → OpenAlex + arXiv (see §11.4) |
+| Semantic similarity | cosine over `text-embedding-3-large` | **substituted** → pure-python TF-IDF cosine |
+| ROUGE-1 / -2 / -L | n-gram + LCS overlap | **faithful** |
+| NLI entailment | TRUE model / GPT-4o | **not implemented** — a lexical coverage proxy is reported and explicitly labelled as not NLI |
+
+### 11.3 Results
+
+**Task 1 — reference generation** (47 scored; 1 excluded as an infrastructure failure)
+
+| Metric | Value |
+|---|---|
+| Title Search Rate | **1.000** |
+| Reference accuracy | **1.000** |
+| Hallucination rate | **0.000** |
+| verified via OpenAlex | 40 |
+| verified via arXiv fallback | 7 |
+
+**Tasks 2 and 3 — content quality against the anchor's §5**
+
+| Metric | Task 2 (Introduction) | Task 3 (full survey) |
+|---|---|---|
+| Semantic similarity (TF-IDF) | 0.1874 | 0.2209 |
+| ROUGE-1 | **0.3570** | 0.1866 |
+| ROUGE-2 | 0.0664 | 0.0581 |
+| ROUGE-L | 0.1172 | 0.0921 |
+| Lexical coverage proxy | 0.3039 | **0.7052** |
+
+The split is informative and validates separating the two tasks. The **Introduction** scores far higher on
+ROUGE-1 (0.357 vs 0.187) because it is length-comparable to the anchor's §5 — both are condensed overviews.
+The **full survey** scores far higher on coverage (0.705 vs 0.304) because it is ~5× longer and subsumes
+most of §5's content. Neither number alone characterises the survey; together they say it covers the ground
+truth thoroughly while its condensed section reads most like it.
+
+### 11.4 Two bugs found while building this — both would have produced confident wrong numbers
+
+**(a) Silent API failure reported as hallucination.** The first version used Semantic Scholar's search
+endpoint and treated *any* failed lookup as "reference not found." Unauthenticated S2 returns **HTTP 429**
+almost immediately, so it reported NOT FOUND for papers as well known as *Diffusion-LM* and would have
+yielded a hallucination rate near **1.0** — catastrophically wrong, and wrong in the direction that looks
+like an exciting finding.
+
+*Fixes:* default to OpenAlex (used keylessly elsewhere in this project, tolerant at this volume), and
+distinguish `LOOKUP_FAILED` from `NOT_FOUND`, excluding infrastructure failures from the denominator so
+they can never masquerade as hallucinated references.
+
+**(b) An unrelated best-match counted as a successful find.** OpenAlex returns *something* for almost any
+query. Six genuine 2025-2026 arXiv preprints came back with best-match scores of 0.18–0.33 — i.e. OpenAlex
+returned a different paper entirely — and the code counted these as `FOUND`, producing a spurious **12.8%
+hallucination rate**.
+
+The cause is the same OpenAlex preprint lag that §8 already documents for the retrieval stage. *Fix:* treat
+a below-threshold best match as `NOT_FOUND`, and add an **arXiv-by-ID fallback** for references carrying an
+`arxiv_id`. Seven references were recovered this way, and the hallucination rate went 0.128 → **0.000**.
+
+### 11.5 What Task 1 does and does not show
+
+**It is close to tautological here, and should be reported as such.** The paper's references are
+*generated* by an LLM, so hallucination is the failure mode under test. Ours are *retrieved* from OpenAlex
+and arXiv — and Task 1 then verifies them against OpenAlex and arXiv. A perfect score confirms the
+retrieval plumbing returns what it fetched; it is **not** evidence that an LLM avoided hallucinating.
+
+The result is still worth reporting for two reasons: it independently reproduces §7's finding that all 48
+references are real, and building it surfaced two measurement bugs that would each have produced a
+confident wrong number. A genuinely independent check would verify against a database the pipeline never
+queried.

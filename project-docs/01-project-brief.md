@@ -46,14 +46,14 @@ within roughly the last 2 years.
 |---|---|---|
 | Assignment Part 1 | Choose + understand an anchor paper (post-Jan-2024, top venue) | ✅ done — DiffuLLaMA |
 | Assignment Part 2 | Describe a *unique* automatable research-lifecycle task | ✅ **submitted** — "Continuous Gap Liveness Verification (Automated Novelty Invalidation)" |
-| SOTA assignment | Implement a 2024+ literature-review-generation method, generate a review for the anchor's domain, compare overlap with the anchor's related-work section | ✅ implemented (`litreview/`), ❌ **not submitted — deadline not yet announced** |
+| SOTA assignment | Implement a 2024+ literature-review-generation method, generate a review for the anchor's domain, compare overlap with the anchor's related-work section | ✅ implemented (`litreview/`) **plus the second provided paper's evaluation framework**, ❌ **not submitted — deadline not yet announced** |
 | Main project | Stages 2–6 above | ⏳ **blocked on direction decision** |
 
 ### SOTA assignment detail
 
 TTV provided **two** papers and allowed either, or an alternative 2024+ top-tier NLP paper:
 - [2508.17647](https://arxiv.org/abs/2508.17647) *SurveyGen: Quality-Aware Scientific Survey Generation* → **QUAL-SG implemented**
-- [2412.13612](https://arxiv.org/abs/2412.13612) *LLMs for Automated Literature Review* (an **evaluation** framework) → **not implemented; available as an addition**
+- [2412.13612](https://arxiv.org/abs/2412.13612) *LLMs for Automated Literature Review* (an **evaluation** framework) → ✅ **also implemented** (2026-08-29), see REPORT.md §11. Both provided papers are now covered: generate **and** evaluate.
 
 ## Target venue — status uncertain
 

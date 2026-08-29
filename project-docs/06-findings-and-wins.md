@@ -128,6 +128,31 @@ Kept in separate `*_llm_judged` files rather than overwriting, because the gener
 position — swapping the reference set would desync every citation marker. The non-monotonic caveat
 (DiffusionBERT dropped out despite scoring 5/5) is documented rather than hidden.
 
+### W-14 — Both provided SOTA papers implemented, and the evaluation caught two measurement bugs
+The instructor offered two papers; both are now implemented. QUAL-SG covers generation;
+[2412.13612](https://arxiv.org/abs/2412.13612)'s three-task framework covers evaluation
+(`litreview/scripts/eval_framework_2412.py`, REPORT.md §11).
+
+Results: reference accuracy **1.000**, hallucination rate **0.000** over 47 scored references (40 via
+OpenAlex, 7 rescued via an arXiv fallback).
+
+**The informative part is the Task 2 / Task 3 split**, which validates separating the two:
+
+| | Introduction (Task 2) | Full survey (Task 3) |
+|---|---|---|
+| ROUGE-1 | **0.357** | 0.187 |
+| Lexical coverage | 0.304 | **0.705** |
+
+The Introduction reads most like the anchor's §5 because it is length-comparable; the full survey covers
+far more of §5's content because it is ~5× longer. Neither number alone characterises the survey.
+
+**And building it surfaced two measurement bugs** (M-19, M-20), each of which would have produced a
+confident wrong number — one of them a fake 100% hallucination rate.
+
+**Honest limit:** Task 1 is close to tautological here. Our references are *retrieved*, not LLM-generated,
+and are verified against the same databases they came from. Recorded as such in REPORT.md §11.5 rather than
+presented as a result.
+
 ### W-12 — Six ground-truth papers recovered from a recall failure
 D3PM, SEDD, Argmax Flows and three others were **never retrieved at all** — not mis-ranked, never fetched.
 Diagnosed by inspecting the raw candidate pool rather than blaming the ranker, then fixed with queries
