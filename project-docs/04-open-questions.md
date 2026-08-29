@@ -29,9 +29,18 @@ posts do not reach Gmail, which is why an inbox search found nothing.
 
 ## 🟡 Needs confirmation
 
-### Q-4 — May BITS Goa students use the Sharanga cluster (BITS Hyderabad)?
-Specs verified and excellent. Not a dependency (local 192 GB suffices for Option B) but a strong
-accelerator. Partition names and job time limits are undocumented — ask when requesting access.
+### Q-4 — May BITS Goa students use the Sharanga cluster, and for what?
+**Revised 2026-08-29 — earlier framing overstated this considerably.**
+
+The cluster's raw inventory is impressive, but per the team: it is **SLURM-scheduled** (jobs queue, no
+interactive whole-node access), **all GPUs on a node cannot practically be requested at once**, and **the
+Blackwell node is reserved for admins**. The configuration page documents no access policy at all.
+
+Still unknown: partition names, per-user GPU caps, wall-time limits, and whether BITS Goa students are
+eligible at all.
+
+**Not a dependency.** The local 2× Blackwell workstation (192 GB) is sufficient for Option B. Treat
+Sharanga as possible batch capacity pending approval — plan around hardware the team controls.
 
 ### Q-5 — Has CDC been updated or accepted since May 2026?
 [arXiv:2605.16829](https://arxiv.org/abs/2605.16829) is a v1 preprint with no venue. Re-check at kickoff;
@@ -85,5 +94,13 @@ Never exercised. Needs a torch environment.
 
 ## Practical prerequisite for almost everything above
 
-**`torch` and `transformers` are not installed in the local working environment.** Q-6, Q-7, Q-11 and all
-hands-on work in either direction block on this.
+`torch` and `transformers` are not installed on the development laptop (**RTX 3050, 4 GB** — verified, not
+the 6 GB the design doc assumes).
+
+| Task | Needs | Where it runs |
+|---|---|---|
+| **Q-6** real-tokenizer offset test | `transformers` **only** — `AutoTokenizer` needs neither torch nor a GPU (~50 MB) | laptop, today |
+| Q-11 DiffuGPT-S mechanics | `torch` + `transformers` (~2.5 GB); a 124M model fits in 4 GB | laptop |
+| Q-7 compute measurement, all real experiments | full CUDA stack | Blackwell workstation |
+
+**Q-6 is the only genuinely unblocked task** — it needs no GPU, no direction decision, and ~50 MB.

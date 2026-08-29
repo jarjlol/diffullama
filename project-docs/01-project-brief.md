@@ -68,9 +68,42 @@ The project brief names the **Stanford Agents4Science** workshop.
 
 | Resource | Spec | Status |
 |---|---|---|
-| Local workstation | **2× RTX 6000 Pro Blackwell, 96 GB each (192 GB total)** | ✅ confirmed available |
-| Sharanga cluster (BITS Hyderabad) | gpu8: 6× RTX PRO 6000 Blackwell 96GB · gpu7: 8× H200 NVL 141GB · gpu4: 8× A100 80GB · gpu5–6: 4× H100 each · HDR interconnect | ⚠️ specs verified, **access not yet approved** |
-| Development laptop | RTX 3060, 6 GB | ✅ available, CPU-scale work only |
+| Local workstation | **2× RTX 6000 Pro Blackwell, 96 GB each (192 GB total)** | ✅ confirmed available — **this is the real compute** |
+| Development laptop | **RTX 3050 Laptop, 4 GB** | ✅ available — verified via `nvidia-smi`; CPU/tokenizer-scale work only |
+| Sharanga cluster (BITS Hyderabad) | see below | ⚠️ **access not approved; availability much narrower than raw specs suggest** |
 
-**Note:** `torch` and `transformers` are **not currently installed** in the local working environment.
-That is the practical prerequisite for any hands-on work.
+> ⚠️ **Correction (2026-08-29):** an earlier version of this file listed the development laptop as an
+> RTX 3060 6 GB, copied from the design doc. `nvidia-smi` reports **RTX 3050 Laptop, 4 GB**. The design
+> doc's §5.5 local-development plan was written against the wrong spec.
+
+### Sharanga — inventory is not availability
+
+The cluster's [configuration page](https://sharanga.hpc.bits-hyderabad.ac.in/docs/misc_docs/configuration/)
+lists: gpu1–3 (V100 32GB), gpu4 (8× A100 80GB), gpu5–6 (4× H100 80GB each), gpu7 (8× H200 NVL 141GB),
+gpu8 (6× RTX PRO 6000 Blackwell 96GB).
+
+**That is the hardware inventory, not what a student job can obtain.** Per the team:
+
+- It is **SLURM-scheduled** — jobs queue; you do not get interactive access to a whole node on demand.
+- **You cannot request all GPUs on a node at once** in practice.
+- **The Blackwell node (gpu8) is reserved for admins** and is not available to us.
+
+The configuration page documents **no** access policy, which should be read as *unknown*, not as
+*unrestricted*. Partition names, per-user GPU caps, and wall-time limits are still undocumented — ask when
+requesting access.
+
+**Planning consequence:** treat Sharanga as *possible batch capacity pending approval*, never as assumed
+capacity. **The local 2× Blackwell workstation is the compute the project should be planned around.** It is
+sufficient for the recommended direction.
+
+## Software environment
+
+`torch` and `transformers` are **not installed** on the development laptop. What each unblocked task
+actually needs:
+
+| Task | Needs | Size | Runs where |
+|---|---|---|---|
+| Real-tokenizer offset test (Q-6) | `transformers` only — `AutoTokenizer` needs no torch and no GPU | ~50 MB | laptop, today |
+| DiffuGPT-S (124M) mechanics testing | `torch` + `transformers` | ~2.5 GB | laptop (4 GB fits a 124M model) |
+| Any real experiment | full CUDA stack | — | Blackwell workstation |
+| Batch jobs | conda/venv in home dir + SLURM scripts | — | Sharanga, if approved |

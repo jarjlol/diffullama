@@ -129,6 +129,30 @@ The configuration turned out to be 2× RTX 6000 Pro Blackwell plus cluster acces
 **Rule:** confirm hardware before building an argument on it. The retraction is recorded in the audit
 rather than quietly edited away.
 
+### M-17 — Hardware *inventory* reported as available *capacity*
+**What happened:** the Sharanga cluster's configuration page was read off as available compute — "gpu8 has
+6× Blackwell, gpu7 has 8× H200" — and used to argue that a third-scale training run would be comfortable.
+
+**What was actually true:** Sharanga is **SLURM-scheduled**; jobs queue rather than granting interactive
+node access, all GPUs on a node cannot practically be requested at once, and **the Blackwell node is
+reserved for admins.** None of this appears on the configuration page.
+
+**Root cause:** the page documents *no* access policy. That was treated as "unrestricted" when it should
+have been treated as **"unknown."** Absence of a stated restriction is not absence of a restriction.
+
+**Rule:** on any shared cluster, inventory ≠ allocation. Confirm partitions, per-user GPU caps, and
+wall-time limits with an administrator before planning around a node. Plan around hardware you control.
+
+*Related:* M-14 is the same failure in the opposite direction — asserting a hardware *limit* before
+confirming it. Both come from treating unverified hardware assumptions as settled.
+
+### M-18 — Development laptop spec copied from a document instead of measured
+**What happened:** the laptop was recorded as an RTX 3060 6 GB, taken from the design doc's §5.5.
+`nvidia-smi` reports **RTX 3050 Laptop, 4 GB**.
+**Consequence:** §5.5's entire local-development plan was sized against a GPU that is 50% larger than the
+one that exists.
+**Rule:** measure the machine. `nvidia-smi` takes two seconds.
+
 ### M-15 — Background research agents died on an API spend limit, twice
 Four agents were killed mid-run, losing the novelty searches for four of Aalhad's six bets on the first
 attempt and the Option E search on the second.
