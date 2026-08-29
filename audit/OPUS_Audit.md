@@ -598,14 +598,25 @@ attention-partitioning schemes, and a dLLM step is exactly the bidirectional ful
 were designed for. Nothing new to invent; the residual contribution is "cost model + scheduler," which is
 precisely what Sangam and Optimus publish.
 
-### Blocked on hardware
+### Hardware — **corrected 2026-08-29**
 
-If the "96 GB system" is **one** card, a multi-GPU experiment is **unmeasurable** — the thesis cannot be
-tested at all. If it is a multi-GPU node, it needs NCCL-level work and profiling skill well past this
-course. dInfer's numbers come from 8×8 H800.
+Confirmed: **2× RTX 6000 Pro Blackwell (96 GB each, 192 GB total)**, plus access to the **Sharanga cluster
+at BITS Hyderabad** (specs unconfirmed).
 
-**Verdict: NOT RECOMMENDED.** False premise, published core claim, likely-missing hardware, and a
-systems-paper/AI-for-science venue mismatch.
+This **partially retracts** the earlier hardware objection. A 2-GPU experiment is runnable, so the thesis is
+no longer unmeasurable. But it does not rescue the direction:
+
+- **2 GPUs cannot support a scaling argument.** dInfer's numbers come from 8×8 H800. A two-point
+  measurement (1 GPU vs 2) cannot characterise a scheduler or a cost model, which is the entire claimed
+  contribution.
+- **The other two objections are untouched by hardware.** The premise is still false as written, and dInfer
+  still published TP+EP for dLLMs at batch size 1 with Sangam publishing the scheduler.
+
+If Sharanga turns out to have ≥8 interconnected GPUs, the *feasibility* picture changes again — but novelty
+would still be the binding constraint, so confirm Sharanga's specs for the sake of the other directions
+rather than to revive this one.
+
+**Verdict: NOT RECOMMENDED** — unchanged, but now on novelty and premise grounds alone rather than hardware.
 
 ## 14. Bet 2 — dual-mode serving — **RISKY**
 
@@ -780,3 +791,121 @@ Unverified for novelty; flagged as a lead, not a recommendation.
 *Part 3 verification: four independent search passes, every paper resolved to a working link before
 inclusion. Two claims were checked directly against this repository's own copy of the anchor paper's full
 text (§9 annealing, §17 mask token) rather than against any summary of it.*
+
+---
+
+# Part 4 — invariant test result, and the plan
+
+## 20. Off-by-one test: **written, run, passing**
+
+`audit/test_shift_offset.py`. Pure stdlib — no torch, no transformers, no GPU, no model download,
+because the shift is integer index arithmetic and can be verified exactly without any of that.
+(`torch`/`transformers` are in fact not installed locally; this test does not need them.)
+
+**Result: all checks pass.** The invariant is now proven rather than argued:
+
+```
+canvas_position = returned_index + 1
+```
+
+Exact, and tokenizer-independent — it follows from `model.py` L110→L115→L120→L124→L156 alone.
+
+**The bug is demonstrated concretely, not just described.** Targeting the token seen at `returned[2]`:
+
+| | canvas position | token actually masked |
+|---|---|---|
+| naive mapping (no shift) | `canvas[2]` | `'b'` ← **wrong, silently** |
+| correct mapping (+1) | `canvas[3]` | `'c'` ← intended |
+
+The test then runs both through the simulated sampler and confirms the naive version regenerates a token
+the user never selected, while the +1 version hits exactly the intended one.
+
+Also covered and passing: `src_mask` freeze semantics (frozen prefix survives unchanged; generation starts
+at `canvas[len(prefix)]` = `returned[len(prefix)-1]`), and AST→char-span mapping over all 19 nodes of a
+sample program, exact against `ast.get_source_segment`.
+
+**What this does NOT settle — flagged in the test's own output.** Step 5 uses a *stub* tokenizer with clean
+offsets. The real LLaMA tokenizer is SentencePiece: it glues leading whitespace into tokens and marks word
+starts with U+2581, and **Python indentation is semantic**. The logic is validated; the real tokenizer's
+behaviour on indented statements is not. Re-run step 5 with
+`AutoTokenizer.from_pretrained('diffusionfamily/diffullama', use_fast=True)` and
+`return_offsets_mapping=True` before trusting the chain on real code. Test 1's invariant needs no such
+re-check.
+
+## 21. SOTA assignment — what can still be added
+
+The assignment is **substantively complete** (retrieval + generation + overlap comparison against the
+anchor's §5, all 48 references verified real, plus the LLM-judge upgrade taking F1 0.222 → 0.272). Two
+additions would strengthen it, in priority order:
+
+1. **Implement the second paper the instructor provided.** The email offered two papers; QUAL-SG
+   ([2508.17647](https://arxiv.org/abs/2508.17647)) was implemented for *generation*. The other —
+   *Large Language Models for Automated Literature Review* ([2412.13612](https://arxiv.org/abs/2412.13612))
+   — is an **evaluation** framework covering reference generation, abstract writing, and review
+   composition. Using it to evaluate the QUAL-SG-generated survey uses both provided papers, and turns a
+   single-method implementation into generate-then-evaluate. Highest value per effort.
+2. **Report the LLM-judge extension as a finding, not a footnote.** REPORT.md §10 already documents it
+   honestly including the non-monotonic caveat. It is a genuine ablation of QUAL-SG's own relevance-scoring
+   step and reads as a contribution rather than a fix.
+
+Deadline still unknown. **Check Quanta directly** — forum posts do not reach Gmail, which is why the earlier
+inbox search found nothing.
+
+## 22. Plan — everything remaining
+
+### A. Blocking, do first (this week)
+
+| # | Task | Why it blocks | Owner |
+|---|---|---|---|
+| A1 | **Find the SOTA deadline on Quanta**, then submit the litreview | Work is done and sitting unsubmitted | anyone |
+| A2 | **Confirm Sharanga's specs** (GPU count, interconnect, queue policy) | Changes what scale of training is possible for the recommended direction | anyone |
+| A3 | **Confirm Agents4Science edition + deadline** in writing | The instructor already confirmed AI-primary-author; the *timeline* still gates everything | anyone |
+| A4 | **Team decision: adaptation-audit vs Structure-Guided ReMasking** | Everything downstream forks here | all |
+
+### B. If the adaptation-audit direction is chosen (recommended)
+
+| # | Task | Cost |
+|---|---|---|
+| B1 | Reproduce DiffuGPT-S/M training from this repo — establishes the baseline and satisfies project stage 2 | days |
+| B2 | Re-run the annealing ablation at 124M and 355M to confirm Table 3's +2.1 / +2.5 | days |
+| B3 | Extend to a third scale (774M / 1.5B) — **the actual contribution**: does the annealing gain keep growing? | ~1 week on 2×96 GB |
+| B4 | Mask-token ablation (bet 6): reused vocab token vs new token, at matched scale, disentangling the DiffuGPT-M confound | cheap, pairs with B2 |
+| B5 | Order-metric comparison (bet 3 narrowed): DiffuLLaMA vs LLaDA vs Dream, decoding held fixed, using 2601.15593's metrics | inference only |
+| B6 | Read [2512.06776](https://arxiv.org/abs/2512.06776) in full and position against it — it tests annealing at 7B but for **block**-diffusion, and its ablation is only 4,000 iterations | hours |
+
+### C. If Structure-Guided ReMasking is chosen instead
+
+| # | Task |
+|---|---|
+| C1 | **Phase 0 first** — failure taxonomy, slice-size distribution, **parse rate**, and **change rate** (§2.7) |
+| C2 | Rewrite §1 novelty claim (delete the three preempted claims, adopt §8.3 framing) |
+| C3 | Rewrite §4.1 entirely — sampler facts are wrong; add the `alg="origin"` assertion guard |
+| C4 | Move §3.2 from backward slicing to a tight AST neighbourhood, per CDC Fig. 8(b) |
+| C5 | Re-run `audit/test_shift_offset.py` step 5 with the **real** LLaMA tokenizer |
+| C6 | Fix the confidence baseline to use max-prob, not sampled-token logprob (§2.1) |
+| C7 | Replace the broken oracle with the synthetic-corruption testbed (§5.2) |
+| C8 | Cite and faithfully implement STaRR / RCR for the instability baseline (§4.3) |
+
+### D. Verification debt — outstanding regardless of direction
+
+| # | Item | Status |
+|---|---|---|
+| D1 | CDC Fig. 8(b) numbers (34.3 / 26.9 / 24.1) | **Single-sourced.** Load-bearing for the "abandon slicing" recommendation — read the figure directly before acting on it |
+| D2 | CDC is a v1 preprint from May 2026 | Re-check for updates/acceptance at kickoff |
+| D3 | Dream's `alg="origin"` default, LLaDA's topk direction | Agent-verified, not personally verified. Cheap to confirm from the config files |
+| D4 | Compute estimate ("2–4× optimistic") | FLOPs arithmetic, not measurement. One hour of benchmarking settles it |
+| D5 | Bet 1's sequence-partitioning sliver | Came back COULD NOT VERIFY — unresolved either way |
+| D6 | The scientific-infilling pivot (§18) | Zero novelty checking. Best venue fit of any idea raised; needs a search before it can be ranked |
+| D7 | `mock.py` / DiffuGPT-small local path | Never exercised |
+
+### E. Standing practice
+
+Re-run Aalhad's novelty-verification skill at every milestone, not once. CDC was posted three months before
+this audit and nearly invalidated a semester's framing; whatever preempts the chosen direction may not exist
+yet today.
+
+---
+
+*Part 4 note: the hardware objection to bet 1 (§13) was partially retracted on 2026-08-29 when the
+configuration was confirmed as 2×96 GB plus cluster access. The verdict did not change, but the reasoning
+did, and the retraction is recorded rather than quietly edited away.*
