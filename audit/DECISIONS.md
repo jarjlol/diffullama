@@ -48,20 +48,48 @@ machinery plus a sandbox and dynamic tracing they didn't need. CDC's own Fig. 8(
 (the doc's core signal) *underperforms* a tight AST neighbourhood. Highest engineering risk of any option,
 two known silent-failure modes, and everything rides on one already-dented claim.
 
-### Option E — the scientific-infilling pivot (unranked, needs a novelty search)
+### Option E — the scientific-infilling pivot — **searched 2026-08-29: NARROW, does not displace B**
 
-Use DiffuLLaMA's actual distinguishing capability — infilling without prompt reordering, per its own
-abstract — on a **scientific** task: structured scientific text, molecular/protein sequence infilling,
-constrained scientific-notation generation.
+Use DiffuLLaMA's distinguishing capability — infilling without prompt reordering — on a **scientific** task.
 
-**For it:** single-GPU, course-appropriate, and the best fit of any option to an AI-*for-science* venue.
-**Against it:** **zero novelty verification done.** Cannot be ranked against B or C until someone searches
-it. Could be excellent or could be crowded — genuinely unknown.
+**Search caveat, stated plainly:** this was *not* the full novelty search this option deserved. Two
+background agents died on an API spend limit; what follows comes from two targeted searches run directly.
+Treat the verdict as well-founded on the crowded sub-areas and weakly-founded on the "no direct hit" part.
+
+**The obviously-scientific sub-areas are crowded:**
+- *Molecular / SMILES:* TGM-DLM (AAAI 2024), GenMol (2025), PepTune, DiffBP, plus dedicated
+  diffusion-driven domain adaptation for 3D molecules ([2404.00962](https://arxiv.org/abs/2404.00962)).
+- *Protein / peptide / RNA:* guided discrete diffusion for protein design, classifier-guided antibody
+  sequence generation, RNADiffFold. Established lines with purpose-built models — a course project would be
+  competing with domain labs on their own turf.
+
+**The scientific-text angle is partly taken:** [2606.19475](https://arxiv.org/abs/2606.19475) *"Diffusion
+Language Models: An Experimental Analysis"* is a systematic evaluation already spanning "encyclopedic, news,
+scientific, and benchmark text, including PubMed and ArXiv" — which absorbs much of the benchmark
+contribution that looked open.
+
+**No direct hit** on the exact combination (AR-adapted dLLM + infilling + scientific task). But absence
+after two searches is weak evidence, and even if genuinely open, the claim is **thinner than Option B's** —
+B rests on a specific inconsistency quotable from the anchor paper; E would rest on "nobody happened to try
+this yet."
+
+**Verdict: NARROW.** Does not displace B. Revisit only if B is blocked for an unrelated reason.
+
+### Two papers worth reading regardless of which option wins
+
+- **[DreamOn, 2602.01326](https://arxiv.org/abs/2602.01326)** — *Diffusion Language Models for Code
+  Infilling Beyond Fixed-size Canvas.* Directly attacks **length rigidity**, which is Risk 3 (High) in the
+  design doc: "masking *K* tokens regenerates exactly *K*; fixes needing more tokens are unreachable." If
+  Option C is chosen this is required reading and may partly solve that risk.
+- **[2606.19475](https://arxiv.org/abs/2606.19475)** — systematic dLLM evaluation; useful baseline reference
+  for any direction.
 
 ### Recommendation
 
-**B**, with **E** worth a two-hour novelty search before finalising, since if E is open it may fit the venue
-better than either. C is viable but is the highest-effort, smallest-claim option on the table.
+**Option B.** E was checked precisely because it might have beaten B on venue fit — it doesn't. It is
+crowded where it is clearly scientific, and thin where it might be open. B retains the strongest
+combination: a quotable inconsistency in the anchor's own text, three independent shots, exact course fit,
+and low engineering risk. C remains viable but is the highest-effort, smallest-claim option.
 
 ### ⚠️ Work is on hold pending this
 
