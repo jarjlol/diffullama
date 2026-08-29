@@ -909,3 +909,100 @@ yet today.
 *Part 4 note: the hardware objection to bet 1 (§13) was partially retracted on 2026-08-29 when the
 configuration was confirmed as 2×96 GB plus cluster access. The verdict did not change, but the reasoning
 did, and the retraction is recorded rather than quietly edited away.*
+
+---
+
+# Part 5 — verification debt closed (2026-08-29)
+
+Two load-bearing claims in this audit were previously **agent-verified but not personally verified**. Both
+have now been checked directly against the primary source. Both hold — one with an important refinement,
+one with a bonus finding.
+
+## 23. D1 — CDC Fig. 8(b): **confirmed, with a caveat that matters**
+
+Read directly from [arXiv:2605.16829v1](https://arxiv.org/html/2605.16829v1). The numbers are exactly as
+reported:
+
+| Scope | func-sec@1 |
+|---|---|
+| **Parent+Leaf (deployed)** | **34.3** |
+| Use–Def Slice | 26.9 |
+| Token-Window | 24.1 |
+
+Paper's own wording: *"the deployed Parent++Leaf neighborhood (34.3%) beats tighter (Token-Window 24.1%)
+and looser (Use–Def Slice 26.9%) alternatives."*
+
+### Two refinements to how this was framed earlier in this document
+
+1. **It is a middle optimum, not "tighter is better."** Parent+Leaf beats the *looser* slice **and** the
+   *tighter* window. Earlier sections of this audit said "a tight AST neighbourhood beats the broader
+   use-def slice," which is true but incomplete — the correct reading is that there is a sweet spot and
+   both extremes are worse. This makes §5.5's "radius as the object of study" framing **stronger**, not
+   weaker: the existence of an interior optimum is exactly what makes the radius question interesting.
+2. **The metric is `func-sec@1` on CWEval — a *security* benchmark.** The evidence against broad slicing is
+   established for security-constraint repair, **not** functional repair. CDC deliberately routes
+   functional correctness through an entirely different mechanism (a learned surrogate). Whether the same
+   radius optimum holds for *functional* bugs — which is what Option C proposes to fix — is **genuinely
+   open**.
+
+**Net effect on the recommendation:** the advice to move §3.2 off backward slicing still stands, but the
+justification is now "there is a published interior optimum, and yours is on the wrong side of it in the one
+setting anyone has measured" rather than "slicing is known to be bad." And the transfer question — does the
+optimum shift when localization is dynamic and the bugs are functional? — is arguably Option C's single best
+remaining research question.
+
+## 24. D3 — Dream's default sampler: **confirmed verbatim**
+
+Fetched `generation_config.json` for `Dream-org/Dream-v0-Instruct-7B` directly:
+
+```json
+{
+  "_from_model_config": true,
+  "alg": "origin",
+  "alg_temp": null,
+  "bos_token_id": 151643,
+  "eos_token_id": 151643,
+  "eps": 0.001,
+  "mask_token_id": null,
+  "output_history": false,
+  "pad_token_id": 151643,
+  "steps": 512,
+  "temperature": 0.0,
+  "top_k": null,
+  "top_p": null,
+  "transformers_version": "4.46.2"
+}
+```
+
+`"alg": "origin"` — the **random** unmasking branch. §4.1's correction is confirmed at the primary source:
+Dream does **not** default to confidence ordering, and any baseline run without explicitly setting
+`alg="entropy"` silently runs random-order.
+
+### Bonus finding: `"temperature": 0.0` sharpens §2.7 considerably
+
+Dream ships with **greedy decoding by default**. §2.7 flagged the risk that remasking a span regenerates
+identical tokens, making the repair loop a silent no-op — and noted that DiffuLLaMA's sampling
+(`logits_temp=0.9`, `topp=0.9`) provides at least some variation.
+
+Dream provides **none**. At temperature 0, a remasked span will deterministically reproduce the same tokens
+whenever the surrounding context is unchanged. The only source of variation is context that shifted
+elsewhere in the canvas.
+
+**Consequence for Option C:** the "regenerates identical tokens" failure mode is not a tail risk on Dream —
+it is the *default behaviour* unless temperature is explicitly raised. Change-rate must be a Phase 0
+measurement (as §2.7 argues), and the adapter needs an explicit temperature policy documented per backbone,
+not inherited from each model's shipped config.
+
+## 25. Remaining verification debt
+
+| # | Item | Status |
+|---|---|---|
+| D2 | CDC v1 may have been updated/accepted since May 2026 | open — re-check at kickoff |
+| D4 | Compute estimate ("2–4× optimistic") is arithmetic, not measurement | open — needs a working torch env |
+| D5 | Bet 1's sequence-partitioning sliver | open — COULD NOT VERIFY either way |
+| D7 | `mock.py` / DiffuGPT-small local path never exercised | open — needs a working torch env |
+| ~~D1~~ | ~~CDC Fig. 8(b)~~ | ✅ closed, §23 — confirmed with refinements |
+| ~~D3~~ | ~~Dream/LLaDA sampler defaults~~ | ✅ closed, §24 — confirmed verbatim, plus a new finding |
+
+D4 and D7 both block on the same thing: `torch` and `transformers` are **not installed** in the local
+environment. That is the practical prerequisite for any hands-on work in either direction.
