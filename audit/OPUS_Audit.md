@@ -338,18 +338,22 @@ Added after Part 1. Cross-references Neel's design doc, Aryan's CDC finding, and
 research bets. The question this part answers, asked directly: **is the post-CDC reframe of
 Structure-Guided ReMasking real, or is it cope?**
 
-## 7. Coverage caveat — read this before trusting Part 2
+## 7. Coverage caveat — **now resolved, see Part 3**
 
-Two automated verification passes covering Aalhad's bets **1, 2, 5, and 6 died mid-run** (API spend limit)
-and returned nothing usable. What follows is therefore **unevenly verified**, and is marked as such:
+*Original note: two verification passes covering bets 1, 2, 5, 6 died mid-run on an API spend limit.*
 
-| Bet | Verification status |
-|---|---|
-| 3 — do dLLMs plan? | **Partially verified** — adjacent papers identified from an earlier retrieval pool, not individually fetched |
-| 4 — conversion / dropped training step | **Fully verified** against the anchor paper's own text, quoted below |
-| 1, 2, 5, 6 | **NOT VERIFIED.** No novelty search completed. Assessments below are reasoning-from-premises only |
+**Resolved.** The searches were re-run and all six bets are now verified. **Part 3 supersedes the
+provisional assessments in this Part for bets 1, 2, 3, 5, and 6.** Bet 4's assessment below stands
+unchanged and was fully verified from the outset.
 
-Do not treat bets 1, 2, 5, 6 as novelty-checked. They need the search re-run before anyone commits.
+| Bet | Status | Verdict (see Part 3) |
+|---|---|---|
+| 1 — multi-GPU single-request decode | ✅ verified | **NOT RECOMMENDED** — premise false |
+| 2 — dual-mode serving | ✅ verified | **RISKY** — thesis published 3 months ago |
+| 3 — do dLLMs plan? | ✅ verified | **VIABLE only when narrowed** |
+| 4 — conversion / dropped training step | ✅ verified | **STRONG** |
+| 5 — honest cost accounting | ✅ verified | **NOT RECOMMENDED** — premise decayed |
+| 6 — mask-token shortcut | ✅ verified | **VIABLE, pairs with bet 4** |
 
 ## 8. Is the Structure-Guided ReMasking reframe cope?
 
@@ -539,3 +543,240 @@ inclusion; code claims checked by reading the files in this repository at this c
 summaries. Where an automated verification pass reached a conclusion I disagreed with (§4.3), the
 disagreement is recorded rather than silently resolved. Where verification did not complete (§7), that is
 stated rather than papered over.*
+
+---
+
+# Part 3 — completed novelty audit of all six bets
+
+Supersedes Part 2's provisional assessments for bets 1, 2, 3, 5, 6. Bet 4 (§9) stands unchanged.
+
+## 12. A venue constraint nobody has accounted for
+
+**Agents4Science requires AI to be the primary author** (https://agents4science.stanford.edu/submissions.html).
+That is a hard constraint orthogonal to every novelty question in this document, and it does not appear in
+Neel's design doc, Aalhad's bets, or the project brief. It also *rewards* the direction this project is
+already taking — the litreview pipeline and this audit are both AI-executed research artefacts. **Confirm
+this requirement with the instructor before scoping anything**, because it changes what "the deliverable"
+means, not just what the topic is.
+
+## 13. Bet 1 — multi-GPU single-request decode — **NOT RECOMMENDED**
+
+### Premise is false as written
+
+*"AR models can't split one request across GPUs"* is incorrect. Tensor parallelism splits every
+single-request forward pass across GPUs — that is the standard vLLM/TRT-LLM deployment. Pipeline
+parallelism splits by layer. And **decode-time context parallelism for a single request already shipped in
+vLLM** (https://vllm.ai/blog/2026-08-07-decode-context-parallelism), partitioning one request's KV cache
+along the sequence dimension.
+
+The salvageable version is much narrower: in AR decode one step produces *one* token position, so there is
+no sequence-dimension *work* to partition (CP partitions KV history, not new-position computation). A dLLM
+step computes logits for many masked positions at once, so those are genuinely partitionable. That is a
+claim about **activation width per step**, not about "can't split across GPUs." As written it would be
+desk-rejected in the first paragraph by any systems reviewer.
+
+It is also weaker than it sounds — a 7B dLLM denoising 256 positions is already **compute-bound**, so extra
+GPUs buy less than the pitch implies.
+
+### Already published
+
+| Work | Link | Preemption |
+|---|---|---|
+| **dInfer** | [2510.08666](https://arxiv.org/abs/2510.08666) | **Heavy.** TP + expert parallelism for dLLM inference explicitly **at batch size 1** on 8×H800 — the exact regime claimed as the gap. Paper states EP "is effective even at a batch size of 1 — unlike in AR models" |
+| **Sangam** | [2607.04206](https://arxiv.org/abs/2607.04206) | **Heavy.** This *is* the scheduler + cost model paper, from an established systems group |
+| **Optimus** | [2605.24832](https://arxiv.org/abs/2605.24832) | Saturation-aware runtime selection of decoding granularity |
+| **HERALD** | [2606.21633](https://arxiv.org/abs/2606.21633) | Block-diffusion serving, CPU-GPU cooperative KV retrieval (Stoica) |
+| **dLLM-Serve** | [2512.17077](https://arxiv.org/abs/2512.17077) | Production dLLM serving system design |
+| **DiffusionGemma in vLLM** | [blog](https://vllm.ai/blog/2026-06-10-diffusion-gemma) | dLLMs now natively supported in the mainstream stack — the "nobody serves dLLMs" gap is closed |
+
+Sequence-dimension partitioning of *denoising positions* for a single dLLM request across GPUs was **NOT
+VERIFIED** as existing — a thin sliver of genuine novelty. But it sits inside a subfield with four serving
+papers in nine months.
+
+**The mechanism already exists anyway.** DeepSpeed-Ulysses and Ring Attention are architecture-agnostic
+attention-partitioning schemes, and a dLLM step is exactly the bidirectional full-sequence forward pass they
+were designed for. Nothing new to invent; the residual contribution is "cost model + scheduler," which is
+precisely what Sangam and Optimus publish.
+
+### Blocked on hardware
+
+If the "96 GB system" is **one** card, a multi-GPU experiment is **unmeasurable** — the thesis cannot be
+tested at all. If it is a multi-GPU node, it needs NCCL-level work and profiling skill well past this
+course. dInfer's numbers come from 8×8 H800.
+
+**Verdict: NOT RECOMMENDED.** False premise, published core claim, likely-missing hardware, and a
+systems-paper/AI-for-science venue mismatch.
+
+## 14. Bet 2 — dual-mode serving — **RISKY**
+
+### "Untested" is false — it was published three months ago, by name
+
+**FLARE: Diffusion for Hybrid Language Model**, [arXiv:2606.01774](https://arxiv.org/abs/2606.01774)
+(Adobe / Georgia Tech). Abstract, verbatim: *"enabling one checkpoint to support both AR-style verified
+decoding and diffusion-style parallel denoising."* Modes are AR-Trust vs Diffusion-Trust, chosen at
+inference, from "a single trained checkpoint that only switches its sampling path." It reports throughput
+gains over dLLM baselines in single-GPU concurrent serving.
+
+That is Bet 2's thesis statement, near word-for-word.
+
+Supporting cluster, all verified: **BD3-LMs** ([2503.09573](https://arxiv.org/abs/2503.09573), ICLR 2025
+**Oral**) interpolates AR↔diffusion via block size with KV caching; **Eso-LMs**
+([2506.01928](https://arxiv.org/abs/2506.01928)) adds KV caching to MDMs while preserving parallel
+generation; **SDAR** ([2510.06303](https://arxiv.org/abs/2510.06303), ACL Findings 2026) converts a trained
+AR model into blockwise diffusion; **CtrlDiff** ([2505.14455](https://arxiv.org/abs/2505.14455)) picks block
+size per step via RL; **SDLM** ([2509.24007](https://arxiv.org/abs/2509.24007)) commits adaptive length per
+step; **AdaBlock-dLLM** ([2509.26432](https://arxiv.org/abs/2509.26432)) does it training-free. KV-cache
+line: **Fast-dLLM** ([2505.22618](https://arxiv.org/abs/2505.22618), NVlabs), **dLLM-Cache**
+([2506.06295](https://arxiv.org/abs/2506.06295), ICML 2026), **FlashDLM**
+([2505.21467](https://arxiv.org/abs/2505.21467)).
+
+### Block-trained models already give both modes for free
+
+Block size 1 → autoregressive with working KV cache. Block size L → full parallel diffusion. Anything
+between is a point on the curve. The genuinely underexplored piece is a **per-request SLO-aware router**,
+and that is ~80% covered by Optimus (load-driven) and Sangam. The remaining delta is a load-balancing
+heuristic, not a research contribution.
+
+### An anchor-specific blocker
+
+**DiffuLLaMA is a full-attention, non-block model.** It has no native AR mode with a working KV cache. To
+get "one checkpoint, two modes" from it you would first have to block-ify it — i.e. re-implement
+SDAR/BD3-LM. That is the whole semester spent reproducing two existing papers *before* the novel part
+starts.
+
+**Verdict: RISKY.** Feasible on the hardware (its one real advantage), but as pitched it is a reproduction.
+
+## 15. Bet 3 — do dLLMs actually plan? — **VIABLE only when narrowed**
+
+### The claims are real and thin
+
+Verified: **LLaDA** claims it "addresses the reversal curse, surpassing GPT-4o in a reversal poem completion
+task" — one task, GPT-4-generated pairs, the single strongest cherry-picked-looking claim in the set.
+**Dream 7B** asserts "superior planning abilities" with no benchmark named. **DiffuLLaMA — the anchor —
+makes no explicit planning claim at all**, only "filling in the middle without prompt re-ordering."
+
+### But the falsification test is already run, twice, at scale
+
+| Paper | What it already establishes |
+|---|---|
+| [2601.15593](https://arxiv.org/abs/2601.15593) *Parallelism and Generation Order in MDLMs* | **The order-statistics measurement, done.** Kendall's tau + Average Finalization Parallelism over **58 benchmarks, 8 MDLMs up to 100B**. Concludes MDLMs do not realize arbitrary-order generation; order is near-left-to-right in practice |
+| [2608.05687](https://arxiv.org/abs/2608.05687) *Answer First, Reason Later* | **The causal intervention, done.** Manipulates commitment order, delays answer-token commitment, measures GSM8K on LLaDA variants + Dream-7B |
+| [2601.13228](https://arxiv.org/abs/2601.13228) *AR Models Rival Diffusion at ANY-ORDER Generation* | AR models with two-stream attention beat diffusion at infilling — removes the "only diffusion can do any-order" premise |
+| [2605.29123](https://arxiv.org/abs/2605.29123) *The Confidence Shortcut* | Confidence-based decoding misaligned with logical-flow trajectories |
+| [2510.13117](https://arxiv.org/abs/2510.13117) *On the Reasoning Abilities of MDLMs* (ICLR 2026) | Theory; MDMs ≡ padded looped transformers. Note this one **supports** diffusion |
+| [2502.09622](https://arxiv.org/abs/2502.09622) *Theoretical Benefit and Limitation* | Efficiency win holds for perplexity, vanishes for sequence error rate |
+
+"Low effort, publishable either way" is **not true** — the null result is already published, at a scale this
+team cannot approach.
+
+### What survives, and why it is actually good
+
+**Every one of those papers studies from-scratch models (LLaDA, Dream). None studies DiffuLLaMA — an
+AR→diffusion *adapted* model.** The open question the anchor uniquely licenses:
+
+> Does adaptation leave the any-order capability **vestigial**?
+
+Apply 2601.15593's order metrics and 2608.05687's commitment intervention to DiffuLLaMA vs LLaDA vs Dream
+with decoding held fixed. If adapted models are measurably more left-to-right than from-scratch ones, that
+is a clean, novel, anchor-derived result that also *explains why adaptation is cheap*.
+
+Inference-only, no training, all three models fit in 96 GB at bf16, parallelizes across five people.
+
+**Verdict: VIABLE**, narrowed. The original headline framing would be desk-rejected by anyone who has read
+2601.15593.
+
+## 16. Bet 5 — honest cost accounting — **NOT RECOMMENDED**
+
+Premise was true in 2024-25 and is **largely obsolete now**. Wall-clock reporting became standard by 2026:
+dInfer ([2510.08666](https://arxiv.org/abs/2510.08666)), Fast-dLLM, and NVIDIA's Nemotron diffusion line all
+report measured throughput; NVIDIA explicitly reasons about metric choice. The community had this argument
+and moved on.
+
+The strongest version of the argument is already a **theorem**, not a benchmark
+([2502.09622](https://arxiv.org/abs/2502.09622): the efficiency win vanishes for sequence error rate).
+
+Joules-per-token for dLLMs specifically is a real gap, but it is a gap because it is low-value, and it
+**cannot be measured credibly on a shared cluster** — energy measurement needs exclusive GPU access and
+stable power sampling. A shared-node number is one no reviewer will trust. Compounding it: no vLLM batching
+support for dLLMs means the AR baseline is unfairly advantaged, and fixing that is an engineering project,
+not a research one.
+
+**Verdict: NOT RECOMMENDED.**
+
+## 17. Bet 6 — mask-token shortcut — **VIABLE, pairs with bet 4**
+
+### The claim is half right — documented, but unanalyzed
+
+"Undocumented" is wrong; it is in Appendix B.2. Verbatim:
+
+> "In theory, we should expand the original vocabulary by adding an additional dimension to include a
+> special token as [MASK] token. However, considering practical issues on implementation, we can
+> alternatively **select an existing word from the vocabulary** to serve as the [MASK] token. It is
+> preferable that this chosen word has a particularly low frequency of occurrence in corpus. For DiffuGPT-S
+> we use tokenid=10541 and for **DiffuGPT-M we set a new [MASK] token with tokenid=50257**. For DiffuLLaMA,
+> we set tokenid=811."
+
+Confirmed in this repo: `DiffuLLaMA-training/train.py:304` defaults `--mask_token 811`;
+`LLaMA-Factory/src/llamafactory/model/loader.py:145,152` hardcodes 10541 for DiffuGPT-S and 811 for
+DiffuLLaMA.
+
+### Three things nobody checked
+
+1. **No evidence** that token 811 or 10541 are actually low-frequency. Asserted, never measured.
+2. Reusing a real token forces the model to disambiguate *"this is a MASK"* from *"this is literally that
+   word"* — a plausible source of degradation, never tested.
+3. **DiffuGPT-M is both the only model with a proper new mask token and the better performer** (DD row: 49.7
+   vs DiffuGPT-S's 45.4). Confounded with model size, never disentangled.
+
+**Verdict: VIABLE** — too small alone, but a clean cheap ablation that plugs directly into bet 4.
+
+## 18. Revised recommendation — one project, three questions
+
+The three surviving directions are the same paper, and all three are **forced through DiffuLLaMA
+specifically** rather than bolted onto it:
+
+| | Question | Type | Cost |
+|---|---|---|---|
+| Bet 4 | Does dropping attention-mask annealing at 7B cost anything? The ablation gain *grows* with scale (+2.1 → +2.5) while the authors extrapolate "minimal" 20× beyond their largest test | adaptation shortcut | small training runs |
+| Bet 6 | Does reusing a vocabulary token as `[MASK]` cost anything? The one model that got it "right" is also the best one, confounded with size | adaptation shortcut | cheap ablation |
+| Bet 3 (narrowed) | Does adaptation leave any-order capability vestigial vs from-scratch models? | adaptation consequence | inference only |
+
+**Proposed title: "What does AR→diffusion adaptation actually cost?"**
+
+Why this beats every alternative on the table:
+
+- **Course fit is exact.** It *is* reproduce-the-anchor-then-interrogate-it. Stages 2 and 3 in one.
+- **No exotic infrastructure.** No sandboxing, no CPG, no NCCL, no multi-node, no offset-mapping hazard.
+- **Interesting whichever way it lands.** If the shortcuts cost something, that is a finding against a
+  published ICLR paper. If they don't, that is a validated scaling law nobody had.
+- **Three independent shots.** If one question dies, the other two still carry a paper — unlike SGR, where
+  the whole project rides on one claim that CDC already dented.
+- **Preemption risk is low and cheap to re-check**, unlike the dLLM-serving subfield (a dozen 2026 papers)
+  or the planning-falsification subfield (two 2026 papers at 100B scale).
+
+### If the team keeps Structure-Guided ReMasking instead
+
+Then: delete the three claims in §3.1, adopt the §8.3 framing, move §3.2 from backward slicing to a tight
+AST neighbourhood (CDC Fig. 8b), fix §4.1 per §4.2, and run Phase 0 **first**.
+
+### Also worth noting
+
+The systems audit surfaced an unrelated but genuinely good idea: use DiffuLLaMA's actual distinguishing
+capability — infilling without prompt reordering, per the anchor's own abstract — on a **scientific** task
+(structured scientific text, molecular/protein sequence infilling, constrained scientific-notation
+generation). Single-GPU, course-appropriate, genuinely AI-for-science given the venue, and not crowded.
+Unverified for novelty; flagged as a lead, not a recommendation.
+
+## 19. Final ranking
+
+1. **Bets 4 + 6 + 3-narrowed as one adaptation-audit project** — STRONG
+2. **Structure-Guided ReMasking, reframed per §8.3** — VIABLE, higher effort, smaller claim, one dented leg
+3. **Scientific-infilling pivot** — promising lead, needs a novelty search
+4. **Bet 2** — RISKY; would be a reproduction as pitched
+5. **Bets 1 and 5** — NOT RECOMMENDED; false/decayed premises, hardware-blocked
+
+---
+
+*Part 3 verification: four independent search passes, every paper resolved to a working link before
+inclusion. Two claims were checked directly against this repository's own copy of the anchor paper's full
+text (§9 annealing, §17 mask token) rather than against any summary of it.*
