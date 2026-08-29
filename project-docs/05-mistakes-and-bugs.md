@@ -146,12 +146,27 @@ wall-time limits with an administrator before planning around a node. Plan aroun
 *Related:* M-14 is the same failure in the opposite direction — asserting a hardware *limit* before
 confirming it. Both come from treating unverified hardware assumptions as settled.
 
-### M-18 — Development laptop spec copied from a document instead of measured
-**What happened:** the laptop was recorded as an RTX 3060 6 GB, taken from the design doc's §5.5.
-`nvidia-smi` reports **RTX 3050 Laptop, 4 GB**.
-**Consequence:** §5.5's entire local-development plan was sized against a GPU that is 50% larger than the
-one that exists.
-**Rule:** measure the machine. `nvidia-smi` takes two seconds.
+### M-18 — Seven machines collapsed into one "development laptop"
+**What happened:** the docs recorded a single "development laptop, RTX 3060 6 GB," taken from the design
+doc's §5.5. Running `nvidia-smi` on the machine in use returned **RTX 3050 Laptop, 4 GB** — and this was
+initially written up as *"the design doc's spec is wrong."*
+
+**That framing was itself wrong.** There are **seven team members with seven different machines.** The
+6 GB RTX 3060 is most likely accurate — for Neel's laptop. The 4 GB RTX 3050 is accurate for Aaditya's.
+Neither is "the" development laptop, and the design doc was not necessarily mistaken.
+
+**Root cause:** a singular noun ("the development laptop") in a document written by one person, read as a
+team-wide fact by another. The correction then compounded the error by treating one measurement as
+authoritative for everyone.
+
+**Consequence:** any "this runs locally" claim is ambiguous until it names a machine. §5.5's local-dev plan
+is sized for 6 GB and does not transfer to a 4 GB machine.
+
+**Rules:**
+- Record hardware **per person**, never as a team-wide singular.
+- Measure rather than copy — `nvidia-smi` takes two seconds.
+- When correcting someone else's spec, check whether they were describing a *different machine* before
+  calling it an error.
 
 ### M-15 — Background research agents died on an API spend limit, twice
 Four agents were killed mid-run, losing the novelty searches for four of Aalhad's six bets on the first

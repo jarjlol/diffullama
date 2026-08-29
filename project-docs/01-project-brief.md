@@ -66,15 +66,38 @@ The project brief names the **Stanford Agents4Science** workshop.
 
 ## Compute available
 
+### Shared compute
+
 | Resource | Spec | Status |
 |---|---|---|
-| Local workstation | **2× RTX 6000 Pro Blackwell, 96 GB each (192 GB total)** | ✅ confirmed available — **this is the real compute** |
-| Development laptop | **RTX 3050 Laptop, 4 GB** | ✅ available — verified via `nvidia-smi`; CPU/tokenizer-scale work only |
-| Sharanga cluster (BITS Hyderabad) | see below | ⚠️ **access not approved; availability much narrower than raw specs suggest** |
+| Workstation | **2× RTX 6000 Pro Blackwell, 96 GB each (192 GB total)** | ✅ confirmed — **this is the real compute; plan around it** |
+| Sharanga cluster (BITS Hyderabad) | see below | ⚠️ **access not approved; availability far narrower than raw specs suggest** |
 
-> ⚠️ **Correction (2026-08-29):** an earlier version of this file listed the development laptop as an
-> RTX 3060 6 GB, copied from the design doc. `nvidia-smi` reports **RTX 3050 Laptop, 4 GB**. The design
-> doc's §5.5 local-development plan was written against the wrong spec.
+### Per-member machines
+
+Seven people, seven different machines. **"The development laptop" is not one thing** — what runs locally
+depends on whose machine, so record them individually.
+
+| Member | GPU | VRAM | Verified? | Realistically runs |
+|---|---|---|---|---|
+| Aaditya | RTX 3050 Laptop | 4 GB | ✅ `nvidia-smi` 2026-08-29 | tokenizer work, DiffuGPT-S (124M) |
+| Neel | RTX 3060 | 6 GB | ⚠️ per design doc §5.5, not independently checked | DiffuGPT-S/M |
+| Aryan | ? | ? | ❌ unknown | — |
+| Aalhad | ? | ? | ❌ unknown | — |
+| Arjun | ? | ? | ❌ unknown | — |
+| Khushi | ? | ? | ❌ unknown | — |
+| Diya | ? | ? | ❌ unknown | — |
+
+**To fill in your row:** run `nvidia-smi --query-gpu=name,memory.total --format=csv` and paste the result.
+If you have no NVIDIA GPU, say so — CPU-only is fine for the tokenizer and AST work, which is a real chunk
+of the remaining tasks.
+
+**Also needs recording:** who can reach the 2× Blackwell workstation, and how (physical access? SSH? shared
+account?). That determines who can actually run experiments once a direction is chosen.
+
+> **Note on §5.5 of the design doc:** it plans local development against "a 6 GB RTX 3060." That is
+> probably accurate for Neel's machine but is **not** a team-wide baseline — Aaditya's is 4 GB. Any
+> "runs locally" claim should name whose machine it was tested on.
 
 ### Sharanga — inventory is not availability
 
