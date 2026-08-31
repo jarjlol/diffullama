@@ -8,6 +8,48 @@ entry rather than editing the old one.
 
 # ⏳ PENDING — blocking
 
+## P-5 — Proposed resolution of P-1: EGR, execution-grounded remasking (2026-08-31)
+
+**Status: proposed, not decided.** A full design exists on branch `plan/execution-grounded-repair` in
+[`egr/`](../egr/README.md) — README plus architecture, experiment, hazard and build-phase documents. No
+code has been written.
+
+**What it is:** a sharpened **Option C**. Not the preempted mechanism claim — specifically the
+*execution-grounded seeding* reframing that `07-decision-tree.md` already identified as verified genuinely
+open. A candidate program is run under a tracer; the failing test's coverage spectra and traceback pick a
+witness AST statement; that statement's neighbourhood is remasked and re-filled by the diffusion model with
+everything else frozen; repeat to depth 5 or until the tests pass.
+
+**Why it is worth reconsidering C:**
+
+- It targets the anchor paper's *documented* strength. DiffuLLaMA's paper reports **no whole-function
+  HumanEval pass@1** — its only code result is HumanEval **single-line infilling**, and the argument it
+  makes is explicitly an infilling argument. EGR's inner loop *is* an infilling query. A design that asks
+  the checkpoint to write whole functions is fighting it; this one is not.
+- It fills four gaps recorded in F-13, all still open: execution feedback as the remasking anchor, an
+  iterate-until-pass loop, repair-benchmark numbers for this model family, and a confidence-remasking
+  baseline at matched budget.
+- Its scope ablation answers **Q-8** — whether CDC's interior neighbourhood optimum transfers from security
+  bugs to functional ones — which these notes already call Option C's single best remaining question.
+- **The first reportable result costs zero GPU-hours.** Mutation-injected bugs give known ground-truth
+  fault locations, so localization accuracy is measurable on a laptop, before any model runs. That gate
+  fires in week one, and it is also work the four members without workstation access can do in full.
+
+**What has changed since C was assessed as "highest effort, smallest claim":** the effort estimate assumed
+a code property graph, dynamic tracing, a sandbox and offset mapping all had to be built. Two of those are
+now cheaper than assessed — offset mapping is resolved (Q-6, F-21) and the CPG is not needed at all, since
+`ast` plus `sys.settrace` supply the witness node. Both known silent-failure modes (F-3 off-by-one, F-10
+`alg="origin"`) are catalogued with tests specified in `egr/docs/03-hazards.md`.
+
+**What has not changed:** it is still a follow-up to CDC and must be written as one. The three deleted
+novelty claims in F-12 stay deleted.
+
+**Decision needed from the team.** This entry does not settle P-1.
+
+**Action item independent of the decision:** `audit/test_shift_offset.py` exists only on the
+`audit/opus-review` branch, which D-2026-08-29-c schedules for deletion. It is the only proof of the
+project's highest-severity silent bug. Copy it to a durable location before that branch goes.
+
 ## P-1 — Which project direction? (blocks all of stages 2–6)
 
 Three options, fully analysed. **Options B and C are different papers; you cannot do both.** They even
