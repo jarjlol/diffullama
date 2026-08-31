@@ -251,3 +251,49 @@ itself reports 83.6%/91.2% accuracy there. The real remaining gap was narrower (
 An LLM-relevance scoring array was built with 222 entries for 218 papers. Caught by a length assertion
 before use; rebuilt as an explicit `{index: score}` map that fails safe. The same off-by-N class of bug is
 documented once already in the project's own REPORT.md §4.
+
+---
+
+## 2026-08-31 — execution-feedback repair audit
+
+### F-23 🟢 CDLM is post-hoc revision, but **not** a test-feedback repair loop
+
+[Corrective Diffusion Language Models (CDLM)](https://arxiv.org/pdf/2512.15596) takes a complete,
+synthetically corrupted program and iteratively remasks positions whose **model confidence** is below a
+threshold. The paper constructs its Code Revision Benchmark by applying controlled token substitutions to
+canonical programs, retaining corruptions that fail deterministic tests, and grading the final program after
+the configured refinement steps.
+
+The test result is **not** the per-step control signal: the remasking rule is confidence-threshold based.
+CDLM is therefore post-hoc in the sense of revising an already complete sequence, but it is not a
+generate → execute → localize from the failed test → repair → re-execute controller. Its central contribution
+is correction-oriented **post-training**, not external test-trace localization.
+
+### F-24 🟡 Test-feedback repair is established; the diffusion-specific combination remains unverified
+
+The broad generate/test/repair loop is already established in autoregressive LLM and automated-program-
+repair work:
+
+- [Self-Debugging](https://openreview.net/pdf?id=KuPixIqPiq), **ICLR 2024**, uses code execution and
+  feedback messages to improve generated programs.
+- [NExT](https://proceedings.mlr.press/v235/ni24a.html), **ICML 2024**, trains an execution-trace-aware
+  model for program repair.
+- [RePair](https://aclanthology.org/2024.findings-acl.973/), **Findings of ACL 2024**, iterates at inference
+  until repair quality stops improving or it reaches a maximum step limit.
+- [RepairAgent](https://arxiv.org/abs/2403.17134), **ICSE 2025**, is an autonomous
+  localize → patch → test → iterate agent for Java projects.
+
+Closest diffusion papers cover different pieces: CDC gives in-denoising constraint guidance; CDLM gives
+confidence-driven post-hoc revision after correction-oriented post-training; [Diffusion is a Code Repair
+Operator and Generator](https://arxiv.org/abs/2508.11110) repairs supplied broken snippets by noising and
+resuming diffusion. This audit found no paper combining **actual failing-test traces, external
+AST/def-use span selection, fixed-budget remasking, and iterative repair with a frozen diffusion code
+model**. This is an absence-of-evidence finding, not a priority claim; re-check before submission.
+
+### F-25 🟢 Evaluation must separate visible repair tests from held-out tests
+
+A loop that stops when the tests it sees pass can overfit those tests. For this proposed direction, the
+controller may inspect only a visible repair-test split. The accepted final candidate must be evaluated on
+held-out tests that were never supplied to the controller. The public/private-test protocol used by
+[APR-Comp](https://apr-comp.github.io/evaluation.html) is the appropriate pattern: public tests drive repair;
+private tests evaluate generalization.

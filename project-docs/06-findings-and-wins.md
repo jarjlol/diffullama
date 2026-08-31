@@ -163,6 +163,17 @@ matching their actual phrasing.
 not. Running it as-committed reproduced the exact recency-dilution failure the report had already
 diagnosed once — including a paper on *tire architecture design* out-ranking Mamba.
 
+### W-15 — The repair idea survived only after being narrowed to its real gap
+
+The broad proposal — generate code, run tests, and repair until they pass — already exists in automated
+program repair. CDLM is also genuinely post-hoc, contrary to an early shorthand, but uses confidence-based
+revision of controlled synthetic corruptions rather than test feedback to locate repairs.
+
+The surviving question is narrower and testable: whether **actual failed execution traces can select better
+fixed-budget remasking spans for frozen diffusion code models** than confidence, random, traceback-window,
+or static-only policies. This avoids claiming novelty for the loop or for structural remasking itself, while
+preserving a diffusion-specific contribution.
+
 ---
 
 ## 📋 Methodological notes worth keeping

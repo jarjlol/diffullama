@@ -47,7 +47,7 @@ within roughly the last 2 years.
 | Assignment Part 1 | Choose + understand an anchor paper (post-Jan-2024, top venue) | ✅ done — DiffuLLaMA |
 | Assignment Part 2 | Describe a *unique* automatable research-lifecycle task | ✅ **submitted** — "Continuous Gap Liveness Verification (Automated Novelty Invalidation)" |
 | SOTA assignment | Implement a 2024+ literature-review-generation method, generate a review for the anchor's domain, compare overlap with the anchor's related-work section | ✅ implemented (`litreview/`) **plus the second provided paper's evaluation framework**, ❌ **not submitted — deadline not yet announced** |
-| Main project | Stages 2–6 above | ⏳ **blocked on direction decision** |
+| Main project | Stages 2–6 above | ⏳ **direction decision pending** — proposed candidate: trace-guided post-hoc repair for frozen diffusion code models; see `08-trace-guided-repair-proposal.md` |
 
 ### SOTA assignment detail
 

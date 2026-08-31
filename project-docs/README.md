@@ -24,6 +24,7 @@ Then, as needed:
 | [`05-mistakes-and-bugs.md`](05-mistakes-and-bugs.md) | **Every error made so far and its root cause.** Read before writing code or citing anything — three bug *classes* have already recurred |
 | [`06-findings-and-wins.md`](06-findings-and-wins.md) | Novel findings and results worth writing up |
 | [`07-decision-tree.md`](07-decision-tree.md) | Diagrammed reasoning behind every fork — read this before proposing a direction that was already closed |
+| [`08-trace-guided-repair-proposal.md`](08-trace-guided-repair-proposal.md) | Proposed Option C2, its exact scope, baselines, and feasibility gate — **not yet a team decision** |
 
 ### Rules for agents working on this project
 
@@ -79,4 +80,4 @@ on the `audit/opus-review` branch.
 - Keep entries short. This folder is read at the start of every new agent session; bloat costs everyone
   context budget.
 
-**Last updated:** 2026-08-29
+**Last updated:** 2026-08-31

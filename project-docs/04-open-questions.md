@@ -18,8 +18,10 @@ manuscript itself is the deliverable; (c) a different AI-for-science venue is in
 **Needs:** ask TTV. Changes the deadline and how much polish the artefact needs, not the work itself.
 
 ### Q-2 — Which direction? (P-1 in the decision log)
-B (adaptation audit) vs C (Structure-Guided ReMasking). Different papers, different reproduction targets,
-cannot do both. **Everything in stages 2–6 is blocked on this.**
+B (adaptation audit) vs C2 (trace-guided post-hoc repair). They need different reproduction targets and
+cannot both be the main project. C2 is the refined form of the old Structure-Guided ReMasking option:
+frozen dLLM → failed visible test → trace-guided AST/def-use span selection → bounded remask-and-retest
+loop. **Everything in stages 2–6 is blocked on this team decision.**
 
 ### Q-3 — When is the SOTA assignment due?
 Not announced as of 2026-08-29. The work is complete and unsubmitted. **Check Quanta directly** — forum
@@ -71,6 +73,16 @@ both broader and tighter) holds for *functional* repair is unmeasured.
 
 **This is arguably Option C's single best remaining research question** — it is a real open question rather
 than a reframing of a preempted one.
+
+### Q-12 — Does trace-guided span selection beat simpler post-hoc policies?
+
+This is the decisive feasibility and novelty test for proposed Option C2. Under matched token budget `K`,
+native sampler, and bounded attempt budget `R`, compare random remasking, a local traceback window,
+static AST/def-use selection without execution evidence, model-confidence selection (if exposed fairly),
+and trace-guided AST/def-use selection.
+
+The result must be measured on held-out tests, not merely visible repair tests. If trace-guided selection
+does not beat static-only and traceback-window policies, the added controller complexity is not justified.
 
 ### Q-9 — How much does dropping annealing actually cost at 7B?
 **The core of Option B. Strengthened 2026-08-29 after reading NBDiff in full.**

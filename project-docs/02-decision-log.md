@@ -26,6 +26,25 @@ Full options analysis with evidence:
 
 **Status:** awaiting team decision. No direction-specific work has been started, deliberately.
 
+### 2026-08-31 update — proposed refinement of Option C, not yet a decision
+
+Today’s follow-up audit separates three superficially similar ideas:
+
+- **CDC:** constraint feedback *during denoising*; GradGuide uses a trained correctness surrogate and MDFI
+  uses static-security-analysis witnesses.
+- **CDLM:** post-trains a diffusion model to use its own confidence for revision of synthetic corruptions;
+  it does **not** use per-round execution-test feedback to choose repairs.
+- **Proposed Option C2:** after a frozen diffusion model generates a complete program, run visible tests,
+  use the failed execution trace plus a lightweight AST/def-use representation to select a fixed token
+  budget for remasking, then re-test for at most a bounded number of attempts.
+
+The potentially defensible claim is not "test-driven repair is new" or "structure-guided remasking is
+new." It is: **does actual execution-grounded location selection improve post-hoc, fixed-budget repair
+of frozen diffusion code models over random, confidence, traceback-window, and static-only policies?**
+
+This is a candidate direction only. A team decision must still choose between Option B and this refined
+Option C2. See `08-trace-guided-repair-proposal.md`.
+
 ## P-2 — Confirm target venue with TTV
 See `04-open-questions.md` Q-1. Agents4Science 2025 is over; no 2026 edition found.
 

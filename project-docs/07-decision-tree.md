@@ -21,8 +21,8 @@ flowchart TD
     F --> I[Option E:<br/>Scientific infilling]
 
     G --> G1{Novelty check}
-    G1 -->|CDC preempts mechanism| G2[Mechanism gone.<br/>Reframe on execution-grounded seeding]
-    G2 --> G3[VIABLE but:<br/>highest effort, smallest claim,<br/>core signal has evidence against it]
+    G1 -->|CDC preempts mechanism| G2[Mechanism gone.<br/>Reframe on trace-guided post-hoc repair]
+    G2 --> G3[Fixed-budget policy study:<br/>does execution evidence<br/>beat simpler selectors?]
 
     H --> H1{Novelty check}
     H1 -->|verified open| H2[Annealing dropped at 7B,<br/>validated only at 124M/355M,<br/>gain GROWS with scale]
@@ -69,9 +69,9 @@ flowchart TD
     B --> B3[Q3: any-order vestigial after adaptation?]
     B1 & B2 & B3 --> BV[3 independent shots.<br/>One dying still leaves a paper.]
 
-    C --> C1[Needs: CPG, dynamic tracing,<br/>sandbox, offset mapping]
-    C1 --> C2[2 known silent-failure modes]
-    C2 --> CV[Everything rides on<br/>one already-dented claim]
+    C --> C1[Needs: trace-guided AST/def-use spans,<br/>sandbox, offset mapping]
+    C1 --> C2[Compare random, window,<br/>confidence, static-only]
+    C2 --> CV[Viable only if trace evidence<br/>beats simpler selectors]
 
     E --> E1[Molecules/proteins:<br/>crowded, purpose-built models]
     E1 --> E2[Scientific text: partly absorbed<br/>by an existing eval paper]
@@ -100,10 +100,11 @@ The execution-grounded seeding gap is **verified genuinely open** — no paper a
 remask from a failing test or traceback. And CDC has no confidence baseline at matched budget, so that
 comparison exists nowhere.
 
-The honest framing if C is chosen:
+The honest framing if refined C2 is chosen:
 
-> *"CDC established that static-analysis witnesses can anchor structural remasking. We ask whether dynamic
-> failure evidence anchors it better, and we run the matched-budget policy comparison CDC does not."*
+> *"CDC established static-analysis-witness-guided remasking, while CDLM studies confidence-guided revision
+> after correction-oriented post-training. We ask whether actual failing-test traces improve fixed-budget,
+> post-hoc repair location selection for a frozen diffusion code model."*
 
 Defensible. Visibly a follow-up. Should be written as one.
 
