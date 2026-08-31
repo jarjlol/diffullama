@@ -1,0 +1,173 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="580" viewBox="0 0 1000 580" role="img">
+<title>Token states across diffusion steps</title>
+<rect x="0" y="0" width="1000" height="580" fill="#f6f8fa"/>
+<text x="40" y="36" font-family="Helvetica,Arial,sans-serif" font-size="16" fill="#1f2328" font-weight="700" text-anchor="start">How the sequence xt fills in over the T denoising steps</text>
+<text x="40" y="58" font-family="Helvetica,Arial,sans-serif" font-size="12.5" fill="#57606a" font-weight="400" text-anchor="start">Each square is one token position. 20 shown; the real run uses gen_len = 2048.</text>
+<line x1="208" y1="90" x2="208" y2="374" stroke="#d0d7de" stroke-width="2"/>
+<polygon points="202,374 214,374 208,384" fill="#d0d7de"/>
+<text x="40" y="115" font-family="Helvetica,Arial,sans-serif" font-size="12.5" fill="#1f2328" font-weight="700" text-anchor="start">t = 64   (start)</text>
+<rect x="226" y="96" width="28" height="28" rx="4" fill="#8250df" stroke="none"/>
+<rect x="258" y="96" width="28" height="28" rx="4" fill="#8250df" stroke="none"/>
+<rect x="290" y="96" width="28" height="28" rx="4" fill="#8250df" stroke="none"/>
+<rect x="322" y="96" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="336.0" y="115" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="354" y="96" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="368.0" y="115" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="386" y="96" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="400.0" y="115" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="418" y="96" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="432.0" y="115" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="450" y="96" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="464.0" y="115" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="482" y="96" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="496.0" y="115" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="514" y="96" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="528.0" y="115" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="546" y="96" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="560.0" y="115" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="578" y="96" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="592.0" y="115" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="610" y="96" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="624.0" y="115" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="642" y="96" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="656.0" y="115" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="674" y="96" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="688.0" y="115" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="706" y="96" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="720.0" y="115" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="738" y="96" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="752.0" y="115" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="770" y="96" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="784.0" y="115" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="802" y="96" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="816.0" y="115" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="834" y="96" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="848.0" y="115" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<text x="868" y="115" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#57606a" font-weight="400" text-anchor="start">0 / 17 generated</text>
+<text x="40" y="177" font-family="Helvetica,Arial,sans-serif" font-size="12.5" fill="#1f2328" font-weight="700" text-anchor="start">t = 48</text>
+<rect x="226" y="158" width="28" height="28" rx="4" fill="#8250df" stroke="none"/>
+<rect x="258" y="158" width="28" height="28" rx="4" fill="#8250df" stroke="none"/>
+<rect x="290" y="158" width="28" height="28" rx="4" fill="#8250df" stroke="none"/>
+<rect x="322" y="158" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="336.0" y="177" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="354" y="158" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="368.0" y="177" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="386" y="158" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="400.0" y="177" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="418" y="158" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="450" y="158" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="464.0" y="177" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="482" y="158" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="496.0" y="177" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="514" y="158" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="528.0" y="177" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="546" y="158" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="560.0" y="177" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="578" y="158" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="592.0" y="177" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="610" y="158" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="642" y="158" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="656.0" y="177" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="674" y="158" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="688.0" y="177" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="706" y="158" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="720.0" y="177" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="738" y="158" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="752.0" y="177" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="770" y="158" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="802" y="158" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="816.0" y="177" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="834" y="158" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="848.0" y="177" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<text x="868" y="177" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#57606a" font-weight="400" text-anchor="start">3 / 17 generated</text>
+<text x="40" y="239" font-family="Helvetica,Arial,sans-serif" font-size="12.5" fill="#1f2328" font-weight="700" text-anchor="start">t = 32</text>
+<rect x="226" y="220" width="28" height="28" rx="4" fill="#8250df" stroke="none"/>
+<rect x="258" y="220" width="28" height="28" rx="4" fill="#8250df" stroke="none"/>
+<rect x="290" y="220" width="28" height="28" rx="4" fill="#8250df" stroke="none"/>
+<rect x="322" y="220" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="336.0" y="239" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="354" y="220" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="386" y="220" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="400.0" y="239" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="418" y="220" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="450" y="220" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="464.0" y="239" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="482" y="220" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="496.0" y="239" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="514" y="220" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="546" y="220" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="560.0" y="239" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="578" y="220" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="592.0" y="239" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="610" y="220" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="642" y="220" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="656.0" y="239" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="674" y="220" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="688.0" y="239" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="706" y="220" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="738" y="220" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="752.0" y="239" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="770" y="220" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="802" y="220" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="816.0" y="239" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="834" y="220" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<text x="868" y="239" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#57606a" font-weight="400" text-anchor="start">7 / 17 generated</text>
+<text x="40" y="301" font-family="Helvetica,Arial,sans-serif" font-size="12.5" fill="#1f2328" font-weight="700" text-anchor="start">t = 16</text>
+<rect x="226" y="282" width="28" height="28" rx="4" fill="#8250df" stroke="none"/>
+<rect x="258" y="282" width="28" height="28" rx="4" fill="#8250df" stroke="none"/>
+<rect x="290" y="282" width="28" height="28" rx="4" fill="#8250df" stroke="none"/>
+<rect x="322" y="282" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="354" y="282" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="386" y="282" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="400.0" y="301" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="418" y="282" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="450" y="282" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="482" y="282" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="496.0" y="301" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="514" y="282" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="546" y="282" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="578" y="282" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="592.0" y="301" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="610" y="282" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="642" y="282" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="674" y="282" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="688.0" y="301" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="706" y="282" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="738" y="282" width="28" height="28" rx="4" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="752.0" y="301" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#57606a" font-weight="700" text-anchor="middle">M</text>
+<rect x="770" y="282" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="802" y="282" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="834" y="282" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<text x="868" y="301" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#57606a" font-weight="400" text-anchor="start">12 / 17 generated</text>
+<text x="40" y="363" font-family="Helvetica,Arial,sans-serif" font-size="12.5" fill="#1f2328" font-weight="700" text-anchor="start">t = 0   (done)</text>
+<rect x="226" y="344" width="28" height="28" rx="4" fill="#8250df" stroke="none"/>
+<rect x="258" y="344" width="28" height="28" rx="4" fill="#8250df" stroke="none"/>
+<rect x="290" y="344" width="28" height="28" rx="4" fill="#8250df" stroke="none"/>
+<rect x="322" y="344" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="354" y="344" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="386" y="344" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="418" y="344" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="450" y="344" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="482" y="344" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="514" y="344" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="546" y="344" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="578" y="344" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="610" y="344" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="642" y="344" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="674" y="344" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="706" y="344" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="738" y="344" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="770" y="344" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="802" y="344" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<rect x="834" y="344" width="28" height="28" rx="4" fill="#1a7f37" stroke="none"/>
+<text x="868" y="363" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#57606a" font-weight="400" text-anchor="start">17 / 17 generated</text>
+<rect x="40" y="408" width="16" height="16" rx="3" fill="#8250df" stroke="none"/>
+<text x="64" y="421" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#57606a" font-weight="400" text-anchor="start">given by src_mask - fixed, never overwritten</text>
+<rect x="40" y="434" width="16" height="16" rx="3" fill="#1a7f37" stroke="none"/>
+<text x="64" y="447" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#57606a" font-weight="400" text-anchor="start">revealed - sampled by the model, then locked in for good</text>
+<rect x="40" y="460" width="16" height="16" rx="3" fill="#eaeef2" stroke="#d0d7de"/>
+<text x="64" y="473" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#57606a" font-weight="400" text-anchor="start">[MASK] (tokenizer.mask_token_id) - still unknown, re-guessed every pass</text>
+<rect x="40" y="508" width="920" height="52" rx="10" fill="#fff8e1" stroke="#9a6700" stroke-width="1.5" stroke-dasharray="6,4"/>
+<text x="58" y="538" font-family="Helvetica,Arial,sans-serif" font-size="12.5" fill="#9a6700" font-weight="400" text-anchor="start">Note the reveal order is scattered, not left-to-right: that is the whole difference from autoregressive decoding.</text>
+
+</svg>

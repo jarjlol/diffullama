@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="896" viewBox="0 0 1000 896" role="img">
+<title>The generate_samples reverse diffusion loop</title>
+<rect x="0" y="0" width="1000" height="896" fill="#f6f8fa"/>
+<text x="30" y="36" font-family="Helvetica,Arial,sans-serif" font-size="15" fill="#1f2328" font-weight="700" text-anchor="start">generate_samples()  -  the reverse-diffusion loop  -  model.py:80-158</text>
+<rect x="220" y="58" width="440" height="66" rx="10" fill="#ffffff" stroke="#d0d7de" stroke-width="1.5"/>
+<text x="238" y="82" font-family="Helvetica,Arial,sans-serif" font-size="13.5" fill="#1f2328" font-weight="700" text-anchor="start">Start  -  noise everything that is not given</text>
+<text x="238" y="102" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#0550ae" font-weight="400" text-anchor="start">maskable_mask = ~src_mask</text>
+<text x="238" y="118" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#0550ae" font-weight="400" text-anchor="start">xt = x.masked_fill(maskable_mask, tokenizer.mask_token_id)</text>
+<line x1="440" y1="124" x2="440" y2="143" stroke="#57606a" stroke-width="2"/>
+<polygon points="434,143 446,143 440,152" fill="#57606a"/>
+<rect x="220" y="152" width="440" height="76" rx="10" fill="#ddf4ff" stroke="#0969da" stroke-width="1.5"/>
+<text x="238" y="176" font-family="Helvetica,Arial,sans-serif" font-size="13.5" fill="#1f2328" font-weight="700" text-anchor="start">1   Denoise: one bidirectional forward pass</text>
+<text x="238" y="196" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#0550ae" font-weight="400" text-anchor="start">logits = model(xt, attention_mask)</text>
+<text x="238" y="216" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#57606a" font-weight="400" text-anchor="start">model.py:110 (first pass) / 139 (inside the loop)</text>
+<line x1="440" y1="228" x2="440" y2="247" stroke="#57606a" stroke-width="2"/>
+<polygon points="434,247 446,247 440,256" fill="#57606a"/>
+<rect x="220" y="256" width="440" height="80" rx="10" fill="#ffffff" stroke="#d0d7de" stroke-width="1.5"/>
+<text x="238" y="280" font-family="Helvetica,Arial,sans-serif" font-size="13.5" fill="#1f2328" font-weight="700" text-anchor="start">2   Sample a full-sequence guess x0</text>
+<text x="238" y="300" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#0550ae" font-weight="400" text-anchor="start">filter_logits = top_p_logits(logits/logits_temp, p=topp_temp)</text>
+<text x="238" y="316" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#0550ae" font-weight="400" text-anchor="start">scores = torch.log_softmax(filter_logits, dim=-1)</text>
+<text x="238" y="332" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#0550ae" font-weight="400" text-anchor="start">x0 = dists.Categorical(logits=scores).sample()</text>
+<line x1="440" y1="336" x2="440" y2="355" stroke="#57606a" stroke-width="2"/>
+<polygon points="434,355 446,355 440,364" fill="#57606a"/>
+<rect x="220" y="364" width="440" height="74" rx="10" fill="#ffffff" stroke="#d0d7de" stroke-width="1.5"/>
+<text x="238" y="388" font-family="Helvetica,Arial,sans-serif" font-size="13.5" fill="#1f2328" font-weight="700" text-anchor="start">3   Fix the off-by-one (shift=True)</text>
+<text x="238" y="408" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#0550ae" font-weight="400" text-anchor="start">x0 = torch.cat([x[:, 0:1], x0[:, :-1]], dim=1)</text>
+<text x="238" y="428" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#57606a" font-weight="400" text-anchor="start">the reused AR head at position i predicts token i+1, so slide right one slot</text>
+<line x1="440" y1="438" x2="440" y2="457" stroke="#57606a" stroke-width="2"/>
+<polygon points="434,457 446,457 440,466" fill="#57606a"/>
+<rect x="220" y="466" width="440" height="74" rx="10" fill="#ffffff" stroke="#d0d7de" stroke-width="1.5"/>
+<text x="238" y="490" font-family="Helvetica,Arial,sans-serif" font-size="13.5" fill="#1f2328" font-weight="700" text-anchor="start">4   Keep what is already settled</text>
+<text x="238" y="510" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#0550ae" font-weight="400" text-anchor="start">x0 = xt.masked_scatter(maskable_mask, x0[maskable_mask])</text>
+<text x="238" y="530" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#57606a" font-weight="400" text-anchor="start">prompt + already-revealed tokens survive; only [MASK] slots take the new guess</text>
+<line x1="440" y1="540" x2="440" y2="561" stroke="#57606a" stroke-width="2"/>
+<polygon points="434,561 446,561 440,570" fill="#57606a"/>
+<polygon points="440,570 558,628 440,686 322,628" fill="#ffffff" stroke="#57606a" stroke-width="1.5"/>
+<text x="440" y="626" font-family="Helvetica,Arial,sans-serif" font-size="14" fill="#1f2328" font-weight="700" text-anchor="middle">t &gt; 0 ?</text>
+<text x="440" y="646" font-family="Helvetica,Arial,sans-serif" font-size="10.5" fill="#57606a" font-weight="400" text-anchor="middle">loop counter</text>
+<line x1="558" y1="628" x2="691" y2="628" stroke="#57606a" stroke-width="2"/>
+<polygon points="691,622 691,634 700,628 " fill="#57606a"/>
+<text x="636" y="616" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1f2328" font-weight="700" text-anchor="middle">no</text>
+<rect x="700" y="576" width="270" height="104" rx="10" fill="#dafbe1" stroke="#1a7f37" stroke-width="1.5"/>
+<text x="718" y="602" font-family="Helvetica,Arial,sans-serif" font-size="13.5" fill="#1f2328" font-weight="700" text-anchor="start">Done</text>
+<text x="718" y="622" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#0550ae" font-weight="400" text-anchor="start">if shift: x0 = x0[:, 1:]</text>
+<text x="718" y="638" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#0550ae" font-weight="400" text-anchor="start">return x0</text>
+<text x="718" y="658" font-family="Helvetica,Arial,sans-serif" font-size="10.5" fill="#57606a" font-weight="400" text-anchor="start">model.py:155-158  -  no [MASK]</text>
+<text x="718" y="672" font-family="Helvetica,Arial,sans-serif" font-size="10.5" fill="#57606a" font-weight="400" text-anchor="start">is left anywhere in x0</text>
+<line x1="440" y1="686" x2="440" y2="711" stroke="#57606a" stroke-width="2"/>
+<polygon points="434,711 446,711 440,720" fill="#57606a"/>
+<text x="462" y="706" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#1f2328" font-weight="700" text-anchor="start">yes</text>
+<rect x="180" y="720" width="520" height="118" rx="10" fill="#fff8e1" stroke="#9a6700" stroke-width="1.5"/>
+<text x="198" y="744" font-family="Helvetica,Arial,sans-serif" font-size="13.5" fill="#9a6700" font-weight="700" text-anchor="start">5   Permanently reveal a random slice of [MASK] positions</text>
+<text x="198" y="764" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#9a6700" font-weight="400" text-anchor="start">p_to_x0 = 1 / (t + 1)</text>
+<text x="198" y="780" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#9a6700" font-weight="400" text-anchor="start">masked_to_x0 = maskable_mask &amp; (torch.rand_like(x0) &lt; p_to_x0)</text>
+<text x="198" y="796" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#9a6700" font-weight="400" text-anchor="start">xt.masked_scatter_(masked_to_x0, x0[masked_to_x0])</text>
+<text x="198" y="812" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#9a6700" font-weight="400" text-anchor="start">maskable_mask = maskable_mask.masked_fill(masked_to_x0, False)</text>
+<text x="198" y="830" font-family="Helvetica,Arial,sans-serif" font-size="10.5" fill="#9a6700" font-weight="400" text-anchor="start">model.py:128-135  -  as t shrinks, p grows, so more gets locked in each pass</text>
+<path d="M180,779 L100,779 L100,190 L211,190" fill="none" stroke="#0969da" stroke-width="2"/>
+<polygon points="211,184 211,196 220,190" fill="#0969da"/>
+<text x="88" y="484" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#0969da" font-weight="700" text-anchor="middle" transform="rotate(-90 88 484)">repeat with t - 1</text>
+<text x="30" y="882" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#57606a" font-weight="400" text-anchor="start">Default T = diffusion_steps = 64, so the model runs 64 forward passes before any text is returned.</text>
+
+</svg>
