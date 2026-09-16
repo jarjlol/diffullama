@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="452" viewBox="0 0 1000 452" role="img">
+<title>Internals of one DiscreteDiffusionModel forward pass</title>
+<rect x="0" y="0" width="1000" height="452" fill="#f6f8fa"/>
+<text x="30" y="36" font-family="Helvetica,Arial,sans-serif" font-size="15" fill="#1f2328" font-weight="700" text-anchor="start">Inside one denoising pass: DiscreteDiffusionModel.forward()  -  model.py:68-78</text>
+<text x="30" y="58" font-family="Helvetica,Arial,sans-serif" font-size="12.5" fill="#57606a" font-weight="400" text-anchor="start">This runs once per diffusion step, T times in total.</text>
+<rect x="25" y="116" width="125" height="112" rx="10" fill="#ffffff" stroke="#d0d7de" stroke-width="1.5"/>
+<text x="41" y="144" font-family="Helvetica,Arial,sans-serif" font-size="14" fill="#1f2328" font-weight="700" text-anchor="start">xt</text>
+<text x="41" y="168" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#57606a" font-weight="400" text-anchor="start">token ids</text>
+<text x="41" y="186" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#57606a" font-weight="400" text-anchor="start">the current</text>
+<text x="41" y="204" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#57606a" font-weight="400" text-anchor="start">noisy sequence</text>
+<rect x="185" y="116" width="175" height="112" rx="10" fill="#ffffff" stroke="#d0d7de" stroke-width="1.5"/>
+<text x="201" y="144" font-family="Helvetica,Arial,sans-serif" font-size="14" fill="#1f2328" font-weight="700" text-anchor="start">embed_tokens()</text>
+<text x="201" y="168" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#0550ae" font-weight="400" text-anchor="start">model.py:65-66</text>
+<text x="201" y="186" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#57606a" font-weight="400" text-anchor="start">id → vector</text>
+<rect x="395" y="116" width="200" height="112" rx="10" fill="#ddf4ff" stroke="#0969da" stroke-width="1.5"/>
+<text x="411" y="144" font-family="Helvetica,Arial,sans-serif" font-size="14" fill="#0550ae" font-weight="700" text-anchor="start">denoise_model()</text>
+<text x="411" y="168" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#0550ae" font-weight="400" text-anchor="start">model.py:74</text>
+<text x="411" y="186" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#57606a" font-weight="400" text-anchor="start">the LLaMA body,</text>
+<text x="411" y="204" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#57606a" font-weight="400" text-anchor="start">run bidirectionally</text>
+<rect x="630" y="116" width="160" height="112" rx="10" fill="#ffffff" stroke="#d0d7de" stroke-width="1.5"/>
+<text x="646" y="144" font-family="Helvetica,Arial,sans-serif" font-size="14" fill="#1f2328" font-weight="700" text-anchor="start">lm_head()</text>
+<text x="646" y="168" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#0550ae" font-weight="400" text-anchor="start">model.py:59-60, 76</text>
+<text x="646" y="186" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#57606a" font-weight="400" text-anchor="start">vector → vocab</text>
+<rect x="825" y="116" width="150" height="112" rx="10" fill="#ffffff" stroke="#d0d7de" stroke-width="1.5"/>
+<text x="841" y="144" font-family="Helvetica,Arial,sans-serif" font-size="14" fill="#1f2328" font-weight="700" text-anchor="start">logits</text>
+<text x="841" y="168" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#57606a" font-weight="400" text-anchor="start">one distribution</text>
+<text x="841" y="186" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#57606a" font-weight="400" text-anchor="start">per position,</text>
+<text x="841" y="204" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#57606a" font-weight="400" text-anchor="start">all at once</text>
+<line x1="150" y1="172.0" x2="176" y2="172.0" stroke="#57606a" stroke-width="2"/>
+<polygon points="176,166.0 176,178.0 185,172.0 " fill="#57606a"/>
+<text x="167.5" y="158.0" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="10" fill="#57606a" font-weight="400" text-anchor="middle">[B, L]</text>
+<line x1="360" y1="172.0" x2="386" y2="172.0" stroke="#57606a" stroke-width="2"/>
+<polygon points="386,166.0 386,178.0 395,172.0 " fill="#57606a"/>
+<text x="377.5" y="158.0" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="10" fill="#57606a" font-weight="400" text-anchor="middle">[B, L, 4096]</text>
+<line x1="595" y1="172.0" x2="621" y2="172.0" stroke="#57606a" stroke-width="2"/>
+<polygon points="621,166.0 621,178.0 630,172.0 " fill="#57606a"/>
+<text x="612.5" y="158.0" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="10" fill="#57606a" font-weight="400" text-anchor="middle">[B, L, 4096]</text>
+<line x1="790" y1="172.0" x2="816" y2="172.0" stroke="#57606a" stroke-width="2"/>
+<polygon points="816,166.0 816,178.0 825,172.0 " fill="#57606a"/>
+<text x="807.5" y="158.0" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="10" fill="#57606a" font-weight="400" text-anchor="middle">[B, L, V]</text>
+<rect x="340" y="300" width="310" height="120" rx="10" fill="#fff8e1" stroke="#9a6700" stroke-width="1.5" stroke-dasharray="6,4"/>
+<text x="358" y="326" font-family="Helvetica,Arial,sans-serif" font-size="13.5" fill="#9a6700" font-weight="700" text-anchor="start">attention_mask</text>
+<text x="358" y="346" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#9a6700" font-weight="400" text-anchor="start">get_anneal_attn_mask(</text>
+<text x="358" y="362" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#9a6700" font-weight="400" text-anchor="start">    seq_len, bsz, attn_mask_ratio=1.0)</text>
+<text x="358" y="380" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="10.5" fill="#9a6700" font-weight="400" text-anchor="start">model.py:100, 175-187</text>
+<text x="358" y="402" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#9a6700" font-weight="400" text-anchor="start">fully bidirectional - see Diagram 3</text>
+<line x1="495" y1="300" x2="495" y2="237" stroke="#9a6700" stroke-width="2"/>
+<polygon points="489,237 501,237 495,228" fill="#9a6700"/>
+<text x="30" y="438" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#57606a" font-weight="400" text-anchor="start">B = batch, L = sequence length (2048 by default), V = vocab size</text>
+
+</svg>
