@@ -169,3 +169,6 @@ output/
 !litreview/output/
 wandb/
 **__pycache__**
+
+# agent docs: personal, uncommitted Claude Code overrides (see CLAUDE.md)
+CLAUDE.local.md
