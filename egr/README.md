@@ -1,16 +1,22 @@
 # EGR — Execution-Grounded Remasking
 
-**A plan, not an implementation.** Nothing in `egr/` runs yet. This directory contains the full design
-for a proof-of-concept module, written so that implementation can start immediately and produce a first
-experimental result within days rather than weeks.
+**The POC is implemented through Phase 2** (`docs/04-build-phases.md`'s entire GPU-free
+critical path: hazards, the full harness, and a first localization-accuracy result) —
+28/28 tests passing, entirely on CPU. Phases 3–6 (the real model, the real benchmark data, the
+repair curve) are deliberately not started: this build never had GPU access, by explicit
+instruction, and never loaded DiffuLLaMA. See [`deploy.md`](deploy.md) for how to run what
+exists and exactly what a session with real compute should do next.
 
 | Document | What it answers |
 |---|---|
 | **`README.md`** (this file) | What we are building, why, and the plan end to end |
+| [`novelty.md`](novelty.md) | Exactly what is and isn't new here, relative to the anchor paper and CDC |
+| [`deploy.md`](deploy.md) | How to run the code, what's simplified and why, and what the next agent must fix |
 | [`docs/01-architecture.md`](docs/01-architecture.md) | Module layout, the five protocols, data structures, the intended CLI |
 | [`docs/02-experiment-plan.md`](docs/02-experiment-plan.md) | Benchmarks, baselines, metrics, ablations, compute budget |
 | [`docs/03-hazards.md`](docs/03-hazards.md) | The silent-failure register and the invariant tests that must exist *before* the selector |
 | [`docs/04-build-phases.md`](docs/04-build-phases.md) | Step-by-step build order with an acceptance test per phase |
+| [`docs/05-gpu-deployment-plan.md`](docs/05-gpu-deployment-plan.md) | The plan (no code) for turning this into a real GPU experiment |
 
 ---
 

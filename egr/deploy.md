@@ -1,14 +1,18 @@
 # Deploying and running EGR
 
 How to actually run the code in `egr/`, what state it's in right now, and exactly what to do
-next when real compute becomes available. Read this after `README.md` (the idea) and
+next when real compute becomes available. Read this after `README.md` (the idea),
+`novelty.md` (exactly what is and isn't new here, relative to the anchor paper and CDC), and
 `docs/01-architecture.md` (the design) — this is the "how do I press the button" document.
 
 > **This POC never loads DiffuLLaMA and never touches the network.** Every command below runs
 > on a laptop CPU, deterministically, using a `MockBackend` stand-in for the real model and a
 > small embedded fixture set standing in for the real HumanEval+ corpus. That was a deliberate
 > instruction for this build, not an oversight — §5 below is the exact list of what to swap in,
-> and where, once compute and network access are available.
+> and where, once compute and network access are available. §8 is specifically for whoever (or
+> whatever AI agent) picks this up next: the concrete GPU deployment plan lives at
+> [`docs/05-gpu-deployment-plan.md`](docs/05-gpu-deployment-plan.md) — it contains no code on
+> purpose, and says so explicitly.
 
 ---
 
@@ -216,3 +220,65 @@ deliberately deferred, see §5 for exactly what unblocks it.
 **Bottom line: the plan's entire GPU-free critical path (Phases 0–2) is implemented, tested,
 and has produced its first (preliminary) result. Nothing GPU-dependent has been attempted, per
 explicit instruction — §5 is the handoff note for the session that has compute.**
+
+---
+
+## 8. For the next coding agent: what MUST be in the real implementation
+
+This section exists because §5 and §7 above describe the *current* state, which is a POC's
+state — some of what's listed there as "known simplification" is genuinely fine to leave as a
+simplification for good, and some of it is a stand-in that **must not ship in the real
+experiment**. This section draws that line explicitly, so it doesn't have to be re-derived.
+See also [`docs/05-gpu-deployment-plan.md`](docs/05-gpu-deployment-plan.md) for the step-by-step
+GPU deployment plan itself (no code, by design) and [`novelty.md`](novelty.md) for the claim
+every one of these items ultimately has to support.
+
+### Must be replaced before any result is reported (not optional, not a style choice)
+
+1. **The real benchmark data.** The 6-function fixture set in `egr/benchmarks/mutants.py` is
+   for exercising the harness, not for reporting numbers about the method. Before any figure
+   goes in a write-up: swap in the real 542-problem EvalPlus corpus and the real HumanEvalFix
+   split (§5 row 2, §3.5 of the GPU deployment plan). A number computed on 6 hand-written
+   functions is not evidence about DiffuLLaMA or about execution-grounded remasking — it is
+   only evidence that the code runs.
+2. **A real confidence baseline.** `MockBackend.confidence()` is a constant 0.5 everywhere.
+   The `confidence` column in the current localization table
+   (`project-docs/02-decision-log.md` P-6) is explicitly flagged as reading no real signal.
+   Load DiffuGPT-S (or DiffuLLaMA itself) for this specifically before treating any
+   `ours` vs `confidence` comparison as real (§5 row 4, §3.6 of the GPU deployment plan).
+3. **The real model, actually loaded and smoke-tested.** `DiffuLLaMABackend` exists but has
+   never run. Phase 3's smoke test (10 problems, diff confined to the masked span, asserted
+   not eyeballed) is not a formality — it is the check that would have caught H-1/H-3-class
+   bugs on the real model the way the CPU tests caught them on the mock (§6 above; §3.4 of the
+   GPU deployment plan).
+4. **A genuinely line-safe `_budget_trim`.** The current one is intentionally a no-op past the
+   ceiling (§5 row 5) because the alternative it replaced silently corrupted programs. That
+   trade was correctness-over-completeness for a POC; the real version should walk inward by
+   whole lines rather than simply declining to trim, so the "matched budget" comparison in
+   `docs/01-architecture.md` §8 is actually matched, not merely bounded.
+
+### Should be re-examined, not necessarily replaced
+
+5. **The fixed-length-infilling limitation found in `MockBackend`'s oracle splice** (§5 row 6)
+   is a property of masked diffusion, expected to matter for the real model too — it should be
+   *measured* via the `slack` ablation already in `docs/02-experiment-plan.md`, not
+   "fixed". If the real-model data shows it binds often, canvas padding (reserved trailing
+   growth room, which `Canvas.build()` does not currently provide) is the right next design
+   step — but only build that if the measurement says it's needed.
+6. **Track B's generation path and the Dream-Coder backend** (§5 row 3) are not started at
+   all, not simplified — there is no code to point to. Both are required for
+   `docs/04-build-phases.md` Phase 5 and should be designed against the existing
+   `DiffusionBackend`/`RemaskPolicy` protocols (P1: one loop, five protocols), not bolted on
+   as a special case in `loop.py`.
+
+### Explicitly fine to leave as-is
+
+- `MockBackend` itself, and every test built on it. It exists to prove the harness works
+  without a GPU (P2) and should keep existing after the real backend is added — it is what CI,
+  or any future contributor without workstation access, will keep running.
+- The JSONL report schema (`report.py`) and the CLI's resume-by-`task_id` behaviour. Neither
+  needs to change for a GPU run; both were designed for exactly that use case
+  (`docs/04-build-phases.md`'s checkpoint-and-resume requirement).
+- The hazard tests (`egr/tests/test_invariants.py`, `test_canvas.py`, `test_verify.py`,
+  `test_localize.py`, `test_loop_mock.py`) — these should keep passing unchanged; if adding the
+  real backend breaks one of them, that is a real regression, not a test to relax.
