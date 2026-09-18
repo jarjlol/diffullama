@@ -8,6 +8,52 @@ entry rather than editing the old one.
 
 # ⏳ PENDING — blocking
 
+## P-6 — Phase 2 localization gate: preliminary GO, on a placeholder corpus, not the real one (2026-09-19)
+
+**Status: preliminary GO. Does not settle P-5 or P-1.** `egr/` now has a working implementation
+(all of `docs/04-build-phases.md` Phases 0–2), built and tested entirely on CPU with `--backend mock`,
+per explicit instruction not to load DiffuLLaMA on the development laptop. `python -m egr.cli localize`
+produced the first result docs/04-build-phases.md Phase 2 calls for:
+
+| policy | top-1 | top-3 |
+|---|---|---|
+| **ours** (execution-grounded) | **0.73** [0.48, 0.89] | **0.93** [0.70, 0.99] |
+| static (structural, no execution) | 0.27 [0.11, 0.52] | 0.27 [0.11, 0.52] |
+| confidence (MockBackend stand-in) | 0.40 [0.20, 0.64] | 0.87 [0.62, 0.96] |
+| random | 0.20 [0.07, 0.45] | 0.73 [0.48, 0.89] |
+
+`ours` beats both `static` and `random` on top-1 and top-3, which is the signal Phase 2 is a gate on:
+execution-grounded evidence localizes better than the alternatives here.
+
+**Why this is preliminary, not the real gate result, and why the go/no-go decision is not yet final:**
+
+1. **n = 15 mutants**, from 6 hand-written fixture functions (`egr/benchmarks/mutants.py`), not the
+   real 542-problem HumanEval+ corpus the build-phases doc specifies. Wilson intervals are wide and
+   overlap. No network access / `evalplus` package was available in this environment to load the real
+   corpus — see `egr/benchmarks/mutants.py`'s own module docstring, which flags exactly this and says
+   what to swap in once available.
+2. **The `confidence` column reads no real model.** `--backend mock`'s `confidence()` returns a
+   constant, uninformative score at every position (see `egr/backend.py`), because loading
+   DiffuLLaMA (or even DiffuGPT-S, the doc's suggested zero-GPU stand-in) needs compute this session
+   deliberately did not use. Its 0.40/0.87 numbers are an artifact of that placeholder, not a real
+   confidence-baseline result, and should be **re-run before being trusted** — Phase 2's own text
+   already anticipated needing DiffuGPT-S for exactly this column.
+3. Building this surfaced one genuine finding about the method, not just the harness: MockBackend's
+   oracle-mode "fills the hole from the known-correct source" mechanism cannot recover from a token
+   deficit that falls on the LAST line to differ from the fix, when there is no unchanged trailing
+   context left to widen into and no other line has spare capacity to donate — widening into unchanged
+   lines never helps, since an unchanged line costs the same number of tokens on both sides. This is a
+   property of masked diffusion's fixed-length infilling (H-3), demonstrated in
+   `egr/tests/test_loop_mock.py::TestFixedLengthConstraint`, and is expected to matter for the real
+   model too — the `slack` ablation this project already planned is exactly the right way to measure how
+   often it binds in practice, not evidence of a code bug.
+
+**Action item before the real Phase 2 gate can be called:** get network/`evalplus` access, swap in the
+real 164 HumanEval+ canonical solutions (the module docstrings in `egr/benchmarks/*.py` say exactly
+where), and get *any* GPU-free model (DiffuGPT-S per the build-phases doc) into `confidence()` before
+re-running `python -m egr.cli localize`. Only then does this table become the actual go/no-go the
+project can act on.
+
 ## P-5 — Proposed resolution of P-1: EGR, execution-grounded remasking (2026-08-31)
 
 **Status: proposed, not decided.** A full design exists on branch `plan/execution-grounded-repair` in

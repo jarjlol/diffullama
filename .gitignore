@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# egr/ run output (JSONL records from egr.cli run / localize)
+runs/
+
 # C extensions
 *.so
 
