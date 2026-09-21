@@ -27,6 +27,7 @@ Then, as needed:
 | [`08-trace-guided-repair-proposal.md`](08-trace-guided-repair-proposal.md) | Proposed Option C2, its exact scope, baselines, and feasibility gate — **not yet a team decision** |
 | [`09-p1-direction-analysis-2026-09-19.md`](09-p1-direction-analysis-2026-09-19.md) | Verification pass on the EGR branch and the competitive landscape; recommended Option B. **Superseded on resources, not on reasoning** — see D-2026-09-21-a |
 | [`10-inference-time-direction-2026-09-21.md`](10-inference-time-direction-2026-09-21.md) | Which limitation to pursue now that compute has closed all training directions. **Current proposed direction** — not yet ratified; gated on Q-13 |
+| [`11-limitations-triage.md`](11-limitations-triage.md) | Per-limitation walkthrough of all twelve gaps in the multi-agent deliverable: what each says, what answering it would cost, and why it is in or out. **Read this to understand the direction; read 10 for the argument** |
 
 ### Rules for agents working on this project
 

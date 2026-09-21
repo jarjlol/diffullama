@@ -201,3 +201,18 @@ log.
 is still empty and the question is still good — the team simply cannot afford to answer it. It stays here
 as a question the project is declining to pursue, rather than being deleted, so that it can be picked up
 if compute later becomes available.
+
+### ~~Q-16 — Where did the Diffu-CodeLLaMA infilling error come from?~~ ✅ ANSWERED 2026-09-21 (for the limitations pipeline)
+
+**Answer: agent hallucination, not retrieval contamination.** Originates in **REV-1**, the Reviewer
+agent's first-round output on `assignment/limitations-multiagent` @ `3e74ef5`. The RAG corpus, retained
+chunks, ground truth and zero-shot baseline are all clean — zero occurrences of "CodeLLaMA". The Judge
+scored the reviewer 86/100 and did not catch it.
+
+Revised explanation for the EGR documents carrying the same error: not a shared source, but a
+**reproducible misreading invited by the anchor's own structure** — Table 1's Code column belongs to the
+released checkpoint, Table 8's row to Diffu-CodeLLaMA, and finding Table 8 first leads naturally to the
+wrong conclusion.
+
+See `03-established-facts.md` F-30 and its dated correction. **Still open in one respect:** the EGR
+documents themselves were not re-examined, so whether they had an independent cause is unconfirmed.

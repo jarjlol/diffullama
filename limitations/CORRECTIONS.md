@@ -125,3 +125,46 @@ Both runs also understate the gap's significance in one respect: the paper **alr
 self-consistency**, and it recovered only 1.8 / 4.1 / 5.1 points of the available 7.7 / 30.0 / 8.1. On
 SATMath the standard selector captures one seventh of the headroom. See
 `project-docs/03-established-facts.md` F-26.
+
+---
+
+## C-5 — ✅ 2026-09-21: C-1 and C-3 resolved
+
+Dated additions to the entries above. The originals are left unedited.
+
+### C-1 resolved — v2's location and intent
+
+v2 is on branch **`assignment/limitations-multiagent` @ `3e74ef5`**, commit message *"feat(limitations):
+reimplement limitation generation as a faithful multi-agent pipeline"*. **"Reimplement" settles intent:
+v2 supersedes v1.**
+
+The numbering collision still matters, because v1 remains on `main`. Both runs' deliverables are named
+`output/limitations_and_research_problem.md`, so the filename does not disambiguate them — **only the
+branch does.**
+
+### C-3 resolved — the error is agent hallucination, not corpus contamination
+
+Traced through `data/` on that branch:
+
+| Location | Contains the claim? |
+|---|---|
+| `agent_outputs.json` → **REV-1**, Reviewer, round 1 | ✅ **origin** |
+| `agent_outputs_round2.json`, `agent_outputs_final.json` | ✅ propagated unchanged |
+| `master_clusters.json`, `master_merged.json` | ✅ merged into L8 |
+| `rag_corpus.json`, `rag_top20.json`, `rag_retained.json` | ❌ zero occurrences of "CodeLLaMA" |
+| `ground_truth.json`, `zeroshot_baseline.json` | ❌ zero occurrences |
+
+**The retrieval corpus is clean.** The Reviewer agent generated the claim; the Judge scored the reviewer
+**86/100** and did not catch it; Self-Feedback regeneration did not remove it.
+
+**Revised explanation for the EGR documents carrying the same error.** Not a shared source. The anchor's
+structure invites this specific misreading: Table 1 carries a Code column for the released checkpoint
+(DiffuLLaMA 15.5) while Table 8 carries a Diffu-CodeLLaMA row (0.76), and a reader who encounters Table 8
+first concludes the code number belongs to it.
+
+**Implication — this is reproducible, so it will recur.** Any future agent reading this paper may make the
+same error. That is the reason this file exists rather than a one-line fix.
+
+**Caveat:** the EGR documents on `plan/execution-grounded-repair` were not re-examined, so an independent
+cause there is unconfirmed. See `project-docs/04-open-questions.md` Q-16.
+

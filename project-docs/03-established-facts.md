@@ -395,3 +395,39 @@ committed `L5`+`L9` merge into the circulated `L8`, and the circulated `L4`, `L1
 mapping table in `10-...md` §2. Whether v2 was intended to supersede v1 is unknown.
 
 **Any citation of an "L-number" must say which run it means.**
+
+### F-30 correction, 2026-09-21 (same day) — the error is agent hallucination, not corpus contamination
+
+F-30 above inferred a "shared upstream source" from two independent reproductions. Traced this session
+through `limitations/data/` on branch `assignment/limitations-multiagent` @ `3e74ef5`. 🟢
+
+- The claim originates in **REV-1**, the Reviewer agent's first-round output (`agent_outputs.json`).
+- It propagates unchanged through `agent_outputs_round2.json`, `agent_outputs_final.json`,
+  `master_clusters.json`, `master_merged.json` and into the deliverable. The Judge scored the reviewer
+  **86/100** and did not catch it; the Self-Feedback regeneration did not remove it.
+- **`rag_corpus.json`, `rag_top20.json`, `rag_retained.json`, `ground_truth.json` and
+  `zeroshot_baseline.json` contain zero occurrences of "CodeLLaMA".** The retrieval corpus is clean.
+
+**So there is no contaminated chunk.** The likelier explanation for the same error appearing independently
+in the EGR documents is that **the anchor's structure invites this specific misreading**: Table 1 carries
+a Code column for the released checkpoint while Table 8 carries a Diffu-CodeLLaMA row, and a reader who
+encounters Table 8 first naturally concludes the code number belongs to it.
+
+**This is the more useful finding**, because it is reproducible: a future agent reading this paper may
+make the same error again. That is why the correction lives in `limitations/CORRECTIONS.md` and here,
+rather than in a fix to one sentence.
+
+Q-16 is answered for the `limitations/` pipeline. It remains unverified for the EGR documents, which were
+not re-examined this session.
+
+### F-31 correction, 2026-09-21 (same day) — v2 is in the repository, and supersedes v1 by intent
+
+F-31 above records v2 as "not in the repository" and its relationship to v1 as unknown. Both resolved: 🟢
+
+- **v2 is on branch `assignment/limitations-multiagent` @ `3e74ef5`**, commit message *"feat(limitations):
+  reimplement limitation generation as a faithful multi-agent pipeline"*.
+- **"reimplement" settles intent: v2 supersedes v1.** It is a full rewrite — `scripts/` contains
+  `agents.py`, `judge.py`, `master.py`, `self_feedback.py`, `rag_retrieve.py`, `build_rag_corpus.py`,
+  with every intermediate agent output preserved in `data/`.
+
+The numbering collision in F-31 stands unchanged and still matters, because v1 remains on `main`.
