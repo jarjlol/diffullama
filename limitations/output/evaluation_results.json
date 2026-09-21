@@ -1,0 +1,206 @@
+{
+  "protocol": "pointwise LLM-as-a-Judge binary similarity, C_GT",
+  "ground_truth_size": 12,
+  "ground_truth_composition": "author-stated only (OpenReview half unavailable)",
+  "multi_agent": {
+    "C_GT": 1.0,
+    "n_limitations": 12,
+    "generic_statements": 0,
+    "detail": [
+      {
+        "gt": 1,
+        "text": "Models are trained on 30B-70B tokens which may be insufficient to preserve general knowledge from the original LM.",
+        "matched_by": [
+          "L7"
+        ],
+        "covered": true
+      },
+      {
+        "gt": 2,
+        "text": "DiffuLLaMA's performance falls short of the LLaMA2 model it was adapted from.",
+        "matched_by": [
+          "L7"
+        ],
+        "covered": true
+      },
+      {
+        "gt": 3,
+        "text": "The model does not show signs of saturation; more training tokens are expected to improve results.",
+        "matched_by": [
+          "L7"
+        ],
+        "covered": true
+      },
+      {
+        "gt": 4,
+        "text": "Withholding suffix information from baselines might result in an unfair infilling comparison.",
+        "matched_by": [
+          "L8"
+        ],
+        "covered": true
+      },
+      {
+        "gt": 5,
+        "text": "Instruction tuning is left as future work.",
+        "matched_by": [
+          "L5"
+        ],
+        "covered": true
+      },
+      {
+        "gt": 6,
+        "text": "Adding chain-of-thought to in-context examples drops performance, attributed to absence of instruction tuning.",
+        "matched_by": [
+          "L5"
+        ],
+        "covered": true
+      },
+      {
+        "gt": 7,
+        "text": "The model exhibits high uncertainty about its responses, causing suboptimal performance.",
+        "matched_by": [
+          "L6"
+        ],
+        "covered": true
+      },
+      {
+        "gt": 8,
+        "text": "Attention mask annealing is omitted at 7B to simplify implementation with flash-attention 2.",
+        "matched_by": [
+          "L1"
+        ],
+        "covered": true
+      },
+      {
+        "gt": 9,
+        "text": "The [MASK] token reuses an existing vocabulary word instead of expanding the vocabulary, for implementation reasons.",
+        "matched_by": [
+          "L3"
+        ],
+        "covered": true
+      },
+      {
+        "gt": 10,
+        "text": "Direct ablation on adaptation training is too costly, so recipe decisions rest on cheaper preliminary experiments.",
+        "matched_by": [
+          "L4"
+        ],
+        "covered": true
+      },
+      {
+        "gt": 11,
+        "text": "TriviaQA and PIQA are challenging for the models because they require specific factual/physical knowledge.",
+        "matched_by": [
+          "L7"
+        ],
+        "covered": true
+      },
+      {
+        "gt": 12,
+        "text": "DiffuGPT's training budget does not match GPT2's ~200B tokens.",
+        "matched_by": [
+          "L7"
+        ],
+        "covered": true
+      }
+    ]
+  },
+  "zero_shot": {
+    "C_GT": 0.5833,
+    "n_limitations": 10,
+    "generic_statements": 3,
+    "detail": [
+      {
+        "gt": 1,
+        "text": "Models are trained on 30B-70B tokens which may be insufficient to preserve general knowledge from the original LM.",
+        "matched_by": [
+          "ZS-1"
+        ],
+        "covered": true
+      },
+      {
+        "gt": 2,
+        "text": "DiffuLLaMA's performance falls short of the LLaMA2 model it was adapted from.",
+        "matched_by": [
+          "ZS-2"
+        ],
+        "covered": true
+      },
+      {
+        "gt": 3,
+        "text": "The model does not show signs of saturation; more training tokens are expected to improve results.",
+        "matched_by": [
+          "ZS-1"
+        ],
+        "covered": true
+      },
+      {
+        "gt": 4,
+        "text": "Withholding suffix information from baselines might result in an unfair infilling comparison.",
+        "matched_by": [
+          "ZS-6"
+        ],
+        "covered": true
+      },
+      {
+        "gt": 5,
+        "text": "Instruction tuning is left as future work.",
+        "matched_by": [
+          "ZS-5"
+        ],
+        "covered": true
+      },
+      {
+        "gt": 6,
+        "text": "Adding chain-of-thought to in-context examples drops performance, attributed to absence of instruction tuning.",
+        "matched_by": [
+          "ZS-5"
+        ],
+        "covered": true
+      },
+      {
+        "gt": 7,
+        "text": "The model exhibits high uncertainty about its responses, causing suboptimal performance.",
+        "matched_by": [],
+        "covered": false
+      },
+      {
+        "gt": 8,
+        "text": "Attention mask annealing is omitted at 7B to simplify implementation with flash-attention 2.",
+        "matched_by": [],
+        "covered": false
+      },
+      {
+        "gt": 9,
+        "text": "The [MASK] token reuses an existing vocabulary word instead of expanding the vocabulary, for implementation reasons.",
+        "matched_by": [],
+        "covered": false
+      },
+      {
+        "gt": 10,
+        "text": "Direct ablation on adaptation training is too costly, so recipe decisions rest on cheaper preliminary experiments.",
+        "matched_by": [],
+        "covered": false
+      },
+      {
+        "gt": 11,
+        "text": "TriviaQA and PIQA are challenging for the models because they require specific factual/physical knowledge.",
+        "matched_by": [],
+        "covered": false
+      },
+      {
+        "gt": 12,
+        "text": "DiffuGPT's training budget does not match GPT2's ~200B tokens.",
+        "matched_by": [
+          "ZS-1"
+        ],
+        "covered": true
+      }
+    ]
+  },
+  "delta_points": 41.67,
+  "paper_reported_gains": {
+    "gpt4o_mini_rag_multiagent": 15.51,
+    "llama3_8b_multiagent": 4.41
+  }
+}

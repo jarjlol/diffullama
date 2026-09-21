@@ -1,0 +1,42 @@
+{
+  "_protocol": "arXiv:2601.11578 sec 3.2 stage B -- LLM re-ranking, retain >= 8/10",
+  "_scored_by": "Claude (Opus 5) acting as the re-ranking LLM; see REPORT.md sec 4",
+  "_rubric": "0-3 unrelated/nothing limitation-bearing; 4-7 same area, generic overlap only; 8-10 exposes a concrete weakness of the input paper",
+  "scores": {
+    "by::40": 10,
+    "by::9": 10,
+    "by::43": 9,
+    "in::13": 9,
+    "by::0": 9,
+    "by::5": 9,
+    "in::12": 9,
+    "by::3": 8,
+    "by::37": 8,
+    "in::29": 8,
+    "in::35": 8,
+    "by::10": 8,
+    "in::8": 8,
+    "by::25": 7,
+    "in::47": 6,
+    "in::7": 5,
+    "by::7": 5,
+    "by::39": 4,
+    "by::6": 3,
+    "in::17": 3
+  },
+  "justifications": {
+    "by::40": "Don't Retrain, Align explicitly critiques 'existing recipes primarily transfer parameters through continued denoising training' -- that is DiffuLLaMA's recipe by name.",
+    "by::9": "PreDiff-LM studies reconciling causal pretraining with bidirectional denoising 'at the level of attention' -- directly the attention-mask-annealing design DiffuLLaMA drops at 7B.",
+    "by::43": "UNIFUSION adapts AR checkpoints to uniform-noise diffusion where every token stays editable, exposing masked diffusion's locked-token design choice.",
+    "in::13": "TESS 2 finds adaptation training AND base-model choice are crucial, and does the instruction tuning DiffuLLaMA explicitly defers.",
+    "by::0": "Duplicate OpenAlex record of TESS 2; retained for scoring, removed by the Master Agent's dedup.",
+    "by::5": "Jacobi Forcing reports adapted dLLMs 'suffer from limited speedup compared to AR models due to a pretrain-to-posttrain mismatch', bearing on DiffuLLaMA's latency claim.",
+    "in::12": "DDOT names inability to do flexible-length/position infilling without ground-truth positional data as a critical limitation -- DiffuLLaMA's infilling setup assumes known span length.",
+    "by::3": "Offers AR infilling without full diffusion adaptation, questioning whether the adaptation cost is necessary.",
+    "by::37": "Dream 7B is a contemporaneous adapted 7B dLLM reporting stronger results, exposing DiffuLLaMA's absolute performance ceiling.",
+    "in::29": "MDLM's from-scratch recipe is the comparison DiffuLLaMA needs to justify adaptation over training from scratch.",
+    "in::35": "Continual pre-training warmup/LR schedule findings -- DiffuLLaMA runs continual pretraining without ablating these.",
+    "by::10": "dLLM framework paper names ad-hoc codebases and non-transparent implementations as a reproducibility problem in this exact model family.",
+    "in::8": "Dream-Coder's emergent any-order code generation contrasts with DiffuLLaMA evaluating only single-line infilling for code."
+  }
+}

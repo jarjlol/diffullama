@@ -1,0 +1,65 @@
+{
+  "weights": {
+    "depth": 0.2,
+    "originality": 0.2,
+    "actionability": 0.3,
+    "topic_coverage": 0.3
+  },
+  "threshold_10": 8.0,
+  "max_retries": 2,
+  "results": {
+    "extractor": {
+      "dimensions": {
+        "depth": 9,
+        "originality": 6,
+        "actionability": 9,
+        "topic_coverage": 9
+      },
+      "weighted_mean_10": 8.4,
+      "total_100": 84.0,
+      "n_limitations": 9,
+      "below_threshold": false,
+      "feedback": "Chain-of-limitations pairing now explicit: each item states the concession and the justification the authors attach to it, which is where the analysable weakness sits. Originality remains capped at 6 by construction -- an extraction agent reports what authors wrote and cannot exceed it. Passes."
+    },
+    "analyzer": {
+      "dimensions": {
+        "depth": 9,
+        "originality": 9,
+        "actionability": 8,
+        "topic_coverage": 9
+      },
+      "weighted_mean_10": 8.7,
+      "total_100": 87.0,
+      "n_limitations": 8,
+      "below_threshold": false,
+      "feedback": "Unchanged from round 1. Strong."
+    },
+    "reviewer": {
+      "dimensions": {
+        "depth": 8,
+        "originality": 8,
+        "actionability": 9,
+        "topic_coverage": 9
+      },
+      "weighted_mean_10": 8.6,
+      "total_100": 86.0,
+      "n_limitations": 8,
+      "below_threshold": false,
+      "feedback": "Coverage recovered: ethics (licensing, misuse, model card) and transparency (contamination, artifact mismatch) are now represented alongside reproducibility, and the two items overlapping the Analyzer were replaced. Passes."
+    },
+    "citation": {
+      "dimensions": {
+        "depth": 9,
+        "originality": 9,
+        "actionability": 8,
+        "topic_coverage": 9
+      },
+      "weighted_mean_10": 8.7,
+      "total_100": 87.0,
+      "n_limitations": 8,
+      "below_threshold": false,
+      "feedback": "Unchanged from round 1. Strong."
+    }
+  },
+  "routed_to_self_feedback": []
+}

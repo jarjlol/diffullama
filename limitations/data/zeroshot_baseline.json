@@ -1,0 +1,17 @@
+{
+  "_protocol": "arXiv:2601.11578 baseline -- zero-shot prompting with the full paper as input",
+  "_prompt": "Read the following paper and list its limitations.",
+  "_generated_by": "Claude (Opus 5), single call, no agents, no RAG, no judge, no feedback.",
+  "limitations": [
+    {"id": "ZS-1", "statement": "The models are undertrained relative to the autoregressive baselines they are compared against, and the authors acknowledge more training tokens would help."},
+    {"id": "ZS-2", "statement": "DiffuLLaMA underperforms LLaMA2, the model it was adapted from, which weakens the case for adaptation."},
+    {"id": "ZS-3", "statement": "Evaluation is limited to a fixed set of benchmarks and may not generalize to other tasks or domains."},
+    {"id": "ZS-4", "statement": "The approach is only demonstrated on two model families (GPT2 and LLaMA2), so generalizability to other architectures is unclear."},
+    {"id": "ZS-5", "statement": "Instruction tuning is not performed, which the authors note limits the model's ability to follow prompts such as chain-of-thought."},
+    {"id": "ZS-6", "statement": "The infilling comparison may be unfair to autoregressive baselines since suffix information is withheld."},
+    {"id": "ZS-7", "statement": "Computational cost of the adaptation procedure is high, requiring substantial GPU resources."},
+    {"id": "ZS-8", "statement": "The paper does not report error bars or multiple random seeds."},
+    {"id": "ZS-9", "statement": "Scaling beyond 7B parameters is not explored."},
+    {"id": "ZS-10", "statement": "There may be dataset bias from the web-scraped training corpus."}
+  ]
+}

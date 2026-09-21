@@ -1,0 +1,224 @@
+{
+  "_generated_by": "Claude (Opus 5) executing each agent prompt in data/agent_requests/",
+  "_protocol": "arXiv:2601.11578 sec 3.1, worker agents, round 1",
+  "extractor": {
+    "limitations": [
+      {
+        "id": "EXT-1",
+        "provenance": "Author-stated",
+        "statement": "CONCESSION: the adapted models are undertrained and the paper says so. JUSTIFICATION OFFERED: the shortfall is attributed to token budget, with the expectation that more tokens would fix it. The pairing is the weakness -- the budget explanation is asserted, no scaling or convergence curve is shown, and the authors separately confirm the model has not saturated, so every headline number is an unconverged lower bound presented as a result.",
+        "evidence": "sec 4.3: 'our models are trained on 30B-70B tokens, which may be insufficient to preserve the general knowledge in the original LMs'; 'We believe more training tokens can help improve these numbers.'"
+      },
+      {
+        "id": "EXT-2",
+        "provenance": "Author-stated",
+        "statement": "CONCESSION: DiffuLLaMA underperforms the LLaMA2 model it was adapted from. JUSTIFICATION OFFERED: the data subset is blamed. The justification is untested and it is also the convenient one -- it locates the deficit in the corpus rather than in the adaptation procedure the paper is proposing, and no experiment separates the two.",
+        "evidence": "sec 4.3: 'DiffuLLaMA's performance still falls short of the LLaMA2 model. This drop in performance is likely because DiffuLLaMa is trained on a small subset of SlimPajama and Starcoder data.'"
+      },
+      {
+        "id": "EXT-3",
+        "provenance": "Author-stated",
+        "statement": "CONCESSION: the infilling comparison may be unfair because suffix information is withheld from baselines. JUSTIFICATION OFFERED: that FIM would require re-arranging pre-training sequences with special tokens whereas diffusion supports infilling natively. The justification explains why the baseline is disadvantaged but does not remove the disadvantage, and no fair-comparison variant is run.",
+        "evidence": "sec 4.3: 'we do not provide the suffix information to the model, which might result in an unfair comparison. But the FIM requires re-arranging the order of pre-training/inference sequence with special tokens.'"
+      },
+      {
+        "id": "EXT-4",
+        "provenance": "Author-stated",
+        "statement": "CONCESSION: chain-of-thought prompting reduces accuracy. JUSTIFICATION OFFERED: the absence of instruction tuning, supported by a citation showing diffusion LMs benefit from it. The chain terminates in deferral rather than remedy -- the authors identify the cause, cite evidence that the remedy works, and then leave it to future work.",
+        "evidence": "sec 4.4: 'adding step-wise solutions in the in-context example (CoT) leads to a drop in performance, likely due to the absence of instruction tuning... We will leave instruction tuning as the future work.'"
+      },
+      {
+        "id": "EXT-5",
+        "provenance": "Author-stated",
+        "statement": "CONCESSION: hit-rate over candidates greatly exceeds single-answer accuracy, which the authors read as high answer uncertainty. JUSTIFICATION OFFERED: the shortfall is called 'temporarily suboptimal', implying training will resolve it. Nothing tests that implication, and no calibration or answer-selection mechanism is attempted despite the gap localising the deficit in selection rather than knowledge.",
+        "evidence": "sec 4.4: 'the current model exhibits high uncertainty about its responses, leading to temporarily suboptimal performance.'"
+      },
+      {
+        "id": "EXT-6",
+        "provenance": "Author-stated",
+        "statement": "CONCESSION: attention-mask annealing is omitted entirely at 7B. JUSTIFICATION OFFERED: 'minimal impact' plus implementation convenience with flash-attention 2. This is the weakest link in the chain: the impact claim rests on two small-scale measurements, and convenience is offered as a scientific justification for removing a component of the method being evaluated.",
+        "evidence": "Appendix B: 'The mask annealing has minimal impact, so we choose to omit it for 7B adaptation to simplify implementation using flash-attention 2.'"
+      },
+      {
+        "id": "EXT-7",
+        "provenance": "Author-stated",
+        "statement": "CONCESSION: the correct design is to expand the vocabulary with a dedicated [MASK] token. JUSTIFICATION OFFERED: 'practical issues on implementation' motivate reusing an existing low-frequency word instead. The authors then violate their own workaround inconsistently, giving DiffuGPT-M a genuinely new token while DiffuGPT-S and DiffuLLaMA reuse existing ones.",
+        "evidence": "Appendix B: 'In theory, we should expand the original vocabulary... However, considering practical issues on implementation, we can alternatively select an existing word from the vocabulary'; tokenids 10541 / 50257 / 811."
+      },
+      {
+        "id": "EXT-8",
+        "provenance": "Author-stated",
+        "statement": "CONCESSION: the ablations that choose the adaptation recipe are not run on adaptation training. JUSTIFICATION OFFERED: direct ablation is too costly, so cheaper preliminary finetuning experiments are substituted. The cost justification is real, but the conclusions are then carried into the full runs without any check that the proxy preserves the ranking of components.",
+        "evidence": "sec 4.5: 'Direct ablation on adaptation training is costly; hence, we conduct preliminary experiments to determine the adaptation recipes.'"
+      },
+      {
+        "id": "EXT-9",
+        "provenance": "Author-stated",
+        "statement": "CONCESSION: the training budget does not match the autoregressive baseline it is compared against. JUSTIFICATION OFFERED: the authors iteratively extend DiffuGPT's training to narrow the gap toward GPT2's roughly 200B tokens. The concession is surfaced only in the appendix, while the main-body comparison tables present the two as directly comparable.",
+        "evidence": "Appendix B: GPT2's budget 'is around 200B tokens, we also iteratively train DiffuGPT on 30B FineWeb data to more than 100B'."
+      }
+    ]
+  },
+  "analyzer": {
+    "limitations": [
+      {
+        "id": "ANA-1",
+        "provenance": "Inferred",
+        "statement": "The annealing ablation contradicts the justification given for dropping it. Table 3 shows the benefit growing with scale, +2.1 accuracy points at 124M and +2.5 at 355M, yet the authors label this 'minimal' and omit the component at 7B -- a roughly 20x extrapolation beyond the largest model tested, in the direction the trend argues against.",
+        "evidence": "Table 3: DD w/o anneal 43.3 vs DD 45.4 (GPT2-S); 47.2 vs 49.7 (GPT2-M)."
+      },
+      {
+        "id": "ANA-2",
+        "provenance": "Inferred",
+        "statement": "The shift operation is roughly five times larger an effect than annealing, yet receives far less scrutiny. Removing it costs 11.9-15.2 accuracy points against annealing's 2.1-2.5, and it is inherited directly from AR training dynamics, but its behaviour at scale is never examined the way annealing's is.",
+        "evidence": "Table 3 ablation rows for shift removal versus annealing removal."
+      },
+      {
+        "id": "ANA-3",
+        "provenance": "Inferred",
+        "statement": "The mask-token treatment is confounded with model size and never disentangled. DiffuGPT-M is the only model given a genuinely new token rather than a reused vocabulary word, and it is also the best performer at its scale. The 'low frequency' justification for the reused tokens is asserted without any corpus measurement.",
+        "evidence": "Appendix B: DiffuGPT-S tokenid=10541 (reused), DiffuGPT-M tokenid=50257 (new), DiffuLLaMA tokenid=811 (reused)."
+      },
+      {
+        "id": "ANA-4",
+        "provenance": "Inferred",
+        "statement": "Recipe decisions are made on a proxy task and transferred without validation. The ablations that select the adaptation recipe are finetuning runs on GSM8K-symbolic, not adaptation-training runs, so every recipe conclusion rests on the untested assumption that the proxy ranks components the same way the real procedure would.",
+        "evidence": "sec 4.5 ablation setup, contrasted with the 30B/65B-token adaptation runs of sec 4.1."
+      },
+      {
+        "id": "ANA-5",
+        "provenance": "Inferred",
+        "statement": "The efficiency claim is not compute-normalised. Decoding latency is reported at batch size 1 against a single AR configuration, with no FLOPs- or forward-pass-normalised comparison, despite diffusion requiring full self-attention over the whole sequence at every step with no key-value caching. No optimised AR baseline such as speculative decoding is included.",
+        "evidence": "sec 4.5 'Inference Speed' and Figure 4."
+      },
+      {
+        "id": "ANA-6",
+        "provenance": "Inferred",
+        "statement": "A large accuracy headroom is measured and then left uninvestigated. Hit-rate over multiple candidates substantially exceeds single-answer accuracy across reasoning benchmarks, which localises the deficit in answer selection rather than answer knowledge, but no calibration analysis or selection mechanism is attempted.",
+        "evidence": "sec 4.4 hit@k results versus single-answer accuracy."
+      },
+      {
+        "id": "ANA-7",
+        "provenance": "Inferred",
+        "statement": "The recipe is validated on exactly two autoregressive families and never beyond 7B. Every result derives from GPT2 or LLaMA2, so the paper's central claim that AR checkpoints can be converted into competitive diffusion models is supported only for the two architectures it happened to test.",
+        "evidence": "sec 4.1 adaptation setup; all models are GPT2-derived or LLaMA2-derived."
+      },
+      {
+        "id": "ANA-8",
+        "provenance": "Inferred",
+        "statement": "Qualitative evidence in the appendix undercuts the fluency claims in the body. The showcased unconditional generation samples are largely incoherent, but are presented without analysis or any acknowledgement of the gap between them and the perplexity and diversity numbers reported earlier.",
+        "evidence": "Table 12, generation examples of DiffuGPT-M at T=1024."
+      }
+    ]
+  },
+  "reviewer": {
+    "limitations": [
+      {
+        "id": "REV-1",
+        "provenance": "Peer-review-derived",
+        "statement": "The abstract and introduction advertise code generation as a capability, but the only code evaluation is HumanEval single-line infilling with both prefix and suffix supplied, and that number belongs to a separately trained Diffu-CodeLLaMA rather than the released DiffuLLaMA checkpoint. A reader cannot tell from the main text which released artifact supports which claim.",
+        "evidence": "Abstract versus Appendix C.3 / Table 8, 'Models finetuned on 100M tokens of Starcoder'."
+      },
+      {
+        "id": "REV-2",
+        "provenance": "Peer-review-derived",
+        "statement": "No result carries a seed, a variance estimate, or a significance test. Every headline comparison is a single run, including the ablations whose 2.1-2.5 point differences drive the recipe decisions, so a reviewer cannot distinguish a real effect from run-to-run noise at exactly the point where the method is being justified.",
+        "evidence": "Tables 1-3 report point estimates only; no seeds or confidence intervals anywhere in the paper."
+      },
+      {
+        "id": "REV-3",
+        "provenance": "Peer-review-derived",
+        "statement": "The 7B adaptation is not practically reproducible from the paper. It consumes 65B tokens across multi-node A100/GH200 hardware, and the corpus is described only as a 7:3 ratio over SlimPajama and Starcoder with no released data manifest, shard list, or sampling seed, so the run cannot be reconstructed even with equivalent compute.",
+        "evidence": "sec 4.1 and Appendix B training setup."
+      },
+      {
+        "id": "REV-4",
+        "provenance": "Peer-review-derived",
+        "statement": "The released inference artifact does not match the configuration the paper describes. The paper justifies dropping annealing specifically in order to use flash-attention 2, but the released inference path defaults to eager attention and builds a dense all-zeros four-dimensional additive mask that is mathematically a no-op while blocking the very kernel the design decision was made for.",
+        "evidence": "Released repository inference entry point versus the flash-attention-2 justification in sec 4.5 / Appendix B."
+      },
+      {
+        "id": "REV-5",
+        "provenance": "Peer-review-derived",
+        "statement": "Decoding configuration is underspecified for both sides of the comparison. Diffusion models are evaluated at chosen step counts and AR baselines at unstated sampling settings, and since the paper's own figures show quality varying sharply with decoding steps, the headline comparisons are sensitive to choices the reader cannot audit or reproduce.",
+        "evidence": "sec 4.2 evaluation setup; Figure 3 decoding-steps sensitivity."
+      },
+      {
+        "id": "REV-6",
+        "provenance": "Peer-review-derived",
+        "statement": "Data provenance and licensing are not addressed. The adaptation corpus mixes web-scraped text with Starcoder source code carrying heterogeneous software licences, and the paper contains no licensing discussion, no data statement, and no acknowledgement of the redistribution implications of releasing weights trained on that mixture.",
+        "evidence": "sec 4.1 data description; the paper contains no ethics or data statement."
+      },
+      {
+        "id": "REV-7",
+        "provenance": "Peer-review-derived",
+        "statement": "No benchmark decontamination is reported. The models are continually pre-trained on tens of billions of tokens of web-scraped and code data and then evaluated on public benchmarks including HumanEval, GSM8K, and commonsense suites, with no overlap analysis, which leaves contamination as an unexcluded explanation for part of the reported performance.",
+        "evidence": "sec 4.1 corpus versus sec 4.2 benchmark list; no decontamination procedure described."
+      },
+      {
+        "id": "REV-8",
+        "provenance": "Peer-review-derived",
+        "statement": "Open weights are released without a model card, intended-use statement, or discussion of misuse. A 7B generative model whose stated advantages include infilling and non-left-to-right editing is released with no safety, bias, or dual-use analysis, which for a venue requiring broader-impact consideration is a transparency gap rather than merely an omission.",
+        "evidence": "Released checkpoints on the model hub; the paper's author-contributions and acknowledgments sections contain no impact or intended-use statement."
+      }
+    ]
+  },
+  "citation": {
+    "limitations": [
+      {
+        "id": "CIT-1",
+        "provenance": "Cited",
+        "statement": "Subsequent work isolates attention handling as the load-bearing problem in AR-to-diffusion adaptation, which is precisely the component this paper drops at its largest scale. PreDiff-LM studies reconciling causal pretraining with bidirectional denoising specifically at the attention level, preserving causal attention within the prompt while allowing bidirectional attention elsewhere, and pointedly declines to treat AR-weight reuse itself as the contribution.",
+        "evidence": "[by::9] PreDiff-LM: 'adapting pretrained autoregressive (AR) transformers requires reconciling causal pretraining with bidirectional denoising. We study this problem at the level of attention rather than claiming AR-weight reuse itself as novel.'"
+      },
+      {
+        "id": "CIT-2",
+        "provenance": "Cited",
+        "statement": "The paper never compares its adaptation route against cheaper alternatives, and later work targets exactly that omission. Don't Retrain, Align characterises continued-denoising-training recipes as the expensive path and proposes representation alignment instead, implying the 65B-token budget this paper spends may not be necessary for the capability it buys.",
+        "evidence": "[by::40] 'existing recipes primarily transfer parameters through continued denoising training with objective- and attention-level changes' -- offered as the cost this work avoids."
+      },
+      {
+        "id": "CIT-3",
+        "provenance": "Cited",
+        "statement": "The choice of masked diffusion as the target corruption process is adopted without justification against alternatives that keep every token editable. UNIFUSION adapts AR checkpoints to uniform-noise diffusion specifically so that tokens remain revisable throughout sampling, exposing an unexamined design commitment in this paper: once a token is unmasked it is fixed.",
+        "evidence": "[by::43] UNIFUSION: 'we directly adapt them to uniform-noise diffusion, where every token remains editable during sampling.'"
+      },
+      {
+        "id": "CIT-4",
+        "provenance": "Cited",
+        "statement": "The instruction tuning this paper defers is shown by concurrent work to be decisive, and that work also contradicts the paper's implicit assumption that base-model choice is incidental. TESS 2 performs the adaptation-plus-instruction-tuning pipeline and reports that both adaptation training and the choice of base model are crucial to the result.",
+        "evidence": "[in::13, by::0] TESS 2: 'We find that adaptation training as well as the choice of the base model is [crucial]' -- against this paper's single-family validation and deferred instruction tuning."
+      },
+      {
+        "id": "CIT-5",
+        "provenance": "Cited",
+        "statement": "The inference-speed advantage claimed here is contested by later measurement of adapted diffusion models specifically. Jacobi Forcing reports that models adapted from AR checkpoints achieve limited speedup relative to AR baselines because of a pretrain-to-posttrain mismatch, which is the regime this paper operates in and does not measure.",
+        "evidence": "[by::5] 'they suffer from limited speedup compared to AR models due to a pretrain-to-posttrain mismatch.'"
+      },
+      {
+        "id": "CIT-6",
+        "provenance": "Cited",
+        "statement": "The infilling evaluation that carries much of the paper's argument assumes the very positional information later work identifies as the hard part. DDOT names the inability to infill at flexible length or position without ground-truth positional data as a critical limitation of discrete diffusion models, whereas this paper's infilling setup supplies the span length.",
+        "evidence": "[in::12] 'a critical limitation of discrete diffusion models is their inability to perform flexible-length or flexible-position text infilling without access to ground-truth positional data.'"
+      },
+      {
+        "id": "CIT-7",
+        "provenance": "Cited",
+        "statement": "Continual pre-training is known to be sensitive to warmup and learning-rate schedule, neither of which this paper ablates despite its entire method being a continual pre-training procedure. Work already in the paper's own reference pool studies precisely this sensitivity and the distribution shift it induces.",
+        "evidence": "[in::35] 'Continual Pre-Training of Large Language Models: How to (re)warm your model?' -- distribution shift from novel data degrades performance absent correct re-warming."
+      },
+      {
+        "id": "CIT-8",
+        "provenance": "Cited",
+        "statement": "The premise that diffusion adaptation is the way to obtain infilling ability is challenged by work giving AR models the same capability directly. If masked infilling can be added to an AR model without converting it into a diffusion model, then the infilling advantage this paper builds its case on is not exclusive to the adaptation it proposes.",
+        "evidence": "[by::3] 'AR models are inherently incapable of masked infilling' -- the cited work's stated purpose is to remove exactly that incapability without diffusion adaptation."
+      }
+    ]
+  },
+  "_rounds": {
+    "extractor": 2,
+    "analyzer": 1,
+    "reviewer": 2,
+    "citation": 1
+  }
+}

@@ -1,111 +1,194 @@
-# Limitation Generation / Research Gap Identification — Methodology Report
+# REPORT — Multi-Agent Limitation Generation applied to DiffuLLaMA
 
-## 1. Assignment
+Implementation report for **arXiv:2601.11578**, *Multi-Agent LLMs for Generating Research
+Limitations* (Al Azher, Guo, Alhoori; v1 30 Dec 2025, v2 16 Mar 2026), applied to the anchor
+paper **DiffuLLaMA** (Gong et al., ICLR 2025).
 
-Extract limitations/research gaps of the base paper (DiffuLLaMA, ICLR 2025), optionally using the
-literature survey's papers to find limitations, and using the generated survey to identify
-domain-level gaps. Techniques from three offered papers "can be useful." Deliverable: a bulleted
-list of limitations, followed by a paragraph-level research-problem statement continuing the base
-paper's discussion.
+---
 
-**Scope note, stated explicitly:** this implementation does not reuse any limitation, finding, or
-conclusion from this repository's prior audit work (`project-docs/03-established-facts.md`,
-`06-findings-and-wins.md`) or the `litreview/` SOTA assignment's outputs, per the explicit
-instruction this work was scoped under. Every finding below was re-derived from the anchor paper's
-primary text and fresh literature retrieval, on this branch, independent of that prior work. Where a
-finding happens to overlap in topic with something already logged elsewhere in this repo (e.g., the
-mask-token treatment, or the annealing ablation), that is because it is a real, independently
-verifiable property of the paper — not because it was copied. The anchor's full text was re-extracted
-via `pdftotext` from the source PDF into `limitations/data/anchor_fulltext.txt`, a fresh copy
-independent of `litreview/data/anchor_fulltext.txt`.
+## 1. What the source paper proposes
 
-## 2. Papers implemented, and how
+Zero-shot LLM prompting produces superficial limitation statements — the paper's own examples
+are "dataset bias" and "generalizability" — and tends to echo whatever the authors already
+disclosed. The paper's response is a multi-agent decomposition in which separate agents take
+separate stances toward the paper, a Judge scores them, a Self-Feedback agent regenerates the
+weak ones, and a Master agent consolidates. It also replaces n-gram/embedding evaluation with a
+pointwise LLM-as-a-Judge coverage protocol, on the grounds that BLEU/ROUGE/cosine miss
+semantically equivalent limitations phrased differently.
 
-All three were read in full (not summarized from search results) before implementation began:
+Reported results: +15.51 coverage points over zero-shot for GPT-4o mini with RAG and four
+agents, +4.41 for Llama 3 8B with three agents, over 2,700 NeurIPS papers.
 
-| Paper | What it contributes | How it's used here |
-|---|---|---|
-| **BAGELS** (Al Azher et al. 2025, arXiv:2505.18207, EMNLP Findings 2025) | Explicit/implicit limitation span extraction: keyword-triggered extraction, LLM-refined to remove noise, strictly "select, don't paraphrase or invent" | `extract_stated_limitations.py` (Extractor role) |
-| **LimitGen** (Xu et al. 2025, arXiv:2507.02694 — co-authored by Manasi Patwardhan, TCS Research, this course's own industry collaborator) | Four-aspect limitation taxonomy (Methodological / Experimental Design / Result Analysis / Literature Review) built from real peer-review patterns; demonstrates RAG-augmented limitation generation beats zero-shot | Taxonomy applied directly in Master consolidation (`data/master_consolidated.md`); RAG-grounding role in `citation_agent.py` |
-| **Multi-Agent LLMs for Generating Research Limitations** (Al Azher et al. 2026, arXiv:2601.11578) | Seven-role pipeline: Extractor, Analyzer, Reviewer, Citation Agent, Judge, Self-Feedback, Master | Overall pipeline architecture (see §3) |
+## 2. What was implemented
 
-## 3. Pipeline (what was actually run)
+Everything in the generation pipeline, in the paper's order. Concretely:
 
-```
-anchor_fulltext.txt (fresh pdftotext extraction)
-  -> Extractor (regex keyword scan, BAGELS-style) -> extractor_candidates.txt (14 raw hits)
-  -> LLM refinement (BAGELS step 2: select genuine spans, discard noise, no paraphrasing)
-       -> extractor_refined.md (5 kept, 9 discarded with reasons)
-  -> Analyzer (fresh methodological audit of the full paper, independent read)
-       -> analyzer_findings.md (8 inferred implicit limitations, A1-A8)
-  -> Citation Agent (fresh OpenAlex + arXiv retrieval per candidate, RAG-style per LimitGen)
-       -> citation_agent_results.txt (raw retrieval) + citation_agent_verdict.md (groundedness judgments)
-  -> Judge (score groundedness/depth/actionability, filter) + Master (dedupe, merge, taxonomy-tag)
-       -> master_consolidated.md (10 final items, ranked)
-  -> output/limitations_and_research_problem.md (the assignment's required deliverable)
-```
+- **Extractor** — author-stated limitations only, "chain of limitations" methodology, input is
+  the paper with Conclusion/Limitations sections removed.
+- **Analyzer** — methodological auditor for implicit gaps, full paper as input.
+- **Reviewer** — simulated peer reviewer, weighing reproducibility, transparency, ethics.
+- **Citation** — limitations grounded in retrieved related work, RAG corpus as extra input.
+- **Judge** — the paper's exact rubric and weights (Depth 0.2, Originality 0.2, Actionability
+  0.3, Topic Coverage 0.3), 0–10 per dimension, scaled to 0–100.
+- **Self-Feedback** — regeneration for any agent below 8/10, capped at two retries.
+- **Master** — clustering, merging, provenance tagging.
+- **Evaluation** — pointwise binary-similarity coverage, `C_GT`, against a zero-shot baseline.
 
-**Roles not separately implemented:** the Multi-Agent paper's **Reviewer** agent (peer-review-lens
-critique — reproducibility, transparency) and **Self-Feedback** agent (regeneration loop below a
-quality threshold) were not built as distinct steps. Reviewer's concerns are largely already covered
-by the Analyzer findings above (e.g., A1/A2's ablation-completeness critique is exactly what a peer
-reviewer would flag); Self-Feedback's regeneration loop was substituted with a single, careful
-first-pass Judge filter (one item, E1, was filtered — see `master_consolidated.md`) rather than an
-iterative regenerate-and-rescore loop, given this pipeline's Extractor/Analyzer/Judge/Master steps
-are performed directly by an LLM (see §4) rather than via a scriptable regeneration call.
+The agent prompts in `data/agent_requests/` are the literal prompts run, transcribed from the
+paper's descriptions and keeping its quoted phrasing where it gives any.
 
-## 4. Deviations from the papers, and why (same standard as `litreview/REPORT.md`)
+## 3. Deviations from the source paper
 
-No hosted LLM API (`ANTHROPIC_API_KEY`/`OPENAI_API_KEY`) is available in this build environment —
-identical constraint to the SOTA assignment. Every step that the source papers implement as an LLM
-API call (BAGELS' refinement LLM, LimitGen's generation LLM, the Multi-Agent paper's Analyzer/
-Reviewer/Citation/Judge/Master LLM instances) is instead performed directly by Claude, reading the
-intermediate files and producing the next stage's output — the same substitution `litreview/`
-documents, applied consistently here. This is not a silent shortcut: every judgment call (which
-candidates to keep, how to score them, how to merge duplicates) is written out in the corresponding
-`data/*.md` file with its reasoning, so the process is auditable rather than opaque.
+Every deviation is listed. None is silent.
 
-**Retrieval substitution:** LimitGen's Citation-Agent-equivalent step queries Semantic Scholar.
-Unauthenticated Semantic Scholar returns HTTP 429 almost immediately under real use — the exact
-failure mode `litreview/REPORT.md` and `project-docs/05-mistakes-and-bugs.md` (M-19) already
-document for a different script in this repo. `citation_agent.py` uses OpenAlex + arXiv instead, the
-same substitution `litreview/` made, arrived at independently for this script rather than copied
-from it (no code is imported across the two assignment folders).
+### 3.1 The LLM is external to the scripts
 
-**A real, encountered infra failure, kept rather than hidden:** arXiv's API rate-limited this
-script (HTTP 429) after the combined OpenAlex+arXiv query volume in one run. Rather than retry in a
-loop until it cleared, the Citation Agent step proceeded on OpenAlex results alone for the affected
-queries; `citation_agent_verdict.md` states exactly which conclusions rest on OpenAlex-only evidence
-and flags that result as weaker/inconclusive rather than confirmatory where retrieval came back
-empty or off-topic.
+This build environment has no hosted LLM API, the same constraint `../litreview/` already
+documents. Mechanical stages (retrieval, fusion, clustering, judge arithmetic, coverage
+computation) run as code. Stages requiring a model call are executed by Claude (Opus 5) against
+the exact prompt the script emits, with the output checked in as a data file that the next stage
+reads. This is honest but it is a real deviation: it means the agent outputs are not
+independently reproducible by re-running the scripts, only re-verifiable against the prompts and
+inputs, which are all committed.
 
-**Retrieval-recall limitation, stated directly:** the Citation Agent's automated queries did not
-reproduce a specific paper (NBDiff, arXiv:2512.06776) that a *differently-phrased* search elsewhere
-in this repository's history found relevant to the same underlying question (annealing tested at
-7B scale). This is recorded in `citation_agent_verdict.md` as a genuine limitation of this
-implementation's query phrasing, not glossed over.
+### 3.2 FAISS replaced by TF-IDF cosine — the largest fidelity gap
+
+The paper's hybrid retriever is BM25 (sparse) + FAISS (dense), equally weighted. BM25 is
+implemented exactly. The dense half is a hand-written TF-IDF cosine ranker, because no embedding
+model or vector index is installable here.
+
+**This substitution demonstrably cost something, and the cost is measurable in this run.** The
+Master Agent's clustering stage failed to group `EXT-6` ("annealing omitted at 7B … minimal
+impact … flash-attention 2") with `ANA-1` ("the ablation shows +2.1 and +2.5, the benefit grows
+with scale"). Both are about attention-mask annealing; they share almost no vocabulary, so
+lexical cosine scored them below threshold. A real dense retriever would very likely have caught
+it. The LLM merge step did catch it, and the miss is recorded in `data/master_merged.json`
+rather than papered over.
+
+### 3.3 `X_by` (Cited By) substituted
+
+The paper obtains citing papers from the OpenAlex API. The anchor's OpenAlex record
+(`W4404307915`) reports `cited_by_count = 0`, and a search confirms only one record exists for
+this title — an indexing gap, since an ICLR 2025 paper of this profile is certainly cited. The
+`cites:` filter therefore returned nothing.
+
+Rather than drop half the corpus, `X_by` is substituted with an OpenAlex full-text search for
+works mentioning "DiffuLLaMA" (47 works). This serves the paper's stated purpose for `X_by` —
+surrounding literature that exposes contextual weaknesses — but it is a **mention graph, not a
+citation graph**, and is labelled `cited_by_substitute` throughout the data files.
+
+### 3.4 OpenReview ground truth unavailable
+
+The source paper's central contribution to ground-truth quality is merging author-stated
+limitations with weaknesses mined from OpenReview reviewer comments (10–12 per paper). DiffuLLaMA
+is an ICLR 2025 Poster with a public forum (`j1tSLYKwg8`), so these reviews exist — but
+`api2.openreview.net` returns **HTTP 403** on all forum queries from this environment, and the
+forum page itself is a JavaScript shell with no server-rendered review text.
+
+This is an **access failure, not an absence**, and is recorded as such in
+`data/ground_truth.json`. Consequences are in §6.2.
+
+### 3.5 Scope
+
+The paper evaluates over 2,700 papers. This is a single-paper application, so the paper's
+aggregate claims are not reproduced — only its method, and its method's behaviour on one input.
+
+## 4. Why LLM steps are externalised rather than stubbed
+
+A stub that returns plausible text would make the pipeline "run" while producing results that
+mean nothing. The precedent in this repository is `../litreview/`, which documents the same
+constraint. Every LLM artifact here carries `_protocol`, `_generated_by`, and the rubric it was
+produced under, so a reader can check the output against the prompt that produced it.
 
 ## 5. Results
 
-10 final limitations (down from 14 raw Extractor hits + 8 Analyzer inferences, after merging
-overlapping items and filtering one below the Judge's quality threshold), tagged with LimitGen's
-four-aspect taxonomy and provenance (author-stated / inferred / literature-grounded). Full ranked
-list and reasoning: `data/master_consolidated.md`. Final deliverable (bulleted list + research-
-problem paragraph): `output/limitations_and_research_problem.md`.
+### 5.1 Retrieval
 
-## 6. Honest limitations of this implementation itself
+| Stage | Count |
+|---|---|
+| `X_in` chunks (from `litreview/candidates_topK.json`) | 48 |
+| `X_by` chunks (OpenAlex mention search) | 47 |
+| `C_total` | 95 |
+| After hybrid BM25+dense, top-K | 20 |
+| After LLM re-rank at ≥8/10 | **13** |
 
-- The Extractor's regex keyword list is not exhaustive — it demonstrably misses limitation-relevant
-  passages phrased without a keyword trigger (the annealing "minimal impact" sentence, found only by
-  the Analyzer's full-paper read; see `extractor_refined.md`'s final section). This is expected and
-  is exactly why the pipeline pairs extraction with an independent analytical pass, per all three
-  source papers' own design — not a bug specific to this implementation.
-- The Citation Agent's OpenAlex-based retrieval is noisy for this narrow a technical domain (most
-  returned results across all four query groups were off-topic high-citation surveys), consistent
-  with the same weakness already documented for `litreview/`'s first retrieval pass before it was
-  tuned. This implementation did not go through an equivalent tuning pass, given the assignment's
-  narrower scope; `citation_agent_verdict.md` reports groundedness honestly rather than overstating
-  confidence in a noisy retrieval result.
-- No human expert review of the final 10 items was performed (BAGELS and the Multi-Agent paper both
-  use human/SME verification as part of their evaluation; that step is out of scope here given no
-  panel of human annotators is available).
+The retained set is dominated by adaptation-recipe papers — *Don't Retrain, Align* (10/10),
+*PreDiff-LM* (10/10), *UNIFUSION* (9/10), *TESS 2* (9/10) — which is the correct neighbourhood
+for finding weaknesses in an adaptation paper.
+
+### 5.2 Agents and the feedback loop
+
+| Agent | Round 1 | Verdict | Round 2 |
+|---|---|---|---|
+| Extractor | 72.0 | REGENERATE | **84.0** |
+| Analyzer | 87.0 | pass | — |
+| Reviewer | 78.0 | REGENERATE | **86.0** |
+| Citation | 87.0 | pass | — |
+
+The Self-Feedback mechanism **actually fired**, for half the agents, and both recovered above
+threshold on one retry. The Extractor's originality score stays capped at 6 by construction: an
+agent restricted to what authors wrote cannot be original about it.
+
+### 5.3 Consolidation
+
+33 raw limitations → **12** consolidated, with **no item dropped** (asserted in code). Ten of the
+twelve carry more than one provenance tag, meaning they were reached independently by more than
+one agent — the multi-agent structure's clearest payoff, and something a single-pass prompt
+cannot produce by construction.
+
+### 5.4 Coverage evaluation
+
+| System | `C_GT` | Matched | Items | Generic statements |
+|---|---|---|---|---|
+| Zero-shot | 0.583 | 7/12 | 10 | **3** |
+| Multi-agent | 1.000 | 12/12 | 12 | **0** |
+
+## 6. Honest limitations of this implementation
+
+### 6.1 The clustering substitution cost a real merge
+
+See §3.2. One cross-agent merge was missed by the lexical clusterer and recovered only by the LLM
+step. On a larger input set, misses of that kind would accumulate silently.
+
+### 6.2 The +41.67 coverage gain is inflated and is not a result
+
+The measured gain is far larger than the paper's own +15.51, and that difference is an artifact,
+not an improvement. Ground truth here is **author-stated limitations only**, because the
+OpenReview half was unreachable (§3.4). The Extractor Agent's entire job is to recover
+author-stated limitations, so a pipeline containing an Extractor scores near-perfectly on this
+ground truth by construction. **`C_GT = 1.000` should be read as confirming the tautology, not as
+evidence of quality.**
+
+This is the same failure mode this project already recorded in `../litreview/REPORT.md` §11.5,
+where reference-accuracy scoring was near-tautological because references were retrieved and then
+verified against the database they came from. It recurred here for a different reason, and is
+flagged rather than reported as a win.
+
+**The one non-tautological signal in the evaluation** is the generic-statement count: the
+zero-shot baseline produced three statements of exactly the kind the source paper's abstract
+names as the failure mode ("dataset bias", "may not generalize", "generalizability"), and the
+multi-agent output produced none. That comparison does not depend on the ground-truth
+composition.
+
+### 6.3 Single judge, no human validation
+
+The source paper validates its LLM judge against two human annotators (agreement 0.98 and 0.95).
+No human validation was performed here. The same model acts as worker agents, judge, re-ranker,
+and matcher, so judge scores are not independent of the outputs they grade — a self-evaluation
+bias the source paper avoids by design and this implementation does not.
+
+### 6.4 Provenance labels are asserted, not verified
+
+Each limitation's provenance tag comes from the agent that produced it. Nothing independently
+verifies that an "Author-stated" item is genuinely in the paper's text. The `evidence` field on
+every item exists so this can be spot-checked, and the quoted passages were checked against
+`litreview/data/anchor_fulltext.txt` during authoring, but no automated verifier enforces it.
+
+## 7. Relationship to the rest of this repository
+
+This directory replaces an earlier `limitations/` implementation that blended techniques from
+three papers (BAGELS, LimitGen, and this one) and was deliberately built **without** using
+`litreview/`. This version implements one paper faithfully and **does** take `litreview/` as
+input, per the assignment brief's instruction that the surveyed literature should feed the
+limitation-extraction task. The `data/` directory here is self-contained; nothing is read from
+`project-docs/`.

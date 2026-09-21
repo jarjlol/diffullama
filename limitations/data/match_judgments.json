@@ -1,0 +1,19 @@
+{
+  "_protocol": "arXiv:2601.11578 sec 3.3 -- pairwise binary similarity, 1 if the generated limitation expresses the ground-truth limitation, 0 otherwise",
+  "_judged_by": "Claude (Opus 5) acting as the LLM judge",
+  "multi_agent": {
+    "gt1": ["L7"], "gt2": ["L7"], "gt3": ["L7"], "gt4": ["L8"], "gt5": ["L5"],
+    "gt6": ["L5"], "gt7": ["L6"], "gt8": ["L1"], "gt9": ["L3"], "gt10": ["L4"],
+    "gt11": ["L7"], "gt12": ["L7"]
+  },
+  "zero_shot": {
+    "gt1": ["ZS-1"], "gt2": ["ZS-2"], "gt3": ["ZS-1"], "gt4": ["ZS-6"], "gt5": ["ZS-5"],
+    "gt6": ["ZS-5"], "gt7": [], "gt8": [], "gt9": [], "gt10": [],
+    "gt11": [], "gt12": ["ZS-1"]
+  },
+  "_notes": {
+    "gt11_multi": "L7 carries the knowledge-preservation deficit that gt11 attributes the TriviaQA/PIQA difficulty to; judged similar.",
+    "gt3_zero": "ZS-1 states more training would help, which is the saturation claim; judged similar.",
+    "zero_shot_misses": "gt7-gt11 are the implementation-level and analysis-level limitations: answer uncertainty, annealing omission, mask-token workaround, proxy-task ablation, knowledge-benchmark difficulty. A zero-shot pass names none of them."
+  }
+}

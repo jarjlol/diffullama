@@ -1,0 +1,16 @@
+{
+  "_protocol": "arXiv:2601.11578 sec 3.1 Judge Agent, re-scoring after Self-Feedback round 2",
+  "_scored_by": "Claude (Opus 5) acting as the Judge Agent over data/agent_outputs_final.json",
+  "dimension_scores": {
+    "extractor": {"depth": 9, "originality": 6, "actionability": 9, "topic_coverage": 9},
+    "analyzer":  {"depth": 9, "originality": 9, "actionability": 8, "topic_coverage": 9},
+    "reviewer":  {"depth": 8, "originality": 8, "actionability": 9, "topic_coverage": 9},
+    "citation":  {"depth": 9, "originality": 9, "actionability": 8, "topic_coverage": 9}
+  },
+  "feedback": {
+    "extractor": "Chain-of-limitations pairing now explicit: each item states the concession and the justification the authors attach to it, which is where the analysable weakness sits. Originality remains capped at 6 by construction -- an extraction agent reports what authors wrote and cannot exceed it. Passes.",
+    "analyzer": "Unchanged from round 1. Strong.",
+    "reviewer": "Coverage recovered: ethics (licensing, misuse, model card) and transparency (contamination, artifact mismatch) are now represented alongside reproducibility, and the two items overlapping the Analyzer were replaced. Passes.",
+    "citation": "Unchanged from round 1. Strong."
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "substitutions": [
+    "X_in obtained from litreview/candidates_topK.json (this project's prior literature-review assignment) instead of ScienceParse bibliography parsing.",
+    "X_by substituted with OpenAlex full-text search for 'DiffuLLaMA' (ok (47 works mentioning 'DiffuLLaMA')). Serves the paper's stated purpose for X_by (surrounding literature) but is a mention graph, not a citation graph."
+  ],
+  "degradations": [
+    "X_by via the paper's OpenAlex cites-filter returned 0 works (ok (0 works)). The anchor's OpenAlex record reports cited_by_count=0 despite being an ICLR 2025 paper; verified as an OpenAlex indexing gap (only one record exists for this title), NOT evidence that the paper is uncited."
+  ],
+  "n_chunks_total": 95,
+  "n_cited_in": 48,
+  "n_cited_by": 47,
+  "openalex_cited_by_status": "ok (0 works)",
+  "x_by_mode": "openalex_fulltext_mention_search",
+  "n_anchor_sections": 44
+}

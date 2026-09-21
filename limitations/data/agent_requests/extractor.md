@@ -1,24 +1,37 @@
-Published as a conference paper at ICLR 2025
+# Extractor Agent
+
+You are the Extractor Agent in the multi-agent limitation-generation framework of
+arXiv:2601.11578 (Al Azher, Guo, Alhoori). You operate on one input paper.
+
+## TASK
+Extract all explicitly stated limitations as mentioned by the authors. Focus on the Discussion, Conclusion, and Future Work sections, and on any hedging the authors use elsewhere in the paper. Follow the 'chain of limitations' methodology: where the authors concede a weakness and then justify or defer it, capture both the concession and the justification. Record verbatim wording and the location it came from. Do not infer anything the authors did not write.
+
+## OUTPUT CONTRACT
+
+Return JSON only:
+{"limitations": [{"id": "<AGENT>-1",
+                  "statement": "<one specific limitation, 2-4 sentences>",
+                  "evidence": "<quote or section reference from the INPUT>",
+                  "provenance": "Author-stated"}]}
+
+Rules:
+- Be specific to THIS paper. Reject generic statements ("limited generalizability",
+  "dataset bias") unless the paper's own text makes them concrete.
+- Every statement must be traceable to the INPUT provided. Do not invent numbers.
+- Produce at most 8 limitations. Fewer, sharper items beat more, vaguer ones.
 
 
-
-
-S CALING D IFFUSION L ANGUAGE M ODELS
-VIA A DAPTATION FROM AUTOREGRESSIVE M ODELS
-                        ∗
+## INPUT
+## VIA A DAPTATION FROM AUTOREGRESSIVE M ODELS
+∗
  Shansan Gong∗1 , Shivam Agarwal∗2 , Yizhe Zhang3 , Jiacheng Ye1 , Lin Zheng1
  Mukai Li1 , Chenxin An1 , Peilin Zhao4 , Wei Bi4 , Hao Peng2 , Jiawei Han2 , Lingpeng Kong1
  1
    The University of Hong Kong 2 University of Illinois at Urbana-Champaign
  3
-   Apple 4 Tencent AI Lab
- sansa933@connect.hku.hk,shivama2@illinois.edu
 
-
-
-                                              A BSTRACT
-
-             Diffusion Language Models (DLMs) have emerged as a promising new paradigm
+## A BSTRACT
+Diffusion Language Models (DLMs) have emerged as a promising new paradigm
              for text generative modeling, potentially addressing limitations of autoregressive
              (AR) models. However, current DLMs have been studied at a smaller scale com-
              pared to their AR counterparts and lack fair comparison on language modeling
@@ -36,9 +49,7 @@ VIA A DAPTATION FROM AUTOREGRESSIVE M ODELS
              performing in-context learning, filling in the middle without prompt re-ordering,
              and following instructions. https://github.com/HKUNLP/DiffuLLaMA
 
-
-1       I NTRODUCTION
-
+## 1       I NTRODUCTION
 Large language models (LLMs) have ushered in a new era of artificial intelligence, demonstrating
 remarkable capabilities in generating high-quality text, in-context learning, and following complex
 instructions (OpenAI, 2023; Touvron et al., 2023a). These advancements are primarily rooted in
@@ -60,63 +71,8 @@ traman et al., 2024), any-order, and parallel text generation (Gong et al., 2023
 exhibit promising capabilities in intermediate token correction (Ye et al., 2024b) and global plan-
 ning (Zhang et al., 2023), thereby addressing key limitations inherent in the AR approach.
     ∗
-        Equal contribution
 
-
-                                                     1
-Published as a conference paper at ICLR 2025
-
-
-
-
-Despite the promising potential of text diffusion models, the relatively small model size limits the
-competitiveness of DLMs compared to AR models. Existing state-of-the-art DLMs such as Plaid
-1B (Gulrajani & Hashimoto, 2023) and SEDD (Lou et al., 2024) are relatively small in size (127M-
-1B parameters) and under-trained, with less than 400B tokens of training data. This substantial gap
-in scale prevents fair comparisons with larger AR language models on many advanced capabilities
-and tasks, such as chain-of-thought reasoning abilities on complex mathematical benchmarks. Re-
-cent approaches (Ye et al., 2023) attempt adapt LLaMA models to DLMs based on masked language
-modeling (He et al., 2023). However, they find that the base model capabilities are lost during their
-adaptation stage. Pre-training at such a scale is extremely resource-intensive, and the challenge is
-even more pronounced for diffusion models. These models lack the computational optimizations
-that have been developed for LLMs (Samragh et al., 2024) and require significantly more resources
-than their AR counterparts, as noted by Gulrajani & Hashimoto (2023).
-Given these scaling challenges, pre-trained LLMs emerge as an invaluable resource that we can
-leverage, considering the extensive computational efforts already invested in their development. This
-strategy aligns with recent trends where new models are scaled up or adapted to new architectures
-using existing LLMs (Wang et al., 2024; Zhang et al., 2024c). However, building DLMs through
-adaptation from AR models is non-trivial due to fundamental differences in their language modeling
-objectives. Two key distinctions present significant hurdles. First, AR models employ causal mask-
-ing to prevent future information leakage, whereas diffusion models utilize bi-directional attention
-masks. Second, an AR LM processes clean inputs to predict subsequent tokens at each step, while a
-diffusion model operates on noisy inputs to predict their denoised versions.
-To overcome these challenges, we propose a simple adaptation approach that bridges these discrep-
-ancies. We unify their modeling objectives (§3.2) and address the architectural differences by break-
-ing the causal masking bias in AR models through attention mask annealing (§3.3). Additionally,
-we inherit the shift operation from AR models (§3.3). This streamlined adaptation recipe enables us
-to construct a pre-trained DLM that can effectively compete in the arena of LLMs. Building on this
-approach, we leverage the FineWeb (Penedo et al., 2024) and SlimPajama (Soboleva et al., 2023)
-pre-training corpora to continue training small and medium-sized DLMs based on GPT2 (Brown
-et al., 2020), and further train up to a 7B model based on LLaMA2 (Touvron et al., 2023b).
-Our experiments provide a comprehensive comparison between AR LMs and DLMs across lan-
-guage modeling, reasoning, and infilling tasks. The evaluation encompasses diverse settings, in-
-cluding zero-shot, few-shot, and fine-tuning scenarios, addressing the limitations of relying solely
-on perplexity in previous works (Shi et al., 2024). Our contributions and empirical findings include:
-
-• We demonstrate that by narrowing the gap between AR models and DLMs, it is possible to con-
-  vert 127M-7B AR models (GPT2 and LLaMA2) into DiffuGPT and DiffuLLaMA with training
-  on less than 200B tokens. Notably, DiffuGPT outperforms GPT2 in most tasks.
-• We adapt 7B AR models to DLMs, greatly expanding the expertise compared to smaller-sized
-  diffusion models. DiffuLLaMA emerges as the state-of-the-art DLM, exhibiting in-context learn-
-  ing, code generation, and strong infilling capabilities. Its generation speed is competitive with
-  AR counterparts for unconditionally generating 1024 tokens using 256 diffusion timesteps.
-• We provide a comprehensive benchmark for DLMs and release our adapted diffusion models
-  (127M, 355M and 7B) along with open-source adaptation code, efficient fine-tuning scripts, and
-  evaluation toolkits.
-
-
-2   P RELIMINARY AND N OTATION
-
+## 2   P RELIMINARY AND N OTATION
 Diffusion models (Sohl-Dickstein et al., 2015; Song & Ermon, 2019; Ho et al., 2020; Song et al.,
 2021b) are latent variable generative models characterized by a forward and a reverse Markov
 process. We denote x0 ∼ pdata (x0 ) as the variable following the data distribution, and xt ∼
@@ -130,22 +86,9 @@ x0 . Parameters θ are learned by minimizing the negative log-likelihood of x0 ,
 
 
                                                   2
-Published as a conference paper at ICLR 2025
 
-
-
-
-              AR Language Models                                    Adaptation                                      Adapted Diffusion Language Models
-    Train                                                                                                  Train                               Predict
-
-    Logits         ℎ! ℎ" ℎ$       ℎ% ℎ#                                                                    Inputs   𝑥!     𝑥"    𝑥$ 𝑥%          Inputs
-                                                                                                                                                         𝑥"     𝑥$ 𝑥%
-                                                                                                                    ≈ 𝑥!   ≈𝑥"   ≈𝑥 #   ≈𝑥 $       𝑓!
-    Labels 𝑥!      𝑥"    𝑥$ 𝑥% 𝑥#               Causal mask         Attention mask      Full attention     Logits   ℎ! ℎ" ℎ$ ℎ%                          ℎ" ℎ$ ℎ%
-                                                                    annealing           w/o mask
-                                                                                                           Labels
-    Predict
-    inputs    𝑥!        𝑓!   ℎ!    𝑥"                                                                       𝑥! 𝑥"          𝑥$ 𝑥% 𝑥#            (iterative) 𝑥$   𝑥% 𝑥#
+## Predict
+inputs    𝑥!        𝑓!   ℎ!    𝑥"                                                                       𝑥! 𝑥"          𝑥$ 𝑥% 𝑥#            (iterative) 𝑥$   𝑥% 𝑥#
                                                 𝑓!   LM   CE Loss       Attention weights    Mask states
                                   (iterative)
 
@@ -191,14 +134,14 @@ Continuous-time sampling is equivalent to dividing [0, 1] into T intervals and w
 any 0 ≤ s < t ≤ 1, the forward process generalizes to q(xt |xs ). We will use this continuous-time
 notation in the following sections.
 
-3        M ODEL
+## 3        M ODEL
 We begin by formulating the continuous-time discrete diffusion process (§3.1) and establishing a
 connection between the discrete diffusion and autoregressive objectives (§3.2). Based on this equiv-
 alence, we propose an adaptation approach (§3.3) and a sampling algorithm (§3.4) for diffusion
 models adapted from AR models. The whole process is illustrated in Figure 1.
 
-3.1  C ONTINUOUS - TIME D ISCRETE D IFFUSION P ROCESSES
-                                    P
+## 3.1  C ONTINUOUS - TIME D ISCRETE D IFFUSION P ROCESSES
+P
 Following Eq.2 and q(xt |x0 ) =       xs q(xt |xs )q(xs |x0 ), the forward transition distribution be-
 tween arbitrary points s < t can be derived as
                                               ⊤          αt            αt
@@ -206,36 +149,9 @@ tween arbitrary points s < t can be derived as
                                                          αs            αs
 
                                                                                   3
-Published as a conference paper at ICLR 2025
 
-
-
-
-                −1
-with Qs|t := Qs Qt = ααst I + (1 − ααst )1m⊤ . The corresponding backward transition distribution
-conditional on x0 is also available in closed form,
-                                                    (
-                                                      αs −αt
-                              q(xt |xs )q(xs |x0 )           x0 + 1−α
-                                                                  1−αt m if xt = m,
-                                                                     s
-            q(xs |xt , x0 ) =                      = 1−αt                                     (4)
-                                  q(xt |x0 )          x0                 if xt ̸= m.
-In discrete diffusion processes, we aim to approximate the backward transition distribution
-q(xs |xt , x0 ) using a denoising model pθ (xs |xt , fθ (xt )), where fθ (xt ), an approximation of
-x0 , is usually the output of neural networks such as a transformer (Vaswani et al., 2017). We
-can define the denoising model to have a similar form of backward transitions as pθ (xs |xt ) =
-αs −αt             1−αs
-  1−αt fθ (xt ) + 1−αt m. According to the training objective in Eq.1, the KL-divergence of LT at
-each step t can be simplified to a reweighted cross-entropy function,
-                                                              αs − αt
-                  DKL (q(xs |xt , x0 )||pθ (xs ||xt )) = −             δx ,m x⊤0 log fθ (xt ),        (5)
-                                                               1 − αt t
-where δa,b is the indicator function for a = b. If we take the limit and let T → ∞, the first two terms
-of Eq.1 will approach 0 and some constant, respectively. Thus the evidence lower bound (ELBO)
-effectively becomes LT and
-                                   Z 1
-                                            αt′
+## Z 1
+αt′
                         lim LT =                  Eq(xt |x0 ) [δxt ,m x⊤
                                                                        0 log fθ (xt )] dt.            (6)
                       T →∞            0  1  −  αt
@@ -257,14 +173,14 @@ where fθ (x1:N
            t   )n denotes the whole input sequence is fed into the transformer model and the n-th
 output token is indexed.
 
-3.2   U NIFYING L ANGUAGE M ODELING O BJECTIVES
-
+## 3.2   U NIFYING L ANGUAGE M ODELING O BJECTIVES
 The training objective of autoregressive (AR) language models is the negative log-likelihood of each
 ground-truth token provided the preceding tokens,
                                           N
                                           X
-                              L1:N
-                               AR = −         (xn0 )⊤ log fθ (x1:n−1
+
+## L1:N
+AR = −         (xn0 )⊤ log fθ (x1:n−1
                                                                0     )n−1 .                          (8)
                                           n=1
 Comparing Eq.8 against Eq.7, we note that while both take the form of cross-entropy functions,
@@ -287,13 +203,8 @@ bidirectional context and support parallel generation in arbitrary orders.
 
 
                                                    4
-Published as a conference paper at ICLR 2025
 
-
-
-
-3.3   A DAPTATION
-
+## 3.3   A DAPTATION
 Building on the connection between AR modeling and discrete diffusion processes, we construct an
 adaptation recipe next. Figure 1 shows an overview of our adaptation approach. We use attention
 mask annealing, shift operations, and a time-embedding free architecture to narrow the differences
@@ -354,8 +265,7 @@ et al., 2023) assert that timesteps t can be easily learned implicitly based on 
 tokens. Since AR models are not equipped with time embedding layers, we also choose not to use
 the time embedding, resulting in no additional parameters compared to previous diffusion models.
 
-3.4   S AMPLING
-
+## 3.4   S AMPLING
 Following Shi et al. (2024), we initialize xT with all [MASK] tokens and then sample tokens ac-
 cording to the time reversal q(xs |xt , x0 ) in Eq.4. At each timestep, if xt is a mask, it will jump to
                                                  s −αt
@@ -365,36 +275,19 @@ sequence. Since our adapted models are trained with the shift operation, at each
 
 
                                                     5
-Published as a conference paper at ICLR 2025
 
-
-
-
-we shift back the generated sentence and prepend a start token before the next forward pass (Algo.2,
-line 10). Usually larger T requires more interactions of computation, and can yield texts in higher
-quality, and this trade-off can be controlled easily through T . Through experiments, we find that the
-output generated by diffusion models is diverse and scattered. Therefore, for conditional generation
-tasks, we improve the sampling procedure to ensure that only tokens with high probabilities from
-neural networks are denoised (Ghazvininejad et al., 2019; Chang et al., 2022; Zheng et al., 2024a),
-so that the model could predict tokens mostly relevant to the input. In addition, existing sampling
-techniques for AR language models, including top-k and nucleus sampling (Holtzman et al., 2020),
-can be seamlessly applied to diffusion models as well.
-
-4     E XPERIMENT
-4.1   A DAPTATION SETUP
-
+## 4.1   A DAPTATION SETUP
 DiffuGPT We use the 30 billion tokens1 random split from the FineWeb dataset (Penedo et al.,
 2024), an improved corpus than OpenWebText (Gokaslan & Cohen, 2019) used in prior DLMs (Lou
 et al., 2024), to continue training GPT2 base (Radford et al., 2019). We use sequence packing, logits
 shifting, and 10K-step attention mask annealing to transform GPT2 to DiffuGPT.
 DiffuLLaMA We continue pre-training LLAMA -2-7- HF (Tou-
-                                                                                           10   DiffuGPT-127M
+
+## 10   DiffuGPT-127M
 vron et al., 2023a) on a mixture of SlimPajama (70%) (Soboleva                                  DiffuGPT-355M
 et al., 2023) and Starcoder (30%) (Li et al., 2023a) data follow-                           8
-                                                                                                DiffuLLaMA-7B
 
-
-                                                                           Training Loss
+## Training Loss
 ing TinyLLaMA (Zhang et al., 2024a). We randomly sample 65
 billion tokens from this mixture and use sequence packing with                              6
 context length of 2048. For efficient implementation we enable
@@ -410,8 +303,7 @@ on 60B tokens and achieve a lower loss compared to 127M and kens for various mod
 LLMs (Kaplan et al., 2020). We also note that there is still scope
 for training more, since the model does not show signs of saturation.
 
-4.2   E VALUATION SETUP
-
+## 4.2   E VALUATION SETUP
 Previously developed diffusion language models (Gulrajani & Hashimoto, 2023; Lou et al., 2024;
 Shi et al., 2024; Ou et al., 2024) evaluate model performance using zero-shot perplexity on bench-
 mark datasets. However, this metric alone does not fully capture a model’s capabilities for several
@@ -436,21 +328,9 @@ that we train for more than one epoch.
 
 
                                                        6
-Published as a conference paper at ICLR 2025
 
-
-
-
-Table 1: Comprehensive evaluation of different diffusion language models and the same size pre-
-trained autoregressive models. There are 3 types of these models: AR for autoregressive, DD for
-discrete diffusion and CD for continuous diffusion. For the infilling task, we use ROUGE-1/2/L
-score; for other tasks, we use the accuracy (%) metric. ∗ indicates we finetune GSM8K on models;
-other tasks are all in zero-shot setting. Numbers in the () indicate that AR models are only given pre-
-fix for infilling tasks. We bold the best performance among diffusion language models and underline
-results that surpass their base models.
-
-                          QA Word CommonSense Reasoning     Math                     Infilling
-      Model    Size Type TriQA Lamb. HSwag Wino. SIQA PIQA GSM8K∗                 ROCStories Code
+## QA Word CommonSense Reasoning     Math                     Infilling
+Model    Size Type TriQA Lamb. HSwag Wino. SIQA PIQA GSM8K∗                 ROCStories Code
  GPT2-S        127M AR       4.0    25.9    29.9   48.5   35.7   62.1    44.8     (7.8/0.8/7.4) (1.6)
  SEDD-S        170M DD       1.5    12.4    30.2   50.1   34.4   55.6    45.3     11.9/0.7/10.9 0.7
  DiffuGPT-S    127M DD       2.0    45.0    33.4   50.8   37.0   57.7    50.2     13.7/1.4/12.6 0.3
@@ -484,8 +364,7 @@ choose the one with lowest loss (perplexity). For GSM8K finetuning, we use param
 LoRA tuning (Hu et al., 2022) for DiffuLLaMA. The decoding T are set to 32 by default. The
 detailed settings are in Appendix B.3.
 
-4.3    L ANGUAGE MODELING CAPACITIES
-
+## 4.3    L ANGUAGE MODELING CAPACITIES
 Benchmark performance According to Table 1, the results on diverse tasks demonstrate that our
 adapted diffusion models achieve the state-of-the-art results among all existing diffusion language
 models (DLMs). We observe that diffusion models with larger parameters show improved perfor-
@@ -501,54 +380,16 @@ DLMs consistently exhibit better performance compared to AR models that rely sol
 
 
                                                    7
-Published as a conference paper at ICLR 2025
 
-
-
-
-right modeling capabilities. Remarkably, DLMs demonstrate their strengths in infilling tasks. Reg-
-ular LLMs like LLaMA2 are not trained for filling-in-the-middle (FIM) tasks like those in Roziere
-et al. (2023), making them incapable of handling infilling. Considering this, we do not provide the
-suffix information to the model, which might result in an unfair comparison. But the FIM requires
-re-arranging the order of pre-training/inference sequence with special tokens (Zheng et al., 2024b),
-while diffusion training naturally supports this in its objective modeling.
-Tasks in Table 1 mainly measure conditional modeling abilities, where Plaid 1B performs unsatisfac-
-torily for conditional generation tasks even though with 1B parameters. We attribute this result to the
-gap between the continuous diffusion modeling and discrete text representation; in contrast, discrete
-diffusion models align more closely with AR modeling, naturally supporting conditional generation.
-Despite this, as illustrated in Figure 3, Plaid 1B demonstrates its strength in unconditional genera-
-tion, highlighting its language modeling capabilities as a generative model. These findings reveal
-that the previous evaluation based on the perplexity of test data is too general to accurately assess
-the model’s true capabilities, while our evaluation offers a more nuanced benchmark.
-
-Unconditional Generation We evaluate the quality of                                                                1.0
-text unconditionally generated by DLMs in Figure 3. The            240
-perplexity is measured using GPT2 large, consistent with
-
-
-
-                                                                      Generative Perplexity
-                                                                                                                   0.9
-
-
-                                                                                                                   Distinct 2-gram
-the prior work (Lou et al., 2024), where the data of               120                            Dist2-DiffuGPT-M
-                                                                                                  Dist2-SEDD-M
+## Dist2-SEDD-M
 MD4 (Shi et al., 2024) is sourced from its original pa-
 per. To make sure low perplexity is not brought by re-                                                             0.8
                                                                     60
 peated content, we assess the distinct 2-gram diversity
 of the generated text. Our model achieves low perplex-                                                             0.7
 ity while maintaining a high level of diversity, validating         30 SEDD-M
-                                                                         SEDD-S
-                                                                                  DiffuGPT-M
-                                                                                  DiffuGPT-S
-                                                                         MD4-M    Plaid1B
-that the DiffuGPT series excels in fluent text generation.          20 32
-                                                                         MD4-S    GPT2-M
 
-As the number of decoding steps increases, thereby ex-                          64 128 256 512 10240.6
-                                                                                   Decoding Steps
+## Decoding Steps
 tending the test computing time, the fluency of uncondi-
 tional generation improves. Similarly, increasing model Figure 3: Quality evaluation for un-
 size also contribute to better performance. An increase in conditional generation, with perplexity
@@ -560,9 +401,7 @@ els, particularly at lower step counts (e.g., 64 steps), while as the continuous
 advantage on less sampling time. We outline the decoding hyperparameters and show the diversity
 changes across different settings in Appendix C.1, which also includes generation cases.
 
-
-4.4    A NALYSIS ON D IFFU LL A MA
-
+## 4.4    A NALYSIS ON D IFFU LL A MA
 We validate that increasing the size of adapted Table 2: Performance on math/QA benchmarks
 DLMs significantly enhances the performance (↑). We compare of DiffuLLaMA with zero-shot
 of downstream tasks in Table 1. Further, we (ZS), few-shot (FS), self-consistency (SC), hit@k
@@ -585,28 +424,8 @@ we give 4-shot on math tasks and 2-shot on TriviaQA.
 
 
                                                           8
-Published as a conference paper at ICLR 2025
 
-
-
-
-The performance improvement from zero-shot to few-shot settings suggests that DiffuLLaMA can
-learn from ICL examples, particularly in following to the format of answers as we observe. We hy-
-pothesize that the adapted model retains some of the abilities from the base AR model. We randomly
-select the ICL demonstration here and anticipate that advanced ICL strategies in LLMs (Wu et al.,
-2023) could yield potentially higher results. The self-consistency offers LMs with an effective ap-
-proach to test-time scaling (Snell et al., 2024), and DiffuLLaMA shows that it can also leverage this
-method. Furthermore, we report the hit rate results in generated candidate answers, highlighting the
-model’s potential to produce the correct answer. This reveals that the current model exhibits high un-
-certainty about its responses, leading to temporarily suboptimal performance. We also observe that
-adding step-wise solutions in the in-context example (CoT) leads to a drop in performance, likely
-due to the absence of instruction tuning, similar to the findings in LLMs (Ouyang et al., 2022). We
-will leave instruction tuning as the future work as Ye et al. (2023) show that text diffusion model can
-benefit from instruction tuning. In summary, we show the potential capabilities of DiffuLLaMA,
-which motivates us to further investigate the scaling of diffusion models.
-
-4.5   D ISCUSSIONS
-
+## 4.5   D ISCUSSIONS
 Ablation Test on GSM8K-symbolic Direct ablation Table 3: Ablation test for adaptation ap-
 on adaptation training is costly; hence, we conduct pre- proaches on GSM8K symbolic dataset.
 liminary experiments to determine the adaptation recipes. CD is for continuous diffusion and DD
@@ -629,8 +448,9 @@ distribution, increasing the difficulty of adaptation.
 For DD loss, removing attention mask annealing and shift operations both degrade performance,
 indicating the efficacy of our approaches. The mask annealing has minimal impact, so we choose to
 omit it for 7B adaptation to simplify implementation using flash-attention 2.
-Direct DD loss finetuning on GPT2 achieves accuracy
-                                                                                                     40
+
+## Direct DD loss finetuning on GPT2 achieves accuracy
+40
 
 
 
@@ -642,8 +462,9 @@ tively, outperforming GPT2 AR finetuning. However, fine-                        
                                                                                                           DiffuLLaMA T=128
 tuning from already adapted diffusion language models                                                30   DiffuLLaMA T=64
 (DiffuGPT) yields accuracy of 50.2 and 61.8 (Table 1).
-This demonstrates the superiority of DiffuGPT as the cur-
-                                                                                                     20
+
+## This demonstrates the superiority of DiffuGPT as the cur-
+20
 rent best diffusion base model at this size and highlights that                                                              increasing T
 a better base model leads to improved results. Even with the                                                                 decreasing T
 same DD loss, DiffuGPT’s finetuning converges faster and                                             10
@@ -660,20 +481,8 @@ formance can be further boosted with hardware-aware optimizations like flash-att
 
 
                                                     9
-Published as a conference paper at ICLR 2025
 
-
-
-
-2022; Dao, 2024; Shah et al., 2024). In Figure 4, we evaluate the decoding latency with batch size 1
-using flash-attention 2 and illustrate that our DiffuLLaMA achieves better inference efficiency using
-T = 256 when generating sequences of length 1024 or longer. This underscores the significant po-
-tential of diffusion models for efficient inference. Further decreasing T can lead to faster decoding
-but may sacrifice quality. Additional latency comparisons are provided in Appendix C.5.
-
-
-5   R ELATED W ORK
-
+## 5   R ELATED W ORK
 Continue Pre-training Continue pre-training is commonly used in adapting an existing language
 model (LM) to a domain-specific LM (Ke et al., 2023) or enabling new abilities of LM, such as for
 longer context (Chen et al., 2024) or code generation (Xu et al., 2024). Pre-training LMs is non-
@@ -710,35 +519,14 @@ focus on training models to achieve better and faster multi-token predictions as
 NAR approaches provide compelling alternatives to traditional AR LLMs, yet few have thoroughly
 explored training large NAR models on large-scale unlabeled data.
 
-
-6   C ONCLUSION
-
-Building on existing DLMs, we present a recipe for building DLMs by continuing training on off-
-the-shelf autoregressive LLMs. Our adaptation technique involves using 1) attention mask annealing
-to enable bidirectional modeling and 2) shift operation to allow similar training dynamics like AR
-models. By unifying the language modeling objectives of autoregressive and diffusion models, we
-train diffusion models up to 7B parameters. Through experiments on common sense reasoning, lan-
-guage modeling, math reasoning and code generation, we show that DiffuGPT and DiffuLLaMA
-have better performance compared to existing DLMs. We find that DiffuLLaMA is capable of
-following in-context demonstrations to some extent on math problems. In the future, we aim to in-
-struction tune our DLMs and explore inference time planning methods. We release DiffuLLaMA and
-DiffuGPT for further exploration of diffusion models as an alternative language modeling method.
-
-
-                                                  10
-Published as a conference paper at ICLR 2025
-
-
-
-
-AUTHOR C ONTRIBUTIONS
+## AUTHOR C ONTRIBUTIONS
 Shansan Gong: Project lead, methodology development, DiffuGPT training and model evaluation,
 major writing. Shivam Agarwal: Methodology exploration, discussion, DiffuLLaMA training, writ-
 ing. Yizhe Zhang: Discussion, DiffuLLaMA training, writing suggestions. Jiacheng Ye: Initial
 methodology exploration. Lin Zheng: Discussion, writing. Mukai Li & Chenxin An: Discussion,
 writing suggestions. Others: Mentorship and supervision.
 
-ACKNOWLEDGMENTS
+## ACKNOWLEDGMENTS
 Research was supported in part by US DARPA INCAS Program No. HR0011-21-C0165 and BRIES
 Program No. HR0011-24-3-0325, National Science Foundation IIS-19-56151, the Molecule Maker
 Lab Institute: An AI Research Institutes program supported by NSF under Award No. 2019897,
@@ -752,8 +540,7 @@ ence Foundation of China (NSFC) and the Research Grants Council (RGC) under gran
 N HKU714/21.
 This work was also in part supported by research awards from Apple and the Allen Institute for AI.
 
-
-R EFERENCES
+## R EFERENCES
 Jacob Austin, Daniel D. Johnson, Jonathan Ho, Daniel Tarlow, and Rianne van den Berg. Structured
   denoising diffusion models in discrete state-spaces. In Marc’Aurelio Ranzato, Alina Beygelzimer,
   Yann N. Dauphin, Percy Liang, and Jennifer Wortman Vaughan (eds.), Advances in Neural In-
@@ -790,406 +577,8 @@ Huiwen Chang, Han Zhang, Lu Jiang, Ce Liu, and William T. Freeman. Maskgit: Mask
 
 
                                                11
-Published as a conference paper at ICLR 2025
 
-
-
-
-Charlie Chen, Sebastian Borgeaud, Geoffrey Irving, Jean-Baptiste Lespiau, Laurent Sifre, and John
-  Jumper. Accelerating large language model decoding with speculative sampling. arXiv preprint
-  arXiv:2302.01318, 2023.
-Yukang Chen, Shengju Qian, Haotian Tang, Xin Lai, Zhijian Liu, Song Han, and Jiaya Jia. Lon-
-  gloRA: Efficient fine-tuning of long-context large language models. In The Twelfth International
-  Conference on Learning Representations, 2024.
-Karl Cobbe, Vineet Kosaraju, Mohammad Bavarian, Mark Chen, Heewoo Jun, Lukasz Kaiser,
-  Matthias Plappert, Jerry Tworek, Jacob Hilton, Reiichiro Nakano, Christopher Hesse, and John
-  Schulman. Training verifiers to solve math word problems. ArXiv, abs/2110.14168, 2021.
-Tri Dao. FlashAttention-2: Faster attention with better parallelism and work partitioning. In Inter-
-  national Conference on Learning Representations (ICLR), 2024.
-Tri Dao, Daniel Y Fu, Stefano Ermon, Atri Rudra, and Christopher Re. Flashattention: Fast and
-  memory-efficient exact attention with IO-awareness. In Advances in Neural Information Process-
-  ing Systems, 2022.
-Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. BERT: Pre-training of deep
-  bidirectional transformers for language understanding. In Proc. of NAACL-HLT, pp. 4171–4186.
-  Association for Computational Linguistics, 2019.
-Sander Dieleman, Laurent Sartran, Arman Roshannai, Nikolay Savinov, Yaroslav Ganin, Pierre H
-  Richemond, Arnaud Doucet, Robin Strudel, Chris Dyer, Conor Durkan, et al. Continuous diffu-
-  sion for categorical data. arXiv preprint arXiv:2211.15089, 2022.
-Kanishk Gandhi, Denise H J Lee, Gabriel Grand, Muxin Liu, Winson Cheng, Archit Sharma, and
-  Noah Goodman. Stream of search (sos): Learning to search in language. In First Conference on
-  Language Modeling, 2024.
-Leo Gao, Jonathan Tow, Baber Abbasi, Stella Biderman, Sid Black, Anthony DiPofi, Charles Fos-
-  ter, Laurence Golding, Jeffrey Hsu, Alain Le Noac’h, Haonan Li, Kyle McDonell, Niklas Muen-
-  nighoff, Chris Ociepa, Jason Phang, Laria Reynolds, Hailey Schoelkopf, Aviya Skowron, Lintang
-  Sutawika, Eric Tang, Anish Thite, Ben Wang, Kevin Wang, and Andy Zou. A framework for
-  few-shot language model evaluation, 07 2024.
-Marjan Ghazvininejad, Omer Levy, Yinhan Liu, and Luke Zettlemoyer. Mask-predict: Parallel de-
- coding of conditional masked language models. In Kentaro Inui, Jing Jiang, Vincent Ng, and
- Xiaojun Wan (eds.), Proceedings of the 2019 Conference on Empirical Methods in Natural Lan-
- guage Processing and the 9th International Joint Conference on Natural Language Processing
- (EMNLP-IJCNLP), pp. 6112–6121, Hong Kong, China, November 2019. Association for Com-
- putational Linguistics. doi: 10.18653/v1/D19-1633.
-Fabian Gloeckle, Badr Youbi Idrissi, Baptiste Roziere, David Lopez-Paz, and Gabriel Synnaeve.
-  Better & faster large language models via multi-token prediction. In Forty-first International
-  Conference on Machine Learning, 2024.
-Aaron Gokaslan and Vanya Cohen. Openwebtext corpus. http://Skylion007.github.io/
-  OpenWebTextCorpus, 2019.
-Shansan Gong, Mukai Li, Jiangtao Feng, Zhiyong Wu, and Lingpeng Kong. DiffuSeq-v2: Bridging
-  discrete and continuous text spaces for accelerated Seq2Seq diffusion models. In Houda Bouamor,
-  Juan Pino, and Kalika Bali (eds.), Findings of the Association for Computational Linguistics:
-  EMNLP 2023, pp. 9868–9875. Association for Computational Linguistics, 2023a.
-Shansan Gong, Mukai Li, Jiangtao Feng, Zhiyong Wu, and Lingpeng Kong. DiffuSeq: Sequence
-  to sequence text generation with diffusion models. In International Conference on Learning
-  Representations, ICLR, 2023b.
-Albert Gu and Tri Dao. Mamba: Linear-time sequence modeling with selective state spaces. arXiv
-  preprint arXiv:2312.00752, 2023.
-
-
-                                                12
-Published as a conference paper at ICLR 2025
-
-
-
-
-Jiatao Gu, James Bradbury, Caiming Xiong, Victor O. K. Li, and Richard Socher.             Non-
-   autoregressive neural machine translation. In Proc. of ICLR. OpenReview.net, 2018.
-Yuling Gu, Oyvind Tafjord, Bailey Kuehl, Dany Haddad, Jesse Dodge, and Hannaneh Hajishirzi.
-  Olmes: A standard for language model evaluations, 2024.
-Ishaan Gulrajani and Tatsunori Hashimoto. Likelihood-based diffusion language models. In Thirty-
-   seventh Conference on Neural Information Processing Systems, 2023.
-Junliang Guo, Xu Tan, Linli Xu, Tao Qin, Enhong Chen, and Tie-Yan Liu. Fine-tuning by cur-
-  riculum learning for non-autoregressive neural machine translation. In Proceedings of the AAAI
-  Conference on Artificial Intelligence, volume 34, pp. 7839–7846, 2020.
-Yiduo Guo, Jie Fu, Huishuai Zhang, Dongyan Zhao, and Yikang Shen. Efficient continual pre-
-  training by mitigating the stability gap, 2024.
-Xiaochuang Han, Sachin Kumar, and Yulia Tsvetkov. SSD-LM: Semi-autoregressive simplex-based
-  diffusion language model for text generation and modular control. In Anna Rogers, Jordan Boyd-
-  Graber, and Naoaki Okazaki (eds.), Proceedings of the 61st Annual Meeting of the Association
-  for Computational Linguistics (Volume 1: Long Papers), pp. 11575–11596, Toronto, Canada, July
-  2023. Association for Computational Linguistics. doi: 10.18653/v1/2023.acl-long.647.
-Zhengfu He, Tianxiang Sun, Qiong Tang, Kuanning Wang, Xuanjing Huang, and Xipeng Qiu.
-  DiffusionBERT: Improving generative masked language models with diffusion models. In
-  Anna Rogers, Jordan Boyd-Graber, and Naoaki Okazaki (eds.), Proceedings of the 61st An-
-  nual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), pp.
-  4521–4534, Toronto, Canada, July 2023. Association for Computational Linguistics. doi:
-  10.18653/v1/2023.acl-long.248.
-Jonathan Ho, Ajay Jain, and Pieter Abbeel. Denoising diffusion probabilistic models. In Hugo
-  Larochelle, Marc’Aurelio Ranzato, Raia Hadsell, Maria-Florina Balcan, and Hsuan-Tien Lin
-  (eds.), Advances in Neural Information Processing Systems 33: Annual Conference on Neural
-  Information Processing Systems 2020, NeurIPS 2020, December 6-12, 2020, virtual, 2020.
-Jordan Hoffmann, Sebastian Borgeaud, Arthur Mensch, Elena Buchatskaya, Trevor Cai, Eliza
-  Rutherford, Diego de Las Casas, Lisa Anne Hendricks, Johannes Welbl, Aidan Clark, Tom Hen-
-  nigan, Eric Noland, Katie Millican, George van den Driessche, Bogdan Damoc, Aurelia Guy,
-  Simon Osindero, Karen Simonyan, Erich Elsen, Oriol Vinyals, Jack W. Rae, and Laurent Sifre.
-  Training compute-optimal large language models. In Proceedings of the 36th International Con-
-  ference on Neural Information Processing Systems, NIPS ’22, Red Hook, NY, USA, 2024. Curran
-  Associates Inc. ISBN 9781713871088.
-Ari Holtzman, Jan Buys, Li Du, Maxwell Forbes, and Yejin Choi. The curious case of neural text
-  degeneration. In International Conference on Learning Representations, 2020.
-Emiel Hoogeboom, Didrik Nielsen, Priyank Jaini, Patrick Forré, and Max Welling. Argmax flows
-  and multinomial diffusion: Learning categorical distributions. In Marc’Aurelio Ranzato, Alina
-  Beygelzimer, Yann N. Dauphin, Percy Liang, and Jennifer Wortman Vaughan (eds.), Advances in
-  Neural Information Processing Systems 34: Annual Conference on Neural Information Process-
-  ing Systems 2021, NeurIPS 2021, December 6-14, 2021, virtual, pp. 12454–12465, 2021.
-Emiel Hoogeboom, Alexey A. Gritsenko, Jasmijn Bastings, Ben Poole, Rianne van den Berg, and
-  Tim Salimans. Autoregressive diffusion models. In International Conference on Learning Rep-
-  resentations, 2022.
-Edward Hu*, Moksh Jain*, Eric Elmoznino, Younesse Kaddar, Guillaume Lajoie, Yoshua Bengio,
-  and Nikolay Malkin. Amortizing intractable inference in large language models. In International
-  Conference on Learning Representations, 2024.
-Edward J Hu, yelong shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang,
-  and Weizhu Chen. LoRA: Low-rank adaptation of large language models. In International Con-
-  ference on Learning Representations, 2022.
-
-
-                                               13
-Published as a conference paper at ICLR 2025
-
-
-
-
-Jie Huang, Xinyun Chen, Swaroop Mishra, Huaixiu Steven Zheng, Adams Wei Yu, Xinying Song,
-   and Denny Zhou. Large language models cannot self-correct reasoning yet. In The Twelfth
-   International Conference on Learning Representations, 2024.
-Mandar Joshi, Eunsol Choi, Daniel S. Weld, and Luke Zettlemoyer. Triviaqa: A large scale distantly
- supervised challenge dataset for reading comprehension. In Proceedings of the 55th Annual Meet-
- ing of the Association for Computational Linguistics, Vancouver, Canada, July 2017. Association
- for Computational Linguistics.
-Jared Kaplan, Sam McCandlish, Tom Henighan, Tom B Brown, Benjamin Chess, Rewon Child,
-   Scott Gray, Alec Radford, Jeffrey Wu, and Dario Amodei. Scaling laws for neural language
-   models. arXiv preprint arXiv:2001.08361, 2020.
-Zixuan Ke, Yijia Shao, Haowei Lin, Tatsuya Konishi, Gyuhak Kim, and Bing Liu. Continual pre-
-  training of language models. In The Eleventh International Conference on Learning Representa-
-  tions, 2023.
-Diederik Kingma, Tim Salimans, Ben Poole, and Jonathan Ho. Variational diffusion models. Ad-
-  vances in neural information processing systems, 34:21696–21707, 2021.
-Rik Koncel-Kedziorski, Subhro Roy, Aida Amini, Nate Kushman, and Hannaneh Hajishirzi.
-  MAWPS: A math word problem repository. In Kevin Knight, Ani Nenkova, and Owen Ram-
-  bow (eds.), Proceedings of the 2016 Conference of the North American Chapter of the Associa-
-  tion for Computational Linguistics: Human Language Technologies, pp. 1152–1157, San Diego,
-  California, June 2016. Association for Computational Linguistics. doi: 10.18653/v1/N16-1136.
-Siqi Kou, Lanxiang Hu, Zhezhi He, Zhijie Deng, and Hao Zhang. Cllms: Consistency large language
-  models. In International Conference on Machine Learning, ICML, 2024.
-Tatsuki Kuribayashi, Yohei Oseki, Takumi Ito, Ryo Yoshida, Masayuki Asahara, and Kentaro Inui.
-  Lower perplexity is not always human-like. In Chengqing Zong, Fei Xia, Wenjie Li, and Roberto
-  Navigli (eds.), Proceedings of the 59th Annual Meeting of the Association for Computational Lin-
-  guistics and the 11th International Joint Conference on Natural Language Processing (Volume 1:
-  Long Papers), pp. 5203–5217, Online, August 2021. Association for Computational Linguistics.
-  doi: 10.18653/v1/2021.acl-long.405.
-Raymond Li, Loubna Ben allal, Yangtian Zi, Niklas Muennighoff, Denis Kocetkov, Chenghao
-  Mou, Marc Marone, Christopher Akiki, Jia LI, Jenny Chim, Qian Liu, Evgenii Zheltonozhskii,
-  Terry Yue Zhuo, Thomas Wang, Olivier Dehaene, Joel Lamy-Poirier, Joao Monteiro, Nicolas
-  Gontier, Ming-Ho Yee, Logesh Kumar Umapathi, Jian Zhu, Ben Lipkin, Muhtasham Oblokulov,
-  Zhiruo Wang, Rudra Murthy, Jason T Stillerman, Siva Sankalp Patel, Dmitry Abulkhanov, Marco
-  Zocca, Manan Dey, Zhihan Zhang, Urvashi Bhattacharyya, Wenhao Yu, Sasha Luccioni, Paulo
-  Villegas, Fedor Zhdanov, Tony Lee, Nadav Timor, Jennifer Ding, Claire S Schlesinger, Hailey
-  Schoelkopf, Jan Ebert, Tri Dao, Mayank Mishra, Alex Gu, Carolyn Jane Anderson, Brendan
-  Dolan-Gavitt, Danish Contractor, Siva Reddy, Daniel Fried, Dzmitry Bahdanau, Yacine Jernite,
-  Carlos Muñoz Ferrandis, Sean Hughes, Thomas Wolf, Arjun Guha, Leandro Von Werra, and
-  Harm de Vries. Starcoder: may the source be with you! Transactions on Machine Learning
-  Research, 2023a. ISSN 2835-8856. Reproducibility Certification.
-Tianhong Li, Yonglong Tian, He Li, Mingyang Deng, and Kaiming He. Autoregressive image
-  generation without vector quantization. arXiv preprint arXiv:2406.11838, 2024.
-Xiang Lisa Li, John Thickstun, Ishaan Gulrajani, Percy Liang, and Tatsunori B Hashimoto.
-  Diffusion-lm improves controllable text generation. In Conference on Neural Information Pro-
-  cessing Systems, NeurIPS, 2022.
-Yifan Li, Kun Zhou, Wayne Xin Zhao, and Ji-Rong Wen. Diffusion models for non-autoregressive
-  text generation: a survey. In Proceedings of the Thirty-Second International Joint Conference on
-  Artificial Intelligence, IJCAI ’23, 2023b. ISBN 978-1-956792-03-4.
-Chin-Yew Lin. Rouge: A package for automatic evaluation of summaries. In Text summarization
-  branches out, 2004.
-
-
-                                               14
-Published as a conference paper at ICLR 2025
-
-
-
-
-Chu-Cheng Lin, Aaron Jaech, Xin Li, Matthew R. Gormley, and Jason Eisner. Limitations of au-
-  toregressive models and their alternatives. In Proceedings of the 2021 Conference of the North
-  American Chapter of the Association for Computational Linguistics: Human Language Technolo-
-  gies, pp. 5147–5173. Association for Computational Linguistics, 2021.
-Zhenghao Lin, Yeyun Gong, Yelong Shen, Tong Wu, Zhihao Fan, Chen Lin, Nan Duan, and Weizhu
-  Chen. Text generation with diffusion language models: a pre-training approach with continuous
-  paragraph denoise. In Proceedings of the 40th International Conference on Machine Learning,
-  ICML’23. JMLR.org, 2023.
-Ilya Loshchilov and Frank Hutter. Decoupled weight decay regularization. In International Confer-
-   ence on Learning Representations, 2019.
-Aaron Lou, Chenlin Meng, and Stefano Ermon. Discrete diffusion language modeling by estimating
-  the ratios of the data distribution. In International Conference on Machine Learning, ICML, 2024.
-Nasrin Mostafazadeh, Nathanael Chambers, Xiaodong He, Devi Parikh, Dhruv Batra, Lucy Vander-
-  wende, Pushmeet Kohli, and James Allen. A corpus and cloze evaluation for deeper understanding
-  of commonsense stories. In Kevin Knight, Ani Nenkova, and Owen Rambow (eds.), Proceedings
-  of the 2016 Conference of the North American Chapter of the Association for Computational
-  Linguistics: Human Language Technologies, pp. 839–849, San Diego, California, June 2016.
-  Association for Computational Linguistics. doi: 10.18653/v1/N16-1098.
-Alexander Quinn Nichol and Prafulla Dhariwal. Improved denoising diffusion probabilistic models.
-  In Marina Meila and Tong Zhang (eds.), Proceedings of the 38th International Conference on
-  Machine Learning, ICML 2021, 18-24 July 2021, Virtual Event, volume 139 of Proceedings of
-  Machine Learning Research, pp. 8162–8171. PMLR, 2021.
-OpenAI. Gpt-4 technical report. ArXiv preprint, abs/2303.08774, 2023.
-Myle Ott, Sergey Edunov, Alexei Baevski, Angela Fan, Sam Gross, Nathan Ng, David Grangier,
- and Michael Auli. fairseq: A fast, extensible toolkit for sequence modeling. In Waleed Ammar,
- Annie Louis, and Nasrin Mostafazadeh (eds.), Proceedings of the 2019 Conference of the North
- American Chapter of the Association for Computational Linguistics (Demonstrations), pp. 48–53,
- Minneapolis, Minnesota, June 2019. Association for Computational Linguistics. doi: 10.18653/
- v1/N19-4009.
-Jingyang Ou, Shen Nie, Kaiwen Xue, Fengqi Zhu, Jiacheng Sun, Zhenguo Li, and Chongxuan
-   Li. Your absorbing discrete diffusion secretly models the conditional distributions of clean data.
-   arXiv preprint arXiv:2406.03736, 2024.
-Long Ouyang, Jeffrey Wu, Xu Jiang, Diogo Almeida, Carroll Wainwright, Pamela Mishkin, Chong
-  Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, et al. Training language models to fol-
-  low instructions with human feedback. Advances in neural information processing systems, 35:
-  27730–27744, 2022.
-Denis Paperno, Germán Kruszewski, Angeliki Lazaridou, Ngoc Quan Pham, Raffaella Bernardi,
-  Sandro Pezzelle, Marco Baroni, Gemma Boleda, and Raquel Fernández. The LAMBADA dataset:
-  Word prediction requiring a broad discourse context. In Katrin Erk and Noah A. Smith (eds.),
-  Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics (Volume
-  1: Long Papers), pp. 1525–1534, Berlin, Germany, August 2016. Association for Computational
-  Linguistics. doi: 10.18653/v1/P16-1144.
-Guilherme Penedo, Hynek Kydlı́ček, Loubna Ben allal, Anton Lozhkov, Margaret Mitchell, Colin
-  Raffel, Leandro Von Werra, and Thomas Wolf. The fineweb datasets: Decanting the web for the
-  finest text data at scale, 2024.
-Alec Radford, Jeff Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. Language
-  models are unsupervised multitask learners. 2019.
-Samyam Rajbhandari, Jeff Rasley, Olatunji Ruwase, and Yuxiong He. Zero: Memory optimizations
-  toward training trillion parameter models. In SC20: International Conference for High Perfor-
-  mance Computing, Networking, Storage and Analysis, pp. 1–16. IEEE, 2020.
-
-
-                                                 15
-Published as a conference paper at ICLR 2025
-
-
-
-
-Aditya Ramesh, Mikhail Pavlov, Gabriel Goh, Scott Gray, Chelsea Voss, Alec Radford, Mark Chen,
-  and Ilya Sutskever. Zero-shot text-to-image generation. In Marina Meila and Tong Zhang (eds.),
-  Proceedings of the 38th International Conference on Machine Learning, volume 139 of Proceed-
-  ings of Machine Learning Research, pp. 8821–8831. PMLR, 18–24 Jul 2021.
-
-Aditya Ramesh, Prafulla Dhariwal, Alex Nichol, Casey Chu, and Mark Chen. Hierarchical text-
-  conditional image generation with clip latents. ArXiv preprint, abs/2204.06125, 2022.
-
-Baptiste Roziere, Jonas Gehring, Fabian Gloeckle, Sten Sootla, Itai Gat, Xiaoqing Ellen Tan, Yossi
-  Adi, Jingyu Liu, Romain Sauvestre, Tal Remez, et al. Code llama: Open foundation models for
-  code. arXiv preprint arXiv:2308.12950, 2023.
-
-Subham Sekhar Sahoo, Marianne Arriola, Aaron Gokaslan, Edgar Mariano Marroquin, Alexan-
-  der M Rush, Yair Schiff, Justin T Chiu, and Volodymyr Kuleshov. Simple and effective masked
-  diffusion language models. In The Thirty-eighth Annual Conference on Neural Information Pro-
-  cessing Systems, 2024. URL https://openreview.net/forum?id=L4uaAR4ArM.
-
-Keisuke Sakaguchi, Ronan Le Bras, Chandra Bhagavatula, and Yejin Choi. Winogrande: an adver-
-  sarial winograd schema challenge at scale. Commun. ACM, 64(9):99–106, August 2021. ISSN
-  0001-0782. doi: 10.1145/3474381.
-
-Mohammad Samragh, Iman Mirzadeh, Keivan Alizadeh Vahid, Fartash Faghri, Minsik Cho, Moin
- Nabi, Devang Naik, and Mehrdad Farajtabar. Scaling smart: Accelerating large language model
- pre-training with small model initialization. arXiv preprint arXiv:2409.12903, 2024.
-
-Maarten Sap, Hannah Rashkin, Derek Chen, Ronan Le Bras, and Yejin Choi. Social IQa: Common-
- sense reasoning about social interactions. In Kentaro Inui, Jing Jiang, Vincent Ng, and Xiaojun
- Wan (eds.), Proceedings of the 2019 Conference on Empirical Methods in Natural Language Pro-
- cessing and the 9th International Joint Conference on Natural Language Processing (EMNLP-
- IJCNLP), pp. 4463–4473, Hong Kong, China, November 2019. Association for Computational
- Linguistics. doi: 10.18653/v1/D19-1454.
-
-Jay Shah, Ganesh Bikshandi, Ying Zhang, Vijay Thakkar, Pradeep Ramani, and Tri Dao.
-  Flashattention-3: Fast and accurate attention with asynchrony and low-precision. arXiv preprint
-  arXiv:2407.08608, 2024.
-
-Tianxiao Shen, Hao Peng, Ruoqi Shen, Yao Fu, Zaid Harchaoui, and Yejin Choi. Film: Fill-in
-  language models for any-order generation. arXiv preprint arXiv:2310.09930, 2023.
-
-Jiaxin Shi, Kehang Han, Zhe Wang, Arnaud Doucet, and Michalis K Titsias. Simplified and gener-
-   alized masked diffusion for discrete data. arXiv preprint arXiv:2406.04329, 2024.
-
-Charlie Snell, Jaehoon Lee, Kelvin Xu, and Aviral Kumar. Scaling llm test-time compute optimally
-  can be more effective than scaling model parameters. arXiv preprint arXiv:2408.03314, 2024.
-
-Daria Soboleva, Faisal Al-Khateeb, Robert Myers, Jacob R Steeves, Joel Hestness, and Nolan Dey.
-  SlimPajama: A 627B token cleaned and deduplicated version of RedPajama, 2023.
-
-Jascha Sohl-Dickstein, Eric A. Weiss, Niru Maheswaranathan, and Surya Ganguli. Deep unsuper-
-  vised learning using nonequilibrium thermodynamics. In Francis R. Bach and David M. Blei
-  (eds.), Proc. of ICML, volume 37 of JMLR Workshop and Conference Proceedings, pp. 2256–
-  2265. JMLR.org, 2015.
-
-Jiaming Song, Chenlin Meng, and Stefano Ermon. Denoising diffusion implicit models. In Proc. of
-   ICLR. OpenReview.net, 2021a.
-
-Yang Song and Stefano Ermon. Generative modeling by estimating gradients of the data distribution.
-  In Hanna M. Wallach, Hugo Larochelle, Alina Beygelzimer, Florence d’Alché-Buc, Emily B.
-  Fox, and Roman Garnett (eds.), Advances in Neural Information Processing Systems 32: Annual
-  Conference on Neural Information Processing Systems 2019, NeurIPS 2019, December 8-14,
-  2019, Vancouver, BC, Canada, pp. 11895–11907, 2019.
-
-
-                                               16
-Published as a conference paper at ICLR 2025
-
-
-
-
-Yang Song, Jascha Sohl-Dickstein, Diederik P Kingma, Abhishek Kumar, Stefano Ermon, and Ben
-  Poole. Score-based generative modeling through stochastic differential equations. In Interna-
-  tional Conference on Learning Representations, 2021b.
-Hugo Touvron, Thibaut Lavril, Gautier Izacard, Xavier Martinet, Marie-Anne Lachaux, Timothée
-  Lacroix, Baptiste Rozière, Naman Goyal, Eric Hambro, Faisal Azhar, et al. Llama: Open and
-  efficient foundation language models. ArXiv preprint, abs/2302.13971, 2023a.
-Hugo Touvron, Louis Martin, Kevin Stone, Peter Albert, Amjad Almahairi, Yasmine Babaei, Niko-
-  lay Bashlykov, Soumya Batra, Prajjwal Bhargava, Shruti Bhosale, et al. Llama 2: Open founda-
-  tion and fine-tuned chat models. arXiv preprint arXiv:2307.09288, 2023b.
-Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez,
-  Ł ukasz Kaiser, and Illia Polosukhin. Attention is all you need. In I. Guyon, U. Von Luxburg,
-  S. Bengio, H. Wallach, R. Fergus, S. Vishwanathan, and R. Garnett (eds.), Advances in Neural
-  Information Processing Systems, volume 30. Curran Associates, Inc., 2017.
-Siddarth Venkatraman, Moksh Jain, Luca Scimeca, Minsu Kim, Marcin Sendera, Mohsin Hasan,
-  Luke Rowe, Sarthak Mittal, Pablo Lemos, Emmanuel Bengio, et al. Amortizing intractable in-
-  ference in diffusion models for vision, language, and control. arXiv preprint arXiv:2405.20971,
-  2024.
-Junxiong Wang, Daniele Paliotta, Avner May, Alexander M Rush, and Tri Dao. The mamba in the
-  llama: Distilling and accelerating hybrid models. arXiv preprint arXiv:2408.15237, 2024.
-Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc V Le, Ed H. Chi, Sharan Narang, Aakanksha
-  Chowdhery, and Denny Zhou. Self-consistency improves chain of thought reasoning in language
-  models. In The Eleventh International Conference on Learning Representations, 2023.
-Jason Wei, Yi Tay, Rishi Bommasani, Colin Raffel, Barret Zoph, Sebastian Borgeaud, Dani Yo-
-  gatama, Maarten Bosma, Denny Zhou, Donald Metzler, Ed H. Chi, Tatsunori Hashimoto, Oriol
-  Vinyals, Percy Liang, Jeff Dean, and William Fedus. Emergent abilities of large language models.
-  Transactions on Machine Learning Research, 2022a. ISSN 2835-8856.
-Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, brian ichter, Fei Xia, Ed Chi, Quoc V
-  Le, and Denny Zhou. Chain-of-thought prompting elicits reasoning in large language models. In
-  S. Koyejo, S. Mohamed, A. Agarwal, D. Belgrave, K. Cho, and A. Oh (eds.), Advances in Neural
-  Information Processing Systems, volume 35, pp. 24824–24837. Curran Associates, Inc., 2022b.
-Wilson Wu, John Xavier Morris, and Lionel Levine. Do language models plan ahead for future
- tokens? In First Conference on Language Modeling, 2024.
-Zhiyong Wu, Yaoxiang Wang, Jiacheng Ye, and Lingpeng Kong. Self-adaptive in-context learn-
-  ing: An information compression perspective for in-context example selection and ordering.
-  In Anna Rogers, Jordan Boyd-Graber, and Naoaki Okazaki (eds.), Proceedings of the 61st
-  Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers),
-  pp. 1423–1436, Toronto, Canada, July 2023. Association for Computational Linguistics. doi:
-  10.18653/v1/2023.acl-long.79.
-Jian Xie, Kai Zhang, Jiangjie Chen, Tinghui Zhu, Renze Lou, Yuandong Tian, Yanghua Xiao,
-   and Yu Su. Travelplanner: A benchmark for real-world planning with language agents. ArXiv,
-   abs/2402.01622, 2024.
-Yiheng Xu, Hongjin SU, Chen Xing, Boyu Mi, Qian Liu, Weijia Shi, Binyuan Hui, Fan Zhou, Yitao
-  Liu, Tianbao Xie, Zhoujun Cheng, Siheng Zhao, Lingpeng Kong, Bailin Wang, Caiming Xiong,
-  and Tao Yu. Lemur: Harmonizing natural language and code for language agents. In The Twelfth
-  International Conference on Learning Representations, 2024.
-Jiacheng Ye, Jiahui Gao, Shansan Gong, Lin Zheng, Xin Jiang, Zhenguo Li, and Lingpeng Kong.
-   Beyond autoregression: Discrete diffusion for complex reasoning and planning, 2024a.
-Jiacheng Ye, Shansan Gong, Liheng Chen, Lin Zheng, Jiahui Gao, Han Shi, Chuan Wu, Zhenguo
-   Li, Wei Bi, and Lingpeng Kong. Diffusion of thoughts: Chain-of-thought reasoning in diffusion
-   language models. arXiv preprint arXiv:2402.07754, 2024b.
-
-
-                                               17
-Published as a conference paper at ICLR 2025
-
-
-
-
-Jiasheng Ye, Zaixiang Zheng, Yu Bao, Lihua Qian, and Quanquan Gu. Diffusion language models
-   can perform many tasks with scaling and instruction-finetuning. ArXiv preprint, abs/2308.12219,
-   2023.
-Rowan Zellers, Ari Holtzman, Yonatan Bisk, Ali Farhadi, and Yejin Choi. Hellaswag: Can a ma-
-  chine really finish your sentence? In Proceedings of the 57th Annual Meeting of the Association
-  for Computational Linguistics, 2019.
-Peiyuan Zhang, Guangtao Zeng, Tianduo Wang, and Wei Lu. Tinyllama: An open-source small
-  language model, 2024a.
-Peiyuan Zhang, Guangtao Zeng, Tianduo Wang, and Wei Lu. Tinyllama: An open-source small
-  language model, 2024b.
-Yizhe Zhang, Jiatao Gu, Zhuofeng Wu, Shuangfei Zhai, Joshua M. Susskind, and Navdeep Jaitly.
-  PLANNER: Generating diversified paragraph via latent language diffusion model. In Thirty-
-  seventh Conference on Neural Information Processing Systems, 2023.
-Yu Zhang, Songlin Yang, Ruijie Zhu, Yue Zhang, Leyang Cui, Yiqiao Wang, Bolun Wang, Freda
-  Shi, Bailin Wang, Wei Bi, et al. Gated slot attention for efficient linear-time sequence modeling.
-  arXiv preprint arXiv:2409.07146, 2024c.
-Lingxiao Zhao, Xueying Ding, Lijun Yu, and Leman Akoglu.                Improving and unifying
-  discrete&continuous-time discrete denoising diffusion. arXiv preprint arXiv:2402.03701, 2024.
-Lin Zheng, Jianbo Yuan, Lei Yu, and Lingpeng Kong. A reparameterized discrete diffusion model
-  for text generation. In Conferenec on Language Modeling, COLM, October 7-9, 2024, Philadel-
-  phia, PA, 2024a.
-Lin Zheng, Jianbo Yuan, Zhi Zhang, Hongxia Yang, and Lingpeng Kong. Self-infilling code gener-
-  ation. In Forty-first International Conference on Machine Learning, 2024b.
-Wanjun Zhong, Ruixiang Cui, Yiduo Guo, Yaobo Liang, Shuai Lu, Yanlin Wang, Amin Saied,
- Weizhu Chen, and Nan Duan. AGIEval: A human-centric benchmark for evaluating foundation
- models. In Kevin Duh, Helena Gomez, and Steven Bethard (eds.), Findings of the Association
- for Computational Linguistics: NAACL 2024, pp. 2299–2314, Mexico City, Mexico, June 2024.
- Association for Computational Linguistics. doi: 10.18653/v1/2024.findings-naacl.149.
-
-
-
-
-                                                18
-Published as a conference paper at ICLR 2025
-
-
-
-
-A     O BJECTIVE D ERIVATIONS
+## A     O BJECTIVE D ERIVATIONS
 This section provides detailed preliminary and loss derivations of §2 and §3.1 in the main paper.
 
 A.1   BACKGROUND OF D IFFUSION M ODELS
@@ -1240,7 +629,8 @@ tively
                                         ⊤                       q(xt |xt−1 , x0 )q(xt−1 |x0 )
          q(xt |x0 ) = Cat(xt ; p = Qt x0 ); q(xt−1 |xt , x0 ) =                               (15)
                                                                          q(xt |x0 )
-                                   Qt                                              Qt
+
+## Qt                                              Qt
 where cumulative products Qt = i=1 Qi = αt I + (1 − αt )1m⊤ , and αt = i=1 (1 − βt ). We
 expect αT approaches 0 such that the full noise data xT is equal to eK with probability 1. In the
 following sections, we primarily takes the discrete diffusion formulation.
@@ -1252,23 +642,9 @@ pling allows for more flexibility covering any point in the range (Kingma et al.
 
 
                                                       19
-Published as a conference paper at ICLR 2025
 
-
-
-
-2024; Zhao et al., 2024; Ou et al., 2024). In this case, t runs from 0 to 1, corresponding to dividing
-[0, 1] into T intervals and let T → ∞. For any two arbitrary time points, 0 ≤ s < t ≤ 1, the for-
-ward modeling can be generalized from q(xt |xt−1 ) to q(xt |xs ). We uniformly adopt the notation
-of continuous-time in following sections.
-Following the previous definition, after simplification, we have q(xt |x0 ) = αt x0 +(1−αt )m, refer-
-ring to the probability of transition to absorbing mask state. Given q(xt |x0 ) = q(xt |xs )q(xs |x0 ),
-we can derive the transition distribution between two arbitrary times s and t:
-                                    ⊤                     −1        αt            αt
-           q(xt |xs ) = Cat(xt ; Qs|t xs ), with Qs|t = Qs Qt =        I + (1 −      )1m⊤ .       (16)
-                                                                    αs            αs
-Similarly, after simplification,
-                                                   αt           αt
+## Similarly, after simplification,
+αt           αt
                                    q(xt |xs ) =       xs + (1 −    )m.                             (17)
                                                    αs           αs
 Following Zheng et al. (2024a); Shi et al. (2024) and extend the formulation to continuous time, we
@@ -1322,8 +698,9 @@ Following Eq.12, if we set a small timestep ∆t = t − s = T1 ∈ (0, 1),
                                           (t − s)(1 − αt ) t
                                                −αs
 By taking the limit as T → ∞, we have αt′ = αtt−s    , and the sum is transformed into an integral:
-                               Z 1
-                                     αt′
+
+## Z 1
+αt′
                       lim LT =             Eq(xt |x0 ) [δxt ,m x⊤
                                                                 0 log fθ (xt )] dt.             (24)
                      T →∞       0 1 − αt
@@ -1337,18 +714,9 @@ Zheng et al. (2024a), we choose the noise schedule αt = 1 − t, then 1−αtt 
 
 
                                                       20
-Published as a conference paper at ICLR 2025
 
-
-
-
-The previous discussion focused on the single token xt , and can be easily extended to a text sequence
-of length N represented as xt = [x1t , x2t . . . , xN
-                                                    t ]. The final loss of the whole sequence is
-                                           " N                                       #
-                             1                   X
-                    L1:N
-                      t   = Eq(xt |x0 ) −             δxnt ,m (xn0 )⊤ log fθ (x1:N
+## L1:N
+t   = Eq(xt |x0 ) −             δxnt ,m (xn0 )⊤ log fθ (x1:N
                                                                                t   )n ,           (25)
                              t                   n=1
 
@@ -1358,7 +726,7 @@ output token is indexed. During training, we sample t for each data point to opt
 in L1:N
     t    instead of the integral LT , while for evaluation, we use integral LT .
 
-B       I MPLEMENTATION D ETAILS
+## B       I MPLEMENTATION D ETAILS
 B.1     T RAINING DATA
 
 DiffuGPT Previous diffusion language models such as Plaid 1B (Gulrajani & Hashimoto, 2023),
@@ -1412,98 +780,16 @@ rate of 2e − 5 and accumulate gradients every 4 steps. We train our model for 
 
 
                                                  21
-Published as a conference paper at ICLR 2025
 
-
-
-
-                Table 4: Training settings for different diffusion language models.
-
-         Models                      Training steps    Global batch size   Context length
-         SEDD (Lou et al., 2024)         400k                 512               1024
-         MD4 (Shi et al., 2024)          1000k                512               1024
-         DiffuGPT-S                      1000k                256                512
-         DiffuGPT-M                      160k                1280               1024
-
-
-Tokenizer During adaptation, we do not change the tokenizer of the base model. In theory, we
-should expand the original vocabulary by adding an additional dimension to include a special token
-as [MASK] token. However, considering practical issues on implementation, we can alternatively
-select an existing word from the vocabulary to serve as the [MASK] token. It is preferable that
-this chosen word has a particularly low frequency of occurrence in corpus. For DiffuGPT-S we use
-tokenid=10541 and for DiffuGPT-M we set a new [MASK] token with tokenid=50257. For
-DiffuLLaMA, we set tokenid=811.
-
-B.3    E VALUATION D ETAILS
-
-Generation tasks For the TriviaQA and Lambada sentence completion tasks, we generate n-
-tokens for continue-writing. In triviaQA, we set n to the oracle length plus an additional 10 to-
-kens, and we only evaluate the first 2000 cases in this dataset for efficiency. For Lambada, which
-requires the completion of the last word, we set n to oracle length of that word’s tokens, which
-might be larger than 1 based on the tokenizer. For DLMs, we set the diffusion timesteps T to the
-required generation length. For AR baselines, we cut off maximum new tokens. For SATMATH and
-MAWPS, we integrate our model into math-evaluation-harness6 .
-
-CommonSense Reasoning tasks The 4 commonSense reasoning tasks are multiple-choices
-questions with 4 options. Instead of open generation, we calculate the diffusion loss for each
-Question+choice pair using Eq.25. A lower loss (perplexity) indicates the model thinks that
-choice most suitable. This approach is commonly employed in ICL of LLMs (Wu et al., 2023). We
-also use this for AR baselines.
-
-Finetune GSM8K-symbolic The setting of finetune GSM8K-symbolic dataset is following Ye
-et al. (2024b)7 , which enables the diffusion model to perform chain-of-thought reasoning. For Dif-
-fuLLaMA, we use parameter-efficient-finetune: LoRA Tuning (Hu et al., 2022). We set rank to 8
-and enable the finetuning of the word embedding layer, with 151 million (2%) parameters involved.
-For this task, we use T = 64 for the decoding of DLMs.
-
-Infilling tasks For ROCstories, where each case is a 5-sentence story, we setup evaluation refer-
-ring Shen et al. (2023).The model is tasked with infilling the third sentence based on the first two
-and last two sentences. We evaluate the first 1000 cases in this dataset for efficiency. For code
-infilling, we use humaneval-single-line infilling 8 and their evaluation toolkit, which contains 1033
-test cases. We implement infilling tasks for AR models by feeding the prefix and cutting off the
-generation length using the oracle length, considering that these AR models are not supporting in-
-filling. We also try to feed the suffix information using the instruction like Given prefix and
-suffix please infill the middle, however, LLaMA2 can not follow this instruction.
-For AR LLMs, to perform infilling tasks requires additional FIM training (Roziere et al., 2023) or
-carefully instruction tuning.
-
-Unconditional Generation For unconditional generation in Figure 3, we set the temperature of
-top-k to 0.98 and top-p to 0.9 for the medium-sized model, while using top-k of 1.0 and top-p of
-0.9 for the small model. We generate 64 samples and evaluate the perplexity using the GPT-2 large
-model, aligning with Lou et al. (2024); Shi et al. (2024).
-   6
-     https://github.com/ZubinGou/math-evaluation-harness
-   7
-     https://github.com/HKUNLP/diffusion-of-thoughts
-   8
-     https://github.com/openai/human-eval-infilling
-
-
-                                                 22
-Published as a conference paper at ICLR 2025
-
-
-
-
-C     A DDITIONAL R ESULTS
+## C     A DDITIONAL R ESULTS
 C.1   U NCONDITIONAL GENERATION
 
 The generation quality is different for different hyperparameters, shown in Figure 5. Lowering the
 temperature increases fluency but reduces diversity, leading to noticeable repetition in sentences.
                                                   200                                                                                              1.0
 
-
-
-
-                          Generative Perplexity
-                                                  150                                                                                              0.8
-
-
-                                                                                                                                                     Distinct 2-gram
-                                                  100                                                                                              0.6
-                                                                                                 T128-ppl                      T128-dist2
-                                                                                                 T1024-ppl                     T1024-dist2
-                                                   50                                                                                              0.4
+## T1024-ppl                     T1024-dist2
+50                                                                                              0.4
 
                                                     0                                                                                              0.2
                                                           plin
@@ -1555,26 +841,8 @@ with different model sizes in Table 7, demonstrating the advantages of DLMs.
 
 
                                                                                                      23
-Published as a conference paper at ICLR 2025
 
-
-
-
-                                         1.0 Small sized model       Medium sized model
-                                                      GPT2                       GPT2
-                                         0.8          DiffuGPT                   DiffuGPT
-
-
-
-                         Training Loss
-                                         0.6
-
-                                         0.4
-
-                                         0.2
-
-                                         0.0       50000             0       10000      20000
-                                               Training Steps            Training Steps
+## Training Steps            Training Steps
 Figure 6: Finetune GSM8K data with discrete diffusion objectives, using a base model of either
 GPT2-S/M or DiffuGPT-S/M. DiffuGPT converges faster and attains a lower loss.
 
@@ -1615,77 +883,17 @@ mance.
 
                     Table 7: The finetuning results (accuracy) on the CD4 dataset.
 
-                                          Models                          Size      CD4
-                                          GPT2-scratch                    85M        45.8
+## Models                          Size      CD4
+GPT2-scratch                    85M        45.8
                                           LLaMA FT                        13B        51.1
                                           SoS (Gandhi et al., 2024)       250M       54.2
                                           DiffuGPT                        355M       87.5
 
 
                                                                 24
-Published as a conference paper at ICLR 2025
 
-
-
-
-Table 8: Models finetuned on 100M tokens of Starcoder and their results on HumanEval Infilling.
-
-                      Models                           Pass@1 HumanEval Infilling
-                      CodeLLaMA FT (FIM-SPM)                      0.80
-                      CodeLLaMA FT (FIM-PSM)                      0.74
-                      Diffu-CodeLLaMA (Ours)                      0.76
-
-
-C.4   C ONTINUAL PRE - TRAINING AR MODELS
-
-We conduct a continual pre-training of GPT2 on the same corpus under the same settings as
-DiffuGPT. However, the zero-shot performance, shown in Table 9, indicates no improvement. This
-may be due to the stability gap introduced by continual pre-training (Guo et al., 2024), leading to
-performance degradation. Additionally, since our used corpus is similar to the one used for GPT2’s
-initial pre-training, continual pre-training may offer limited new knowledge.
-
-                     Table 9: Performance of different models on various tasks.
-
-                Models                         HSwag     Wino    SIQA     PIQA      Code
-                GPT2-M                          38.3      50.7    37.7    67.4      2.6
-                GPT2-M (continue pretrain)      36.7      49.4    37.9    66.7      2.6
-                DiffuGPT-M                      37.2      52.6    39.0    59.6      2.9
-
-
-C.5   D ECODING S PEED T ESTING
-
-We evaluate the inference time of LLaMA2 and DiffuLLaMA for unconditional text generation
-across various lengths. Our tests include vanilla attention, flash attention 2, and the torch version of
-flash attention SDPA, as shown in Table 10.
-
-Table 10: Single batch inference time for different attention implementation and generation lengths.
-
-                Length     Attention            DiffuLLaMA (sec)         LLaMA (sec)
-                  512      flash-attention 2             12.5                9.2
-                  1024     SDPA                          13.2                16.3
-                  1024     flash-attention 2             13.3                17.5
-                  1024     vanilla                       16.2                17.2
-                  2048     SDPA                          28.5                29.5
-                  2048     flash-attention 2             23.5                35.7
-                  2048     vanilla                       38.1                32.8
-
-
-Yet smaller T leads to faster generation, in downstream tasks like multiple-choices, this may slightly
-impact accuracy. Examples are provided in Table 11.
-
-
-
-
-                                                  25
-Published as a conference paper at ICLR 2025
-
-
-
-
-                Table 11: Performance of DiffuLLaMA models on various tasks.
-
-                       Models               HSwag     Wino     SIQA    PIQA
-                       DiffuLLaMA T=32        58.7     56.4    43.2     63.3
+## Models               HSwag     Wino     SIQA    PIQA [MODEL-GENERATED SAMPLE OUTPUT, NOT AUTHOR PROSE]
+DiffuLLaMA T=32        58.7     56.4    43.2     63.3
                        DiffuLLaMA T=8         47.1     52.6    41.9     57.1
 
 
@@ -1720,10 +928,9 @@ impact accuracy. Examples are provided in Table 11.
    more?
    To find additional information, please use this form.
    You can reach us to find your application materials for JBCC here.
-   Christine Callender
-   Educator and Director
 
-   School of Christian Education Hello there everyone! Welcome to our tutorials section. We
+## Educator and Director [MODEL-GENERATED SAMPLE OUTPUT, NOT AUTHOR PROSE]
+School of Christian Education Hello there everyone! Welcome to our tutorials section. We
    have everything you need to know what and how to make quality t-shirts apparel especially
    for those who are new to t-shirts. If you are not sure, they are a very popular item.
    As you might imagine, there are a wider audience of people than others.
@@ -1742,19 +949,9 @@ impact accuracy. Examples are provided in Table 11.
 
 
                                                  26
-Published as a conference paper at ICLR 2025
 
-
-
-
-                   Table 13: Generation examples of DiffuGPT-M (T = 256).
-
-
-   Use of the Service: Cookies may enable your internet site or your computer or device to
-   access information using our Services, so as to allow us to work together to provide the
-   website that you use. Cookies may provide Personal Information in certain cases.
-   Google Digital Advertising Cookies
-   Advertising partners may use internet analytics with information on your websites visit, how
+## Google Digital Advertising Cookies [MODEL-GENERATED SAMPLE OUTPUT, NOT AUTHOR PROSE]
+Advertising partners may use internet analytics with information on your websites visit, how
    far you come, through our different advertising networks in order to tailor them for you. This
    may provide your personal information to our advertising partners and may be shared with
    third-party advertisers.
@@ -1800,40 +997,9 @@ impact accuracy. Examples are provided in Table 11.
 
 
                                                  27
-Published as a conference paper at ICLR 2025
 
-
-
-
-            Table 14: Generation examples of DiffuGPT-M in 1024 tokens (T = 32).
-
-
-   t work in near-zero conditions.
-   In the meantime, employees are planning to avoid travel, and lack of traveling. The United
-   States will not pay or pay for travel, Grand Tech said. But the company plans to continue
-   to take its staff to Asia and other destinations. The plans for the next trip will vary. The
-   Philippine office is investigating the outbreak and is considering further expanding to more
-   but still non-fue areas. There may also be more traveling than they had previously been
-   doing before.
-   The company reports, confirmed first by ETOY’s Sulayo Suan, denied to local media. Grand
-   Tech has its headquarters in Cincinnati, Ohio. Delta variant virus caused a plant disaster
-   nearly two months ago. The the genotype 3 virus of the virus hit an employee while on the
-   job there in April.
-   The woman reported that she needed to remain home confinement until August. But suc-
-   cumbed continued serious illness to test results for weeks.
-   The Delta variant is currently targeting companies in the European Union, with the virus
-   occurring in Italy. French workers have also been reported suffering from the outbreak.
-   Employees have been traveling to work due to some journeys to Asia and respiratory com-
-   plications to travel to Asia.
-   The company also reported significant risks to their herbal products containing Chinese plant
-   material, including some hogweed. Hogweed alone is responsible for the loss of 1 U.S stem
-   to each year, Grand Tech said.
-   The U.S. is offering an ongoing vaccination program available to 72 million all Americans,
-   including those most at risk from the virus, State Street announced.Globular epilepsy is a
-   genetic condition that is at risk.. ORIK can occur in as high as 15% of people living in
-   Indonesia. However, I can discuss information that exists that ORIK.
-   There no factors that could be
-   MeanESK 2 is a class II agent with a teratogenic activity as determined by the MSL. We
+## There no factors that could be [MODEL-GENERATED SAMPLE OUTPUT, NOT AUTHOR PROSE]
+MeanESK 2 is a class II agent with a teratogenic activity as determined by the MSL. We
    propose not treatment of ORIK on patients that exceed the 2.0 threshold.
    Both biological factors predispose risk of the.
    ORISA-WEVINB8: X at leastISMRC IX.
@@ -1843,9 +1009,9 @@ impact accuracy. Examples are provided in Table 11.
    as an Authority for Administration of the Bureau of Corrections by Arthur Whyte, Jr. Chair:
    John F. Bronz Board: Buck Morgan Jr. Rep: John Little Reader: David Gervis.
    THURY Fisher, WOOD and her son.
-   DATE: March 23, 1959
-   REV: July 3, 1949
-   By resolution which is passed: Either a person uses nothing more than a boat within a
+
+## REV: July 3, 1949 [MODEL-GENERATED SAMPLE OUTPUT, NOT AUTHOR PROSE]
+By resolution which is passed: Either a person uses nothing more than a boat within a
    warehouse, apartment or barn. Department of the Interior or Department of Labor or system
    of it existed as a whole under the laws of Michigan three. through December one of such it
    would not. Each $100 person shall be fined and the division shall collect all damages of each
@@ -1866,4 +1032,3 @@ impact accuracy. Examples are provided in Table 11.
 
 
                                                 28
-

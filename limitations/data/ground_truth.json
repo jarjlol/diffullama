@@ -1,0 +1,20 @@
+{
+  "_protocol": "arXiv:2601.11578 sec 3.3 -- ground truth for coverage evaluation",
+  "_composition": "The paper builds ground truth by merging author-stated limitations with weaknesses mined from OpenReview reviewer comments (10-12 per paper). The OpenReview half is UNAVAILABLE in this environment: api2.openreview.net returns HTTP 403 on forum queries and the forum page is a JavaScript shell. The reviews demonstrably exist (ICLR 2025 Poster, forum j1tSLYKwg8); this is an access failure, not an absence. Ground truth here is therefore the author-stated half only.",
+  "_tautology_warning": "Author-stated ground truth overlaps the Extractor Agent's task by construction. Coverage of this ground truth is therefore near-tautological for any pipeline containing an Extractor, and is NOT evidence of the multi-agent framework's value. It is reported because it is the paper's protocol, and its weakness is stated rather than hidden. The discriminating comparison is the zero-shot baseline, which shares the same advantage.",
+  "_extracted_by": "Independent pass over litreview/data/anchor_fulltext.txt, not read from agent output.",
+  "items": [
+    {"gt": 1, "text": "Models are trained on 30B-70B tokens which may be insufficient to preserve general knowledge from the original LM.", "locus": "sec 4.3"},
+    {"gt": 2, "text": "DiffuLLaMA's performance falls short of the LLaMA2 model it was adapted from.", "locus": "sec 4.3"},
+    {"gt": 3, "text": "The model does not show signs of saturation; more training tokens are expected to improve results.", "locus": "sec 4.3 / Appendix"},
+    {"gt": 4, "text": "Withholding suffix information from baselines might result in an unfair infilling comparison.", "locus": "sec 4.3"},
+    {"gt": 5, "text": "Instruction tuning is left as future work.", "locus": "sec 4.4"},
+    {"gt": 6, "text": "Adding chain-of-thought to in-context examples drops performance, attributed to absence of instruction tuning.", "locus": "sec 4.4"},
+    {"gt": 7, "text": "The model exhibits high uncertainty about its responses, causing suboptimal performance.", "locus": "sec 4.4"},
+    {"gt": 8, "text": "Attention mask annealing is omitted at 7B to simplify implementation with flash-attention 2.", "locus": "sec 4.5 / Appendix B"},
+    {"gt": 9, "text": "The [MASK] token reuses an existing vocabulary word instead of expanding the vocabulary, for implementation reasons.", "locus": "Appendix B"},
+    {"gt": 10, "text": "Direct ablation on adaptation training is too costly, so recipe decisions rest on cheaper preliminary experiments.", "locus": "sec 4.5"},
+    {"gt": 11, "text": "TriviaQA and PIQA are challenging for the models because they require specific factual/physical knowledge.", "locus": "sec 4.3"},
+    {"gt": 12, "text": "DiffuGPT's training budget does not match GPT2's ~200B tokens.", "locus": "Appendix B"}
+  ]
+}

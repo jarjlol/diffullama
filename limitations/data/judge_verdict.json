@@ -1,0 +1,68 @@
+{
+  "weights": {
+    "depth": 0.2,
+    "originality": 0.2,
+    "actionability": 0.3,
+    "topic_coverage": 0.3
+  },
+  "threshold_10": 8.0,
+  "max_retries": 2,
+  "results": {
+    "extractor": {
+      "dimensions": {
+        "depth": 7,
+        "originality": 5,
+        "actionability": 8,
+        "topic_coverage": 8
+      },
+      "weighted_mean_10": 7.2,
+      "total_100": 72.0,
+      "n_limitations": 8,
+      "below_threshold": true,
+      "feedback": "Originality is structurally capped for an extraction agent, but depth is recoverable. The 'chain of limitations' instruction was only partly followed: several items record the authors' concession without the justification they pair it with, which is where the analysable weakness lives. Re-extract with concession and justification explicitly paired, and add stated limitations currently missed in the appendix."
+    },
+    "analyzer": {
+      "dimensions": {
+        "depth": 9,
+        "originality": 9,
+        "actionability": 8,
+        "topic_coverage": 9
+      },
+      "weighted_mean_10": 8.7,
+      "total_100": 87.0,
+      "n_limitations": 8,
+      "below_threshold": false,
+      "feedback": "Strong. Specific, quantified, and traceable. No regeneration required."
+    },
+    "reviewer": {
+      "dimensions": {
+        "depth": 8,
+        "originality": 7,
+        "actionability": 9,
+        "topic_coverage": 7
+      },
+      "weighted_mean_10": 7.8,
+      "total_100": 78.0,
+      "n_limitations": 6,
+      "below_threshold": true,
+      "feedback": "Coverage is the weak dimension: six items, concentrated on reproducibility, with ethics and transparency thin relative to the paper's own instruction to weigh all three. Originality suffers from two items that restate what the Analyzer already found. Regenerate with broader coverage and less overlap."
+    },
+    "citation": {
+      "dimensions": {
+        "depth": 9,
+        "originality": 9,
+        "actionability": 8,
+        "topic_coverage": 9
+      },
+      "weighted_mean_10": 8.7,
+      "total_100": 87.0,
+      "n_limitations": 8,
+      "below_threshold": false,
+      "feedback": "Strong. Every item is grounded in a specific retrieved work and states what that work exposes. No regeneration required."
+    }
+  },
+  "routed_to_self_feedback": [
+    "extractor",
+    "reviewer"
+  ]
+}
