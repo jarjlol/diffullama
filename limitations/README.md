@@ -8,6 +8,11 @@ deliverable is [`output/limitations_and_research_problem.md`](output/limitations
 Built independently of `litreview/` and `project-docs/` — no findings, conclusions, or code are
 reused from either; see REPORT.md §1 for why.
 
+> ⚠️ **Read [`CORRECTIONS.md`](CORRECTIONS.md) before citing any limitation by its L-number.** Two
+> incompatible runs of this pipeline are in circulation with clashing numbering (the committed run’s
+> `L8` is the circulated run’s `L6`), and one factual error has been identified and traced to a shared
+> upstream source. Nothing in `output/` or `data/` has been edited; the corrections are additive.
+
 ## Pipeline
 
 ```

@@ -25,6 +25,8 @@ Then, as needed:
 | [`06-findings-and-wins.md`](06-findings-and-wins.md) | Novel findings and results worth writing up |
 | [`07-decision-tree.md`](07-decision-tree.md) | Diagrammed reasoning behind every fork — read this before proposing a direction that was already closed |
 | [`08-trace-guided-repair-proposal.md`](08-trace-guided-repair-proposal.md) | Proposed Option C2, its exact scope, baselines, and feasibility gate — **not yet a team decision** |
+| [`09-p1-direction-analysis-2026-09-19.md`](09-p1-direction-analysis-2026-09-19.md) | Verification pass on the EGR branch and the competitive landscape; recommended Option B. **Superseded on resources, not on reasoning** — see D-2026-09-21-a |
+| [`10-inference-time-direction-2026-09-21.md`](10-inference-time-direction-2026-09-21.md) | Which limitation to pursue now that compute has closed all training directions. **Current proposed direction** — not yet ratified; gated on Q-13 |
 
 ### Rules for agents working on this project
 
@@ -80,4 +82,4 @@ on the `audit/opus-review` branch.
 - Keep entries short. This folder is read at the start of every new agent session; bloat costs everyone
   context budget.
 
-**Last updated:** 2026-08-31
+**Last updated:** 2026-09-21

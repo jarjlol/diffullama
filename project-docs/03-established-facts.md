@@ -297,3 +297,101 @@ controller may inspect only a visible repair-test split. The accepted final cand
 held-out tests that were never supplied to the controller. The public/private-test protocol used by
 [APR-Comp](https://apr-comp.github.io/evaluation.html) is the appropriate pattern: public tests drive repair;
 private tests evaluate generalization.
+
+---
+
+## 2026-09-21 — inference-time direction pass
+
+Established while analysing which limitations survive the compute constraint. Full reasoning:
+[`10-inference-time-direction-2026-09-21.md`](10-inference-time-direction-2026-09-21.md).
+
+### F-26 🟢 Table 2's selection headroom, with the numbers the write-ups keep getting wrong
+
+Read directly from `litreview/data/anchor_fulltext.txt` L568–580 (Table 2, "Performance on math/QA
+benchmarks", exact-match accuracy; 4-shot on math, 2-shot on TriviaQA):
+
+| Setting | MAWPS | SATMath | TriviaQA |
+|---|---|---|---|
+| LLaMA2 | 63.5 | 24.5 | 45.4 |
+| DiffuLLaMA-ZS | 9.7 | <1 | 18.5 |
+| DiffuLLaMA-FS | 31.3 | 23.6 | 20.9 |
+| DiffuLLaMA-SC (majority vote of 3) | 33.1 | 27.7 | 26.0 |
+| **DiffuLLaMA-@k (hit rate, k = 3)** | **40.8** | **57.7** | **34.1** |
+| DiffuLLaMA-CoT | 28.7 | 9.5 | — |
+
+**Headroom against SC: +7.7 / +30.0 / +8.1.** Majority vote recovered only 1.8 / 4.1 / 5.1 of it
+(23% / 14% / 63%).
+
+**Three things that matter:**
+
+1. **The correct baseline is SC (27.7), not FS (23.6).** The committed v1 limitations text quotes
+   "57.7 vs. 23.6 on SATMath", which measures against few-shot rather than against the paper's own best
+   selector. Beating 23.6 would be a strawman.
+2. **Self-consistency was already tried and mostly failed.** The paper deploys majority-vote-of-3
+   explicitly (citing Wang et al., 2023). On SATMath it captures one seventh of the available headroom.
+   The gap is therefore "the standard selector leaves 26 points on the table", not "nobody tried".
+3. **On SATMath, DiffuLLaMA-SC (27.7) already beats the LLaMA2 it was adapted from (24.5)**, and hit@3
+   (57.7) beats it by more than 2×.
+
+### F-27 🟢 The anchor attributes the headroom to undertraining and never tests that attribution
+
+Verbatim, `anchor_fulltext.txt` L599–601:
+
+> "we report the hit rate results in generated candidate answers, highlighting the model's potential to
+> produce the correct answer. This reveals that the current model exhibits high uncertainty about its
+> responses, leading to **temporarily suboptimal** performance."
+
+"Temporarily" implies more training closes the gap. No calibration analysis, reranking or verifier appears
+anywhere in the paper. The measurement localises the deficit in **answer selection** — the correct answer
+is demonstrably in the candidate set — while the attribution assigns it to **answer knowledge**. Those are
+different claims and the paper tests neither.
+
+Relatedly, `anchor_fulltext.txt` L590: *"We hypothesize that the adapted model retains some of the
+abilities from the base AR model."* Residue is hypothesised and never measured. Same shape.
+
+### F-28 🟢 The released sampler unmasks uniformly at random and returns no confidence
+
+`model.py:132`: `masked_to_x0 = maskable_mask & (torch.rand_like(x0, dtype=torch.float) < p_to_x0)`, with
+`p_to_x0 = 1/(t+1)` at `model.py:130`.
+
+**Unmasking order is uniform random** — not confidence-ordered, not entropy-ordered. Combined with F-4
+(`x0_scores` is the sampled-token log-prob, not the max, and `model.py:158` never returns it):
+
+- **No confidence or entropy ordering baseline exists in this repository.** It must be built before it can
+  be compared against, and it must use **max softmax probability**, not `x0_scores`, or the comparison is
+  rigged in favour of whatever is proposed against it.
+- Any trajectory-derived uncertainty feature requires changing what the sampler returns.
+
+### F-29 🟢 The released sampler has no remasking path at all
+
+`model.py:134`: `maskable_mask = maskable_mask.masked_fill(masked_to_x0, False)`. `maskable_mask` is only
+ever cleared, never set — once a position commits it cannot be revised. F-6 establishes `src_mask` as a
+genuine freeze primitive; the **unfreeze** direction is new code in every case.
+
+F-28 and F-29 together are the engineering prerequisite for any inference-time direction. Both are
+GPU-free.
+
+### F-30 🟢 The Diffu-CodeLLaMA infilling error has now appeared in two independent pipelines
+
+The claim that the anchor's HumanEval infilling number "belongs to a separately trained Diffu-CodeLLaMA
+rather than the released checkpoint" is **false**. `anchor_fulltext.txt` L452–462, Table 1, "Infilling /
+Code" column: **DiffuLLaMA 7B = 15.5** pass@1; also LLaMA2 1.7 (prefix only), DiffuGPT-M 2.9, GPT2-M 2.6,
+DiffuGPT-S 0.3. Diffu-CodeLLaMA's 0.76 is Table 8, a separate CodeLLaMA finetune on 100M Starcoder tokens.
+
+Protocol (Appendix C.3, L1462): `openai/human-eval-infilling`, **1033 test cases**, pass@1.
+
+**Why this is recorded as a fact rather than a fix:** `09-p1-direction-analysis-2026-09-19.md` §1 row 4
+found this same error in three EGR documents (`egr/README.md` §2, `docs/02-experiment-plan.md` §2,
+`novelty.md` §3). The `limitations/` multi-agent pipeline then reproduced it independently on 2026-09-21.
+**Two independent generations of the same error indicate a shared upstream source** — a contaminated RAG
+chunk, an agent prompt, or a secondary source both retrieved. That source has **not** been traced, and
+anything else from it is suspect. See Q-16.
+
+### F-31 🔴 Two incompatible runs of the limitations pipeline exist
+
+The committed run (`limitations/output/limitations_and_research_problem.md`, `a131e13`) has **10** items.
+A run circulated on 2026-09-21 has **12**, renumbered: the committed `L8` is the circulated `L6`, the
+committed `L5`+`L9` merge into the circulated `L8`, and the circulated `L4`, `L11`, `L12` are new. Full
+mapping table in `10-...md` §2. Whether v2 was intended to supersede v1 is unknown.
+
+**Any citation of an "L-number" must say which run it means.**

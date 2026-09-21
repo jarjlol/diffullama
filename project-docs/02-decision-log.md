@@ -45,6 +45,78 @@ of frozen diffusion code models over random, confidence, traceback-window, and s
 This is a candidate direction only. A team decision must still choose between Option B and this refined
 Option C2. See `08-trace-guided-repair-proposal.md`.
 
+## 2026-09-21 update — compute constraint narrows P-1 to inference-only
+
+The team has stated that compute is the binding constraint: the lab workstation is shared and contended,
+and there is not enough of it for adaptation training or AR-to-diffusion conversion. **Inference on
+released checkpoints is what the project can actually execute.**
+
+This does not settle P-1 by argument; it settles part of it by resource availability. Recorded as
+**D-2026-09-21-a** below.
+
+Full analysis: [`10-inference-time-direction-2026-09-21.md`](10-inference-time-direction-2026-09-21.md).
+Its recommendation:
+
+| | Direction | Compute | Status |
+|---|---|---|---|
+| **Primary** | **L6 — the answer-selection headroom.** hit@3 exceeds the best single-answer method by +7.7 / +30.0 / +8.1 points (MAWPS / SATMath / TriviaQA) in the anchor's own Table 2. The authors attribute this to undertraining ("temporarily suboptimal") and never test the attribution. | inference-only | proposed |
+| **Secondary** | **Adaptation-residue audit.** Do adapted checkpoints retain measurable AR inductive bias relative to from-scratch ones? F-15 verifies the gap is open. Revives Bet 3, which Fork 4 narrowed and folded into Option B. | inference-only, 1 GPU | proposed |
+| Fallback | **L8 — infilling claims.** Larger test set (1033 cases) but a much weaker backbone number (15.5 pass@1). | inference-only | fallback if L6's reproduction gate fails |
+
+⚠️ **Not yet ratified.** No novelty search has been run for L6 — see
+`04-open-questions.md` **Q-13**. Treat the primary recommendation as an unaudited hypothesis until that
+search is done. This project has been preempted twice already (CDC, DiffPDE).
+
+---
+
+## D-2026-09-21-a — Main project is inference-only; Option B is closed on compute
+
+**Decided:** the main project will be an **inference-time study on released checkpoints**. No adaptation
+training, no AR-to-diffusion conversion.
+
+**Why:** the shared lab workstation cannot supply the budget Option B needs.
+`09-p1-direction-analysis-2026-09-19.md` §3 prices Option B at roughly **160 GPU-hours on one card**,
+three to four weeks of wall-clock at half availability, with checkpoint-and-resume mandatory. That is not
+available.
+
+**This is a resource decision, not a scientific disagreement.** Option B's reasoning is untouched: F-1,
+F-22 and Q-9 stand, and the annealing cell at ≥1B for full-attention adaptation is still genuinely empty.
+The team simply cannot occupy it. If roughly 160 GPU-hours later becomes available, Option B becomes live
+again without needing to be re-argued — see `10-...md` §11.
+
+**Consequence for the earlier recommendation:** `09-...md` recommended Option B at about 75% confidence.
+That recommendation is **superseded by the constraint, not refuted by evidence.** Recorded here rather
+than edited into that document, per the append-don't-rewrite rule.
+
+**Consequence for Option C / EGR:** unchanged. It remains not-recommended for the reasons in `09-...md`
+§2.2 (preempted by DiffPDE; course-fit objection; weak backbone). Inference-only does **not** revive it.
+The recommended L6 direction is inference-time but, unlike EGR, it has a real reproduction target and a
+published baseline to beat — which is precisely the objection EGR could not answer.
+
+**Status:** the constraint is settled. **Which** inference-time direction is not — that is P-5 below.
+
+---
+
+## P-5 — Which inference-time direction? (replaces the B-vs-C form of P-1)
+
+Choose between the three rows in the table above. Gate before ratifying: run the L6 novelty search
+(Q-13). Prerequisite work that is useful under all three and should start now regardless: the two sampler
+defects in `10-...md` §8, which are GPU-free and are the natural task for the four members without
+workstation access.
+
+## P-6 — Commit the v2 limitations run, and trace the L8 error
+
+Two separate problems found on 2026-09-21, both recorded in `limitations/CORRECTIONS.md`:
+
+1. **Two incompatible runs of the limitations pipeline are in circulation** — the committed 10-item run
+   and a 12-item run that is not in the repository. Their numbering is incompatible: the committed `L8`
+   is the circulated `L6`. A mapping table is in `10-...md` §2. The v2 run should be committed alongside
+   v1, not over it.
+2. **The circulated L8 contains a factual error** — it claims the HumanEval infilling number belongs to
+   Diffu-CodeLLaMA rather than the released checkpoint. Table 1 gives DiffuLLaMA 15.5 directly. This is
+   the *same* error `09-...md` §1 row 4 found in three EGR documents, so it has a shared upstream source
+   that has not been traced.
+
 ## P-2 — Confirm target venue with TTV
 See `04-open-questions.md` Q-1. Agents4Science 2025 is over; no 2026 edition found.
 
