@@ -37,6 +37,8 @@ Set `export HF_HOME=/path-to-huggingface/cache/` before running inference.
 - `LLaMA-Factory/`, `DiffuLLaMA-training/` — **vendored upstream forks. Do not restructure.**
 - `project-docs/` — the team's durable project record (decisions, facts, bugs, open questions)
 - `litreview/` — SOTA assignment: literature-review generation pipeline
+- `limitations/` — limitations assignment: multi-agent gap extraction + dismissal of all twelve gaps
+- `ideation/` — ideation assignment: ResearchAgent problem discovery and idea ranking
 - `docs/` — triggered detail files for agents (this index points at them)
 
 ## Conventions
@@ -64,7 +66,7 @@ Read the matching file **before** working in that area. Do not preload the other
 - `docs/verification-standards.md` — how to verify claims, cite papers, avoid the recurring
   bug classes. **Triggers:** citation, paper, claim, novelty, verify, benchmark, index mapping
 - `docs/research-workstreams.md` — the assignment pipelines and how they're structured.
-  **Triggers:** litreview, limitations, survey, QUAL-SG, assignment, submission
+  **Triggers:** litreview, limitations, ideation, ResearchAgent, survey, QUAL-SG, assignment, submission
 - `docs/model-code.md` — upstream inference/training code and its known traps.
   **Triggers:** inference, sampling, remasking, attention, tokenizer, shift, mask token
 - `project-docs/README.md` — team decision log, established facts, open questions.

@@ -65,6 +65,8 @@ on the `audit/opus-review` branch.
 |---|---|---|
 | `project-docs/` | This folder — durable project record | ✅ yes |
 | `litreview/` | SOTA assignment: QUAL-SG literature-review pipeline | ✅ yes |
+| `limitations/` | Limitations assignment: multi-agent limitation pipeline (arXiv:2601.11578), the twelve gaps, and their justified dismissal | ✅ yes |
+| `ideation/` | Ideation assignment: ResearchAgent problem discovery and idea ranking (branch `assignment/research-ideation`) | ✅ yes |
 | `model.py`, `inf_*.py`, `DiffuLLaMA-training/`, `LLaMA-Factory/` | Upstream DiffuLLaMA code (forked) | ✅ yes |
 | `audit/` on branch `audit/opus-review` | Design-doc audit, novelty verification, decision options | ❌ **throwaway** — will be deleted |
 

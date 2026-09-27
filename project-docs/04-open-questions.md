@@ -235,3 +235,14 @@ documents themselves were not re-examined, so whether they had an independent ca
 
 **Status 2026-09-27.** The L8 deliverable itself is now corrected (`b0dc799` on `assignment/limitations-multiagent`). This does not close the
 remaining half of Q-16 — the EGR-document occurrences are still untraced.
+
+## 2026-09-27 — questions opened by the ideation assignment
+
+### Q-18 🔴 BLOCKING (ideation) — Which model, and is the quota enough?
+See `02-decision-log.md` P-7. **Needs:** whoever owns the Gemini project to read its actual quota at
+aistudio.google.com/rate-limit, or a decision to serve an open model on the workstation.
+
+### Q-19 🟡 Does implementing one of the three ideation papers satisfy the brief?
+The wording ("use the following literature for implementation purpose") does not say all three, and both
+earlier assignments accepted one, but it is firmer than last time. **Needs:** one line to TTV.
+

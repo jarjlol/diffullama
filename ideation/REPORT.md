@@ -105,6 +105,12 @@ Knobs, all in `config.json`: `refinement_rounds` (R=1 → 432 calls total), `n_i
 should be reported if used. Manual mode at this volume is impractical; an API key is effectively
 required for a full run.
 
+**Token volume**, measured on a full mock run (chars ÷ 4): ~4.0M input tokens — problem prompts ~4.4–7.4k,
+method and experiment prompts ~4.5–4.8k each. This is a floor: mock drafts are a few words, while real
+refinement prompts carry the previous draft plus five reviews, so expect roughly 5–6M. Output volume is
+small by comparison. Backend options and their trade-offs are in `README.md` and decision-log P-7; no
+backend has been chosen yet.
+
 ## 5. Verification
 
 `scripts/selftest.py` runs the full pipeline on a mock backend in a scratch directory. It checks

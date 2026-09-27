@@ -126,6 +126,22 @@ retrieval contamination (F-30 correction, Q-16). It remains untraced for the EGR
 > file were written in parallel on different branches and share the ID **P-6**. Both are cited by ID
 > elsewhere, so neither is renumbered here; cite them by title until the team resolves it.
 
+## P-7 — Which model runs the ideation pipeline? (2026-09-27)
+
+`ideation/` is implemented and verified on a mock backend but has generated nothing yet. A full run at the
+paper's settings is **864 model calls, ~4–6M input tokens** (measured on a mock run; real refinement prompts
+run larger). Options:
+
+| Option | Cost | Caveat |
+|---|---|---|
+| Gemini free tier | none | Limits are no longer published; check the project's quota in AI Studio. At ~250 requests/day (2025 figure, **unverified now**) one run takes ~4 days. Free-tier content may be used by Google. Limits are per project, so a second reviewer model in the same project shares the quota |
+| Local open model on the workstation (vLLM/Ollama, OpenAI-compatible) | no API, no rate limit | occupies the contended GPU for a few hours (arithmetic, not measured); a ~30B model writes weaker ideas than a frontier API model |
+| Paid API | small (not priced) | needs a card |
+
+Whatever is chosen, **one model for the whole run** — mixing models mid-run muddies the comparison — and
+preferably a **different model for the ReviewingAgents** (`REVIEWER_*`), given this project's own judge
+rated a fabricated claim 86/100. Tracked as Q-18.
+
 ## P-2 — Confirm target venue with TTV
 See `04-open-questions.md` Q-1. Agents4Science 2025 is over; no 2026 edition found.
 
@@ -224,3 +240,24 @@ are retrieved rather than LLM-generated and are verified against the same databa
 settled; durable conclusions copied to `project-docs/`.
 **Why:** keeps `main` clean and submission-ready while preserving the evidence trail during the decision
 period.
+
+## D-2026-09-27-a — Decline all twelve generated research gaps
+**Decided:** none of L1–L12 from the multi-agent limitations pipeline is taken forward. Per the instructor,
+declining the generated gaps is allowed provided each is argued against a metric and mapped onto our own SOTA
+output; `limitations/output/gap_dismissal_analysis.md` does this.
+**Why:** the twelve split into training-bound gaps with strong claims (L1–L5, L7, L10, L12) and
+inference-reachable gaps with weak or already-closed claims (L6, L8, L9, L11); none survives both filters.
+L1 and L4 are declined **on resources, not merit**.
+**Recorded disagreement:** `12-gap-feasibility-and-litreview-mapping.md` §6 ranks L6 first as a measurement
+paper. The dismissal scores L6 62.5/100, below its bar, citing a missing LLaMA2 control and DiffuCoder's
+existing pass@k analysis. Not resolved here; the ideation pipeline's problem stage sees both views.
+
+## D-2026-09-27-b — Ideation assignment: implement ResearchAgent only
+**Decided:** of the three provided papers, implement **ResearchAgent** (arXiv:2404.07738), in a new
+`ideation/` directory on branch `assignment/research-ideation`.
+**Why:** the brief says "use the following literature for implementation purpose" without requiring all
+three, and both earlier assignments accepted one provided paper. ResearchAgent is the only one covering both
+sub-tasks — problem identification, plus method and experiment design with per-stage review criteria. HypoEvolve takes
+the research goal as input (no problem discovery). HypER's core contribution is fine-tuning a small model,
+which is out of scope. **Worth a one-line confirmation with TTV** — Q-19.
+

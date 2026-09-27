@@ -361,6 +361,13 @@ deficit is in answer selection, and here is how much of it is recoverable withou
 That claim is falsifiable, cheap, and about *this* paper rather than about diffusion LMs in general —
 which is the objection that sank the earlier execution-grounded-repair direction.
 
+**Correction 2026-09-27 — the capture fractions in item 2 above are mislabeled.** 23% / 14% / 63% is
+*SC gain ÷ headroom remaining above SC* (1.8/7.7, 4.1/30.0, 5.1/8.1), which is not a fraction of anything
+majority vote recovered. The fraction of the few-shot → hit@3 headroom that majority vote captures is
+*SC gain ÷ (hit@3 − FS)* = 1.8/9.5, 4.1/34.1, 5.1/13.2 = **19% / 12% / 39%**. The TriviaQA figure matters
+most: majority vote is far less effective there than 63% suggests. Recomputed from Table 2 as verified
+in `litreview/data/anchor_fulltext.txt`.
+
 ### 6.3 Kill criteria, set before starting
 
 - **Reproduction gate.** If Table 2's six rows cannot be reproduced within a stated tolerance on the

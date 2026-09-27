@@ -71,4 +71,19 @@ python3 ideation/scripts/selftest.py                       # wiring test on the 
 
 Exit codes: `0` done, `2` waiting on model responses, `3` waiting on the selection gate.
 
+## Choosing a model (open — see `project-docs/02-decision-log.md` P-7)
+
+A full run is **864 calls and ~4–6M input tokens**, so manual mode is impractical.
+
+- **Local open model on the workstation** — no key, no rate limit. Serve it with vLLM or Ollama and use the
+  OpenAI-compatible backend:
+  ```bash
+  LLM_BASE_URL=http://localhost:8000/v1 LLM_API_KEY=local LLM_MODEL=<served-model> \
+    python3 ideation/scripts/run_pipeline.py --backend openai
+  ```
+- **Gemini free tier** — limits are per project and no longer published; read them in AI Studio before
+  starting. Requests per day is the binding limit.
+
+Use one model for the whole run, and preferably a different one for the reviewers (`REVIEWER_*`).
+
 Stdlib only, per the repository convention for assignment directories.

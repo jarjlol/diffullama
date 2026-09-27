@@ -46,7 +46,9 @@ within roughly the last 2 years.
 |---|---|---|
 | Assignment Part 1 | Choose + understand an anchor paper (post-Jan-2024, top venue) | ✅ done — DiffuLLaMA |
 | Assignment Part 2 | Describe a *unique* automatable research-lifecycle task | ✅ **submitted** — "Continuous Gap Liveness Verification (Automated Novelty Invalidation)" |
-| SOTA assignment | Implement a 2024+ literature-review-generation method, generate a review for the anchor's domain, compare overlap with the anchor's related-work section | ✅ implemented (`litreview/`) **plus the second provided paper's evaluation framework**, ❌ **not submitted — deadline not yet announced** |
+| SOTA assignment | Implement a 2024+ literature-review-generation method, generate a review for the anchor's domain, compare overlap with the anchor's related-work section | ✅ implemented (`litreview/`) **plus the second provided paper's evaluation framework**; ✅ **submitted** (recorded 2026-09-27) |
+| Limitations assignment | Extract limitations/gaps of the anchor using provided frameworks; state a continuation research problem | ✅ implemented (`limitations/`, arXiv:2601.11578 multi-agent pipeline, 12 gaps). The team **declines all twelve** with a justified dismissal mapped onto the litreview — D-2026-09-27-a |
+| Ideation assignment | From the gaps, discover 1–2 fine-grained research problems; generate, rank and submit the top 5 ideas per problem, using HypER / ResearchAgent / HypoEvolve | ⏳ **implemented, not yet run** (`ideation/`, ResearchAgent, branch `assignment/research-ideation`) — blocked on an LLM backend, P-7 |
 | Main project | Stages 2–6 above | ⏳ **direction decision pending** — proposed candidate: trace-guided post-hoc repair for frozen diffusion code models; see `08-trace-guided-repair-proposal.md` |
 
 ### SOTA assignment detail

@@ -349,6 +349,13 @@ benchmarks", exact-match accuracy; 4-shot on math, 2-shot on TriviaQA):
 3. **On SATMath, DiffuLLaMA-SC (27.7) already beats the LLaMA2 it was adapted from (24.5)**, and hit@3
    (57.7) beats it by more than 2×.
 
+**Correction 2026-09-27 — the capture fractions above are mislabeled.** 23% / 14% / 63% is
+*SC gain ÷ headroom remaining above SC* (1.8/7.7, 4.1/30.0, 5.1/8.1), which is not a fraction of anything
+majority vote recovered. The fraction of the few-shot → hit@3 headroom that majority vote captures is
+*SC gain ÷ (hit@3 − FS)* = 1.8/9.5, 4.1/34.1, 5.1/13.2 = **19% / 12% / 39%**. The TriviaQA figure matters
+most: majority vote is far less effective there than 63% suggests. Recomputed from Table 2 as verified
+in `litreview/data/anchor_fulltext.txt`.
+
 ### F-27 🟢 The anchor attributes the headroom to undertraining and never tests that attribution
 
 Verbatim, `anchor_fulltext.txt` L599–601:
