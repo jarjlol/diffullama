@@ -1,0 +1,36 @@
+{
+  "_purpose": "Justified dismissal of L1-L12. Each gap scored on an explicitly anchored rubric and mapped onto this project's own generated literature review, per the instructor's requirement that declining the generated gaps must be argued against the metric and against our SOTA output.",
+  "_rubric": {
+    "liveness":     "Is the gap still open? 0-3 closed or preempted | 4-6 crowded, actively being closed | 7-8 open, adjacent work exists | 9-10 verified untouched",
+    "feasibility":  "Executable on 1x96GB contended in ~11 weeks? 0-3 needs adaptation training or inaccessible data | 4-6 possible but tight | 7-8 comfortable | 9-10 trivial",
+    "claim":        "If it succeeds, how large is the result? 0-3 a footnote or one sentence | 4-6 a section or appendix | 7-8 a paper | 9-10 field-relevant",
+    "specificity":  "Is it about DiffuLLaMA? 0-3 wraps any model, anchor interchangeable | 4-6 partly | 7-8 mostly | 9-10 only answerable with this anchor"
+  },
+  "_bar": "A direction must reach 70/100 AND score >=4 on every dimension. None of the twelve does.",
+  "scores": {
+    "L1":  {"liveness": 7, "feasibility": 1, "claim": 8, "specificity": 10, "reason": "infeasible",
+            "note": "Verified genuinely open (F-22: the only 7B annealing result uses modified annealing on block diffusion). Good science. Dismissed purely on resources: paired adaptation runs, ~160 GPU-hours for a scale ladder and roughly 1000 for a faithful Table 3 reproduction."},
+    "L2":  {"liveness": 5, "feasibility": 1, "claim": 3, "specificity": 8, "reason": "infeasible + weak claim",
+            "note": "'No shift' is a configuration nobody ships -- Dream, DiffuCoder and NBDiff all keep it. Showing a variant nobody uses is worse is not a finding. Its interesting half (does the shift carry AR bias forward?) is not a training question at all."},
+    "L3":  {"liveness": 7, "feasibility": 2, "claim": 4, "specificity": 8, "reason": "infeasible",
+            "note": "Breaking the confound needs a 2x2 training grid (reused vs new token, at two scales). The one CPU-only piece -- measuring the actual corpus frequency of tokens 811 and 10541 -- yields a single sentence, not a project."},
+    "L4":  {"liveness": 8, "feasibility": 0, "claim": 9, "specificity": 9, "reason": "infeasible",
+            "note": "The sharpest criticism in the set and the least executable. Validating a proxy requires running BOTH the proxy and the thing it proxies for -- strictly more expensive than L1. L1, L2 and L3 are each an instance of L4."},
+    "L5":  {"liveness": 2, "feasibility": 2, "claim": 3, "specificity": 5, "reason": "closed by our own literature review",
+            "note": "TESS 2 -- reference [13] in our own 48-paper pool, LLM relevance graded -- already performs adaptation plus instruction tuning and reports both it and base-model choice are decisive. Our survey retrieved the paper that closes this gap."},
+    "L6":  {"liveness": 5, "feasibility": 9, "claim": 5, "specificity": 6, "reason": "thin claim, novelty unverified",
+            "note": "Best of the twelve and still short. Test-time selection is heavily worked in the AR literature, and DiffuCoder already reports pass@k analysis on adapted diffusion models. Without a matched LLaMA2 control the headline reduces to 'an oracle beats majority vote', which is true of every model ever sampled from."},
+    "L7":  {"liveness": 4, "feasibility": 1, "claim": 2, "specificity": 6, "reason": "weak claim",
+            "note": "'Is the model undertrained?' is answered by training it more. It is also the authors' own honest disclosure -- criticising a paper for stating it is undertrained is weaker ground than criticising one that hides it."},
+    "L8":  {"liveness": 6, "feasibility": 8, "claim": 4, "specificity": 7, "reason": "thin claim",
+            "note": "Running the comparison the authors admitted was unfair is honest and cheap, but it is a correction rather than a research programme. Note also that this item as generated contained a factual error about which checkpoint owns the 15.5 pass@1 figure; corrected before submission."},
+    "L9":  {"liveness": 2, "feasibility": 8, "claim": 3, "specificity": 4, "reason": "settled + most crowded area in our review",
+            "note": "Already examined and rejected by this team as Bet 5 ('wall-clock reporting is standard now'). Our own literature review engages this topic more than any other limitation -- 35 of 48 references -- confirming a crowded area."},
+    "L10": {"liveness": 3, "feasibility": 1, "claim": 6, "specificity": 6, "reason": "being actively closed + infeasible",
+            "note": "Our literature review surfaced three papers already pursuing the alternative routes this gap proposes: Don't Retrain Align (representation alignment), UNIFUSION (uniform-noise adaptation), and Enabling AR Models to Fill In Masked Tokens. Every alternative is itself a training procedure."},
+    "L11": {"liveness": 6, "feasibility": 4, "claim": 2, "specificity": 3, "reason": "weak claim, generic",
+            "note": "'They reported no seeds or confidence intervals' is a peer-review comment, not a research contribution, and it applies to a large fraction of the ML literature rather than to this paper specifically. The inference half is one good figure."},
+    "L12": {"liveness": 6, "feasibility": 1, "claim": 4, "specificity": 5, "reason": "blocked by its own premise",
+            "note": "A contamination audit needs the adaptation corpus, and this gap's own central complaint is that no data manifest was released. The obstacle is data access, not compute, so the constraint that blocks L1-L10 does not spare this one. A negative result would be nearly uninformative."}
+  }
+}

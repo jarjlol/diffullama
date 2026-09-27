@@ -1,0 +1,590 @@
+[
+  {
+    "id": "L1",
+    "rank": 1,
+    "title": "Attention-mask annealing is dropped at the deployment scale on a justification the paper's own ablation contradicts",
+    "top_references": [
+      {
+        "title": "PIMNet: A Parallel, Iterative and Mimicking Network for Scene Text Recognition",
+        "year": 2021,
+        "llm_relevance": 3.0,
+        "score": 1.0
+      },
+      {
+        "title": "TESS 2: A Large-Scale Generalist Diffusion Language Model",
+        "year": 2025,
+        "llm_relevance": 4.5,
+        "score": 0.776
+      },
+      {
+        "title": "TAG-DLM: Diffusion Language Models for Text-Attributed Graph Learning",
+        "year": 2026,
+        "llm_relevance": 5.0,
+        "score": 0.625
+      },
+      {
+        "title": "Mamba: Linear-Time Sequence Modeling with Selective State Spaces",
+        "year": 2023,
+        "llm_relevance": 3.0,
+        "score": 0.55
+      },
+      {
+        "title": "Text Generation with Diffusion Language Models: A Pre-training Approach with Continuous Paragraph Denoise",
+        "year": 2022,
+        "llm_relevance": 3.0,
+        "score": 0.526
+      }
+    ],
+    "survey_sections": [
+      {
+        "heading": "6. Recent Developments Since DiffuLLaMA (2025-2026): Scaling, Reasoning, and Applications",
+        "score": 1.0
+      },
+      {
+        "heading": "3. Text Diffusion Models",
+        "score": 0.827
+      }
+    ],
+    "pool_engagement": 21,
+    "pool_size": 48
+  },
+  {
+    "id": "L2",
+    "rank": 2,
+    "title": "The shift operation is the larger effect and receives the smaller share of scrutiny",
+    "top_references": [
+      {
+        "title": "Continual Pre-Training of Large Language Models: How to (re)warm your model?",
+        "year": 2023,
+        "llm_relevance": 3.0,
+        "score": 0.986
+      },
+      {
+        "title": "Non-Autoregressive Text Generation with Pre-trained Language Models",
+        "year": 2021,
+        "llm_relevance": 3.0,
+        "score": 0.9
+      },
+      {
+        "title": "Planner and Executor: Collaboration between Discrete Diffusion And Autoregressive Models in Reasoning",
+        "year": 2025,
+        "llm_relevance": 5.0,
+        "score": 0.739
+      },
+      {
+        "title": "Cascaded Text Generation with Markov Transformers",
+        "year": 2020,
+        "llm_relevance": 5.0,
+        "score": 0.728
+      },
+      {
+        "title": "Learning Non-Autoregressive Models from Search for Unsupervised Sentence Summarization",
+        "year": 2022,
+        "llm_relevance": 3.0,
+        "score": 0.719
+      }
+    ],
+    "survey_sections": [
+      {
+        "heading": "6. Recent Developments Since DiffuLLaMA (2025-2026): Scaling, Reasoning, and Applications",
+        "score": 1.0
+      },
+      {
+        "heading": "3. Text Diffusion Models",
+        "score": 0.701
+      }
+    ],
+    "pool_engagement": 31,
+    "pool_size": 48
+  },
+  {
+    "id": "L3",
+    "rank": 3,
+    "title": "The [MASK] token is an admitted workaround, applied inconsistently and confounded with model size",
+    "top_references": [
+      {
+        "title": "Muse: Text-To-Image Generation via Masked Generative Transformers",
+        "year": 2023,
+        "llm_relevance": 5.0,
+        "score": 0.977
+      },
+      {
+        "title": "Mamba: Linear-Time Sequence Modeling with Selective State Spaces",
+        "year": 2023,
+        "llm_relevance": 3.0,
+        "score": 0.894
+      },
+      {
+        "title": "Flexible-length Text Infilling for Discrete Diffusion Models",
+        "year": 2025,
+        "llm_relevance": 5.0,
+        "score": 0.858
+      },
+      {
+        "title": "Paraformer: Fast and Accurate Parallel Transformer for Non-autoregressive End-to-End Speech Recognition",
+        "year": 2022,
+        "llm_relevance": 3.0,
+        "score": 0.856
+      },
+      {
+        "title": "TAG-DLM: Diffusion Language Models for Text-Attributed Graph Learning",
+        "year": 2026,
+        "llm_relevance": 5.0,
+        "score": 0.805
+      }
+    ],
+    "survey_sections": [
+      {
+        "heading": "4. Adapting and Continually Pre-training Language Models",
+        "score": 0.982
+      },
+      {
+        "heading": "2. Background: From Diffusion Models to Non-Autoregressive Text Generation",
+        "score": 0.847
+      }
+    ],
+    "pool_engagement": 26,
+    "pool_size": 48
+  },
+  {
+    "id": "L4",
+    "rank": 4,
+    "title": "The adaptation recipe is selected on a proxy task and never validated on adaptation training itself",
+    "top_references": [
+      {
+        "title": "Continual Pre-training of Language Models",
+        "year": 2023,
+        "llm_relevance": 3.0,
+        "score": 0.991
+      },
+      {
+        "title": "Dream-Coder 7B: An Open Diffusion Language Model for Code",
+        "year": 2025,
+        "llm_relevance": 5.0,
+        "score": 0.952
+      },
+      {
+        "title": "Simple and Effective Masked Diffusion Language Models",
+        "year": 2024,
+        "llm_relevance": 5.0,
+        "score": 0.842
+      },
+      {
+        "title": "A Cheaper and Better Diffusion Language Model with Soft-Masked Noise",
+        "year": 2023,
+        "llm_relevance": 4.5,
+        "score": 0.825
+      },
+      {
+        "title": "TESS 2: A Large-Scale Generalist Diffusion Language Model",
+        "year": 2025,
+        "llm_relevance": 4.5,
+        "score": 0.787
+      }
+    ],
+    "survey_sections": [
+      {
+        "heading": "3. Text Diffusion Models",
+        "score": 0.866
+      },
+      {
+        "heading": "7. Open Challenges and Future Directions",
+        "score": 0.704
+      }
+    ],
+    "pool_engagement": 25,
+    "pool_size": 48
+  },
+  {
+    "id": "L5",
+    "rank": 5,
+    "title": "Instruction tuning is deferred despite the paper's own evidence that its absence is causing failures",
+    "top_references": [
+      {
+        "title": "TESS 2: A Large-Scale Generalist Diffusion Language Model",
+        "year": 2025,
+        "llm_relevance": 4.5,
+        "score": 1.0
+      },
+      {
+        "title": "Simple and Effective Masked Diffusion Language Models",
+        "year": 2024,
+        "llm_relevance": 5.0,
+        "score": 0.345
+      },
+      {
+        "title": "SSD-LM: Semi-autoregressive Simplex-based Diffusion Language Model for Text Generation and Modular Control",
+        "year": 2023,
+        "llm_relevance": 5.0,
+        "score": 0.303
+      },
+      {
+        "title": "Cascaded Text Generation with Markov Transformers",
+        "year": 2020,
+        "llm_relevance": 5.0,
+        "score": 0.281
+      },
+      {
+        "title": "On the Reasoning Abilities of Masked Diffusion Language Models",
+        "year": 2025,
+        "llm_relevance": 5.0,
+        "score": 0.257
+      }
+    ],
+    "survey_sections": [
+      {
+        "heading": "3. Text Diffusion Models",
+        "score": 1.0
+      },
+      {
+        "heading": "6. Recent Developments Since DiffuLLaMA (2025-2026): Scaling, Reasoning, and Applications",
+        "score": 0.815
+      }
+    ],
+    "pool_engagement": 3,
+    "pool_size": 48
+  },
+  {
+    "id": "L6",
+    "rank": 6,
+    "title": "A large accuracy headroom is measured, diagnosed, and then left uninvestigated",
+    "top_references": [
+      {
+        "title": "Planner and Executor: Collaboration between Discrete Diffusion And Autoregressive Models in Reasoning",
+        "year": 2025,
+        "llm_relevance": 5.0,
+        "score": 1.0
+      },
+      {
+        "title": "Efficient Continual Pre-training for Building Domain Specific Large Language Models",
+        "year": 2023,
+        "llm_relevance": 3.0,
+        "score": 0.463
+      },
+      {
+        "title": "Paraformer: Fast and Accurate Parallel Transformer for Non-autoregressive End-to-End Speech Recognition",
+        "year": 2022,
+        "llm_relevance": 3.0,
+        "score": 0.447
+      },
+      {
+        "title": "PIMNet: A Parallel, Iterative and Mimicking Network for Scene Text Recognition",
+        "year": 2021,
+        "llm_relevance": 3.0,
+        "score": 0.427
+      },
+      {
+        "title": "Continual Pre-training of Language Models",
+        "year": 2023,
+        "llm_relevance": 3.0,
+        "score": 0.424
+      }
+    ],
+    "survey_sections": [
+      {
+        "heading": "3. Text Diffusion Models",
+        "score": 0.876
+      },
+      {
+        "heading": "7. Open Challenges and Future Directions",
+        "score": 0.848
+      }
+    ],
+    "pool_engagement": 18,
+    "pool_size": 48
+  },
+  {
+    "id": "L7",
+    "rank": 7,
+    "title": "Every reported number is an unconverged lower bound, and the budget mismatch with the baseline is disclosed only in the appendix",
+    "top_references": [
+      {
+        "title": "Learning Non-Autoregressive Models from Search for Unsupervised Sentence Summarization",
+        "year": 2022,
+        "llm_relevance": 3.0,
+        "score": 1.0
+      },
+      {
+        "title": "A Cheaper and Better Diffusion Language Model with Soft-Masked Noise",
+        "year": 2023,
+        "llm_relevance": 4.5,
+        "score": 0.846
+      },
+      {
+        "title": "Paraformer: Fast and Accurate Parallel Transformer for Non-autoregressive End-to-End Speech Recognition",
+        "year": 2022,
+        "llm_relevance": 3.0,
+        "score": 0.822
+      },
+      {
+        "title": "Continual Pre-Training of Large Language Models: How to (re)warm your model?",
+        "year": 2023,
+        "llm_relevance": 3.0,
+        "score": 0.695
+      },
+      {
+        "title": "SSD-LM: Semi-autoregressive Simplex-based Diffusion Language Model for Text Generation and Modular Control",
+        "year": 2023,
+        "llm_relevance": 5.0,
+        "score": 0.685
+      }
+    ],
+    "survey_sections": [
+      {
+        "heading": "3. Text Diffusion Models",
+        "score": 1.0
+      },
+      {
+        "heading": "4. Adapting and Continually Pre-training Language Models",
+        "score": 0.673
+      }
+    ],
+    "pool_engagement": 33,
+    "pool_size": 48
+  },
+  {
+    "id": "L8",
+    "rank": 8,
+    "title": "The code and infilling claims are broader than the evaluation that supports them",
+    "top_references": [
+      {
+        "title": "Flexible-length Text Infilling for Discrete Diffusion Models",
+        "year": 2025,
+        "llm_relevance": 5.0,
+        "score": 1.0
+      },
+      {
+        "title": "Dream-Coder 7B: An Open Diffusion Language Model for Code",
+        "year": 2025,
+        "llm_relevance": 5.0,
+        "score": 0.338
+      },
+      {
+        "title": "Non-Autoregressive Text Generation with Pre-trained Language Models",
+        "year": 2021,
+        "llm_relevance": 3.0,
+        "score": 0.317
+      },
+      {
+        "title": "Mamba: Linear-Time Sequence Modeling with Selective State Spaces",
+        "year": 2023,
+        "llm_relevance": 3.0,
+        "score": 0.271
+      },
+      {
+        "title": "AutoTemplate: A Simple Recipe for Lexically Constrained Text Generation",
+        "year": 2022,
+        "llm_relevance": 3.0,
+        "score": 0.263
+      }
+    ],
+    "survey_sections": [
+      {
+        "heading": "5. Non-Autoregressive Text Generation",
+        "score": 1.0
+      },
+      {
+        "heading": "3. Text Diffusion Models",
+        "score": 0.776
+      }
+    ],
+    "pool_engagement": 3,
+    "pool_size": 48
+  },
+  {
+    "id": "L9",
+    "rank": 9,
+    "title": "The efficiency claim is not compute-normalised, and later measurement of adapted models contests it",
+    "top_references": [
+      {
+        "title": "Paraformer: Fast and Accurate Parallel Transformer for Non-autoregressive End-to-End Speech Recognition",
+        "year": 2022,
+        "llm_relevance": 3.0,
+        "score": 0.909
+      },
+      {
+        "title": "TAG-DLM: Diffusion Language Models for Text-Attributed Graph Learning",
+        "year": 2026,
+        "llm_relevance": 5.0,
+        "score": 0.898
+      },
+      {
+        "title": "Self-Augmenting Retrieval for Diffusion Language Models",
+        "year": 2026,
+        "llm_relevance": 5.0,
+        "score": 0.844
+      },
+      {
+        "title": "Simple and Effective Masked Diffusion Language Models",
+        "year": 2024,
+        "llm_relevance": 5.0,
+        "score": 0.824
+      },
+      {
+        "title": "Dependency-Guided Parallel Decoding in Discrete Diffusion Language Models",
+        "year": 2026,
+        "llm_relevance": 5.0,
+        "score": 0.788
+      }
+    ],
+    "survey_sections": [
+      {
+        "heading": "3. Text Diffusion Models",
+        "score": 1.0
+      },
+      {
+        "heading": "6. Recent Developments Since DiffuLLaMA (2025-2026): Scaling, Reasoning, and Applications",
+        "score": 0.694
+      }
+    ],
+    "pool_engagement": 35,
+    "pool_size": 48
+  },
+  {
+    "id": "L10",
+    "rank": 10,
+    "title": "One adaptation route, two model families, and no comparison against cheaper or alternative routes",
+    "top_references": [
+      {
+        "title": "A Cheaper and Better Diffusion Language Model with Soft-Masked Noise",
+        "year": 2023,
+        "llm_relevance": 4.5,
+        "score": 0.945
+      },
+      {
+        "title": "TESS 2: A Large-Scale Generalist Diffusion Language Model",
+        "year": 2025,
+        "llm_relevance": 4.5,
+        "score": 0.931
+      },
+      {
+        "title": "DiffusionBERT: Improving Generative Masked Language Models with Diffusion Models",
+        "year": 2023,
+        "llm_relevance": 5.0,
+        "score": 0.869
+      },
+      {
+        "title": "Masked Diffusion Language Models with Frequency-Informed Training",
+        "year": 2025,
+        "llm_relevance": 5.0,
+        "score": 0.741
+      },
+      {
+        "title": "Flexible-length Text Infilling for Discrete Diffusion Models",
+        "year": 2025,
+        "llm_relevance": 5.0,
+        "score": 0.708
+      }
+    ],
+    "survey_sections": [
+      {
+        "heading": "3. Text Diffusion Models",
+        "score": 1.0
+      },
+      {
+        "heading": "4. Adapting and Continually Pre-training Language Models",
+        "score": 0.874
+      }
+    ],
+    "pool_engagement": 27,
+    "pool_size": 48
+  },
+  {
+    "id": "L11",
+    "rank": 11,
+    "title": "Statistical and reproducibility rigor is insufficient to support the recipe decisions",
+    "top_references": [
+      {
+        "title": "Continual Pre-Training of Large Language Models: How to (re)warm your model?",
+        "year": 2023,
+        "llm_relevance": 3.0,
+        "score": 1.0
+      },
+      {
+        "title": "TAG-DLM: Diffusion Language Models for Text-Attributed Graph Learning",
+        "year": 2026,
+        "llm_relevance": 5.0,
+        "score": 0.663
+      },
+      {
+        "title": "Diffusion-State Policy Optimization for Masked Diffusion Language Models",
+        "year": 2026,
+        "llm_relevance": 5.0,
+        "score": 0.613
+      },
+      {
+        "title": "Dream-Coder 7B: An Open Diffusion Language Model for Code",
+        "year": 2025,
+        "llm_relevance": 5.0,
+        "score": 0.596
+      },
+      {
+        "title": "Continual Pre-Training for Cross-Lingual LLM Adaptation: Enhancing Japanese Language Capabilities",
+        "year": 2024,
+        "llm_relevance": 3.0,
+        "score": 0.547
+      }
+    ],
+    "survey_sections": [
+      {
+        "heading": "3. Text Diffusion Models",
+        "score": 1.0
+      },
+      {
+        "heading": "4. Adapting and Continually Pre-training Language Models",
+        "score": 0.7
+      }
+    ],
+    "pool_engagement": 14,
+    "pool_size": 48
+  },
+  {
+    "id": "L12",
+    "rank": 12,
+    "title": "Data provenance, contamination, and release transparency are not addressed",
+    "top_references": [
+      {
+        "title": "Continual Pre-Training for Cross-Lingual LLM Adaptation: Enhancing Japanese Language Capabilities",
+        "year": 2024,
+        "llm_relevance": 3.0,
+        "score": 0.999
+      },
+      {
+        "title": "Continual Pre-Training of Large Language Models: How to (re)warm your model?",
+        "year": 2023,
+        "llm_relevance": 3.0,
+        "score": 0.804
+      },
+      {
+        "title": "Efficient Continual Pre-training for Building Domain Specific Large Language Models",
+        "year": 2023,
+        "llm_relevance": 3.0,
+        "score": 0.744
+      },
+      {
+        "title": "Dream-Coder 7B: An Open Diffusion Language Model for Code",
+        "year": 2025,
+        "llm_relevance": 5.0,
+        "score": 0.563
+      },
+      {
+        "title": "POINTER: Constrained Progressive Text Generation via Insertion-based Generative Pre-training",
+        "year": 2020,
+        "llm_relevance": 3.0,
+        "score": 0.466
+      }
+    ],
+    "survey_sections": [
+      {
+        "heading": "4. Adapting and Continually Pre-training Language Models",
+        "score": 1.0
+      },
+      {
+        "heading": "7. Open Challenges and Future Directions",
+        "score": 0.858
+      }
+    ],
+    "pool_engagement": 14,
+    "pool_size": 48
+  }
+]
