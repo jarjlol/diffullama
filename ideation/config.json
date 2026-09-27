@@ -1,0 +1,23 @@
+{
+  "_doc": "Pipeline configuration. Values the source paper does not state are marked UNSTATED and documented in REPORT.md 3.",
+  "n_related_papers": 10,
+  "_n_related_papers": "UNSTATED in the paper beyond 'narrowed by abstract similarity'. 10 keeps prompts within a small model's context.",
+  "n_entities": 10,
+  "_n_entities": "UNSTATED (the k of Eq. 1-2).",
+  "refinement_rounds": 3,
+  "_refinement_rounds": "Paper, Fig. 4 / sec 5: gains saturate after three iterations.",
+  "n_problem_candidates": 4,
+  "n_ideas_per_problem": 8,
+  "top_k_ideas": 5,
+  "_counts": "Assignment: 1-2 problems, top-5 ideas each. 8 candidates per problem so the ranking discards at least three.",
+  "smoothing_alpha": 1.0,
+  "use_gaps": true,
+  "use_constraints": true,
+  "constraints": [
+    "Inference only on released checkpoints: no pre-training, continual pre-training, or AR-to-diffusion adaptation runs (team decision D-2026-09-21-a).",
+    "Compute: one NVIDIA RTX 6000 Pro Blackwell (96 GB), shared and contended; plan for one card, never two.",
+    "Timeline: roughly ten weeks for implementation, experiments and write-up.",
+    "Team: seven people, only three with GPU access; CPU-only work (analysis, tokenizer/AST work, evaluation harnesses) is plentiful.",
+    "Available checkpoints include diffusionfamily/diffullama (6.74B), diffusionfamily/diffugpt-s and -m, LLaDA-8B, Dream-7B, DiffuCoder-7B."
+  ]
+}
