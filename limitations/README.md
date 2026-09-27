@@ -1,5 +1,10 @@
 # Limitation Generation via Multi-Agent LLMs
 
+> ⚠️ **Read [`CORRECTIONS.md`](CORRECTIONS.md) before citing any limitation by its L-number.** Two
+> incompatible runs of this pipeline have circulated with clashing numbering (v1's `L8` is v2's `L6`). One
+> factual error in L8 has been found and traced; it is corrected in `b0dc799` (C-2). All other corrections are
+> additive — the agent outputs under `data/` are left unedited as the provenance record.
+
 Faithful implementation of **Al Azher, Guo & Alhoori, *Multi-Agent LLMs for Generating
 Research Limitations*** ([arXiv:2601.11578](https://arxiv.org/abs/2601.11578)), applied to
 this project's anchor paper, **DiffuLLaMA** (Gong et al., ICLR 2025).

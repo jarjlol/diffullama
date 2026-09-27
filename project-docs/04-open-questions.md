@@ -23,9 +23,25 @@ cannot both be the main project. C2 is the refined form of the old Structure-Gui
 frozen dLLM → failed visible test → trace-guided AST/def-use span selection → bounded remask-and-retest
 loop. **Everything in stages 2–6 is blocked on this team decision.**
 
-### Q-3 — When is the SOTA assignment due?
-Not announced as of 2026-08-29. The work is complete and unsubmitted. **Check Quanta directly** — forum
-posts do not reach Gmail, which is why an inbox search found nothing.
+### ~~Q-3 — When is the SOTA assignment due?~~ ✅ PARTIALLY RESOLVED — due Wednesday
+TTV emailed a deadline: **submit the SOTA review by Wednesday.** The review content itself is complete —
+both papers implemented (`litreview/REPORT.md` §1-§10 QUAL-SG, §11 the 2412.13612 evaluation framework),
+domain extracted, survey generated, overlap vs the anchor's §5 measured.
+
+**Two things the same email leaves ambiguous, blocking an actual submission:**
+
+1. **Where are "the abstracts submitted two weeks ago"?** The email says to move them into the submission
+   folder. Searched this repo's full git history (all branches) and the local filesystem — no file
+   matching "abstract" exists anywhere in either. Almost certainly lives outside this repo (Quanta upload,
+   shared Drive, a teammate's machine) from around the anchor-paper decision (`02-decision-log.md`
+   D-2026-08-13-a, which lines up with "two weeks ago"). **Needs:** whoever submitted it to locate it.
+2. **What does "create a folder" mean?** Could be (a) a clean submission package outside git, or (b) just
+   confirmation that `litreview/` already serves as "the project + review folder" and only the abstracts
+   need adding to it. Changes what actually needs building. **Needs:** a team decision, or ask TTV to
+   clarify if the email doesn't already make this clear from context (e.g. a Quanta submission-box format).
+
+**✅ RESOLVED — recorded 2026-09-27.** The SOTA review has been submitted (confirmed by Neel). The two
+ambiguities above are moot for that submission.
 
 ---
 
@@ -125,3 +141,97 @@ the 6 GB the design doc assumes).
 | Q-7 compute measurement, all real experiments | full CUDA stack | Blackwell workstation |
 
 **Q-6 is the only genuinely unblocked task** — it needs no GPU, no direction decision, and ~50 MB.
+
+---
+
+## 2026-09-21 — questions opened by the inference-only constraint
+
+Context: the team has stated compute cannot support adaptation training, closing Option B on resources
+(D-2026-09-21-a). Full analysis in
+[`10-inference-time-direction-2026-09-21.md`](10-inference-time-direction-2026-09-21.md).
+
+### Q-13 🔴 BLOCKING — Has anyone published test-time selection or hit@k scaling for *adapted* diffusion LMs?
+
+**Nobody has searched.** The recommended primary direction (L6, the answer-selection headroom, F-26/F-27)
+rests on the assumption that this is unexplored, and that assumption has **not been checked even once**.
+
+Test-time scaling, self-consistency and verifier-based selection are heavily worked in the autoregressive
+literature. The claimed novelty is the *population* (adapted diffusion LMs) and the *specific contested
+attribution*, not the mechanism. If someone has run hit@k or calibration on DiffuLLaMA, Dream or
+DiffuCoder, the direction is preempted in the same way Option C was.
+
+**This project has been preempted twice already** — CDC was posted three months before it was found
+(`07-decision-tree.md` principle 5), and DiffPDE closed EGR's first gap four weeks after it was written
+(`09-...md` §2.2). **Do not ratify the direction before running this search.**
+
+Suggested scope: ReMDM and the remasking-policy line (F-14), diffusion test-time scaling, dLLM
+calibration, self-consistency for masked diffusion, and anything citing the anchor's Table 2.
+
+### Q-14 🟡 Does Table 2 reproduce on the released checkpoint?
+
+The reproduction gate for L6. Targets: SC = 33.1 / 27.7 / 26.0 and hit@3 = 40.8 / 57.7 / 34.1 on
+MAWPS / SATMath / TriviaQA (F-26).
+
+**Known risk:** the paper does not fully state its decoding configuration for Table 2 — which is L11's own
+complaint, landing on this project's critical path. Step count, temperature and top-p all need to be
+pinned and reported, and a failure to reproduce may be a configuration difference rather than a real
+discrepancy. If the SC row cannot be reproduced within a reasonable margin, the direction is unsound and
+L8 becomes the fallback.
+
+### Q-15 🟢 How much of the hit@3 headroom is a formatting artifact?
+
+Cheap and decisive, and it should be done **before** any selector is built. If hit@3 counts candidates
+correct on formatting technicalities that no selector could detect, part of the +30.0 SATMath headroom is
+illusory and H1 collapses before the experiment starts.
+
+Checkable by hand on a few dozen candidates once generation works. Needs no GPU beyond one generation run.
+
+### Q-16 🔴 Where did the Diffu-CodeLLaMA infilling error come from?
+
+Per F-30, the same false claim has now been generated independently by the EGR documents and by the
+`limitations/` pipeline. Two independent reproductions indicate a **shared upstream source** that has not
+been identified.
+
+Candidates: a contaminated chunk in the limitations RAG corpus (`limitations/data/`), an agent prompt
+carrying the claim, or a secondary source both pipelines retrieved. **Until it is found, anything else
+from that source is suspect.** This is the live form of decision principle 1 and of
+`05-mistakes-and-bugs.md` §A.
+
+### Q-17 🟡 What is SATMath's item count?
+
+The +30.0 headroom is the largest single number in the L6 case and carries the direction. On a small test
+set its confidence interval may be wide enough to weaken the claim substantially. Not checked; needed
+before any interval is quoted.
+
+Same class of check as Q-14 — cheap, and load-bearing.
+
+---
+
+### Note on Q-2 and Q-9
+
+**Q-2 (which direction)** is partly resolved: training-based directions are closed on compute
+(D-2026-09-21-a). Which *inference-time* direction remains open, now tracked as **P-5** in the decision
+log.
+
+**Q-9 (what does dropping annealing cost at 7B)** is **not** resolved and is **not** withdrawn. The cell
+is still empty and the question is still good — the team simply cannot afford to answer it. It stays here
+as a question the project is declining to pursue, rather than being deleted, so that it can be picked up
+if compute later becomes available.
+
+### ~~Q-16 — Where did the Diffu-CodeLLaMA infilling error come from?~~ ✅ ANSWERED 2026-09-21 (for the limitations pipeline)
+
+**Answer: agent hallucination, not retrieval contamination.** Originates in **REV-1**, the Reviewer
+agent's first-round output on `assignment/limitations-multiagent` @ `3e74ef5`. The RAG corpus, retained
+chunks, ground truth and zero-shot baseline are all clean — zero occurrences of "CodeLLaMA". The Judge
+scored the reviewer 86/100 and did not catch it.
+
+Revised explanation for the EGR documents carrying the same error: not a shared source, but a
+**reproducible misreading invited by the anchor's own structure** — Table 1's Code column belongs to the
+released checkpoint, Table 8's row to Diffu-CodeLLaMA, and finding Table 8 first leads naturally to the
+wrong conclusion.
+
+See `03-established-facts.md` F-30 and its dated correction. **Still open in one respect:** the EGR
+documents themselves were not re-examined, so whether they had an independent cause is unconfirmed.
+
+**Status 2026-09-27.** The L8 deliverable itself is now corrected (`b0dc799` on `assignment/limitations-multiagent`). This does not close the
+remaining half of Q-16 — the EGR-document occurrences are still untraced.

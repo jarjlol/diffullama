@@ -210,6 +210,22 @@ instance of the probabilistic/spatial class, **not** a counterexample to it.*
 
 **But every one studies from-scratch models. None studies an *adapted* model** — that gap is open.
 
+**⚠️ CORRECTION 2026-09-21 — the sentence above is false as written.** 🟢 verified in primary form
+(HTML full text, §4.1–4.2). **DiffuCoder** ([2506.20639](https://arxiv.org/abs/2506.20639)) — by
+Shansan Gong, Yizhe Zhang and Lingpeng Kong among others, i.e. **three of the anchor paper's own
+authors** — defines local and global AR-ness@k as inference-time metrics and explicitly compares
+"LLaDA trained from scratch and Dream or DiffuCoder adapted from AR LLMs", concluding that *"adapted
+dLLMs tend to exhibit stronger AR-ness than those trained from scratch"*, attributed to inherited
+left-to-right dependencies.
+
+**What remains open is much narrower:** DiffuCoder's comparison does **not** include DiffuLLaMA; it is
+reported qualitatively under one decoding configuration (low-confidence remasking, 512 steps) on math
+and code; and DiffuLLaMA is full-attention non-block and adapted from a general rather than a code AR
+model, a point in the space none of the three measured models occupies. The defensible framing is
+*"we place DiffuLLaMA on a published axis its own authors did not apply to it"*, **not** *"nobody has
+studied adapted models"*. Consequence for the adaptation-residue audit and the full reasoning:
+`12-gap-feasibility-and-litreview-mapping.md` §5.1.
+
 ---
 
 ## Corrected numbers (the design doc had these wrong)
@@ -297,3 +313,145 @@ controller may inspect only a visible repair-test split. The accepted final cand
 held-out tests that were never supplied to the controller. The public/private-test protocol used by
 [APR-Comp](https://apr-comp.github.io/evaluation.html) is the appropriate pattern: public tests drive repair;
 private tests evaluate generalization.
+
+---
+
+## 2026-09-21 — inference-time direction pass
+
+Established while analysing which limitations survive the compute constraint. Full reasoning:
+[`10-inference-time-direction-2026-09-21.md`](10-inference-time-direction-2026-09-21.md).
+
+### F-26 🟢 Table 2's selection headroom, with the numbers the write-ups keep getting wrong
+
+Read directly from `litreview/data/anchor_fulltext.txt` L568–580 (Table 2, "Performance on math/QA
+benchmarks", exact-match accuracy; 4-shot on math, 2-shot on TriviaQA):
+
+| Setting | MAWPS | SATMath | TriviaQA |
+|---|---|---|---|
+| LLaMA2 | 63.5 | 24.5 | 45.4 |
+| DiffuLLaMA-ZS | 9.7 | <1 | 18.5 |
+| DiffuLLaMA-FS | 31.3 | 23.6 | 20.9 |
+| DiffuLLaMA-SC (majority vote of 3) | 33.1 | 27.7 | 26.0 |
+| **DiffuLLaMA-@k (hit rate, k = 3)** | **40.8** | **57.7** | **34.1** |
+| DiffuLLaMA-CoT | 28.7 | 9.5 | — |
+
+**Headroom against SC: +7.7 / +30.0 / +8.1.** Majority vote recovered only 1.8 / 4.1 / 5.1 of it
+(23% / 14% / 63%).
+
+**Three things that matter:**
+
+1. **The correct baseline is SC (27.7), not FS (23.6).** The committed v1 limitations text quotes
+   "57.7 vs. 23.6 on SATMath", which measures against few-shot rather than against the paper's own best
+   selector. Beating 23.6 would be a strawman.
+2. **Self-consistency was already tried and mostly failed.** The paper deploys majority-vote-of-3
+   explicitly (citing Wang et al., 2023). On SATMath it captures one seventh of the available headroom.
+   The gap is therefore "the standard selector leaves 26 points on the table", not "nobody tried".
+3. **On SATMath, DiffuLLaMA-SC (27.7) already beats the LLaMA2 it was adapted from (24.5)**, and hit@3
+   (57.7) beats it by more than 2×.
+
+### F-27 🟢 The anchor attributes the headroom to undertraining and never tests that attribution
+
+Verbatim, `anchor_fulltext.txt` L599–601:
+
+> "we report the hit rate results in generated candidate answers, highlighting the model's potential to
+> produce the correct answer. This reveals that the current model exhibits high uncertainty about its
+> responses, leading to **temporarily suboptimal** performance."
+
+"Temporarily" implies more training closes the gap. No calibration analysis, reranking or verifier appears
+anywhere in the paper. The measurement localises the deficit in **answer selection** — the correct answer
+is demonstrably in the candidate set — while the attribution assigns it to **answer knowledge**. Those are
+different claims and the paper tests neither.
+
+Relatedly, `anchor_fulltext.txt` L590: *"We hypothesize that the adapted model retains some of the
+abilities from the base AR model."* Residue is hypothesised and never measured. Same shape.
+
+### F-28 🟢 The released sampler unmasks uniformly at random and returns no confidence
+
+`model.py:132`: `masked_to_x0 = maskable_mask & (torch.rand_like(x0, dtype=torch.float) < p_to_x0)`, with
+`p_to_x0 = 1/(t+1)` at `model.py:130`.
+
+**Unmasking order is uniform random** — not confidence-ordered, not entropy-ordered. Combined with F-4
+(`x0_scores` is the sampled-token log-prob, not the max, and `model.py:158` never returns it):
+
+- **No confidence or entropy ordering baseline exists in this repository.** It must be built before it can
+  be compared against, and it must use **max softmax probability**, not `x0_scores`, or the comparison is
+  rigged in favour of whatever is proposed against it.
+- Any trajectory-derived uncertainty feature requires changing what the sampler returns.
+
+### F-29 🟢 The released sampler has no remasking path at all
+
+`model.py:134`: `maskable_mask = maskable_mask.masked_fill(masked_to_x0, False)`. `maskable_mask` is only
+ever cleared, never set — once a position commits it cannot be revised. F-6 establishes `src_mask` as a
+genuine freeze primitive; the **unfreeze** direction is new code in every case.
+
+F-28 and F-29 together are the engineering prerequisite for any inference-time direction. Both are
+GPU-free.
+
+### F-30 🟢 The Diffu-CodeLLaMA infilling error has now appeared in two independent pipelines
+
+The claim that the anchor's HumanEval infilling number "belongs to a separately trained Diffu-CodeLLaMA
+rather than the released checkpoint" is **false**. `anchor_fulltext.txt` L452–462, Table 1, "Infilling /
+Code" column: **DiffuLLaMA 7B = 15.5** pass@1; also LLaMA2 1.7 (prefix only), DiffuGPT-M 2.9, GPT2-M 2.6,
+DiffuGPT-S 0.3. Diffu-CodeLLaMA's 0.76 is Table 8, a separate CodeLLaMA finetune on 100M Starcoder tokens.
+
+Protocol (Appendix C.3, L1462): `openai/human-eval-infilling`, **1033 test cases**, pass@1.
+
+**Why this is recorded as a fact rather than a fix:** `09-p1-direction-analysis-2026-09-19.md` §1 row 4
+found this same error in three EGR documents (`egr/README.md` §2, `docs/02-experiment-plan.md` §2,
+`novelty.md` §3). The `limitations/` multi-agent pipeline then reproduced it independently on 2026-09-21.
+**Two independent generations of the same error indicate a shared upstream source** — a contaminated RAG
+chunk, an agent prompt, or a secondary source both retrieved. That source has **not** been traced, and
+anything else from it is suspect. See Q-16.
+
+### F-31 🔴 Two incompatible runs of the limitations pipeline exist
+
+The committed run (`limitations/output/limitations_and_research_problem.md`, `a131e13`) has **10** items.
+A run circulated on 2026-09-21 has **12**, renumbered: the committed `L8` is the circulated `L6`, the
+committed `L5`+`L9` merge into the circulated `L8`, and the circulated `L4`, `L11`, `L12` are new. Full
+mapping table in `10-...md` §2. Whether v2 was intended to supersede v1 is unknown.
+
+**Any citation of an "L-number" must say which run it means.**
+
+### F-30 correction, 2026-09-21 (same day) — the error is agent hallucination, not corpus contamination
+
+F-30 above inferred a "shared upstream source" from two independent reproductions. Traced this session
+through `limitations/data/` on branch `assignment/limitations-multiagent` @ `3e74ef5`. 🟢
+
+- The claim originates in **REV-1**, the Reviewer agent's first-round output (`agent_outputs.json`).
+- It propagates unchanged through `agent_outputs_round2.json`, `agent_outputs_final.json`,
+  `master_clusters.json`, `master_merged.json` and into the deliverable. The Judge scored the reviewer
+  **86/100** and did not catch it; the Self-Feedback regeneration did not remove it.
+- **`rag_corpus.json`, `rag_top20.json`, `rag_retained.json`, `ground_truth.json` and
+  `zeroshot_baseline.json` contain zero occurrences of "CodeLLaMA".** The retrieval corpus is clean.
+
+**So there is no contaminated chunk.** The likelier explanation for the same error appearing independently
+in the EGR documents is that **the anchor's structure invites this specific misreading**: Table 1 carries
+a Code column for the released checkpoint while Table 8 carries a Diffu-CodeLLaMA row, and a reader who
+encounters Table 8 first naturally concludes the code number belongs to it.
+
+**This is the more useful finding**, because it is reproducible: a future agent reading this paper may
+make the same error again. That is why the correction lives in `limitations/CORRECTIONS.md` and here,
+rather than in a fix to one sentence.
+
+Q-16 is answered for the `limitations/` pipeline. It remains unverified for the EGR documents, which were
+not re-examined this session.
+
+### F-30 status, 2026-09-27 — corrected in the deliverable 🟢
+
+The error is removed from the `limitations/` deliverable in `b0dc799` on `assignment/limitations-multiagent`, at the source
+(`data/master_merged.json`) and in the rendered output. Verified: zero occurrences of the false claim remain
+in `limitations/output/limitations_and_research_problem.md`, and the re-rendered file differs from the
+previous commit by exactly the one L8 sentence. The EGR documents that carried the same claim (09 §1 row 4)
+are not corrected by this change.
+
+### F-31 correction, 2026-09-21 (same day) — v2 is in the repository, and supersedes v1 by intent
+
+F-31 above records v2 as "not in the repository" and its relationship to v1 as unknown. Both resolved: 🟢
+
+- **v2 is on branch `assignment/limitations-multiagent` @ `3e74ef5`**, commit message *"feat(limitations):
+  reimplement limitation generation as a faithful multi-agent pipeline"*.
+- **"reimplement" settles intent: v2 supersedes v1.** It is a full rewrite — `scripts/` contains
+  `agents.py`, `judge.py`, `master.py`, `self_feedback.py`, `rag_retrieve.py`, `build_rag_corpus.py`,
+  with every intermediate agent output preserved in `data/`.
+
+The numbering collision in F-31 stands unchanged and still matters, because v1 remains on `main`.

@@ -25,6 +25,10 @@ Then, as needed:
 | [`06-findings-and-wins.md`](06-findings-and-wins.md) | Novel findings and results worth writing up |
 | [`07-decision-tree.md`](07-decision-tree.md) | Diagrammed reasoning behind every fork — read this before proposing a direction that was already closed |
 | [`08-trace-guided-repair-proposal.md`](08-trace-guided-repair-proposal.md) | Proposed Option C2, its exact scope, baselines, and feasibility gate — **not yet a team decision** |
+| [`09-p1-direction-analysis-2026-09-19.md`](09-p1-direction-analysis-2026-09-19.md) | Verification pass on the EGR branch and the competitive landscape; recommended Option B. **Superseded on resources, not on reasoning** — see D-2026-09-21-a |
+| [`10-inference-time-direction-2026-09-21.md`](10-inference-time-direction-2026-09-21.md) | Which limitation to pursue now that compute has closed all training directions. **Current proposed direction** — not yet ratified; gated on Q-13 |
+| [`11-limitations-triage.md`](11-limitations-triage.md) | Per-limitation walkthrough of all twelve gaps in the multi-agent deliverable: what each says, what answering it would cost, and why it is in or out. **Read this to understand the direction; read 10 for the argument** |
+| [`12-gap-feasibility-and-litreview-mapping.md`](12-gap-feasibility-and-litreview-mapping.md) | L1–L12 mapped onto the litreview and scored with arXiv:2601.11578's own rubric, plus a first novelty pass that finds the adaptation-residue audit substantially preempted by DiffuCoder. **Read §5 before ratifying any direction** |
 
 ### Rules for agents working on this project
 
@@ -80,4 +84,4 @@ on the `audit/opus-review` branch.
 - Keep entries short. This folder is read at the start of every new agent session; bloat costs everyone
   context budget.
 
-**Last updated:** 2026-08-31
+**Last updated:** 2026-09-27
