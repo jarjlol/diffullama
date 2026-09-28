@@ -1,0 +1,168 @@
+
+=== A1_annealing_at_scale ===
+[2023] Diffusion Models: A Comprehensive Survey of Methods and Applications
+  cited_by=1556 doi=https://doi.org/10.1145/3626235
+  abstract: Diffusion models have emerged as a powerful new family of deep generative models with record-breaking performance in many applications, including image synthesis, video generation, and molecule design. In this survey, we provide an overview of the rapidly expanding body of work on diffusion models, categorizing the research into three key areas: efficient sampling, improved likelihood estimation, 
+
+[2026] A Survey of Large Language Models
+  cited_by=1535 doi=https://doi.org/10.1007/s11704-026-60308-3
+  abstract: Abstract The rapid evolution of large language models (LLMs) has driven a transformative shift in artificial intelligence (AI), reshaping both research paradigms and practical applications. Distinguished from their predecessors by unprecedented scale and advanced capabilities, LLMs necessitate new frameworks for understanding their development, behavior, and societal impact. This survey systematic
+
+[2024] Large scale paired antibody language models
+  cited_by=61 doi=https://doi.org/10.1371/journal.pcbi.1012646
+  abstract: Antibodies are proteins produced by the immune system that can identify and neutralise a wide variety of antigens with high specificity and affinity, and constitute the most successful class of biotherapeutics. With the advent of next-generation sequencing, billions of antibody sequences have been collected in recent years, though their application in the design of better therapeutics has been con
+
+[2025] Comprehensive exploration of diffusion models in image generation: a survey
+  cited_by=68 doi=https://doi.org/10.1007/s10462-025-11110-3
+  abstract: The rapid development of deep learning technology has led to the emergence of diffusion models as a promising generative model with diverse applications. These include image generation, audio and video synthesis, molecular design, and text generation. The distinctive generation mechanism and exceptional generation quality of diffusion models have made them a valuable tool in these diverse fields. 
+
+[2023] A Systematic Survey of Prompt Engineering on Vision-Language Foundation Models
+  cited_by=64 doi=https://doi.org/10.48550/arxiv.2307.12980
+  abstract: Prompt engineering is a technique that involves augmenting a large pre-trained model with task-specific hints, known as prompts, to adapt the model to new tasks. Prompts can be created manually as natural language instructions or generated automatically as either natural language instructions or vector representations. Prompt engineering enables the ability to perform predictions based solely on p
+
+[2024] Review of the opportunities and challenges to accelerate mass‐scale application of smart grids with large‐language models
+  cited_by=39 doi=https://doi.org/10.1049/stg2.12191
+  abstract: Abstract Smart grids represent a paradigm shift in the electricity industry, moving from traditional one‐way systems to more dynamic, interconnected networks. These grids are characterised by their intelligent automation, robust structure, and enhanced interaction with customers, backed by comprehensive monitoring and data analytics. The key of this transformation is the integration of data‐driven
+
+[2025] Large Language Diffusion Models
+  cited_by=6 doi=https://doi.org/10.52202/085713-1689
+  abstract: The capabilities of large language models (LLMs) are widely regarded as relying on autoregressive models (ARMs). We challenge this notion by introducing LLaDA, a diffusion model trained from scratch under the pre-training and supervised fine-tuning (SFT) paradigm. LLaDA employs a forward data masking process and a reverse generation process, parameterized by a Transformer to predict masked tokens.
+
+[2025] A comprehensive survey of deep learning for time series forecasting: architectural diversity and open challenges
+  cited_by=237 doi=https://doi.org/10.1007/s10462-025-11223-9
+  abstract: Abstract Time series forecasting is a critical task that provides key information for decision-making across various fields, such as economic planning, supply chain management, and medical diagnosis. After the use of traditional statistical methodologies and machine learning in the past, various fundamental deep learning architectures such as MLPs, CNNs, RNNs, and GNNs have been developed and appl
+
+[2023] A Survey on Large Language Models: Applications, Challenges, Limitations, and Practical Usage
+  cited_by=373 doi=https://doi.org/10.36227/techrxiv.23589741.v1
+  abstract: Within the vast expanse of computerized language processing, a revolutionary entity known as Large Language Models (LLMs) has emerged, wielding immense power in its capacity to comprehend intricate linguistic patterns and conjure coherent and contextually fitting responses. Large language models (LLMs) are a type of artificial intelligence (AI) that have emerged as powerful tools for a wide range 
+
+[2024] When large language models meet personalization: perspectives of challenges and opportunities
+  cited_by=334 doi=https://doi.org/10.1007/s11280-024-01276-1
+  abstract: Abstract The advent of large language models marks a revolutionary breakthrough in artificial intelligence. With the unprecedented scale of training and model parameters, the capability of large language models has been dramatically improved, leading to human-like performances in understanding, language synthesizing, common-sense reasoning, etc. Such a major leap forward in general AI capacity wil
+
+
+=== A8_adaptation_generalization ===
+[2026] A Survey of Large Language Models
+  cited_by=1535 doi=https://doi.org/10.1007/s11704-026-60308-3
+  abstract: Abstract The rapid evolution of large language models (LLMs) has driven a transformative shift in artificial intelligence (AI), reshaping both research paradigms and practical applications. Distinguished from their predecessors by unprecedented scale and advanced capabilities, LLMs necessitate new frameworks for understanding their development, behavior, and societal impact. This survey systematic
+
+[2023] Diffusion Models: A Comprehensive Survey of Methods and Applications
+  cited_by=1556 doi=https://doi.org/10.1145/3626235
+  abstract: Diffusion models have emerged as a powerful new family of deep generative models with record-breaking performance in many applications, including image synthesis, video generation, and molecule design. In this survey, we provide an overview of the rapidly expanding body of work on diffusion models, categorizing the research into three key areas: efficient sampling, improved likelihood estimation, 
+
+[2024] A Survey on RAG Meeting LLMs: Towards Retrieval-Augmented Large Language Models
+  cited_by=738 doi=https://doi.org/10.1145/3637528.3671470
+  abstract: As one of the most advanced techniques in AI, Retrieval-Augmented Generation (RAG) can offer reliable and up-to-date external knowledge, providing huge convenience for numerous tasks. Particularly in the era of AI-Generated Content (AIGC), the powerful capacity of retrieval in providing additional knowledge enables RAG to assist existing generative AI in producing high-quality outputs. Recently, L
+
+[2023] Mamba: Linear-Time Sequence Modeling with Selective State Spaces
+  cited_by=1059 doi=https://doi.org/10.48550/arxiv.2312.00752
+  abstract: Foundation models, now powering most of the exciting applications in deep learning, are almost universally based on the Transformer architecture and its core attention module. Many subquadratic-time architectures such as linear attention, gated convolution and recurrent models, and structured state space models (SSMs) have been developed to address Transformers' computational inefficiency on long 
+
+[2024] Crystal structure generation with autoregressive large language modeling
+  cited_by=153 doi=https://doi.org/10.1038/s41467-024-54639-7
+  abstract: The generation of plausible crystal structures is often the first step in predicting the structure and properties of a material from its chemical composition. However, most current methods for crystal structure prediction are computationally expensive, slowing the pace of innovation. Seeding structure prediction algorithms with quality generated candidates can overcome a major bottleneck. Here, we
+
+[2024] T2I-Adapter: Learning Adapters to Dig Out More Controllable Ability for Text-to-Image Diffusion Models
+  cited_by=846 doi=https://doi.org/10.1609/aaai.v38i5.28226
+  abstract: The incredible generative ability of large-scale text-to-image (T2I) models has demonstrated strong power of learning complex structures and meaningful semantics. However, relying solely on text prompts cannot fully take advantage of the knowledge learned by the model, especially when flexible and accurate controlling (e.g., structure and color) is needed. In this paper, we aim to ``dig out" the c
+
+[2023] A Survey on Large Language Models: Applications, Challenges, Limitations, and Practical Usage
+  cited_by=373 doi=https://doi.org/10.36227/techrxiv.23589741.v1
+  abstract: Within the vast expanse of computerized language processing, a revolutionary entity known as Large Language Models (LLMs) has emerged, wielding immense power in its capacity to comprehend intricate linguistic patterns and conjure coherent and contextually fitting responses. Large language models (LLMs) are a type of artificial intelligence (AI) that have emerged as powerful tools for a wide range 
+
+[2023] Augmenting human innovation teams with artificial intelligence: Exploring transformer‐based language models
+  cited_by=427 doi=https://doi.org/10.1111/jpim.12656
+  abstract: Abstract The use of transformer‐based language models in artificial intelligence (AI) has increased adoption in various industries and led to significant productivity advancements in business operations. This article explores how these models can be used to augment human innovation teams in the new product development process, allowing for larger problem and solution spaces to be explored and ulti
+
+[2024] Large Language Models in Healthcare and Medical Domain: A Review
+  cited_by=395 doi=https://doi.org/10.3390/informatics11030057
+  abstract: The deployment of large language models (LLMs) within the healthcare sector has sparked both enthusiasm and apprehension. These models exhibit the remarkable ability to provide proficient responses to free-text queries, demonstrating a nuanced understanding of professional medical knowledge. This comprehensive survey delves into the functionalities of existing LLMs designed for healthcare applicat
+
+[2024] A review of large language models and autonomous agents in chemistry
+  cited_by=243 doi=https://doi.org/10.1039/d4sc03921a
+  abstract: Large language models (LLMs) have emerged as powerful tools in chemistry, significantly impacting molecule design, property prediction, and synthesis optimization. This review highlights LLM capabilities in these domains and their potential to accelerate scientific discovery through automation. We also review LLM-based autonomous agents: LLMs with a broader set of tools to interact with their surr
+
+
+=== A6_instruction_tuning_diffusion ===
+[2023] InstructPix2Pix: Learning to Follow Image Editing Instructions
+  cited_by=1363 doi=https://doi.org/10.1109/cvpr52729.2023.01764
+  abstract: We propose a method for editing images from human instructions: given an input image and a written instruction that tells the model what to do, our model follows these instructions to edit the image. To obtain training data for this problem, we combine the knowledge of two large pretrained models—a language model (GPT-3) and a text-to-image model (Stable Diffusion)—to generate a large dataset of i
+
+[2023] Visual Instruction Tuning
+  cited_by=698 doi=https://doi.org/10.48550/arxiv.2304.08485
+  abstract: Instruction tuning large language models (LLMs) using machine-generated instruction-following data has improved zero-shot capabilities on new tasks, but the idea is less explored in the multimodal field. In this paper, we present the first attempt to use language-only GPT-4 to generate multimodal language-image instruction-following data. By instruction tuning on such generated data, we introduce 
+
+[2026] A Survey of Large Language Models
+  cited_by=1535 doi=https://doi.org/10.1007/s11704-026-60308-3
+  abstract: Abstract The rapid evolution of large language models (LLMs) has driven a transformative shift in artificial intelligence (AI), reshaping both research paradigms and practical applications. Distinguished from their predecessors by unprecedented scale and advanced capabilities, LLMs necessitate new frameworks for understanding their development, behavior, and societal impact. This survey systematic
+
+[2023] Text-to-Audio Generation using Instruction Guided Latent Diffusion Model
+  cited_by=89 doi=https://doi.org/10.1145/3581783.3612348
+  abstract: The immense scale of the recent large language models (LLM) allows many interesting properties, such as, instruction- and chain-of-thought-based fine-tuning, that has significantly improved zero- and few-shot performance in many natural language processing (NLP) tasks. Inspired by such successes, we adopt such an instruction-tuned LLM Flan-T5 as the text encoder for text-to-audio (TTA) generation-
+
+[2023] Instruction Tuning for Large Language Models: A Survey
+  cited_by=101 doi=https://doi.org/10.48550/arxiv.2308.10792
+  abstract: This paper surveys research works in the quickly advancing field of instruction tuning (IT), which can also be referred to as supervised fine-tuning (SFT)\footnote{In this paper, unless specified otherwise, supervised fine-tuning (SFT) and instruction tuning (IT) are used interchangeably.}, a crucial technique to enhance the capabilities and controllability of large language models (LLMs). Instruc
+
+[2024] A Survey on RAG Meeting LLMs: Towards Retrieval-Augmented Large Language Models
+  cited_by=738 doi=https://doi.org/10.1145/3637528.3671470
+  abstract: As one of the most advanced techniques in AI, Retrieval-Augmented Generation (RAG) can offer reliable and up-to-date external knowledge, providing huge convenience for numerous tasks. Particularly in the era of AI-Generated Content (AIGC), the powerful capacity of retrieval in providing additional knowledge enables RAG to assist existing generative AI in producing high-quality outputs. Recently, L
+
+[2023] Can Large Language Models Transform Computational Social Science?
+  cited_by=503 doi=https://doi.org/10.1162/coli_a_00502
+  abstract: Abstract Large language models (LLMs) are capable of successfully performing many language processing tasks zero-shot (without training data). If zero-shot LLMs can also reliably classify and explain social phenomena like persuasiveness and political ideology, then LLMs could augment the computational social science (CSS) pipeline in important ways. This work provides a road map for using LLMs as 
+
+[2023] ChatGPT and the rise of large language models: the new AI-driven infodemic threat in public health
+  cited_by=674 doi=https://doi.org/10.3389/fpubh.2023.1166120
+  abstract: Large Language Models (LLMs) have recently gathered attention with the release of ChatGPT, a user-centered chatbot released by OpenAI. In this perspective article, we retrace the evolution of LLMs to understand the revolution brought by ChatGPT in the artificial intelligence (AI) field. The opportunities offered by LLMs in supporting scientific research are multiple and various models have already
+
+[2023] A Multitask, Multilingual, Multimodal Evaluation of ChatGPT on Reasoning, Hallucination, and Interactivity
+  cited_by=661 doi=https://doi.org/10.18653/v1/2023.ijcnlp-main.45
+  abstract: Yejin Bang, Samuel Cahyawijaya, Nayeon Lee, Wenliang Dai, Dan Su, Bryan Wilie, Holy Lovenia, Ziwei Ji, Tiezheng Yu, Willy Chung, Quyet V. Do, Yan Xu, Pascale Fung. Proceedings of the 13th International Joint Conference on Natural Language Processing and the 3rd Conference of the Asia-Pacific Chapter of the Association for Computational Linguistics (Volume 1: Long Papers). 2023.
+
+[2024] When large language models meet personalization: perspectives of challenges and opportunities
+  cited_by=334 doi=https://doi.org/10.1007/s11280-024-01276-1
+  abstract: Abstract The advent of large language models marks a revolutionary breakthrough in artificial intelligence. With the unprecedented scale of training and model parameters, the capability of large language models has been dramatically improved, leading to human-like performances in understanding, language synthesizing, common-sense reasoning, etc. Such a major leap forward in general AI capacity wil
+
+
+=== A4_diffusion_inference_efficiency ===
+[2026] A Survey of Large Language Models
+  cited_by=1535 doi=https://doi.org/10.1007/s11704-026-60308-3
+  abstract: Abstract The rapid evolution of large language models (LLMs) has driven a transformative shift in artificial intelligence (AI), reshaping both research paradigms and practical applications. Distinguished from their predecessors by unprecedented scale and advanced capabilities, LLMs necessitate new frameworks for understanding their development, behavior, and societal impact. This survey systematic
+
+[2023] Mamba: Linear-Time Sequence Modeling with Selective State Spaces
+  cited_by=1059 doi=https://doi.org/10.48550/arxiv.2312.00752
+  abstract: Foundation models, now powering most of the exciting applications in deep learning, are almost universally based on the Transformer architecture and its core attention module. Many subquadratic-time architectures such as linear attention, gated convolution and recurrent models, and structured state space models (SSMs) have been developed to address Transformers' computational inefficiency on long 
+
+[2024] FlightLLM: Efficient Large Language Model Inference with a Complete Mapping Flow on FPGAs
+  cited_by=132 doi=https://doi.org/10.1145/3626202.3637562
+  abstract: Transformer-based Large Language Models (LLMs) have made a significant impact on various domains. However, LLMs' efficiency suffers from both heavy computation and memory overheads. Compression techniques like sparsification and quantization are commonly used to mitigate the gap between LLM's computation/memory overheads and hardware capacity. However, existing GPU and transformer-based accelerato
+
+[2023] Challenges and Applications of Large Language Models
+  cited_by=180 doi=https://doi.org/10.48550/arxiv.2307.10169
+  abstract: Large Language Models (LLMs) went from non-existent to ubiquitous in the machine learning discourse within a few years. Due to the fast pace of the field, it is difficult to identify the remaining challenges and already fruitful application areas. In this paper, we aim to establish a systematic set of open problems and application successes so that ML researchers can comprehend the field's current
+
+[2025] Cache-Craft: Managing Chunk-Caches for Efficient Retrieval-Augmented Generation
+  cited_by=20 doi=https://doi.org/10.1145/3725273
+  abstract: Retrieval-Augmented Generation (RAG) is often used with Large Language Models (LLMs) to infuse domain knowledge or user-specific information. In RAG, given a user query, a retriever extracts chunks of relevant text from a knowledge base. These chunks are sent to an LLM as part of the input prompt. Typically, any given chunk is repeatedly retrieved across user questions. However, currently, for eve
+
+[2024] Multimodal Large Language Model-Based Fault Detection and Diagnosis in Context of Industry 4.0
+  cited_by=68 doi=https://doi.org/10.3390/electronics13244912
+  abstract: In this paper, a novel multimodal large language model-based fault detection and diagnosis framework that addresses the limitations of traditional fault detection and diagnosis approaches is proposed. The proposed framework leverages the Generative Pre-trained Transformer-4-Preview model to improve its scalability, generalizability, and efficiency in handling complex systems and various fault scen
+
+[2024] Parameter-Efficient Fine-Tuning for Large Models: A Comprehensive Survey
+  cited_by=96 doi=https://doi.org/10.48550/arxiv.2403.14608
+  abstract: Large models represent a groundbreaking advancement in multiple application fields, enabling remarkable achievements across various tasks. However, their unprecedented scale comes with significant computational costs. These models, often consisting of billions of parameters, require vast amounts of computational resources for execution. Especially, the expansive scale and computational demands pos
+
+[2025] Large Language Diffusion Models
+  cited_by=6 doi=https://doi.org/10.52202/085713-1689
+  abstract: The capabilities of large language models (LLMs) are widely regarded as relying on autoregressive models (ARMs). We challenge this notion by introducing LLaDA, a diffusion model trained from scratch under the pre-training and supervised fine-tuning (SFT) paradigm. LLaDA employs a forward data masking process and a reverse generation process, parameterized by a Transformer to predict masked tokens.
+
+[2023] Efficient Deep Learning: A Survey on Making Deep Learning Models Smaller, Faster, and Better
+  cited_by=565 doi=https://doi.org/10.1145/3578938
+  abstract: Deep learning has revolutionized the fields of computer vision, natural language understanding, speech recognition, information retrieval, and more. However, with the progressive improvements in deep learning models, their number of parameters, latency, and resources required to train, among others, have all increased significantly. Consequently, it has become important to pay attention to these f
+
+[2023] GenSLMs: Genome-scale language models reveal SARS-CoV-2 evolutionary dynamics
+  cited_by=88 doi=https://doi.org/10.1177/10943420231201154
+  abstract: We seek to transform how new and emergent variants of pandemic-causing viruses, specifically SARS-CoV-2, are identified and classified. By adapting large language models (LLMs) for genomic data, we build genome-scale language models (GenSLMs) which can learn the evolutionary landscape of SARS-CoV-2 genomes. By pre-training on over 110 million prokaryotic gene sequences and fine-tuning a SARS-CoV-2
+

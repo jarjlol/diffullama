@@ -1,0 +1,54 @@
+[L22] ((preamble/abstract)) kw='limitation'
+  Diffusion Language Models (DLMs) have emerged as a promising new paradigm for text generative modeling, potentially addressing limitations of autoregressive (AR) models. However, current DLMs have been studied at a smaller scale com- pared to their AR counterparts and lack fair comparison on language modeling
+
+[L50] (1       I NTRODUCTION) kw='limitation'
+  gence capable of tackling diverse tasks (Wei et al., 2022a; Hoffmann et al., 2024). However, the ultimate upper limit of intelligence achievable through this paradigm remains an open question. While AR mechanisms form the foundation of current LLMs, they are not without limitations (Lin et al., 2021). Notable challenges include difficulties in future planning (Bachmann & Nagarajan, 2024; Hu* et al., 2024; Xie et al., 2024) and self-correction (Huang et al., 2024). These constraints
+
+[L61] (1       I NTRODUCTION) kw='limitation'
+  traman et al., 2024), any-order, and parallel text generation (Gong et al., 2023a). Notably, DLMs exhibit promising capabilities in intermediate token correction (Ye et al., 2024b) and global plan- ning (Zhang et al., 2023), thereby addressing key limitations inherent in the AR approach. ∗ Equal contribution
+
+[L103] (1       I NTRODUCTION) kw='limitation'
+  Our experiments provide a comprehensive comparison between AR LMs and DLMs across lan- guage modeling, reasoning, and infilling tasks. The evaluation encompasses diverse settings, in- cluding zero-shot, few-shot, and fine-tuning scenarios, addressing the limitations of relying solely on perplexity in previous works (Shi et al., 2024). Our contributions and empirical findings include:
+
+[L248] (3.1  C ONTINUOUS - TIME D ISCRETE D IFFUSION P ROCESSES) kw='do not'
+  1 t . The previous discussion focused on the single token xt , and can be applied independently to a text sequence of N tokens xt = [x1t , x2t . . . , xNt ]. During training, we do not compute integral loss in Eq.6 for efficiency consideration; instead, we sample t for each data point. The final loss at t is " N                                       #
+
+[L329] (3.3   A DAPTATION) kw='cannot'
+  0     ), is usually implemented by causal attention masking in transformer-based AR language models. As shown in Figure 1, causal attention masks set all entries in the upper triangle of the self- attention matrices to zero, so each token cannot attend to its respective future tokens. Such causal masking prevents the model from learning right-to-left dependencies for more general diffusion pro- cesses. To address this limitation while preserving left-to-right conditionals during adaptation, we
+
+[L331] (3.3   A DAPTATION) kw='limitation'
+  attention matrices to zero, so each token cannot attend to its respective future tokens. Such causal masking prevents the model from learning right-to-left dependencies for more general diffusion pro- cesses. To address this limitation while preserving left-to-right conditionals during adaptation, we introduce an incremental annealing process from causal masks to full attention matrices. During annealing, the causal mask is not immediately removed; instead, it is retained at a controlled ratio,
+
+[L411] (10   DiffuGPT-127M) kw='does not'
+  335M models, suggesting a scaling trend similar to that of AR our adapted diffusion models. LLMs (Kaplan et al., 2020). We also note that there is still scope for training more, since the model does not show signs of saturation. 4.2   E VALUATION SETUP
+
+[L417] (4.2   E VALUATION SETUP) kw='does not'
+  Previously developed diffusion language models (Gulrajani & Hashimoto, 2023; Lou et al., 2024; Shi et al., 2024; Ou et al., 2024) evaluate model performance using zero-shot perplexity on bench- mark datasets. However, this metric alone does not fully capture a model’s capabilities for several reasons. First, lower perplexity does not always correlate with human-like content, even in autore- gressive models (Kuribayashi et al., 2021). Additionally, the loss from text diffusion models only
+
+[L418] (4.2   E VALUATION SETUP) kw='does not'
+  Shi et al., 2024; Ou et al., 2024) evaluate model performance using zero-shot perplexity on bench- mark datasets. However, this metric alone does not fully capture a model’s capabilities for several reasons. First, lower perplexity does not always correlate with human-like content, even in autore- gressive models (Kuribayashi et al., 2021). Additionally, the loss from text diffusion models only indicates an upper bound on negative log-likelihood. While Kingma et al. (2021); Shi et al. (2024)
+
+[L511] (4.3    L ANGUAGE MODELING CAPACITIES) kw='do not'
+  right modeling capabilities. Remarkably, DLMs demonstrate their strengths in infilling tasks. Reg- ular LLMs like LLaMA2 are not trained for filling-in-the-middle (FIM) tasks like those in Roziere et al. (2023), making them incapable of handling infilling. Considering this, we do not provide the suffix information to the model, which might result in an unfair comparison. But the FIM requires re-arranging the order of pre-training/inference sequence with special tokens (Zheng et al., 2024b),
+
+[L604] (4.4    A NALYSIS ON D IFFU LL A MA) kw='future work'
+  adding step-wise solutions in the in-context example (CoT) leads to a drop in performance, likely due to the absence of instruction tuning, similar to the findings in LLMs (Ouyang et al., 2022). We will leave instruction tuning as the future work as Ye et al. (2023) show that text diffusion model can benefit from instruction tuning. In summary, we show the potential capabilities of DiffuLLaMA, which motivates us to further investigate the scaling of diffusion models.
+
+[L655] (4.5   D ISCUSSIONS) kw='cannot'
+  throughput during decoding. However, due to the nature of sequential token generation, they are highly memory-bound Figure 4: Single batch decoding speed and cannot fully exploit modern accelerators (Chen et al., (seconds) for different models using 2023). In contrast, diffusion models, despite not having a flash-attention 2. concept of caching and requiring self-attention over the entire sequence at each iteration, can operate
+
+[L698] (5   R ELATED W ORK) kw='remains unexplored'
+  et al. (2023); He et al. (2023) initialize discrete diffusion models using MLMs. Besides, the unifi- cation between diffusion and AR generation is also discussed in image generation (Li et al., 2024). However, the adaptation of diffusion models from AR LLMs remains unexplored. Non-autoregressive Generation Non-autoregressive (NAR) models, introduced by Gu et al. (2018), break free from the left-to-right generation constraint, allowing for new capabilities like planning
+
+[L912] (6   C ONCLUSION) kw='cannot'
+  Jie Huang, Xinyun Chen, Swaroop Mishra, Huaixiu Steven Zheng, Adams Wei Yu, Xinying Song, and Denny Zhou. Large language models cannot self-correct reasoning yet. In The Twelfth International Conference on Learning Representations, 2024. Mandar Joshi, Eunsol Choi, Daniel S. Weld, and Luke Zettlemoyer. Triviaqa: A large scale distantly
+
+[L969] (6   C ONCLUSION) kw='limitation'
+  Chu-Cheng Lin, Aaron Jaech, Xin Li, Matthew R. Gormley, and Jason Eisner. Limitations of au- toregressive models and their alternatives. In Proceedings of the 2021 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technolo-
+
+[L1376] (1                   X) kw='do not'
+  Data Selection Consideration Our dataset selection aims to align with their respective pre- training objectives. Since we train on a relatively smaller number of tokens and do not intend to introduce new capabilities, we prioritize maintaining continuity with the models’ pre-training dis- tributions to minimize distributional shift. For GPT2-based DiffuGPT, we use the FineWeb dataset,
+
+[L1429] (1                   X) kw='do not'
+  Tokenizer During adaptation, we do not change the tokenizer of the base model. In theory, we should expand the original vocabulary by adding an additional dimension to include a special token as [MASK] token. However, considering practical issues on implementation, we can alternatively
+
