@@ -1,0 +1,9 @@
+ Review: The method is well-structured and introduces an innovative particle-filter perspective on diffusion sampling, but it remains insufficiently precise for straightforward replication. Several algorithmic and efficiency details are ambiguous or hand-wavy, leaving a replicator to fill in critical gaps.
+
+Feedback:
+1. **Partial decoding ambiguity**: Step 4b asks to obtain a “partially denoised sequence” \(\mathbf{x}_{0:t}^{(i)}\) from continuous noise \(\mathbf{z}_{t-1}^{(i)}\) so the AR model can score it. Discrete diffusion does not naturally emit token-level prefixes at intermediate timesteps; please specify the discretization/thresholding rule and how AR likelihood is computed over partial (and potentially varying-length) prefixes.
+2. **Weight & resampling stability**: The weight update uses \(\exp(\beta s_t^{(i)})\) where \(s_t\) is a cumulative log-likelihood; this risks overflow/underflow. State whether you use a log-sum-exp trick, and clarify what happens to particle *histories* when systematic resampling is triggered—resampling noise tensors \(\mathbf{z}_{t-1}\) discards past trajectories, which breaks the SMC analogy unless explicitly addressed.
+3. **Compute model**: The AR scorer is evaluated \(N \times S\) times, yet its cost is claimed to be \(\le 1\%\) of the diffusion cost. If the AR base (e.g., GPT-2-small) is similar in size to the diffusion model, this is inaccurate; provide actual parameter counts and a corrected FLOP budget, or explicitly justify the disparity.
+4. **Baseline specification**: The independent-sampling baseline (“draw \(N_{\text{ind}}\) independent diffusion samples”) needs a fixed compute pairing (e.g., same total FLOPs or same \(S\)) to make the Pareto comparison fair; otherwise the trade-off analysis is ill-defined.
+
+Rating (1-5): 3

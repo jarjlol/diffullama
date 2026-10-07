@@ -1,0 +1,11 @@
+**Review:**
+
+The proposed PEAS method demonstrates a reasonable degree of generalizability within its target domain (discrete diffusion language models), supported by testing across five distinct DLM architectures spanning two model families (GPT-2-based and LLaMA-based). The method's core mechanism—early acceptance based on a lightweight AR scorer—is architecture-agnostic by design, requiring no modification to the underlying diffusion model, which is a strength. The explicit generalizability checks in Section 7 (hold-out prompts, unseen DLM, alternative scorers, longer sequences) show thoughtful planning for broader validation.
+
+However, several limitations constrain the demonstrated generalizability: (1) all tested DLMs belong to the discrete diffusion paradigm—no evaluation on continuous flow-matching or hybrid models; (2) the AR scorer is always derived from the same base model family as the DLM, creating a confound between scorer quality and method effectiveness; (3) task diversity is limited to four short-form benchmarks at L=128, with no testing on dialogue, translation, or long-context generation; (4) the generalization checks are proposed but not yet executed, meaning empirical generalizability claims are prospective rather than validated; (5) the threshold calibration is distribution-dependent and its robustness to out-of-distribution inputs is untested.
+
+**Feedback:**
+
+The method is well-designed for its immediate scope but would benefit from: (a) testing on at least one continuous diffusion or flow-matching model to establish cross-paradigm validity; (b) using an unrelated AR scorer (e.g., a smaller model from a different architecture family) to decouple scorer quality from method effectiveness; (c) extending to longer sequences (L=256+) and diverse task types before claiming broad applicability; (d) reporting actual results from the Section 7 generalization checks rather than treating them as future work, to substantiate generalizability claims with evidence. The inference-only constraint and FLOP-normalized metrics are strong features that facilitate replication across settings.
+
+**Rating (1-5): 3**

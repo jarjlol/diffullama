@@ -60,7 +60,7 @@ def main() -> int:
         checks.append(("re-run is fully cached (0 new calls)", "(0 new model calls)" in r.stdout))
 
         n_calls = len(list((tmp / "data/llm/responses").glob("*.md")))
-        est = subprocess.run(RUN + ["--estimate"], capture_output=True, text=True).stdout
+        est = subprocess.run(RUN + ["--estimate"], env=env, capture_output=True, text=True).stdout
         expected = int(est.strip().splitlines()[-1].split(":")[1])
         checks.append((f"call count matches estimate ({n_calls} vs {expected})", n_calls == expected))
     finally:

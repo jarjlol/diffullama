@@ -57,10 +57,14 @@ def _div(kind, prev):
 def estimate(cfg) -> int:
     per = (cfg["refinement_rounds"] + 1) * 6
     probs = cfg["n_problem_candidates"] * per
-    ideas = 2 * cfg["n_ideas_per_problem"] * 2 * per
+    try:
+        n_prob = len(read_json(DATA / "selected_problems.json")["selected"])
+    except (OSError, ValueError, KeyError):
+        n_prob = 2
+    ideas = n_prob * cfg["n_ideas_per_problem"] * 2 * per
     print(f"calls per artifact : {per}  ((R+1) generations + 5(R+1) reviews, R={cfg['refinement_rounds']})")
     print(f"problem stage      : {probs}")
-    print(f"idea stage (2 prob): {ideas}  ({cfg['n_ideas_per_problem']} methods + experiments per problem)")
+    print(f"idea stage ({n_prob} prob): {ideas}  ({cfg['n_ideas_per_problem']} methods + experiments per problem)")
     print(f"total              : {probs + ideas}")
     return 0
 
@@ -106,7 +110,7 @@ def main() -> int:
         return 3
     selected = read_json(sel_path)["selected"]
     by_key = {p["key"]: p for p in ranked}
-    assert 1 <= len(selected) <= 2 and all(s in by_key for s in selected), f"bad selection: {selected}"
+    assert 1 <= len(selected) <= 4 and all(s in by_key for s in selected), f"bad selection: {selected}"
 
     # ---- stage 5: ideas ------------------------------------------------------------
     all_ideas, waiting = {}, False

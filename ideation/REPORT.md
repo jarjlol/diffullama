@@ -111,6 +111,26 @@ refinement prompts carry the previous draft plus five reviews, so expect roughly
 small by comparison. Backend options and their trade-offs are in `README.md` and decision-log P-7; no
 backend has been chosen yet.
 
+**Run note (2026-10-07, P1+P2+P3 at paper settings = 1,248 idea calls).**
+Backend is OpenRouter (`--backend openai` with `LLM_BASE_URL=https://openrouter.ai/api/v1`;
+no code change needed — see `SERVER_RUNBOOK.md`). Generator:
+`nvidia/nemotron-3-super-120b-a12b:free`. Reviewer:
+`inclusionai/ling-3.0-flash-sante:free`, after `google/gemma-4-31b-it:free`
+(persistent upstream congestion), `nvidia/nemotron-3.5-lightning:free` (~7
+min/call, thinking trace) and `inclusionai/ling-3.0-flash-fin:free` (free slug
+retired mid-run, HTTP 404) each failed. Consequence: problem-stage reviews are
+a Ling-fin/Sante mix, but every method/experiment rating feeding the ranking
+(D9) comes from one reviewer model, so within-stage comparisons hold.
+`scripts/llm.py` additionally supports comma-separated `LLM_API_KEYS` /
+`REVIEWER_API_KEYS` with rotation on 429/401/402 and a persisted index
+(`data/llm/key_state.json`, indices only — never keys). Free-tier limits look
+per-account (~200 req/day across keys), not per-key. Parser hardened without
+changing strictness: markdown/numbered/titled section headers, en-dash and
+bare `Rating: N` lines; contentless `Problem: :`-style artifacts are rejected.
+`selftest.py` stays 10/10. Stochastic-regen warning: deleting a cached response
+and re-requesting (temperature 0.7) changes all downstream prompt hashes and
+orphans that subtree — valid cache is never deleted.
+
 ## 5. Verification
 
 `scripts/selftest.py` runs the full pipeline on a mock backend in a scratch directory. It checks

@@ -1,0 +1,15 @@
+**Review:**
+
+The ACE method proposes an innovative inference-time strategy—using an AR scorer as a dynamic gate to terminate candidate generation early—but contains a **critical logical flaw** in the acceptance threshold mechanism that fundamentally undermines the experiment. The threshold τ_p is initialized to −∞ and only increases via τ_p ← max(τ_p, score). Since any finite score ≥ −∞, the **first candidate is always accepted**, making N_eff = 1 for every prompt. The "adaptive" candidate generation never activates, rendering ACE functionally equivalent to static N=1 reranking and incapable of testing the core hypothesis about exploiting candidate diversity. Fixing this (e.g., initializing τ to a data-driven quantile, requiring improvement over the *best accepted* rather than best rejected, or using a probabilistic acceptance rule) is essential before any conclusions can be drawn.
+
+Beyond this flaw, the method has several weaker aspects: (1) the FLOP model (α≈2, linear in |θ|×L) is a coarse approximation that ignores architectural differences (e.g., diffusion's parallel denoising vs. AR's KV-cache efficiency), weakening the compute-normalization claim addressing L9; (2) the marginal-gain regressions confound S_0 and N_eff since N_eff is a downstream consequence of the (broken) algorithm, not an independent variable; (3) the generalizability checks (60M Transformer scorer, BERT MLM) lack theoretical justification for code/math quality signals and risk producing misleading null results; and (4) the connection to prior work (Jacobi Forcing, TESS 2 reward guidance) is acknowledged but not analytically integrated—e.g., Jacobi Forcing's trajectory-level distillation is a fundamentally different paradigm that isn't contrasted meaningfully.
+
+The experimental design (UQM, Pareto/AUPC, bootstrap significance) is otherwise well-structured and the 10-week plan is realistic, but the broken core mechanism means the study cannot answer its central question as currently specified.
+
+**Feedback:**
+- **Critical:** Fix the threshold initialization/acceptance logic so that N_eff can genuinely exceed 1. Consider initializing τ to the median AR score on a small development set, or accepting only if the score improves over the *best previously accepted* candidate.
+- **Important:** Refine the FLOP model with empirical per-layer profiling for each architecture rather than a uniform α≈2 multiplier; validate that FLOPs correlate with wall-clock latency across diffusion vs. AR inference patterns.
+- **Moderate:** Decouple the S_0 and N_eff analyses by explicitly conditioning on observed N_eff bins, or treat N_eff as a random variable and report quality as a function of expected compute E[F_cand | S_0].
+- **Minor:** Strengthen the literature discussion by explicitly contrasting ACE's inference-time gating with Jacobi Forcing's training-time trajectory distillation and TESS 2's reward guidance.
+
+Rating (1-5): 2

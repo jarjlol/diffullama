@@ -1,0 +1,15 @@
+**Review:**
+
+The proposed AD-AES method addresses a genuine gap in understanding the quality–compute trade-off of DLMs, and the motivation to move beyond uniform (N, S) grids is well-founded. The structured evaluation pipeline (UQM, FLOP-normalized efficiency, Pareto fronts with AUPC, bootstrap significance testing) is sound and reproducible. However, the core mechanism—AR-guided early stopping—suffers from a **critical scientific flaw**: the method proposes to score intermediate diffusion states (z_s at step s < S_max) by converting them to token sequences via argmax and evaluating with the AR scorer. Intermediate diffusion states are continuous noise representations, not valid token sequences; argmax at arbitrary denoising steps produces incoherent tokens that yield unreliable and likely monotonically worsening AR scores. This undermines the improvement-threshold criterion (Δ < ε), which may never trigger at semantically meaningful points or may fire prematurely on noise artifacts. Furthermore, scoring at every denoising step multiplies AR overhead by up to 1024× per prompt, potentially negating the efficiency gains the method seeks to demonstrate. The dynamic acceptance threshold τ_p is also underspecified (validation set composition, risk of leakage). These issues make the central claim—that AR-guided early stopping improves the Pareto frontier—scientifically unsubstantiated as described.
+
+**Feedback:**
+
+1. **Fix the early-stopping signal**: Instead of scoring argmax-converted intermediate states, evaluate candidates only at complete denoising trajectories (i.e., after full S steps per candidate), or use a differentiable proxy (e.g., classification confidence of the diffusion model's own vocabulary prediction) that is meaningful at intermediate steps. Alternatively, use the AR scorer only on fully denoised candidates and let early stopping be based on the diffusion model's own predictive entropy.
+2. **Account for AR scoring cost**: The total FLOP budget must include all AR evaluations; if scoring at every step dominates compute, the method is self-defeating. Consider scoring every k steps or only at candidate completion.
+3. **Clarify the argmax-to-token conversion**: Specify whether a final sampling/rounding step is applied before AR scoring, and how stochasticity is preserved.
+4. **Specify τ_p computation**: Define the validation set and prevent data leakage.
+5. **Disentangle adaptivity from selection**: The baseline already uses AR scoring for candidate selection; add a condition where the AR scorer is used but early stopping is disabled to isolate the contribution of adaptivity.
+
+**Rating (1-5): 2**
+
+The method partially addresses the research problem with a novel hypothesis and strong experimental structure, but the core mechanism contains a fundamental scientific flaw (meaningless AR scoring of intermediate diffusion states) that undermines its validity. The alignment with the research problem is clear, but the scientific underpinning is significantly compromised.

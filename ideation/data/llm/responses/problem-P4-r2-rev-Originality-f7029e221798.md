@@ -1,0 +1,11 @@
+Review:
+
+The proposed research problem is well-motivated by a genuine gap in the target paper's evaluation scope—the limited demonstration of "fill-in-the-middle" capability to single-line infilling. The problem systematically investigates whether this capability extends to multi-line code infilling and long-context story completion across model families and scales, which is a practically important question.
+
+However, from an originality standpoint, the core research question—"how well do adapted DLMs perform on longer infilling tasks compared to AR baselines?"—is essentially an empirical validation and extension of existing claims rather than a novel challenge. Multiple related papers (Dream 7B, TESS 2, DiffuCoder, Jacobi Forcing) have already explored coding and infilling capabilities of diffusion language models, and the general question of how DLMs compare to AR models under matched compute is not new. The problem does not introduce a new method, theoretical framework, or unique perspective on diffusion modeling; rather, it re-examines existing claims through a broader set of benchmarks. The cross-family comparison (GPT-2 vs. LLaMA) and scale ablation are methodologically sound but represent incremental empirical work rather than a pioneering investigation.
+
+Feedback:
+
+The problem is clearly feasible and practically relevant, and it does address a real gap in the target paper's empirical coverage. To strengthen its originality, the problem could be reframed to investigate something less obvious—for example, whether the adaptation recipe introduces systematic failure modes specific to certain architectures or infilling lengths that reveal fundamental limitations of the AR-to-DLM conversion paradigm, or whether the bidirectional generation advantage of DLMs actually translates to qualitative improvements in long-form creative tasks beyond perplexity metrics. Such a reframing would shift the problem from "do existing claims hold?" to "what new phenomena do we discover?", which would be more genuinely novel.
+
+Rating (1-5): 2

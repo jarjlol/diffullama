@@ -1,0 +1,15 @@
+Review:
+The proposed ACE-v2 method introduces an adaptive stopping gate for candidate generation in diffusion language models, using a lightweight AR scorer to dynamically decide when to halt sampling. The method is well-specified with clear procedural details (dynamic threshold initialization, strict improvement criterion with margin δ, patience mechanism P, and calibration on a dev set). It cleanly contrasts with prior approaches (fixed (N,S) grids and gradient-based guidance injection) and directly targets the open issues (L6 accuracy headroom, L9 compute-normalization gap) identified in the target paper.
+
+However, the innovation is primarily at the level of an inference-time scheduling policy rather than a conceptual or architectural breakthrough. The core mechanism—generate, score, and stop when quality is "good enough"—parallels established ideas in sequential analysis, early stopping, and best-of-N sampling with termination criteria. No new training paradigm, architectural modification, or theoretical framework (e.g., optimal stopping theory) is introduced. The claim of being "fundamentally different" from prior proposals is somewhat overstated: the method remains fundamentally a "generate-and-select" strategy, with the only change being *when* to stop generating. The individual components (AR scoring, threshold adaptation, patience-based early termination) are each well-known; the novelty lies in their specific integration and configuration.
+
+The extensive generalization checks (§7) strengthen the method's robustness claims, though some (e.g., cross-task validation with a task-specific reward model) effectively change the experimental setup rather than testing generalizability of the core mechanism. Overall, the method offers a moderate, well-engineered contribution to inference-time optimization of DLMs but does not redefine the field's approach to the quality–compute trade-off.
+
+Feedback:
+1. Consider grounding the stopping rule in optimal stopping theory (e.g., sequential probability ratio test or Gittins index) to elevate the contribution from a procedural heuristic to a principled decision policy—this would meaningfully increase innovativeness.
+2. The "fundamentally different" characterization should be tempered; the method is best described as a novel inference-time scheduling policy atop the existing generate-and-select paradigm, not a paradigm shift.
+3. The AR NLL as a quality proxy (addressed in §2 sanity check) remains a critical vulnerability—if AR NLL correlates poorly with UQM, the entire gating mechanism loses validity; consider pre-registering a fallback criterion.
+4. The comparison to Jacobi Forcing should acknowledge that Jacobi Forcing operates at the trajectory level (modifying the denoising path), while ACE-v2 operates at the candidate level (stopping between full generations)—this distinction is valid but should not be overstated as "fundamentally different."
+5. The patience mechanism with fixed P=2 may interact poorly with the calibration of δ; consider joint calibration or a sensitivity analysis over the (δ, P) hyperplane.
+
+Rating (1-5): 3

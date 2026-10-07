@@ -1,0 +1,5 @@
+Review: The method is presented with substantial mathematical formalism and a detailed 8-step protocol covering model preparation, metrics, compute accounting, and statistical testing. However, critical ambiguities in the core sampling procedure (Section 4) undermine replicability: the description of how the AR model conditions on the diffusion state ("expected token sequence") is circular, and the integration of the fused distribution into the reverse-update conflates autoregressive token generation with latent refinement, making the exact algorithmic flow unclear.
+
+Feedback: Clarify the interface between the diffusion latent and the AR scorer—specify whether the AR model receives the argmax token sequence, a sampled token, or the embedding of the predicted \(x_0\). Explicitly state whether the reverse-process update uses the fused distribution to predict \(x_0\) or noise, and how the sampled token relates to the latent update. Rewrite the FLOP formula to avoid confusion from double-counting AR passes (\(F_{\text{step}}\) already includes \(F_{\text{AR}}\)).
+
+Rating (1-5): 3

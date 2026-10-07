@@ -1,0 +1,11 @@
+ **Review:**  
+The method is well‑structured and directly targets the two open questions from the target paper (accuracy headroom vs. denoising steps, and compute‑normalized efficiency). It introduces a thoughtful adaptive multi‑fidelity allocation strategy and pairs it with a rigorous bootstrap/GAM statistical framework. However, its validity is undermined by several significant scientific flaws: (1) the proposed “tokenizer alignment” (swap tokenizer object, no weight change) is unsound when vocabularies differ, as it breaks the embedding layer and guarantees neither 1‑to‑1 ID mapping nor correct inference; (2) the Unified Quality Metric aggregates heterogeneous benchmarks (code, math, commonsense) via z‑score + CDF averaging, which can mask domain‑specific trade‑offs and assumes equal interval properties without justification; (3) the method assumes LLaMA‑7B serves as the AR scorer for all non‑GPT‑2 DLMs (Dream, LLaDA, DiffuCoder) without verifying that these models share the LLaMA tokenizer or that the scorer is appropriate for their output distributions; and (4) the FLOP formula, while profiled, remains a coarse approximation that may not capture memory‑bound or kernel‑fusion effects on actual hardware. These issues make the core comparisons questionable despite the elaborate statistical machinery.
+
+**Feedback:**  
+Before this method can be considered valid, the authors must:  
+- Fix the tokenizer handling: if vocabularies differ, implement proper token‑ID remapping or embedding resizing rather than a naive object swap; otherwise restrict the study to families with identical tokenizers.  
+- Justify the UQM aggregation (e.g., via principal component analysis or benchmark‑specific Pareto fronts) to ensure the composite score reflects genuine quality differences.  
+- Explicitly state and defend the AR base model for each DLM (e.g., Dream’s AR initialization source) and discuss scorer mismatch bias.  
+- Extend the main study beyond 128 tokens or explicitly bound the conclusions to short‑form generation, given that coding and reasoning tasks often require longer contexts.
+
+Rating (1-5): 2

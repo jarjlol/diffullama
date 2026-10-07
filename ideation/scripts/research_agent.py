@@ -35,9 +35,20 @@ class ParseError(Exception):
 
 # ------------------------------------------------------------------ output parsing
 
+def _label(name: str, bare_end: str) -> str:
+    # Tolerate plain ("Method:"), bold ("**Method**"), markdown ("## Method:"),
+    # numbered ("### 7. Rationale") and titled ("### Rationale for the Revised
+    # Method") section labels. A markdown heading line (starting with #) may carry
+    # trailing words, consumed as part of the label; a bare label line must end
+    # after an optional colon (bare_end) so body prose is never cut mid-sentence.
+    head = rf"#{{1,6}}\s*(?:\d+[.)]\s*)?\**\s*{name}\b[^\n]*"
+    bare = rf"(?:\d+[.)]\s*)?\**\s*{name}\s*\**\s*{bare_end}"
+    return rf"(?:{head}|{bare})"
+
+
 def _field(text: str, name: str, nxt: str | None) -> str | None:
-    lab = rf"\**\s*{name}\s*\**\s*:?\s*\**"
-    stop = rf"(?=^\s*\**\s*{nxt}\s*\**\s*:)" if nxt else r"\Z"
+    lab = _label(name, r":?\s*\**")
+    stop = rf"(?=^\s*{_label(nxt, r'(:|$)')})" if nxt else r"\Z"
     m = re.search(rf"^\s*{lab}(.*?){stop}", text, re.S | re.M | re.I)
     return m.group(1).strip() if m else None
 
@@ -46,15 +57,22 @@ def parse_artifact(text: str, label: str, request_id: str) -> tuple[str, str]:
     body, rationale = _field(text, label, "Rationale"), _field(text, "Rationale", None)
     if not body or not rationale:
         raise ParseError(f"{request_id}: expected '{label}:' and 'Rationale:' sections")
+    if re.fullmatch(r"\W+", body) or re.fullmatch(r"\W+", rationale):
+        # Degenerate "Problem: :"-style output: sections present but contentless.
+        # Failing loudly keeps empty artifacts out of review prompts and rankings.
+        raise ParseError(f"{request_id}: empty '{label}:' or 'Rationale:' content")
     return body, rationale
 
 
+_RATING = r"Rating\s*(?:\(\s*1\s*[–—-]\s*5\s*\))?"  # "(1-5)" optional; dash variants
+
+
 def parse_review(text: str, request_id: str) -> dict:
-    m = re.search(r"Rating\s*\(1-5\)[\s*:]*([1-5])\b", text, re.I)
+    m = re.search(rf"(?m)^\s*(?:#{{1,6}}\s*)?\**\s*{_RATING}[\s*:]*([1-5])\b", text)
     if not m:
         raise ParseError(f"{request_id}: no 'Rating (1-5): <1-5>' found")
     return {"review": _field(text, "Review", "Feedback") or "",
-            "feedback": _field(text, "Feedback", r"Rating\s*\(1-5\)") or "",
+            "feedback": _field(text, "Feedback", _RATING) or "",
             "rating": int(m.group(1))}
 
 

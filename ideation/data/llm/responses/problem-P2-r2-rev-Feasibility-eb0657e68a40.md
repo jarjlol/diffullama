@@ -1,0 +1,15 @@
+Review: The research problem is well-scoped and clearly motivated by specific limitations identified in the target paper and related work. The inference-only constraint is explicitly and appropriately matched to the available resources, and the experimental design (4 masking strategies × 3 denoising steps × multiple model checkpoints) is bounded enough to fit within the compute and timeline constraints. The team composition (7 people, 3 with GPU access, 4 handling CPU-heavy tasks) provides adequate coverage for the proposed workload. The problem builds directly on the target paper's findings and connects meaningfully to related work (papers 4, 5, 6, 9), demonstrating a strong understanding of the field.
+
+Feedback: The problem is mostly feasible, but several points warrant attention to strengthen the proposal:
+
+1. **Implementation complexity of masking strategies:** While the problem states that released checkpoints will be used, applying diverse masking strategies (span masking, block-wise masking, prefix-suffix masking) to these specific model codebases (DiffuGPT, DiffuLLaMA, LLaDA, Dream-7B) may require non-trivial engineering. Each model family may implement its own masking/denoising loop differently, and adapting them to support arbitrary masking patterns could consume more time than anticipated. It would strengthen the proposal to specify which codebases will be modified and to what extent.
+
+2. **FLOPs approximation rigor:** The proposed compute-normalized efficiency metric (model size × steps × effective token count × sequence length) is a rough approximation that may not accurately capture the actual computational cost of different masking strategies, particularly since attention patterns (and thus FLOPs) differ between causal, bidirectional, and hybrid attention masks. A more precise or at least acknowledged approximation would improve the credibility of the quality-efficiency frontier.
+
+3. **Risk of negligible effect sizes:** There is a non-trivial risk that masking strategy choice may have a smaller impact on quality-efficiency trade-offs than anticipated, especially if the underlying model capabilities (the "undertrained" issue, L7) dominate over masking granularity. The problem should acknowledge this possibility and include a sensitivity analysis or null-result discussion plan.
+
+4. **Shared GPU contention:** With one GPU that is "shared and contended," the practical throughput may be significantly lower than expected. The proposal should include a detailed scheduling plan or estimate of wall-clock time per experiment to ensure the 10-week timeline holds under realistic contention.
+
+Despite these concerns, the core empirical question is answerable within the stated constraints, and the methodology is sufficiently well-defined to proceed.
+
+Rating (1-5): 4

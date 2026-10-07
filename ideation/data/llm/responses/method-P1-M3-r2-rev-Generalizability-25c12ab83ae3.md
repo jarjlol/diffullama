@@ -1,0 +1,12 @@
+Review:
+The PCP‑AR method is well‑specified and addresses a genuine gap in the DLM literature (compute‑normalized quality‑efficiency trade‑offs), but its **Generalizability** is limited. The core mechanism—scoring parallel diffusion trajectories with a frozen AR model and pruning weak candidates—is tightly coupled to discrete diffusion language models that (i) produce parallel denoising trajectories, (ii) have access to a suitable AR checkpoint for scoring, and (iii) operate on short English text sequences (≤128 tokens). While the authors test five DLM families and include a “Generalizability Checks“ section, these are largely within‑paradigm robustness tests (more benchmarks, one unseen DLM, alternative AR scorers) rather than true out‑of‑distribution validation. The method does not demonstrate applicability to continuous diffusion, flow‑matching, AR‑only models, multimodal generation, or long‑form generation, and the dependency on an AR scorer introduces a hidden assumption that may not hold in all settings.
+
+Feedback:
+1. **Scope limitation**: The method is currently restricted to discrete DLMs with parallel denoising. Explicitly discuss whether the pruning logic could be adapted to continuous‑state diffusion or flow‑matching models, or whether the AR scorer requirement fundamentally bounds applicability.
+2. **Scorer dependency**: The AR scorer is treated as a generic oracle, but the sanity check (§2) only validates correlation with UQM. Report failure cases where the scorer misranks candidates (e.g., on code or math tasks) and how pruning behavior degrades.
+3. **Sequence length**: Fixing L_seq=128 ignores the scaling of attention FLOPs with length. Generalization to longer contexts (e.g., 1k–4k tokens) should be attempted, even if approximate, to show whether the Pareto frontier shifts.
+4. **Task diversity**: All benchmarks are English text. Including a non‑English or code‑only setting would strengthen claims about cross‑domain applicability.
+5. **Generalization checks are conservative**: “Unseen DLM“ (one model) and “alternative scorers“ (still AR‑family) do not constitute strong evidence. Consider a truly distinct architecture (e.g., a Mamba‑based DLM or a continuous‑state diffusion model) or admit that generalizability is currently limited to the DLM family.
+6. **Random‑pruning control**: This ablation shows AR guidance matters, but it does not show the method works when the scorer is degraded—report performance when the AR model is fine‑tuned on a different domain.
+
+Rating (1-5): 3

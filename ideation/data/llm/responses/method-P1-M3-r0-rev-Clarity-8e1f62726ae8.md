@@ -1,0 +1,5 @@
+Review: The method is organized into clear, numbered sections and defines explicit metrics (UQM, FLOPs), but the core ACE procedure contains a critical logical inconsistency that prevents replication.
+
+Feedback: In Section 4, the threshold update rule τ_p ← max(τ_p, AR score) is applied only when a candidate is rejected (score < τ_p). Since max(τ_p, score) = τ_p whenever score < τ_p, the threshold never increases from its initial value of −∞, meaning the first candidate is always accepted and N_eff is trivially 1. To fix this, specify whether τ_p should be updated upon acceptance (e.g., τ_p ← score) or whether rejection should lower the threshold (e.g., τ_p ← min(τ_p, score)). Additionally, clarify how BERT-style MLM scoring translates to sequence-level NLL and provide concrete wall-clock measurement code snippets.
+
+Rating (1-5): 2

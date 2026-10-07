@@ -1,0 +1,10 @@
+**Review:**
+The ASS‑SG method directly targets the quality–compute trade‑off and introduces a novel adaptive‑skipping mechanism, but its scientific validity is undermined by fundamental flaws in how diffusion steps are skipped and how AR confidence is used. The procedure sets \(z_{t-1} = z_t\) when skipping, which leaves residual noise in the latent and breaks the reverse‑process schedule without adjustment, likely degrading output quality rather than improving it. Furthermore, the baseline description contains a logical error (using \(\tau=0.0\) as “no‑skipping” actually skips all steps), and the confidence signal—AR max‑softmax on the argmax prediction of a noisy latent—is theoretically unmotivated and may not correlate with final generation quality.
+
+**Feedback:**
+1. **Diffusion schedule integrity:** If steps are skipped, the noise schedule must be renormalized (e.g., adjust \(\alpha_t\) coefficients) or the method should use a proper early‑exiting classifier rather than halting the reverse SDE. Simply retaining \(z_t\) invalidates the diffusion trajectory.
+2. **Confidence metric:** Instead of querying the AR model on intermediate noisy predictions, compute confidence on *complete* candidates (after full denoising) and use that to decide whether to generate additional candidates or to re‑run with a larger \(S\). This aligns with the original research problem’s candidate‑selection angle.
+3. **Baseline correction:** Fix the baseline to \(\tau=1.0\) (never skip) or compare against the static \((N,S)\) sweep from the initial proposal to ensure a fair Pareto comparison.
+4. **Compute accounting:** The FLOP model correctly includes AR passes, but the quality degradation from improper skipping may render the efficiency gains moot—validate that skipped‑step outputs are not merely noisy versions of the input.
+
+Rating (1-5): 2

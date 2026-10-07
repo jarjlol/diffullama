@@ -1,0 +1,11 @@
+Review:
+The proposed ASS‑SG method presents a highly structured, systematic pipeline that directly addresses the research problem of quality–compute trade‑offs in diffusion language models. It provides detailed mathematical formalism for FLOP accounting, a clear hyper‑parameter sweep strategy, and rigorous statistical validation via bootstrap resampling. However, the method exhibits critical gaps in scientific precision and internal consistency that undermine its rigor. Specifically, the token‑level confidence‑based skipping heuristic assumes independence between diffusion steps, which conflicts with the joint‑refinement nature of discrete diffusion; the reliance on max‑softmax probability as a confidence proxy is known to be poorly calibrated; the linear FLOP‑to‑latency model ignores memory‑bound hardware effects; and the unified quality metric (UQM) arbitrarily weights heterogeneous benchmarks equally without justification. These issues indicate that while the method is well‑organized, it lacks the theoretical grounding and measurement precision required for fully rigorous scientific inquiry.
+
+Feedback:
+1. **Theoretical justification for skipping**: Provide a convergence analysis or empirical evidence that token‑level confidence correlates with the necessity of diffusion refinement; consider whether the skipping policy preserves the collective denoising dynamics.
+2. **Confidence calibration**: Replace max‑softmax with a calibrated uncertainty measure (e.g., entropy, MC‑dropout, or temperature‑scaled probabilities) and validate the threshold τ on a held‑out calibration set rather than treating it as a fixed heuristic.
+3. **Hardware‑aware profiling**: Replace the analytical FLOP model with empirical roofline profiling or hardware counters to accurately capture memory‑bound operations and kernel fusion effects.
+4. **Benchmark weighting**: Justify the equal‑weighting scheme in UQM or use a weighted composite based on task difficulty or variance; alternatively, report per‑benchmark results to avoid masking failures on specific tasks.
+5. **Baseline expansion**: Include the original DiffuGPT/DiffuLLaMA inference (fixed S, no AR guidance) as a baseline to demonstrate improvement over the state‑of‑the‑art, not just over naive reranking.
+
+Rating (1-5): 3

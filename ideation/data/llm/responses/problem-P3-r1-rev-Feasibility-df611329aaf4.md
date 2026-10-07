@@ -1,0 +1,19 @@
+Review: The research problem is well-structured and directly aligned with the stated resource constraints. It investigates an underexplored dimension of diffusion language modeling—the interaction between noise-schedule shape and architectural inductive biases—using only publicly available checkpoints and inference-time modifications. The operationalization of quality (perplexity) and efficiency (forward passes per token / wall-clock time) is precise and measurable. The rationale effectively identifies specific limitations in the target paper (attention-mask annealing at scale, proxy-task validation, and non-compute-normalized efficiency claims) and proposes a coherent experimental plan to address them. The inference-only constraint is perfectly matched to the methodology: modifying the timestep sampler and re-running sampling loops requires no training, making all experiments feasible under constraint D-2026-09-21-a.
+
+Feedback: The problem is largely feasible and well-motivated, but several concerns warrant attention:
+
+1. **GPU contention risk**: The single RTX 6000 Pro Blackwell is described as "shared and contended." With three GPU-enabled team members and a multi-factorial experimental design (schedule variants × architectures × scales × seeds), scheduling conflicts could significantly extend timelines. A more detailed experimental plan with prioritized conditions and fallback CPU-based pre-analysis would strengthen robustness.
+
+2. **Scope management**: The study spans multiple axes—schedule shape (linear, cosine, hybrid), architecture family (GPT-2 vs. LLaMA), scale (127M–7B), and annealing presence/absence—across five available checkpoints. This combinatorial scope risks becoming unwieldy within ten weeks. Narrowing to a focused subset (e.g., 2–3 schedules × 2 architectures × 2 scales) with clear prioritization would improve execution.
+
+3. **Novelty is somewhat overstated**: The idea that noise schedules interact differently with positional encoding schemes is plausible but speculative. Similar schedule-variation ideas appear in Dream 7B (context-adaptive rescheduling) and UNIFUSION (uniform-noise adaptation). The proposed hybrid schedule (linear early + cosine late) is a reasonable engineering heuristic but may not constitute a genuinely novel contribution. The framing should emphasize mechanistic understanding over methodological novelty.
+
+4. **Statistical power under contention**: Ensuring sufficient seeds and sample sizes for statistically meaningful comparisons may be difficult under GPU contention. Pre-registering the minimum acceptable effect sizes and power analyses would strengthen the experimental design.
+
+5. **Evaluation corpus ambiguity**: The rationale mentions WikiText-103 or C4 but does not commit to one. Given the inference-only constraint and the target paper's benchmarks, aligning with the original paper's evaluation protocol (or clearly justifying deviations) would improve comparability.
+
+6. **Positional embedding analysis**: The hypothesis that rotary embeddings (LLaMA) benefit from gradually increasing noise while absolute embeddings (GPT-2) prefer low early noise is mechanistically interesting but lacks strong empirical grounding from the cited literature. A preliminary small-scale probe experiment could validate this hypothesis before committing the full experimental budget.
+
+Despite these concerns, the core feasibility is strong: all required checkpoints are available, the methodology is inference-only and computationally tractable on a single 96GB GPU, and the team composition (3 GPU, 4 CPU) is well-matched to the task. The problem is mostly feasible with manageable challenges.
+
+Rating (1-5): 4

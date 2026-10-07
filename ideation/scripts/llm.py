@@ -20,6 +20,14 @@ is fully re-playable and auditable without calling a model again.
 Generator and reviewer roles are configured separately (LLM_* and REVIEWER_* env vars)
 so the ReviewingAgents can be a different model from the ResearchAgent -- the paper
 uses one model for both, and REPORT.md records that as a self-evaluation risk.
+
+Multi-key rotation (OpenRouter free tier, ~200 req/day/key): set LLM_API_KEYS
+and/or REVIEWER_API_KEYS as comma-separated lists (singular LLM_API_KEY /
+REVIEWER_API_KEY still work). Keys are tried in order starting from the persisted
+index in data/llm/key_state.json; on HTTP 429 / 401 / 402 the pool advances to the
+next key. When every key is rate-limited the call raises RuntimeError starting
+with KEY_EXHAUSTED -- re-run after supplying the next key; cached responses are
+never re-requested. Keys come only from env vars and are never written to disk.
 """
 from __future__ import annotations
 
@@ -48,6 +56,53 @@ def _env(role: str, key: str, default: str | None = None) -> str | None:
     return os.environ.get(prefix + key) or (os.environ.get("LLM_" + key) if role == "reviewer" else None) or default
 
 
+KEY_STATE_FILE = DATA / "llm" / "key_state.json"
+
+
+def _key_pool(role: str) -> list[str]:
+    """Ordered key pool for a role. Reviewer falls back to the LLM pool."""
+    if role == "reviewer":
+        raw = os.environ.get("REVIEWER_API_KEYS") or os.environ.get("REVIEWER_API_KEY") or ""
+        if not raw.strip():
+            raw = os.environ.get("LLM_API_KEYS") or os.environ.get("LLM_API_KEY") or ""
+    else:
+        raw = os.environ.get("LLM_API_KEYS") or os.environ.get("LLM_API_KEY") or ""
+    return [k.strip() for k in raw.split(",") if k.strip()]
+
+
+def _load_key_state() -> dict:
+    try:
+        return json.loads(KEY_STATE_FILE.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
+def _save_key_state(state: dict) -> None:
+    KEY_STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
+    KEY_STATE_FILE.write_text(json.dumps(state, indent=2) + "\n", encoding="utf-8")
+
+
+def _pool_index(role: str, n: int) -> int:
+    if n <= 0:
+        return 0
+    try:
+        return int(_load_key_state().get(role, 0)) % n
+    except (ValueError, TypeError):
+        return 0
+
+
+def _advance_pool(role: str, n: int) -> None:
+    if n <= 0:
+        return
+    state = _load_key_state()
+    try:
+        cur = int(state.get(role, 0))
+    except (ValueError, TypeError):
+        cur = 0
+    state[role] = (cur + 1) % n
+    _save_key_state(state)
+
+
 def _post(url: str, payload: dict, headers: dict, retries: int = 4) -> dict:
     data = json.dumps(payload).encode("utf-8")
     for attempt in range(retries):
@@ -63,17 +118,84 @@ def _post(url: str, payload: dict, headers: dict, retries: int = 4) -> dict:
     raise RuntimeError("unreachable")
 
 
+class _BadResponse(Exception):
+    """Transient malformed 200 response (no usable content); safe to retry."""
+
+
+def _openai_once(base: str, key: str, model: str, temperature: float, system: str, user: str) -> str:
+    """Single POST without retry; HTTPError/_BadResponse propagate to the caller."""
+    payload = {
+        "model": model,
+        "temperature": temperature,
+        "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
+    }
+    data = json.dumps(payload).encode("utf-8")
+    req = urllib.request.Request(f"{base}/chat/completions", data=data, headers={
+        "Content-Type": "application/json", "Authorization": f"Bearer {key}"})
+    with urllib.request.urlopen(req, timeout=300) as r:
+        out = json.load(r)
+    try:
+        msg = out["choices"][0]["message"]
+        text = msg.get("content") or ""
+    except (KeyError, IndexError, TypeError, AttributeError) as e:
+        raise _BadResponse(f"no choices in response (keys={list(out) if isinstance(out, dict) else type(out)})") from e
+    if not text.strip():
+        raise _BadResponse("empty message content")
+    return text
+
+
 def _openai(system: str, user: str, role: str) -> str:
     base = _env(role, "BASE_URL", "https://api.openai.com/v1").rstrip("/")
-    key = _env(role, "API_KEY")
-    if not key:
-        raise RuntimeError(f"{'REVIEWER' if role == 'reviewer' else 'LLM'}_API_KEY is not set")
-    out = _post(f"{base}/chat/completions", {
-        "model": _env(role, "MODEL", "gpt-4o"),
-        "temperature": float(_env(role, "TEMPERATURE", "0.7")),
-        "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
-    }, {"Authorization": f"Bearer {key}"})
-    return out["choices"][0]["message"]["content"]
+    pool = _key_pool(role)
+    if not pool:
+        name = "REVIEWER_API_KEY(S)" if role == "reviewer" else "LLM_API_KEY(S)"
+        raise RuntimeError(f"{name} is not set")
+    model = _env(role, "MODEL", "gpt-4o")
+    temperature = float(_env(role, "TEMPERATURE", "0.7"))
+    start = _pool_index(role, len(pool))
+    rate_limited_keys = 0
+    last_err: Exception | None = None
+    for offset in range(len(pool)):
+        key = pool[(start + offset) % len(pool)]
+        for attempt in range(6):
+            try:
+                text = _openai_once(base, key, model, temperature, system, user)
+                # Persist the working index so re-runs resume on a live key.
+                state = _load_key_state()
+                state[role] = (start + offset) % len(pool)
+                _save_key_state(state)
+                return text
+            except urllib.error.HTTPError as e:
+                body = e.read()[:500] if hasattr(e, "read") else b""
+                last_err = e
+                if e.code == 429 and b"upstream" in body:
+                    # Provider-side free-model congestion, not our key's quota:
+                    # retry the same key with backoff instead of rotating.
+                    if attempt < 5:
+                        time.sleep(2 ** attempt * 10)
+                        continue
+                    raise RuntimeError(f"LLM HTTP 429 (provider congested): {body[:300]!r}") from e
+                if e.code in (429, 401, 402):
+                    # Key-level limit / invalid / no credits: try the next key.
+                    rate_limited_keys += 1
+                    _advance_pool(role, len(pool))
+                    time.sleep(5)
+                    break
+                if e.code in (500, 502, 503) and attempt < 2:
+                    time.sleep(2 ** attempt * 5)
+                    continue
+                raise RuntimeError(f"LLM HTTP {e.code}: {body!r}") from e
+            except _BadResponse as e:
+                last_err = e
+                if attempt < 2:
+                    time.sleep(2 ** attempt * 10)
+                    continue
+                break  # same-key retries exhausted: try the next key
+    raise RuntimeError(
+        f"KEY_EXHAUSTED ({role}): all {len(pool)} key(s) rate-limited or invalid "
+        f"(last: {last_err}). Supply the next key via "
+        f"{'REVIEWER_API_KEYS' if role == 'reviewer' else 'LLM_API_KEYS'} and re-run; "
+        "cached responses are never re-requested.")
 
 
 def _gemini(system: str, user: str, role: str) -> str:

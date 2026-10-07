@@ -1,0 +1,15 @@
+Review: The research problem is well-formulated and directly aligned with the stated resource constraints. It is inference-only, leveraging released checkpoints that are explicitly listed among available resources. The independent variable (attention-masking strategy) is clearly defined, and the experimental design (varying causal, bidirectional, and hybrid masks at inference time while measuring quality and efficiency metrics) is methodologically sound. The rationale is grounded in the target paper's identified limitations and connects meaningfully to related work (UNIFUSION, PreDiff-LM, TESS 2, Don't Retrain Align). The problem's core hypothesis—that attention masking at inference significantly modulates the quality-efficiency trade-off in adapted diffusion LMs—is testable and addresses a genuine gap in the literature.
+
+Feedback: The problem is mostly feasible, but several practical concerns should be noted:
+
+1. **Compute throughput under contention**: Running batched inference across five checkpoints (including a 6.74B model) with multiple mask configurations, multiple benchmarks, and multiple seeds on a single shared GPU within ten weeks is tight. Generation-based evaluations (e.g., HumanEval infill, AlpacaEval) are particularly expensive. Consider prioritizing perplexity and a curated subset of generation tasks, or negotiating dedicated GPU time windows.
+
+2. **Model scale coverage**: The problem claims to span 127M–7B, but the available checkpoints do not clearly include a 127M model. DiffuGPT-s/m may cover the lower end, but this should be verified explicitly. If not, the scale comparison may be limited to 355M–7B, which should be reflected in the problem statement.
+
+3. **Attention mask manipulation may yield null results**: Some adapted diffusion models may have been trained with implicit assumptions about attention patterns (e.g., hard-coded causal biases in certain layers). If the model architecture does not cleanly support arbitrary mask switching at inference, the experimental results could be null or confounded. A preliminary probe on one checkpoint is advisable to validate that mask manipulation produces measurable differences before scaling to the full experiment matrix.
+
+4. **Statistical rigor**: With seven people and ten weeks, the team has capacity for thorough analysis, but careful experimental design (multiple random seeds, proper baselines, confidence intervals) should be planned upfront to avoid wasted GPU time on underpowered comparisons.
+
+5. **Minor novelty concern**: The idea of varying attention masks at inference has partial precedent in papers like PreDiff-LM and Jacobi Forcing. The rationale should more explicitly delineate what is genuinely new—likely the *systematic cross-model-family comparison* of mask strategies on *adapted* checkpoints—rather than implying this is entirely unexplored.
+
+Rating (1-5): 4

@@ -1,0 +1,13 @@
+Review:
+The AGSD method introduces a concrete inference-time strategy—using AR-derived token-level uncertainty to selectively allocate denoising compute only to "uncertain" tokens—rather than refining all tokens uniformly or simply reranking full candidates. This represents a moderate innovation: it combines existing components (AR scoring, diffusion generation, Pareto analysis) in a novel way that directly addresses the quality–compute allocation gap identified in the rationale. The two-stage pipeline (cheap initial generation + targeted refinement) offers a fresh perspective on how to spend a fixed inference budget, moving beyond the naïve "more steps or more candidates" dichotomy.
+
+However, the method remains largely compositional rather than transformative: it does not introduce a new training objective, architectural modification, or fundamental sampling theorem; it is an adaptive inference heuristic. The uncertainty masking mechanism (percentile-based thresholding) is straightforward, and the overall approach sits comfortably within the growing family of "inference-time compute allocation" strategies (cf. Jacobi Forcing, TESS 2 reward guidance), differing in the specific signal used (token entropy vs. trajectory divergence vs. reward scores). The generalizability checks and ablation studies are well-designed, but the core idea—selective refinement based on confidence—is conceptually intuitive and may not constitute a paradigm shift for the field.
+
+Feedback:
+1. Clarify the novelty claim: explicitly contrast AGSD with "inference-time compute reallocation" methods (e.g., early exiting, speculative decoding) to justify why uncertainty-guided selective denoising is distinct from existing adaptive inference techniques.
+2. The assumption that unmasked tokens remain fixed during refinement steps needs rigorous justification—ensure that freezing clean embeddings for "high-confidence" tokens does not create distributional shift artifacts that inflate quality metrics.
+3. Consider whether the 75th-percentile threshold is optimal or if a learned/calibrated threshold per model would strengthen the contribution; sensitivity analysis across τ is a good start but could be deepened.
+4. The FLOP accounting is precise, but the wall-clock validation should also capture memory-bandwidth bottlenecks that may make selective refinement slower than uniform refinement despite fewer arithmetic operations.
+5. To elevate innovativeness from moderate to high, consider whether the uncertainty mask can be refined iteratively (re-estimating entropy after each refinement step) or combined with gradient-based saliency, rather than a single static mask.
+
+Rating (1-5): 3

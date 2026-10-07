@@ -1,0 +1,12 @@
+**Problem:**  
+Investigate whether the shift operation in adapted diffusion language models preserves autoregressive (AR) inductive biases by probing the causal structure of hidden states across denoising steps.
+
+**Rationale:**  
+The target paper highlighted the shift operation as having a large impact on performance (removing it drops accuracy by ~12–15 points) but noted that its behavior at scale and its role in carrying AR‑specific assumptions into the diffusion model were never examined. Because we are restricted to inference‑only experiments, we can still analyze how the shift influences the internal representations of released checkpoints (DiffuGPT‑S/M, DiffuLLaMA, LLaDA‑8B, Dream‑7B, DiffuCoder‑7B).  
+
+1. **Extract hidden states:** For a diverse set of prompts (e.g., from WikiText, GSM8K, and commonsense reasoning benchmarks), run each model’s diffusion sampling process and record the hidden states of every transformer layer at each denoising step.  
+2. **Probe causal information:** Train lightweight probing classifiers (on CPU) to predict the next token given the left‑hand context (or to distinguish causal vs. anti‑causal patterns) from the extracted hidden states. The probing accuracy provides a quantitative measure of how much autoregressive (left‑to‑right) information remains at each step.  
+3. **Ablate the shift at inference:** The shift operation is a simple offset added to the timestep schedule. By modifying the timestep values during sampling (i.e., subtracting the learned shift), we can create a “no‑shift” condition without any retraining. Comparing probing accuracy and downstream generation quality (perplexity, infilling, reasoning) between the original and shift‑ablated runs reveals whether the shift is responsible for preserving AR biases.  
+4. **Scale analysis:** Repeat the above for the 127M, 355M, and 7B checkpoints to see how the effect of the shift evolves with model size, directly addressing the paper’s observation that the shift’s impact was not examined at scale.  
+
+This approach uses only inference on existing models, requires modest GPU memory (hidden state extraction fits comfortably in a 96 GB RTX 6000 Pro), and can be completed within ten weeks (data collection, probing training, analysis, and write‑up). The outcomes will clarify whether the shift operation is a mechanism for transferring AR knowledge to diffusion models, inform future adaptation recipes, and fill a notable gap (L2) identified in the target paper.

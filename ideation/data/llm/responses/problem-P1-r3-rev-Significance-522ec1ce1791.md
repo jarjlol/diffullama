@@ -1,0 +1,9 @@
+Review:
+The research problem is well-motivated and clearly addresses practical gaps identified in the target paper—specifically the lack of compute-normalized efficiency comparisons and the unresolved "accuracy headroom" in diffusion language models. By systematically characterizing the Pareto frontier of denoising steps versus candidate reranking, the study promises to deliver actionable guidance for practitioners deploying DLMs, which is a genuine contribution to the field's empirical understanding. The methodology is rigorous, with unified metrics and FLOP-based normalization, and it stays within ethical and resource constraints.
+
+However, the significance is somewhat limited by its incremental nature: it is fundamentally an empirical characterization study rather than a methodological or theoretical advance. It relies entirely on existing released checkpoints and does not introduce new architectures, training objectives, or algorithmic innovations. The scope is confined to inference-time trade-offs across a fixed set of benchmarks and model families, which may limit broader generalizability. While the findings could influence deployment practices, they are unlikely to alter the fundamental trajectory of DLM research or enable qualitatively new capabilities.
+
+Feedback:
+The problem is clearly articulated and addresses a real need, but to elevate its significance, consider framing the findings as a generalizable "inference budgeting" principle that could guide future architecture design (e.g., whether to invest in longer denoising chains or wider candidate generation at the training stage). Additionally, justifying the specific benchmark selection and acknowledging the roughness of FLOP-based efficiency estimates would strengthen the claim of practical impact.
+
+Rating (1-5): 3

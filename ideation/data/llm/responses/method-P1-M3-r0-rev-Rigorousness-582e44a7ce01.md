@@ -1,0 +1,10 @@
+Review: The proposed ACE method addresses the quality–compute trade-off question but contains a critical logical flaw in the early acceptance criterion that renders the adaptive sampling ineffective, alongside an oversimplified compute model and an arbitrary quality metric.
+
+Feedback: 
+1. **Fatal Algorithmic Flaw**: The ACE procedure initializes the threshold $\tau_p$ to $-\infty$, meaning the first candidate’s AR score will always satisfy $\text{score} \geq \tau_p$. This causes the loop to terminate after exactly one candidate ($N_{\text{eff}}=1$) for every prompt, eliminating any benefit from candidate diversity. To fix this, initialize $\tau_p$ to $+\infty$ (or a high quantile of expected scores) and accept only when a candidate exceeds the current best, or invert the logic to accept when the score is below a descending threshold.
+2. **Oversimplified Compute Model**: The FLOP estimate $F_{\text{diff}} = \alpha \times |\theta| \times L$ ignores attention mechanisms, embeddings, and normalization layers. Use a layer-wise FLOP counter or empirical profiling rather than a scalar multiplier $\alpha\approx2$.
+3. **Arbitrary Quality Metric**: The UQM assigns equal weight to HumanEval, GSM8K, SIQA, and WinoGrande without justification. Consider using a standardized composite (e.g., MMLU) or deriving weights from benchmark variance to avoid artificial parity.
+4. **Ambiguous AR Scoring**: It is unclear whether AR scoring computes NLL via autoregressive generation (L forward passes) or a single forward pass with causal masking. Specify the exact inference protocol, as this dominates the $F_{\text{AR}}$ term.
+5. **Fair Comparison**: When comparing ACE to static reranking, ensure the compute budget accounts for the sequential nature of ACE (summing FLOPs across all generated candidates until acceptance) versus the parallel generation in static reranking.
+
+Rating (1-5): 2

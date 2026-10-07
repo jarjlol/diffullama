@@ -1,0 +1,13 @@
+**Review:**
+
+The proposed method is well-structured and demonstrates deliberate design for generalizability. Key strengths include: (1) a model-agnostic protocol that can accept any DLM+AR base pair, (2) interchangeable preservation metrics (CKA, linear probing, SVCCA, Procrustes) and scorer architectures (GPT-2-family, LLaMA-family), (3) a modular unified quality metric applicable to alternative benchmarks, and (4) comprehensive ablations testing scorer size, probing corpus domain, hidden-state extraction point, and candidate diversity. The efficiency ratios (η, ε) are defined in computationally agnostic terms.
+
+However, the empirical validation is constrained: only 5 DLMs across 2 architecture families (GPT-2-based and LLaMA-based) and 4 benchmarks are tested. The statistical framework explicitly acknowledges the small-N limitation and avoids over-parameterized models. The method has not been validated on non-decoder architectures (e.g., Mamba-based diffusion), other task domains (long-form generation, dialogue), or trained/fine-tuned DLMs. The probing corpus (WikiText-103 + C4) is standard but domain-limited, though an ablation tests generation-domain probing.
+
+**Feedback:**
+
+The method's generalizability is a genuine strength in design but modest in empirical coverage. To strengthen it: (1) explicitly discuss whether findings would transfer to non-transformer diffusion architectures or continuous-token DLMs; (2) consider adding at least one benchmark from a different task family (e.g., long-form generation or instruction following beyond the current 4); (3) the small-N statistical approach (Spearman correlations, simple OLS) is honest but limits the confidence of any general claim—consider framing conclusions as conditional on architecture family rather than universal; (4) the cross-family scorer ablation is a good start but testing scorers from architectures *not* represented among the DLMs (e.g., a T5-based scorer) would further decouple findings from architecture-specific effects; (5) the probing corpus domain ablation is valuable—expanding to code-heavy or dialogue corpora would test whether preservation is domain-general.
+
+**Rating (1-5): 3**
+
+The method exhibits thoughtful design for adaptability (interchangeable components, modular metrics, explicit extension discussion), but the empirical scope—5 models, 2 families, 4 benchmarks—is too narrow to claim demonstrated broad applicability. It sits at "some level of adaptability, suggesting it could be applicable to related contexts or datasets with modifications."

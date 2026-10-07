@@ -1,0 +1,5 @@
+Review: The method directly targets the research problem and offers a plausible adaptive inference strategy, but its validity is undermined by unclear baseline parity and heuristic intermediate scoring.
+
+Feedback: (1) Baseline fairness: AG-PDEA with τ=−∞ still queries the AR scorer at every denoising step, whereas standard best-of-N typically scores only at the end; this confounds the compute comparison unless both are matched for AR overhead. (2) Intermediate sequence construction: extracting a concrete token sequence via arg-max of expected embeddings at partial denoising steps may produce incoherent inputs for the AR scorer, weakening the early-acceptance signal. (3) Cost model: the claim that AR scoring is ≤1% of diffusion cost may not hold for small diffusion models (e.g., DiffuGPT-S) where AR and diffusion parameter counts are comparable, threatening the compute-normalization premise. (4) Monotonicity assumption: the method assumes quality improves with steps, but diffusion schedules can over-denoise; an any-time acceptance rule may discard candidates that would improve later.
+
+Rating: 3

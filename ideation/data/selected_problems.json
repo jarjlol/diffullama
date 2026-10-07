@@ -1,0 +1,9 @@
+{
+  "selected": [
+    "P1",
+    "P2",
+    "P3"
+  ],
+  "selected_by": "team, 2026-09-28 (trimmed 4->3: drop P4 MASK-token, confounded; keep rerank + schedule axes)",
+  "reason": "P1+P2+P3 at paper settings; P4 dropped per load/scope decision"
+}

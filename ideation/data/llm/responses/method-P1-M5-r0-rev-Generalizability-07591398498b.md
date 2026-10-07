@@ -1,0 +1,11 @@
+**Review:**
+The method demonstrates **moderate generalizability** within the target domain (diffusion language models) but exhibits clear boundaries when extrapolated to broader generative paradigms. Its modular separation of the diffusion sampler from the AR scorer, combined with explicit checks for scorer-agnosticism and architecture transfer, provides a solid foundation for adaptation across different DLM implementations. However, the approach remains tightly coupled to the availability of a pretrained autoregressive scorer and is validated only on English text benchmarks with fixed sequence lengths, limiting its applicability to multimodal, multilingual, or purely autoregressive contexts without significant re-engineering.
+
+**Feedback:**
+*Strengths:* The inclusion of "Generalizability Checks" (Section 7) is commendable—testing unseen DLM architectures (3B dLLM) and alternative lightweight scorers (distilled Transformer, BERT MLM) provides preliminary evidence that the importance-resampling mechanism is not overfitted to a single model family. The inference-only constraint further enhances portability across released checkpoints.
+
+*Limitations:* The method's reliance on AR log-likelihood as the importance weight assumes the scorer is well-calibrated and available; this fails in settings where no suitable AR model exists (e.g., purely autoregressive deployment, multimodal generation). The FLOP efficiency model ($F_{\text{diff}} = \alpha \times |\theta| \times L$) is validated only at L=128 on specific hardware, raising questions about scalability to longer contexts or different accelerators. Additionally, the evaluation remains confined to English benchmarks (HumanEval, GSM8K, SIQA), ignoring cross-lingual or domain-specific generalization (e.g., medical, legal text).
+
+*Recommendations:* To strengthen generalizability claims, validate the FLOP-latency correlation across sequence lengths (256, 512 tokens) and test on non-English benchmarks (e.g., MMLU foreign languages). Consider analyzing robustness to scorer mismatch—what happens when the AR scorer is from a different domain or scale than the DLM? Finally, explicitly discuss whether the method extends to flow-matching or continuous diffusion models, or if the discrete token assumption is fundamental to the importance weighting scheme.
+
+**Rating (1-5):** 3

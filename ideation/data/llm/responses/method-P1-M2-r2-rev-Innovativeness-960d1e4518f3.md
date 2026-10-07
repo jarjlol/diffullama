@@ -1,0 +1,11 @@
+Review:
+The proposed AR‑SMCDS method frames diffusion sampling as a Sequential Monte Carlo process with AR‑based importance weighting at each denoising step. While the systematic decomposition of compute between denoising steps (S) and particle count (N) is well‑motivated and the Pareto‑frontier analysis is rigorous, the core innovation—using a lightweight AR model to guide diffusion trajectories during sampling—is an incremental extension of existing ideas rather than a fundamental advance. Similar concepts appear in TESS 2's reward guidance, Jacobi Forcing's parallel trajectory training, and standard reranking pipelines. The "particle filter" analogy is somewhat overstated: the diffusion model already provides the proposal distribution, and the AR scorer merely reweights trajectories, which is closer to importance sampling than to genuine particle filtering with learned proposals. Additionally, the technical detail of computing AR log‑likelihood on "partially decoded" sequences at every intermediate denoising step is non‑trivial and potentially problematic, as AR models expect coherent token sequences rather than partially denoised representations. The ablation of sparse AR evaluation (every k steps) also suggests the continuous guidance may not be essential, weakening the novelty claim. The method is a sensible and well‑engineered inference‑time technique, but it does not introduce new principles or fundamentally alter how DLMs operate.
+
+Feedback:
+1. Clarify how the AR scorer evaluates partial/corrupted sequences at intermediate denoising steps—this is a non‑trivial implementation detail that needs justification.
+2. More explicitly distinguish from TESS 2 reward guidance and Jacobi Forcing: what exactly is different about applying AR likelihood as an importance weight at every step versus a terminal reward?
+3. Consider whether the SMC framing adds genuine value over a simpler "generate N samples, rerank" baseline, or whether the marginal benefit justifies the added complexity.
+4. The FLOP estimate for AR scoring (N×S evaluations) should be empirically validated, as the "≤1% overhead" claim may not hold when N>1 and S is large.
+5. The ESS‑based resampling criterion is standard but should be discussed in the context of potential weight collapse when β is poorly tuned.
+
+Rating (1-5): 3

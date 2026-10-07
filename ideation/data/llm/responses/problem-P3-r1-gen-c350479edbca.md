@@ -1,0 +1,29 @@
+**Problem:**  
+How does the interaction between noise‑schedule shape and model‑specific architectural inductive biases (e.g., rotary positional embeddings in LLaMA‑based models vs. absolute positional embeddings in GPT‑2‑based models) affect the quality‑efficiency trade‑off of scaled diffusion language models adapted from autoregressive checkpoints, and can a simple hybrid schedule (linear early‑timestep, cosine late‑timestep) mitigate the performance gap caused by the removal of attention‑mask annealing at scale?
+
+**Rationale:**  
+
+1. **Underexplored inference‑time knob with architectural nuance**  
+   The target paper ablates denoising‑step budget and the shift operation but does not examine how the *temporal distribution* of noise (the noise schedule) interacts with the architectural differences between the GPT‑2 and LLaMA families. Recent work (Dream 7B, UNIFUSION, dLLM) shows that context‑adaptive or uniform‑noise schedules can improve perplexity and planning ability, yet it remains unclear whether these benefits are uniform across architectures or depend on positional‑encoding schemes. By systematically varying schedule shape and measuring its impact on both generation quality and computational cost, we can uncover architecture‑specific schedule sensitivities that were invisible in the original ablation.
+
+2. **Link to reported limitations**  
+   - **L1 (attention‑mask annealing):** The paper drops annealing at the 7B scale, claiming minimal impact, yet its own ablation shows a growing benefit with scale. A noise schedule that allocates higher noise to early timesteps can emulate the effect of annealing by preserving bidirectional context longer during denoising. Testing alternative schedules therefore provides a low‑cost way to assess whether the dropped annealing is truly harmless or merely masked by a sub‑optimal schedule.  
+   - **L4 (proxy‑task validation):** The adaptation recipe was selected using a cheap proxy (GSM8K‑symbolic). Evaluating alternative schedules directly on the adapted checkpoints offers an inexpensive, inference‑only validation of whether the proxy truly reflects the full adaptation objective across scales and families.  
+   - **L9 (efficiency claims not compute‑normalized):** By measuring wall‑clock time *or* the number of forward passes per generated token under each schedule, we obtain a compute‑normalized efficiency metric that complements the original latency‑only comparison and reveals whether a schedule can recover efficiency lost due to the missing annealing.
+
+3. **Operational definition of the quality‑efficiency trade‑off**  
+   - **Quality:** Perplexity (or bits‑per‑character) on a held‑out language‑modeling corpus (WikiText‑103 or C4).  
+   - **Efficiency:** Average number of forward passes required to produce one token (equivalent to the denoising‑step budget) and/or wall‑clock time per token at batch size 1 on the RTX 6000 Pro Blackwell.  
+   The trade‑off will be visualized as quality versus efficiency curves; a schedule that yields lower perplexity for a given number of forward passes (or higher tokens‑per‑second for a given perplexity) is considered superior.
+
+4. **Feasibility under the given constraints**  
+   - **Inference‑only:** All required checkpoints (DiffuGPT‑S/M, DiffuLLaMA 6.74B, LLaDA‑8B, Dream‑7B, DiffuCoder‑7B) are publicly available. Changing the noise schedule entails only modifying the timestep sampler (e.g., linear βₜ, cosine βₜ, the token‑level rescheduling from Dream 7B, or the proposed hybrid schedule) and re‑running the diffusion sampling loop—no retraining or gradient updates are needed.  
+   - **Compute:** A single RTX 6000 Pro Blackwell (96 GB) can accommodate batched sampling for the 6–8 B‑parameter models when using 4‑bit quantization or careful batch sizing; smaller models allow extensive sweep of schedule hyperparameters.  
+   - **Timeline:** Implementing the schedulers, running perplexity/efficiency evaluations, and analyzing results fits comfortably within a ten‑week window with three GPU‑enabled members for sampling and four CPU‑only members for data preparation, metric computation, and statistical analysis.  
+
+5. **Originality and significance**  
+   - Rather than merely confirming that noise schedules matter, we hypothesize *why* they might interact differently with GPT‑2 vs. LLaMA architectures: rotary embeddings (LLaMA) preserve relative positional information under noise, potentially benefiting from schedules that gradually increase noise (cosine), whereas absolute embeddings (GPT‑2) may prefer schedules that retain low noise early (linear) to mitigate positional drift.  
+   - We propose to evaluate a **novel hybrid schedule** (linear for early timesteps to preserve structure, cosine for later timesteps to encourage exploration) as a simple, architecture‑agnostic remedy for the missing attention‑mask annealing. Demonstrating that this hybrid schedule narrows the quality‑efficiency gap between adapted DLMs and their autoregressive baselines would provide actionable guidance for practitioners and suggest a direction for future adaptation recipes (e.g., pairing specific schedules with architectural tweaks).  
+   - By connecting schedule choice to architectural inductive biases, the study moves beyond an empirical ablation toward a mechanistic understanding of how diffusion processes interact with language‑model representations, thereby offering a more significant contribution than a straightforward hyperparameter sweep.  
+
+In summary, this work will systematically examine how noise‑schedule shape, model architecture, and scale jointly determine the quality‑efficiency trade‑off of adapted diffusion language models, test whether a simple hybrid schedule can compensate for the dropped attention‑mask annealing, and provide concrete, inference‑only recommendations for deploying scalable, efficient text generators.

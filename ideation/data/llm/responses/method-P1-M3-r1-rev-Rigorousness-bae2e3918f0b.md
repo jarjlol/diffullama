@@ -1,0 +1,11 @@
+**Review:**
+The proposed method AD-AES exhibits a systematic structure with clear sections covering model preparation, metrics, procedure, and analysis. However, it suffers from critical internal inconsistencies that undermine its rigorousness. Most notably, the method claims AR scorer overhead is "≤1% of diffusion FLOPs" while simultaneously proposing to score every diffusion step (up to 128 times per candidate), which would incur ~128× the claimed overhead, invalidating the compute-normalization central to the research problem (L9). Furthermore, the method redefines the research question: the rationale asks whether an AR *reranker* improves the Pareto frontier, but AD-AES uses the AR scorer only as a monitor for early stopping, not for reranking candidates, creating a logical disconnect from the stated objective. The early-stopping criterion (Δ<ε for 2 consecutive steps) is arbitrary and may trigger prematurely (e.g., at s=2–3), conflicting with the specified S_max ∈ {8,16,32,64,128} grid. Additionally, the argmax token conversion ignores standard diffusion decoding practices, and the dynamic threshold τ_p requires a validation set not specified in the resource plan.
+
+**Feedback:**
+1. **Resolve FLOP accounting**: Either reduce AR scoring frequency (e.g., every k steps) and adjust the overhead calculation, or revise the ≤1% claim to reflect actual monitoring costs.
+2. **Align with research question**: If the goal is to test AR-guided allocation versus uniform S/N grids, clarify whether the AR scorer acts as a reranker (selecting among candidates) or merely a monitor (stopping early), as these answer different questions.
+3. **Define early-stopping bounds**: Specify minimum steps (e.g., s ≥ 8) to prevent trivial early termination and clarify how S_max relates to actual steps used.
+4. **Specify validation protocol**: Detail how τ_p is calibrated without a separate validation set, or integrate validation into the 10-week timeline.
+5. **Clarify decoding**: Replace deterministic argmax with standard diffusion decoding (e.g., stochastic sampling or speculative decoding) to ensure generated quality reflects actual DLM capabilities.
+
+**Rating (1-5):** 3

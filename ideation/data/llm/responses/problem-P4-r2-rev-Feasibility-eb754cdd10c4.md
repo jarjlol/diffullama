@@ -1,0 +1,19 @@
+Review: The research problem is well-defined, grounded in solid existing literature, and directly addresses a meaningful gap in the evaluation of diffusion language models. The inference-only constraint is elegantly satisfied by the proposed methodology—manipulating input masking patterns during inference on released checkpoints requires no training runs. The team composition (7 people, with CPU-heavy tasks distributable among 4 members) and the 96 GB GPU are generally adequate for the scope. The available checkpoints (DiffuGPT-S/M, DiffuLLaMA, Dream-7B, LLaDA-8B, DiffuCoder-7B) cover both GPT-2-based and LLaMA-based families across multiple scales, and AR baselines (GPT-2, LLaMA) are publicly accessible. The problem is motivated by a genuine limitation of the target paper (narrow single-line infilling evaluation) and aligns with the broader community's interest in bidirectional and arbitrary-order generation.
+
+Feedback: Several concerns should be addressed to strengthen feasibility:
+
+1. **"Comparable inference-time compute budgets" needs precise operationalization.** Comparing diffusion models (which require tens to hundreds of denoising steps) against autoregressive models (which generate token-by-token) is methodologically non-trivial. The community lacks consensus on what "comparable compute" means in this context—forward-pass count, FLOPs, or wall-clock time? The Jacobi Forcing paper (related work #10) highlights this exact tension. Without a clear, defensible metric, the comparison could be criticized. Propose a primary metric (e.g., equal number of model forward passes or equal FLOPs) and justify it explicitly.
+
+2. **GPU contention is a real risk.** A shared, contended RTX 6000 Pro Blackwell over 10 weeks, with only 3 team members having access, could create scheduling bottlenecks. Diffusion model inference is slow (many denoising steps per sample), and running multiple models across multiple benchmarks (HumanEval whole-function pass@k, MBPP, ROCStories, WikiPlot) with AR baselines is compute-intensive. Consider pre-scheduling GPU time, prioritizing smaller models first, and using CPU-based pre-processing (tokenization, dataset preparation) extensively to maximize GPU utilization windows.
+
+3. **Scale coverage gap.** The problem claims evaluation across "127M–7B," but the listed checkpoints do not clearly include a 127M diffusion model. DiffuGPT-S may approximate this scale, but this should be verified. If not, the scope should be adjusted to reflect available checkpoints (e.g., "small–7B" rather than "127M–7B").
+
+4. **Task definition needs more precision.** "Multi-line code infilling" and "long-context story completion" should be operationally defined with specific input/output formats, minimum infill lengths, and context window requirements. For example, what constitutes "multi-line" (≥2 lines? ≥10 tokens?) and "long-context" (what character/token threshold?). Without these definitions, evaluation protocols may be inconsistent.
+
+5. **Evaluation metrics for story completion need specification.** Code infilling has standard metrics (pass@k), but story completion evaluation is less standardized. Will the study use perplexity, BLEU, ROUGE, human evaluation, or LLM-as-judge? This should be clarified and justified, especially given limited GPU time for any LLM-based evaluation.
+
+6. **DiffuCoder-7B and LLaDA-8B are not in the target paper's family classification.** The problem frames the comparison as "GPT-2-based vs. LLaMA-based," but DiffuCoder and LLaDA may not fit neatly into this taxonomy. This could complicate the family-level analysis and should be acknowledged or the model selection refined.
+
+Despite these concerns, the problem remains fundamentally sound and achievable within the stated constraints. The core research question is answerable with the available resources, and the inference-only design is a significant methodological advantage.
+
+Rating (1-5): 4

@@ -1,0 +1,12 @@
+Review:
+The research problem is well-grounded in the existing literature, directly building on the target paper's observation of accuracy headroom in DLMs and connecting to representation-alignment work (REPR-ALIGN, PreDiff-LM) and inference-time efficiency methods (Jacobi Forcing, TESS 2). The problem is clearly articulated with a concrete methodology (CKA/probing, multi-candidate reranking, step-budget comparison) and practical constraints (inference-only, single GPU, 10-week timeline). The central question—whether accuracy headroom stems from insufficient denoising or from unexploited AR representations—is intellectually meaningful and could inform future DLM design choices.
+
+However, the problem's novelty is limited: it is fundamentally a diagnostic/analysis study that combines existing techniques (representation similarity metrics, lightweight reranking, step-budget ablation) rather than proposing a new method or theoretical framework. The unified metric (averaging normalized scores across structurally very different tasks like code generation, math reasoning, and commonsense QA) raises concerns about validity—tasks with different difficulty ceilings and variance profiles may not combine meaningfully into a single scalar. The core hypothesis (better representation preservation → better reranking) is largely intuitive and may not yield surprising findings. The study is confirmatory rather than exploratory, and the practical impact, while useful, is incremental.
+
+Feedback:
+1. Strengthen the theoretical motivation: Why should representation preservation specifically predict reranking effectiveness over step-budget increases? Articulate a clearer hypothesis about the *source* of accuracy headroom (representation mismatch vs. incomplete denoising) rather than treating it as an empirical question.
+2. Revise the unified metric: Averaging across HumanEval, GSM8K, and commonsense tasks obscures task-specific dynamics. Consider reporting per-task results and using a more principled aggregation (e.g., rank-based or task-weighted).
+3. Clarify novelty: Position this as a systematic *characterization* study that informs DLM design, rather than implying it resolves the headroom question definitively.
+4. Address the tautology risk: If AR representations are preserved, an AR scorer naturally works better—frame the contribution as quantifying *how much* of the headroom is recoverable this way vs. via compute, not just whether it works at all.
+
+Rating (1-5): 3

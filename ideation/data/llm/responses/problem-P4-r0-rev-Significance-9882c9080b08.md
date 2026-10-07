@@ -1,0 +1,16 @@
+**Review:**
+
+The research problem is well-formulated and addresses a genuinely under-examined dimension of diffusion language model inference: the role of attention-masking strategy. The rationale is clear, the problem is precisely scoped (three mask types × two model families × multiple scales), and the inference-only design makes it feasible within the stated constraints. The connection to limitations of the target paper (shift operations, mask annealing, proxy-task selection) is logical, and the proposed study could yield actionable insights for practitioners deploying diffusion LMs.
+
+However, the significance of the problem must be assessed critically against the current literature. Several related works already touch on attention mechanisms in diffusion LMs—most notably PreDiff-LM (paper #9), which explicitly studies hybrid attention patterns and reports improvements in perplexity and MAUVE. The target paper itself describes hybrid attention as a mechanism. This means the proposed study, while systematic, risks being a careful empirical extension of already-observed phenomena rather than a discovery of fundamentally new principles. The scientific insight may largely be confirmatory (e.g., "hybrid masks are better than purely causal or bidirectional") rather than surprising or paradigm-shifting.
+
+The practical implications are real but incremental: selecting an optimal inference-time mask could improve quality or latency marginally, but this is an engineering optimization rather than a methodological breakthrough. The claimed broader impact—generalizing findings to other adaptation strategies—is plausible but speculative, as attention-masking effects may be tightly coupled to the specific adaptation recipe used.
+
+**Feedback:**
+- **Strengths**: The problem is clearly defined, feasible, and fills a documented gap in the literature. The multi-dimensional comparison (mask × family × scale) adds analytical richness.
+- **Weaknesses**: The novelty is limited; related work (especially PreDiff-LM) already partially addresses this question. The problem is essentially a systematic ablation study, which, while valuable, lacks the innovation or theoretical depth needed for higher significance. The broader impact claims are overstated.
+- **Suggestion**: To elevate significance, the problem could be reframed to ask not just *which* mask works best, but *why* certain mask–model interactions emerge, potentially connecting to theoretical understanding of how causal priors from AR pre-training interfere with or complement diffusion dynamics. This would add a deeper scientific dimension beyond empirical benchmarking.
+
+**Rating (1-5): 3**
+
+The problem demonstrates average significance: it makes some contributions to the field (a systematic empirical study of an under-examined variable) and has potential practical implications (informing deployment choices), but lacks the innovation or broader transformative impact needed for a higher rating. It is a well-motivated, carefully scoped study that fills a gap but does not fundamentally advance the paradigm.

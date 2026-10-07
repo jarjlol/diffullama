@@ -1,0 +1,17 @@
+**Review:**
+
+The AGADES method proposes an adaptive, inference-only procedure for allocating denoising steps across generation candidates in diffusion language models, guided by a lightweight AR scorer's per-candidate convergence signal. The method is clearly motivated by the identified gaps in the target paper (accuracy headroom L6, compute-normalization gap L9) and is well-delineated from prior work (static reranking, Jacobi Forcing, TESS 2 reward guidance). The algorithmic specification is detailed, the Pareto-frontier framework is rigorous, and the ablation design (random stopping signal, bootstrap significance testing, generalization checks) is thorough.
+
+However, the core mechanism—monitoring improvement on a validation signal and reallocating compute from saturated to promising candidates—is a specific instantiation of a broadly established adaptive-computation principle (early stopping, adaptive allocation) rather than a fundamentally new concept. The method does not engage with the existing adaptive-computation or early-exiting literature, nor does it provide theoretical justification for why per-candidate adaptive allocation should dominate uniform allocation beyond empirical demonstration. Several critical implementation details remain underspecified: the decoding procedure for obtaining token sequences at intermediate denoising steps (needed for AR scoring), the "optimistic prior" for initial marginal gains, and the noise characteristics of single-step NLL improvements (no smoothing or averaging is mentioned). The differentiation from existing adaptive reranking and speculative decoding approaches is not fully articulated.
+
+**Feedback:**
+
+1. **Clarify the intermediate decoding step**: Specify exactly how candidate latents are converted to token sequences for AR-NLL evaluation after each diffusion step (e.g., argmax of predicted distribution, or expected-token sampling). This is critical for reproducibility.
+2. **Address the adaptive-computation literature**: Position AGADES relative to adaptive beam search, early exiting, and flexible computation time—explain what is genuinely different about the DLM-specific instantiation.
+3. **Specify the optimistic prior and marginal-gain estimation**: Define the initial g_i value and consider whether exponential moving average of improvements would reduce noise in the priority-queue decisions.
+4. **Add a theoretical or intuition-building analysis**: Even a simple argument (e.g., via Jensen's inequality on the concave quality-step function) for why adaptive allocation should outperform uniform would strengthen the method's contribution beyond empirical demonstration.
+5. **Control for the stochasticity of the stopping signal**: The random-stopping ablation is good, but consider also comparing against a greedy "always continue the best-performing candidate" heuristic to isolate the benefit of the convergence criterion specifically.
+
+**Rating (1-5): 3**
+
+AGADES demonstrates moderate innovativeness: it combines known techniques (early stopping, online monitoring, compute reallocation) into a novel algorithmic framework specifically tailored for diffusion language model inference, with rigorous empirical validation. However, the underlying principle is not fundamentally new, critical implementation details are underspecified, and the method does not adequately differentiate from the broader adaptive-computation literature. It offers a fresh and practical perspective on the quality-compute trade-off but falls short of a significant breakthrough.
