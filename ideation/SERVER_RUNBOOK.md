@@ -77,6 +77,26 @@ nohup bash -c 'for i in $(seq 1 200); do python3 ideation/scripts/run_pipeline.p
   If all keys 429 together, it is account-level or provider throttling — wait for
   the daily reset (~00:00 UTC); the loop covers ~33 h unattended.
 
+## 4b. Alternative: run a little each day on a laptop (scheduled)
+
+The free quota (~200 requests/day per account) resets around 05:30 IST, so the run does not need a
+machine on for days at a stretch — only for a few hours after each reset. Every finished call is
+cached; switching off mid-run loses at most the call in progress.
+
+```bash
+ideation/scripts/daily_run.sh                    # run now: uses today's quota, commits + pushes, stops
+ideation/scripts/install_daily_timer.sh          # schedule it at 05:45 IST daily (systemd user timer)
+ideation/scripts/install_daily_timer.sh --uninstall
+```
+
+`daily_run.sh` refuses to run off `assignment/research-ideation` or with a key file that is not mode
+600; reads keys from `~/.ideation-env` without printing them; commits **only** `ideation/data` and
+`ideation/output`, after scanning the staged diff for key-like strings; pushes without ever forcing;
+stops for the day on `KEY_EXHAUSTED`; retries transient errors every 10 min (up to 18 h); and stops with
+a desktop notification when a human is needed (retired model, parse error, missing key). If the
+laptop is off or asleep at 05:45, the timer fires when it is back. A closed lid still sleeps the
+machine. Logs: `~/.local/state/ideation/run-YYYY-MM-DD.log`.
+
 ## 5. Known failure modes and fixes
 
 | Symptom in log | Meaning | Fix |

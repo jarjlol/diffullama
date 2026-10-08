@@ -71,6 +71,10 @@ python3 ideation/scripts/selftest.py                       # wiring test on the 
 
 Exit codes: `0` done, `2` waiting on model responses, `3` waiting on the selection gate.
 
+**Daily scheduled runs** (free-tier quota resets ~05:30 IST): `scripts/daily_run.sh` runs one day's
+worth and commits progress; `scripts/install_daily_timer.sh` schedules it at 05:45 IST. See
+`SERVER_RUNBOOK.md` §4b.
+
 ## Choosing a model (open — see `project-docs/02-decision-log.md` P-7)
 
 A full run is **864 calls and ~4–6M input tokens**, so manual mode is impractical.
