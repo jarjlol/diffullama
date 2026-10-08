@@ -38,6 +38,7 @@ flock -n 9 || { say "another run is already in progress; exiting"; exit 0; }
 if [[ -f "$STATE/DONE" ]]; then say "run already complete ($(cat "$STATE/DONE")); nothing to do"; exit 0; fi
 
 cd "$REPO" || exit 1
+find ideation/data -name "*.partial" -delete 2>/dev/null   # debris from a write interrupted by shutdown
 cur="$(git rev-parse --abbrev-ref HEAD)"
 [[ "$cur" == "$BRANCH" ]] || { notify "NOT RUN: repo is on '$cur', expected '$BRANCH'. Switch branch yourself, then re-run."; exit 1; }
 

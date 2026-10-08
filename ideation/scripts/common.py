@@ -74,9 +74,21 @@ def read_text(path) -> str:
 
 
 def write_text(path, content: str) -> None:
+    """Atomic write: the file either appears complete or not at all.
+
+    Cached LLM responses are trusted on sight, so a file truncated by a shutdown or
+    kill mid-write would otherwise be read back as a valid answer. Write to a
+    sibling temp file, fsync, then rename over the target (atomic on POSIX).
+    A leftover *.partial is never read as a response and is cleaned by daily_run.sh.
+    """
     p = Path(path)
     p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(content, encoding="utf-8")
+    tmp = p.with_name(f".{p.name}.{os.getpid()}.partial")
+    with open(tmp, "w", encoding="utf-8") as f:
+        f.write(content)
+        f.flush()
+        os.fsync(f.fileno())
+    os.replace(tmp, p)
 
 
 def read_json(path):

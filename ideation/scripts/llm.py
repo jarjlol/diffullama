@@ -79,7 +79,7 @@ def _load_key_state() -> dict:
 
 def _save_key_state(state: dict) -> None:
     KEY_STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
-    KEY_STATE_FILE.write_text(json.dumps(state, indent=2) + "\n", encoding="utf-8")
+    write_text(KEY_STATE_FILE, json.dumps(state, indent=2) + "\n")   # atomic
 
 
 def _pool_index(role: str, n: int) -> int:
