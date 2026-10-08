@@ -39,6 +39,7 @@ Set `export HF_HOME=/path-to-huggingface/cache/` before running inference.
 - `litreview/` — SOTA assignment: literature-review generation pipeline
 - `limitations/` — limitations assignment: multi-agent gap extraction + dismissal of all twelve gaps
 - `ideation/` — ideation assignment: ResearchAgent problem discovery and idea ranking
+  (to run it on the workstation: `ideation/WORKSTATION_RUN.md`)
 - `docs/` — triggered detail files for agents (this index points at them)
 
 ## Conventions

@@ -1,4 +1,9 @@
-# SERVER RUNBOOK — ResearchAgent ideation run (P1+P2+P3)
+# SERVER RUNBOOK — ResearchAgent ideation run on OpenRouter (SUPERSEDED)
+
+> ⚠️ **Superseded 2026-10-08 by [`WORKSTATION_RUN.md`](WORKSTATION_RUN.md)** — the run now uses
+> locally hosted vLLM models. OpenRouter's free tier proved to be 50 requests/day per account, and
+> free model slugs were retired mid-run three times. Kept for the record. The selection is now P1 + P2,
+> and the OpenRouter idea-stage cache is archived under `data/llm/archive/openrouter-2026-10/`.
 
 How to run the ideation pipeline on a server instead of a laptop. The run is
 fully resumable: the server picks up exactly where the laptop stopped, with
@@ -27,7 +32,7 @@ and the pipeline is now generating 8 methods + 8 experiments per problem with
   the pipeline is **stdlib-only** (`urllib`, `json`, `re`).
 - RAM/disk trivial (~50 MB + ~13 MB cache). Network egress to
   `https://openrouter.ai` required.
-- 1–3 **OpenRouter API keys** (free tier: ~200 req/day per account — the limit
+- 1–3 **OpenRouter API keys** (free tier: **50 requests/day per account** (corrected 2026-10-08 from OpenRouter's own `X-RateLimit-Limit: 50` header; the ~200 figure was an estimate) — the limit
   looks per-account, not per-key, so prefer keys from *different* accounts).
 
 ## 3. Setup
@@ -79,7 +84,7 @@ nohup bash -c 'for i in $(seq 1 200); do python3 ideation/scripts/run_pipeline.p
 
 ## 4b. Alternative: run a little each day on a laptop (scheduled)
 
-The free quota (~200 requests/day per account) resets around 05:30 IST, so the run does not need a
+The free quota (**50 requests/day per account** (corrected 2026-10-08 from OpenRouter's own `X-RateLimit-Limit: 50` header; the ~200 figure was an estimate)) resets around 05:30 IST, so the run does not need a
 machine on for days at a stretch — only for a few hours after each reset. Every finished call is
 cached; switching off mid-run loses at most the call in progress.
 

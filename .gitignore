@@ -168,6 +168,7 @@ saves/
 output/
 !litreview/output/
 !limitations/output/
+!ideation/output/
 wandb/
 **__pycache__**
 

@@ -277,3 +277,16 @@ second quality–efficiency study, and none of its work had started, so dropping
 saves 384 calls. P1 is kept despite the lowest problem score (3.0/5) because it carries the anchor-specific
 question; P2 must stay inference-only (its "learned schedule" variant is a watch point).
 
+## D-2026-10-08-b — Ideation: run on locally hosted models; regenerate the idea stage
+**Decided:** stop using OpenRouter. Serve a generator and a separate reviewer with vLLM on the lab
+workstation (RTX 6000 Pro Blackwell, 96 GB), and regenerate the whole idea stage for P1 + P2.
+**Why:** OpenRouter's free tier is **50 requests/day per account** (its own `X-RateLimit-Limit` header —
+the ~200/day recorded earlier was wrong), which puts the remaining run at ~5 days. Free model slugs were
+also retired mid-run three times. Locally the 768 idea-stage calls take an estimated 2–4 hours, with no
+limits. The cache is keyed by prompt, not model, so the OpenRouter idea-stage answers are archived
+(`ideation/data/llm/archive/openrouter-2026-10/`) rather than mixed with local ones in one ranking.
+**Default models:** generator `Qwen/Qwen3.8-27B-FP8`, reviewer `RedHatAI/gemma-4-31B-it-FP8-block`
+(different families, ~64 GB together). This must pass `ideation/local/probe_models.py` before the run.
+**Who:** Neel cannot reach the workstation; a teammate with access runs it per
+`ideation/WORKSTATION_RUN.md`.
+

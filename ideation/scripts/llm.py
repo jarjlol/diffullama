@@ -32,6 +32,7 @@ never re-requested. Keys come only from env vars and are never written to disk.
 from __future__ import annotations
 
 import json
+import re
 import os
 import time
 import urllib.error
@@ -122,21 +123,51 @@ class _BadResponse(Exception):
     """Transient malformed 200 response (no usable content); safe to retry."""
 
 
-def _openai_once(base: str, key: str, model: str, temperature: float, system: str, user: str) -> str:
-    """Single POST without retry; HTTPError/_BadResponse propagate to the caller."""
+_THINK = re.compile(r"<think>.*?</think>", re.S | re.I)
+_THINK_OPEN = re.compile(r"^\s*<think>.*", re.S | re.I)
+
+
+def strip_reasoning(text: str) -> str:
+    """Remove <think>...</think> blocks that reasoning models (e.g. the Qwen3 family)
+    may leave in `content` when the server is not separating reasoning out.
+
+    Without this, a 'Rating (1-5): N' written inside the model's private reasoning
+    could be parsed as its final answer -- a silent wrong score. An unterminated
+    leading <think> (output cut off mid-reasoning) leaves no answer at all, which
+    the caller treats as an empty, retryable response.
+    """
+    text = _THINK.sub("", text)
+    if _THINK_OPEN.match(text):
+        return ""
+    return text.strip()
+
+
+# Seconds per request. 300 suits hosted APIs; a local reasoning model can need more.
+TIMEOUT = float(os.environ.get("LLM_TIMEOUT", "300"))
+
+
+def _openai_once(base: str, key: str, model: str, temperature: float, system: str, user: str,
+                 extra: dict | None = None) -> str:
+    """Single POST without retry; HTTPError/_BadResponse propagate to the caller.
+
+    `extra` is merged into the request body (from LLM_EXTRA_BODY / REVIEWER_EXTRA_BODY,
+    JSON) for server-specific switches, e.g. vLLM's
+    {"chat_template_kwargs": {"enable_thinking": false}}.
+    """
     payload = {
         "model": model,
         "temperature": temperature,
         "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
+        **(extra or {}),
     }
     data = json.dumps(payload).encode("utf-8")
     req = urllib.request.Request(f"{base}/chat/completions", data=data, headers={
         "Content-Type": "application/json", "Authorization": f"Bearer {key}"})
-    with urllib.request.urlopen(req, timeout=300) as r:
+    with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
         out = json.load(r)
     try:
         msg = out["choices"][0]["message"]
-        text = msg.get("content") or ""
+        text = strip_reasoning(msg.get("content") or "")
     except (KeyError, IndexError, TypeError, AttributeError) as e:
         raise _BadResponse(f"no choices in response (keys={list(out) if isinstance(out, dict) else type(out)})") from e
     if not text.strip():
@@ -152,6 +183,11 @@ def _openai(system: str, user: str, role: str) -> str:
         raise RuntimeError(f"{name} is not set")
     model = _env(role, "MODEL", "gpt-4o")
     temperature = float(_env(role, "TEMPERATURE", "0.7"))
+    extra_raw = _env(role, "EXTRA_BODY")
+    try:
+        extra = json.loads(extra_raw) if extra_raw else None
+    except ValueError as e:
+        raise RuntimeError(f"{'REVIEWER' if role == 'reviewer' else 'LLM'}_EXTRA_BODY is not valid JSON") from e
     start = _pool_index(role, len(pool))
     rate_limited_keys = 0
     last_err: Exception | None = None
@@ -159,7 +195,7 @@ def _openai(system: str, user: str, role: str) -> str:
         key = pool[(start + offset) % len(pool)]
         for attempt in range(6):
             try:
-                text = _openai_once(base, key, model, temperature, system, user)
+                text = _openai_once(base, key, model, temperature, system, user, extra)
                 # Persist the working index so re-runs resume on a live key.
                 state = _load_key_state()
                 state[role] = (start + offset) % len(pool)

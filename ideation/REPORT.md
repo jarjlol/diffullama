@@ -124,7 +124,7 @@ a Ling-fin/Sante mix, but every method/experiment rating feeding the ranking
 `scripts/llm.py` additionally supports comma-separated `LLM_API_KEYS` /
 `REVIEWER_API_KEYS` with rotation on 429/401/402 and a persisted index
 (`data/llm/key_state.json`, indices only — never keys). Free-tier limits look
-per-account (~200 req/day across keys), not per-key. Parser hardened without
+per-account, not per-key (~200 req/day was estimated here; corrected 2026-10-08: it is 50/day per account, per OpenRouter's `X-RateLimit-Limit` header). Parser hardened without
 changing strictness: markdown/numbered/titled section headers, en-dash and
 bare `Rating: N` lines; contentless `Problem: :`-style artifacts are rejected.
 `selftest.py` stays 10/10. Stochastic-regen warning: deleting a cached response
@@ -170,4 +170,27 @@ idea-stage; a further 98 response files are orphaned forks from earlier regenera
 **654**. Watch point: P2 lists "a simple learned schedule" among its variants; any method that
 *trains* a schedule conflicts with the inference-only constraint, which every Feasibility review
 is given.
+
+**Backend switch (2026-10-08): OpenRouter → locally hosted vLLM.** Two problems ended the OpenRouter
+run. Its free tier is **50 requests/day per account** — read from OpenRouter's own response headers,
+and lower than the ~200 previously recorded. And a third free reviewer slug (`ling-3.0-flash-sante`)
+was retired, after which every candidate free model returned 429 on the exhausted accounts. The run
+moves to models served on the lab workstation (RTX 6000 Pro Blackwell, 96 GB). The default pair is
+generator `Qwen/Qwen3.8-27B-FP8` and reviewer `RedHatAI/gemma-4-31B-it-FP8-block`: different families,
+~64 GB together. The final choice is recorded with its evidence in `data/local_probe.json`.
+Procedure: [`WORKSTATION_RUN.md`](WORKSTATION_RUN.md).
+
+The cache is keyed by prompt, not by model. The OpenRouter idea-stage cache (196 responses: P1, 114
+distinct completed steps plus orphaned forks) is therefore archived to
+`data/llm/archive/openrouter-2026-10/`, and the idea stage is regenerated in full. One generator and
+one reviewer then cover every ranked idea. The problem stage, and the P1/P2 selection, are kept. Its
+reviews remain the Ling-fin/Sante mix noted above; problem scores are not used in idea ranking.
+
+Code changes for local serving: `llm.py` strips `<think>…</think>` reasoning blocks before parsing, so
+a rating written inside a model's private reasoning can never be read as its answer. The request
+timeout is configurable (`LLM_TIMEOUT`). `*_EXTRA_BODY` passes server-specific options, such as
+disabling thinking. `daily_run.sh` now commits only paths that exist, never touches git when pointed
+at a scratch data directory, and stops instead of retrying when the pipeline waits at the selection
+gate. `ideation/output/` was git-ignored by the root `.gitignore` (only `litreview/` and
+`limitations/` were excepted), so no deliverable could have been committed; it is now excepted.
 

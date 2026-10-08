@@ -239,7 +239,7 @@ remaining half of Q-16 — the EGR-document occurrences are still untraced.
 ## 2026-09-27 — questions opened by the ideation assignment
 
 ### ~~Q-18 — Which model, and is the quota enough?~~ ✅ ANSWERED 2026-10-07
-Free OpenRouter models (decision-log P-7). Quota is ~200 requests/day per *account*, not per key (observed in `909f107`), so keys from separate accounts are what speeds the run up.
+Free OpenRouter models (decision-log P-7). Quota is per *account*, not per key — **50 requests/day** (OpenRouter's `X-RateLimit-Limit` header, 2026-10-08; the ~200 first recorded from `909f107` was wrong). Superseded by the local run, D-2026-10-08-b, so keys from separate accounts are what speeds the run up.
 
 #### Original Q-18
 See `02-decision-log.md` P-7. **Needs:** whoever owns the Gemini project to read its actual quota at

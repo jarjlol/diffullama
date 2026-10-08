@@ -51,7 +51,13 @@ if [[ "$BACKEND" != "mock" ]]; then
 fi
 
 commit_progress() {
-  local paths=(ideation/data ideation/output)
+  # Only the repo's own cache is ever committed. A run pointed at another data directory
+  # (tests, scratch runs) must never touch git; IDEATION_NO_GIT=1 forces the same.
+  if [[ -n "${IDEATION_DATA_DIR:-}${IDEATION_OUT_DIR:-}" || -n "${IDEATION_NO_GIT:-}" ]]; then
+    say "git step skipped (scratch data dir or IDEATION_NO_GIT)"; return 0
+  fi
+  local paths=() p
+  for p in ideation/data ideation/output; do [[ -e "$p" ]] && paths+=("$p"); done
   git add -- "${paths[@]}" 2>/dev/null
   git diff --cached --quiet -- "${paths[@]}" && return 0
   if git diff --cached -- "${paths[@]}" | grep -qE 'sk-or-v1-[0-9a-f]{20,}|sk-[A-Za-z0-9]{32,}'; then
@@ -61,12 +67,15 @@ commit_progress() {
   fi
   local n; n=$(ls ideation/data/llm/responses 2>/dev/null | wc -l)
   # pathspec-limited commit: anything else you have staged is left alone
-  git commit -q -m "chore(ideation): run progress, $n cached responses" \
-                -m "Automated commit by ideation/scripts/daily_run.sh." -- "${paths[@]}" \
-    && say "committed progress ($n cached responses)"
+  if ! git commit -q -m "chore(ideation): run progress, $n cached responses" \
+                     -m "Automated commit by ideation/scripts/daily_run.sh." -- "${paths[@]}"; then
+    notify "COMMIT FAILED; progress is safe on disk but not in git. Check 'git status'."
+    return 1
+  fi
+  say "committed progress ($n cached responses)"
   [[ "$BACKEND" == "mock" ]] && return 0
-  git push -q origin "$BRANCH" 2>/dev/null && say "pushed" \
-    || say "push failed (offline, or remote has new commits) — progress is committed locally; pull and push by hand"
+  if git push -q origin "$BRANCH" 2>/dev/null; then say "pushed"
+  else say "push failed (offline, or remote has new commits) — progress is committed locally; pull and push by hand"; fi
 }
 
 inhibit=()
@@ -88,6 +97,12 @@ while :; do
     date '+%F %T' > "$STATE/DONE"
     notify "DONE — deliverable at ideation/output/research_problems_and_ideas.md"
     rm -f "$out"; exit 0
+  elif [[ $code -eq 3 ]]; then
+    notify "NEEDS A HUMAN: the pipeline is waiting at the selection gate (no data/selected_problems.json). The team must pick the problems."
+    rm -f "$out"; exit 1
+  elif [[ $code -eq 2 ]]; then
+    notify "NEEDS A HUMAN: LLM responses pending -- this happens only with the manual backend. Check IDEATION_BACKEND."
+    rm -f "$out"; exit 1
   elif grep -q "KEY_EXHAUSTED" "$out"; then
     notify "Today's quota is used up on all keys. Will resume at the next 05:45 IST run."
     rm -f "$out"; exit 0

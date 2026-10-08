@@ -16,6 +16,8 @@ project. Each lives in its own top-level directory and is self-contained.
   *read* an earlier assignment's `data/` and `output/` as inputs when the brief requires it
   (`limitations/` reads `litreview/`; `ideation/` reads both), but never modify them and never
   import their code — copy a helper instead.
+- **Running `ideation/`:** follow `ideation/WORKSTATION_RUN.md` exactly; it covers serving models,
+  the pre-run probe, and what must never be edited or deleted.
 - **Start from the directory's own `README.md`, then its `REPORT.md`.** Each has a README
   that maps the pipeline and a REPORT that documents methodology, deviations from the source
   paper, results, and honest limitations.

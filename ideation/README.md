@@ -9,9 +9,10 @@ review, refine and rank research ideas, submitting the top 5 per problem.
 **Deliverable:** `output/research_problems_and_ideas.md` (produced once the pipeline has run).
 **Methodology, every deviation from the paper, and known risks:** [`REPORT.md`](REPORT.md).
 
-> **Status (2026-10-08).** Running on free OpenRouter models (see `SERVER_RUNBOOK.md`).
-> Problem stage complete; the team selected **P1 and P2**. Idea stage ~15% done (114 of 768
-> calls). No deliverable yet.
+> **Status (2026-10-08).** Problem stage complete; the team selected **P1 and P2**. The idea stage
+> (768 calls) is to be run on locally hosted models on the lab workstation —
+> **[`WORKSTATION_RUN.md`](WORKSTATION_RUN.md) has the full procedure.** The earlier OpenRouter run is
+> archived (`data/llm/archive/openrouter-2026-10/`). No deliverable yet.
 
 ## Pipeline
 
