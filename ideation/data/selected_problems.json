@@ -1,9 +1,8 @@
 {
   "selected": [
     "P1",
-    "P2",
-    "P3"
+    "P2"
   ],
-  "selected_by": "team, 2026-09-28 (trimmed 4->3: drop P4 MASK-token, confounded; keep rerank + schedule axes)",
-  "reason": "P1+P2+P3 at paper settings; P4 dropped per load/scope decision"
+  "selected_by": "team, 2026-09-28 (4->3: dropped P4, MASK-token, needs training); 2026-10-08 (3->2: dropped P3)",
+  "reason": "The brief asks for one or two problems. P3 (candidate count x AR verifier) overlaps P2 (noise schedule) as a second quality-efficiency study, and no P3 work had started, so dropping it discards no cache and saves 384 calls. P1 kept despite the lowest problem score: it carries the anchor-specific question (AR retention vs. reranking headroom)."
 }

@@ -126,7 +126,11 @@ retrieval contamination (F-30 correction, Q-16). It remains untraced for the EGR
 > file were written in parallel on different branches and share the ID **P-6**. Both are cited by ID
 > elsewhere, so neither is renumbered here; cite them by title until the team resolves it.
 
-## P-7 — Which model runs the ideation pipeline? (2026-09-27)
+## ~~P-7 — Which model runs the ideation pipeline? (2026-09-27)~~ ✅ RESOLVED 2026-10-07
+
+Resolved by Arjun's run (`909f107`): free OpenRouter models via the OpenAI-compatible backend — generator `nvidia/nemotron-3-super-120b-a12b:free`, reviewer `inclusionai/ling-3.0-flash-sante:free` after three reviewer swaps. Details in `ideation/REPORT.md` and `ideation/SERVER_RUNBOOK.md`. Original entry kept below.
+
+### Original P-7 entry
 
 `ideation/` is implemented and verified on a mock backend but has generated nothing yet. A full run at the
 paper's settings is **864 model calls, ~4–6M input tokens** (measured on a mock run; real refinement prompts
@@ -260,4 +264,16 @@ three, and both earlier assignments accepted one provided paper. ResearchAgent i
 sub-tasks — problem identification, plus method and experiment design with per-stage review criteria. HypoEvolve takes
 the research goal as input (no problem discovery). HypER's core contribution is fine-tuning a small model,
 which is out of scope. **Worth a one-line confirmation with TTV** — Q-19.
+
+## D-2026-10-08-a — Ideation: research problems P1 and P2
+**Decided:** of the four problem candidates ResearchAgent generated, take **P1** (does how much of the AR
+backbone a diffusion model preserves predict how much accuracy a training-free AR reranker can recover?)
+and **P2** (how do noise schedules shape the quality–efficiency frontier of adapted diffusion models,
+across families and scales?).
+**History:** 2026-09-28 the team dropped P4 (reused vs new `[MASK]` token — L3 again, needs training) and
+kept P1–P3, loosening the pipeline's selection gate to ≤4. 2026-10-08 P3 was dropped and the gate restored to ≤2.
+**Why:** the brief asks for "one or two" problems. P3 (candidate count × AR verifier) overlaps P2 as a
+second quality–efficiency study, and none of its work had started, so dropping it discards nothing and
+saves 384 calls. P1 is kept despite the lowest problem score (3.0/5) because it carries the anchor-specific
+question; P2 must stay inference-only (its "learned schedule" variant is a watch point).
 

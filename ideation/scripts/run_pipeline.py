@@ -110,7 +110,8 @@ def main() -> int:
         return 3
     selected = read_json(sel_path)["selected"]
     by_key = {p["key"]: p for p in ranked}
-    assert 1 <= len(selected) <= 4 and all(s in by_key for s in selected), f"bad selection: {selected}"
+    # The brief asks for "one or two" research problems.
+    assert 1 <= len(selected) <= 2 and all(s in by_key for s in selected), f"bad selection: {selected}"
 
     # ---- stage 5: ideas ------------------------------------------------------------
     all_ideas, waiting = {}, False

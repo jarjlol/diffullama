@@ -160,3 +160,14 @@ placeholder text.
   suffered came from there.
 - **The gaps block frames the problems.** D1 passes the team's dismissal of all twelve gaps into
   the prompt, so generated problems inherit that framing.
+
+**Selection change (2026-10-08): P1 + P2 only.** P3 is dropped. The brief asks for "one or two"
+research problems, and the gate in `run_pipeline.py` is restored to ≤2 (it had been loosened to
+≤4 to admit three). P3 (candidate count × AR verifier) overlaps P2 (noise schedule) as a second
+quality–efficiency study, and none of its work had started, so no cache is discarded. Budget falls
+from 1,344 to **864 calls**; 210 distinct steps were already cached (96 problem-stage + 114
+idea-stage; a further 98 response files are orphaned forks from earlier regenerations), leaving
+**654**. Watch point: P2 lists "a simple learned schedule" among its variants; any method that
+*trains* a schedule conflicts with the inference-only constraint, which every Feasibility review
+is given.
+

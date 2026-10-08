@@ -238,7 +238,10 @@ remaining half of Q-16 — the EGR-document occurrences are still untraced.
 
 ## 2026-09-27 — questions opened by the ideation assignment
 
-### Q-18 🔴 BLOCKING (ideation) — Which model, and is the quota enough?
+### ~~Q-18 — Which model, and is the quota enough?~~ ✅ ANSWERED 2026-10-07
+Free OpenRouter models (decision-log P-7). Quota is ~200 requests/day per *account*, not per key (observed in `909f107`), so keys from separate accounts are what speeds the run up.
+
+#### Original Q-18
 See `02-decision-log.md` P-7. **Needs:** whoever owns the Gemini project to read its actual quota at
 aistudio.google.com/rate-limit, or a decision to serve an open model on the workstation.
 
