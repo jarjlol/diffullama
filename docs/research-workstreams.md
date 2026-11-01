@@ -1,7 +1,7 @@
 # Research workstreams — triggered detail
 
 > Load only when the task matches Triggers in `AGENTS.md`:
-> litreview, limitations, ideation, ResearchAgent, survey, QUAL-SG, assignment, submission.
+> litreview, limitations, ideation, ResearchAgent, codification, Arbor, survey, QUAL-SG, assignment, submission.
 
 The course project runs as several separate assignment deliverables plus one main research
 project. Each lives in its own top-level directory and is self-contained.

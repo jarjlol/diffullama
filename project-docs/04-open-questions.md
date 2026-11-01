@@ -245,7 +245,10 @@ Free OpenRouter models (decision-log P-7). Quota is per *account*, not per key �
 See `02-decision-log.md` P-7. **Needs:** whoever owns the Gemini project to read its actual quota at
 aistudio.google.com/rate-limit, or a decision to serve an open model on the workstation.
 
-### Q-19 🟡 Does implementing one of the three ideation papers satisfy the brief?
+### ~~Q-19 — Does implementing one of the three ideation papers satisfy the brief?~~ ✅ RESOLVED 2026-10-21
+The final brief lists **only ResearchAgent** for implementation, so one paper is exactly what is asked.
+
+#### Original Q-19
 The wording ("use the following literature for implementation purpose") does not say all three, and both
 earlier assignments accepted one, but it is firmer than last time. **Needs:** one line to TTV.
 

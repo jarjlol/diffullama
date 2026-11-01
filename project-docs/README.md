@@ -67,6 +67,8 @@ on the `audit/opus-review` branch.
 | `litreview/` | SOTA assignment: QUAL-SG literature-review pipeline | ✅ yes |
 | `limitations/` | Limitations assignment: multi-agent limitation pipeline (arXiv:2601.11578), the twelve gaps, and their justified dismissal | ✅ yes |
 | `ideation/` | Ideation assignment: ResearchAgent problem discovery and idea ranking (branch `assignment/research-ideation`) | ✅ yes |
+| `codification/` | Codification assignment: reference-system assessment, idea selection, and the codified idea (branch `assignment/codification`) | ✅ yes |
+| `project-docs/archive/` | Superseded design documents, kept for the record (novelty claims withdrawn) | ✅ yes |
 | `model.py`, `inf_*.py`, `DiffuLLaMA-training/`, `LLaMA-Factory/` | Upstream DiffuLLaMA code (forked) | ✅ yes |
 | `audit/` on branch `audit/opus-review` | Design-doc audit, novelty verification, decision options | ❌ **throwaway** — will be deleted |
 
@@ -86,4 +88,4 @@ on the `audit/opus-review` branch.
 - Keep entries short. This folder is read at the start of every new agent session; bloat costs everyone
   context budget.
 
-**Last updated:** 2026-09-27
+**Last updated:** 2026-11-01

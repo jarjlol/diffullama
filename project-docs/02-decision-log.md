@@ -290,3 +290,25 @@ limits. The cache is keyed by prompt, not model, so the OpenRouter idea-stage an
 **Who:** Neel cannot reach the workstation; a teammate with access runs it per
 `ideation/WORKSTATION_RUN.md`.
 
+## D-2026-11-01-a — Codification: use Arbor as the codification system
+**Decided:** of the four reference systems in the codification brief, build on **Arbor**
+(arXiv:2606.11926, `RUC-NLPIR/Arbor`).
+**Why:** it is the only one whose public code implements its paper (coordinator, executors, hypothesis
+tree, held-out merge gate). It is Apache-2.0, pip-installable, and runs on a local vLLM backend, so the
+`ideation/local/` setup can drive it. DeepScientist's and EvoScientist's repos are later products in
+which none of their papers' named mechanisms appear in any `.py` file. AutoSOTA's system was never
+released: its repo holds result archives, and its CLI is a packaged installer that drives Claude Code
+and requires a terms-of-service login. Evidence: `codification/REFERENCE_SYSTEMS.md`.
+
+## D-2026-11-01-b — Codification: idea 1.1 (P1-M1)
+**Decided:** codify idea 1.1 — layer-wise CKA between each diffusion LM and its own AR base, as a
+predictor of the accuracy recovered by reranking the diffusion LM's N candidates with a small AR scorer.
+**Why:** the brief asks whether results beat SOTA or baselines, so the idea must produce task
+performance. P2's ideas are characterisation studies with nothing to score, and three depend on the
+unreleased adaptation corpus. Within P1, 1.1 is well-defined (same architecture and tokenizer as its
+base, so the layer mapping is exact), needs no training, has none of the lineage errors in REPORT §7,
+and ranked joint-first. Runner-up: 1.2 (attention-symmetry ablation).
+**Open:** to be confirmed by the team. Six specification issues to fix during codification are listed
+in `codification/IDEA_SELECTION.md` — missing self-consistency / published baselines, length bias,
+small-N correlation, no LLaDA control, unspecified answer extraction, unchecked novelty.
+
