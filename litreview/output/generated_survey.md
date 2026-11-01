@@ -1,8 +1,9 @@
 # Diffusion Language Models: Adaptation from Autoregressive Models, Continual Pre-training, and Non-Autoregressive Text Generation
 
 *Generated survey — QUAL-SG (Bao et al., 2025) RAG-based Survey Generation task, implemented for this project.
-References numbered [1]-[48] correspond to `data/reference_brief.txt`, produced by the QUAL-SG retrieval
-pipeline (`scripts/retrieve.py`, `scripts/arxiv_fetch.py`, `scripts/rerank.py`, `scripts/merge_finalize.py`).*
+References [1]-[48] were retrieved and ranked by the QUAL-SG retrieval pipeline
+(`scripts/retrieve.py`, `scripts/arxiv_fetch.py`, `scripts/rerank.py`, `scripts/merge_finalize.py`); full
+metadata, abstracts, and per-criterion ranking scores for each are in `data/candidates_topK.json`.*
 
 ## 1. Introduction
 
@@ -269,5 +270,98 @@ during adaptation — define the near-term research agenda for this area.
 
 ## References
 
-*(Numbered [1]-[48]; full bibliographic details, abstracts, and source in `data/reference_brief.txt` and
-`data/candidates_topK.json`.)*
+[1] Xiang Lisa Li, John Thickstun, Ishaan Gulrajani, Percy Liang, Tatsunori Hashimoto (2022). Diffusion-LM Improves Controllable Text Generation. *arXiv (Cornell University)*. [arXiv:2205.14217](https://arxiv.org/abs/2205.14217)
+
+[2] Kexin Yang, Wenqiang Lei, Dayiheng Liu, Weizhen Qi, Jiancheng Lv (2021). POS-Constrained Parallel Decoding for Non-autoregressive Generation. *arXiv preprint*. [https://doi.org/10.18653/v1/2021.acl-long.467](https://doi.org/10.18653/v1/2021.acl-long.467)
+
+[3] Daisuke Oba, Hiroki Furuta, Naoaki Okazaki (2026). Diffusion-State Policy Optimization for Masked Diffusion Language Models. *arXiv (Cornell University)*. [arXiv:2602.06462](https://arxiv.org/abs/2602.06462)
+
+[4] Anej Svete, Ashish Sabharwal (2025). On the Reasoning Abilities of Masked Diffusion Language Models. *arXiv (Cornell University)*. [arXiv:2510.13117](https://arxiv.org/abs/2510.13117)
+
+[5] Paul Jünger, Justin Lovelace, Linxi Zhao, Dongyoung Go, Kilian Q. Weinberger (2026). Self-Augmenting Retrieval for Diffusion Language Models. *arXiv (Cornell University)*. [arXiv:2606.06474](https://arxiv.org/abs/2606.06474)
+
+[6] Hanchen Xia, Baoyou Chen, Yutang Ge, Guojiang Zhao, Siyu Zhu (2026). T$^\star$: Progressive Block Scaling for Masked Diffusion Language Models Through Trajectory Aware Reinforcement Learning. *arXiv (Cornell University)*. [arXiv:2601.11214](https://arxiv.org/abs/2601.11214)
+
+[7] Lifeng Shen, James Kwok (2023). Non-autoregressive Conditional Diffusion Models for Time Series Prediction. *arXiv (Cornell University)*. [arXiv:2306.05043](https://arxiv.org/abs/2306.05043)
+
+[8] Elman Mansimov, Alex Wang, Sean Welleck, Kyunghyun Cho (2019). A Generalized Framework of Sequence Generation with Application to Undirected Sequence Models. *arXiv (Cornell University)*. [arXiv:1905.12790](https://arxiv.org/abs/1905.12790)
+
+[9] Zhihui Xie, Jiacheng Ye, Lin Zheng, Jiahui Gao, Jingwei Dong, Zirui Wu, et al. (2025). Dream-Coder 7B: An Open Diffusion Language Model for Code. *arXiv (Cornell University)*. [arXiv:2509.01142](https://arxiv.org/abs/2509.01142)
+
+[10] Despoina Kosmopoulou, Efthymios Georgiou, Vaggelis Dorovatas, Georgios Paraskevopoulos, Alexandros Potamianos (2025). Masked Diffusion Language Models with Frequency-Informed Training. *arXiv (Cornell University)*. [arXiv:2509.05056](https://arxiv.org/abs/2509.05056)
+
+[11] Yichen Yang, Hong Li, Haodong Zhu, Linin Yang, Guojun Lei, Sheng Xu, et al. (2025). PartDiffuser: Part-wise 3D Mesh Generation via Discrete Diffusion. *arXiv (Cornell University)*. [arXiv:2511.18801](https://arxiv.org/abs/2511.18801)
+
+[12] Lin Zheng, Jianbo Yuan, Lei Yu, Lingpeng Kong (2023). A Reparameterized Discrete Diffusion Model for Text Generation. *arXiv (Cornell University)*. [arXiv:2302.05737](https://arxiv.org/abs/2302.05737)
+
+[13] Andrew Zhang, Anushka Sivakumar, Chiawei Tang, Chris Thomas (2025). Flexible-length Text Infilling for Discrete Diffusion Models. *arXiv (Cornell University)*. [arXiv:2506.13579](https://arxiv.org/abs/2506.13579)
+
+[14] Jaesung Tae, Hamish Ivison, Sachin Kumar, Arman Cohan (2025). TESS 2: A Large-Scale Generalist Diffusion Language Model. *arXiv (Cornell University)*. [arXiv:2502.13917](https://arxiv.org/abs/2502.13917)
+
+[15] Yuntian Deng, Alexander M. Rush (2020). Cascaded Text Generation with Markov Transformers. *arXiv (Cornell University)*. [arXiv:2006.01112](https://arxiv.org/abs/2006.01112)
+
+[16] Liran Ringel, Ameen Ali, Yaniv Romano (2026). Dependency-Guided Parallel Decoding in Discrete Diffusion Language Models. *arXiv (Cornell University)*. [arXiv:2604.02560](https://arxiv.org/abs/2604.02560)
+
+[17] Haisong Gong, Qiang Liu, Shu Wu, Liang Wang (2024). Text-Guided Molecule Generation with Diffusion Language Model. *Proceedings of the AAAI Conference on Artificial Intelligence*. [https://doi.org/10.1609/aaai.v38i1.27761](https://doi.org/10.1609/aaai.v38i1.27761)
+
+[18] Hui‐Wen Chang, Han Zhang, Jarred Barber, AJ Maschinot, José Lezama, Lu Jiang, et al. (2023). Muse: Text-To-Image Generation via Masked Generative Transformers. *arXiv (Cornell University)*. [arXiv:2301.00704](https://arxiv.org/abs/2301.00704)
+
+[19] Lingjie Chen, Yuanchen Bei, Haobo Xu, Yanjun Zhao, Yuzhong Chen, Hanghang Tong (2026). TAG-DLM: Diffusion Language Models for Text-Attributed Graph Learning. *arXiv (Cornell University)*. [arXiv:2606.31166](https://arxiv.org/abs/2606.31166)
+
+[20] Kazuki Fujii, Taishi Nakamura, Mengsay Loem, Hiroki Iida, Masanari Ohi, Kakeru Hattori, et al. (2024). Continual Pre-Training for Cross-Lingual LLM Adaptation: Enhancing Japanese Language Capabilities. *arXiv (Cornell University)*. [arXiv:2404.17790](https://arxiv.org/abs/2404.17790)
+
+[21] Lina Berrayana, Ahmed Heakl, Muhammad Abdullah Sohail, Thomas Hofmann, Salman Khan, Wei Chen (2025). Planner and Executor: Collaboration between Discrete Diffusion And Autoregressive Models in Reasoning. *arXiv (Cornell University)*. [arXiv:2510.15244](https://arxiv.org/abs/2510.15244)
+
+[22] Kun Zhou, Yifan Li, Wayne Xin Zhao, Ji-Rong Wen (2023). Diffusion-NAT: Self-Prompting Discrete Diffusion for Non-Autoregressive Text Generation. *arXiv (Cornell University)*. [arXiv:2305.04044](https://arxiv.org/abs/2305.04044)
+
+[23] Lihua Qian, Hao Zhou, Yu Bao, Mingxuan Wang, Lin Qiu, Weinan Zhang, et al. (2021). Glancing Transformer for Non-Autoregressive Neural Machine Translation. *arXiv preprint*. [https://doi.org/10.18653/v1/2021.acl-long.155](https://doi.org/10.18653/v1/2021.acl-long.155)
+
+[24] Chunqi Wang, Ji Zhang, Haiqing Chen (2018). Semi-Autoregressive Neural Machine Translation. *arXiv (Cornell University)*. [arXiv:1808.08583](https://arxiv.org/abs/1808.08583)
+
+[25] Ohad Rubin, Jonathan Berant (2021). SmBoP: Semi-autoregressive Bottom-up Semantic Parsing. *arXiv preprint*. [https://doi.org/10.18653/v1/2021.naacl-main.29](https://doi.org/10.18653/v1/2021.naacl-main.29)
+
+[26] Hayate Iso (2022). AutoTemplate: A Simple Recipe for Lexically Constrained Text Generation. *arXiv (Cornell University)*. [arXiv:2211.08387](https://arxiv.org/abs/2211.08387)
+
+[27] Yong Xie, Karan Aggarwal, Aitzaz Ahmad (2023). Efficient Continual Pre-training for Building Domain Specific Large Language Models. *arXiv (Cornell University)*. [arXiv:2311.08545](https://arxiv.org/abs/2311.08545)
+
+[28] Albert Gu, Tri Dao (2023). Mamba: Linear-Time Sequence Modeling with Selective State Spaces. *arXiv (Cornell University)*. [arXiv:2312.00752](https://arxiv.org/abs/2312.00752)
+
+[29] Zhenghao Lin, Yeyun Gong, Yelong Shen, Tong Wu, Zhihao Fan, Chen Lin, et al. (2022). Text Generation with Diffusion Language Models: A Pre-training Approach with Continuous Paragraph Denoise. *arXiv (Cornell University)*. [arXiv:2212.11685](https://arxiv.org/abs/2212.11685)
+
+[30] Subham Sekhar Sahoo, Marianne Arriola, Yair Schiff, Aaron Gokaslan, Edgar Marroquin, Justin Chiu, et al. (2024). Simple and Effective Masked Diffusion Language Models. *arXiv (Cornell University)*. [arXiv:2406.07524](https://arxiv.org/abs/2406.07524)
+
+[31] Xiaochuang Han, Sachin Kumar, Yulia Tsvetkov (2023). SSD-LM: Semi-autoregressive Simplex-based Diffusion Language Model for Text Generation and Modular Control. *arXiv preprint*. [https://doi.org/10.18653/v1/2023.acl-long.647](https://doi.org/10.18653/v1/2023.acl-long.647)
+
+[32] Zixuan Ke, Yijia Shao, Haowei Lin, Tatsuya Konishi, Gyuhak Kim, Bing Liu (2023). Continual Pre-training of Language Models. *arXiv (Cornell University)*. [arXiv:2302.03241](https://arxiv.org/abs/2302.03241)
+
+[33] Yu Bao, Hao Zhou, Jiangtao Feng, Mingxuan Wang, Shujian Huang, Jiajun Chen, et al. (2019). Non-autoregressive Transformer by Position Learning. *arXiv (Cornell University)*. [arXiv:1911.10677](https://arxiv.org/abs/1911.10677)
+
+[34] Puyuan Liu, Chenyang Huang, Lili Mou (2022). Learning Non-Autoregressive Models from Search for Unsupervised Sentence Summarization. *Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)*. [https://doi.org/10.18653/v1/2022.acl-long.545](https://doi.org/10.18653/v1/2022.acl-long.545)
+
+[35] Fei Huang, Tianhua Tao, Hao Zhou, Lei Li, Minlie Huang (2022). On the Learning of Non-Autoregressive Transformers. *arXiv (Cornell University)*. [arXiv:2206.05975](https://arxiv.org/abs/2206.05975)
+
+[36] Kshitij Gupta, Benjamin Thérien, Adam Ibrahim, Mats L. Richter, Quentin Anthony, Eugene Belilovsky, et al. (2023). Continual Pre-Training of Large Language Models: How to (re)warm your model?. *arXiv (Cornell University)*. [arXiv:2308.04014](https://arxiv.org/abs/2308.04014)
+
+[37] Bang Yang, Yuexian Zou, Fenglin Liu, Can Zhang (2021). Non-Autoregressive Coarse-to-Fine Video Captioning. *Proceedings of the AAAI Conference on Artificial Intelligence*. [https://doi.org/10.1609/aaai.v35i4.16421](https://doi.org/10.1609/aaai.v35i4.16421)
+
+[38] Yizhe Zhang, Guoyin Wang, Chunyuan Li, Zhe Gan, Chris Brockett, Bill Dolan (2020). POINTER: Constrained Progressive Text Generation via Insertion-based Generative Pre-training. *arXiv (Cornell University)*. [arXiv:2005.00558](https://arxiv.org/abs/2005.00558)
+
+[39] Jiatao Gu, James Bradbury, Caiming Xiong, Victor O. K. Li, Richard Socher (2017). Non-Autoregressive Neural Machine Translation. *arXiv (Cornell University)*. [arXiv:1711.02281](https://arxiv.org/abs/1711.02281)
+
+[40] Zhengfu He, Tianxiang Sun, Qiong Tang, Kuanning Wang, Xuanjing Huang, Xipeng Qiu (2023). DiffusionBERT: Improving Generative Masked Language Models with Diffusion Models. *arXiv preprint*. [https://doi.org/10.18653/v1/2023.acl-long.248](https://doi.org/10.18653/v1/2023.acl-long.248)
+
+[41] Yosuke Higuchi, Nanxin Chen, Yuya Fujita, Hirofumi Inaguma, Tatsuya Komatsu, Jaesong Lee, et al. (2021). A Comparative Study on Non-Autoregressive Modelings for Speech-to-Text Generation. *arXiv (Cornell University)*. [arXiv:2110.05249](https://arxiv.org/abs/2110.05249)
+
+[42] Shansan Gong, Mukai Li, Jiangtao Feng, Zhiyong Wu, LingPeng Kong (2022). DiffuSeq: Sequence to Sequence Text Generation with Diffusion Models. *arXiv (Cornell University)*. [arXiv:2210.08933](https://arxiv.org/abs/2210.08933)
+
+[43] Jiatao Gu, Xiang Kong (2021). Fully Non-autoregressive Neural Machine Translation: Tricks of the Trade. *arXiv preprint*. [https://doi.org/10.18653/v1/2021.findings-acl.11](https://doi.org/10.18653/v1/2021.findings-acl.11)
+
+[44] Yixuan Su, Deng Cai, Yan Wang, David Vandyke, Simon Baker, Piji Li, et al. (2021). Non-Autoregressive Text Generation with Pre-trained Language Models. *arXiv (Cornell University)*. [arXiv:2102.08220](https://arxiv.org/abs/2102.08220)
+
+[45] Zhifu Gao, Shiliang Zhang, Ian McLoughlin, Zhijie Yan (2022). Paraformer: Fast and Accurate Parallel Transformer for Non-autoregressive End-to-End Speech Recognition. *Interspeech 2022*. [https://doi.org/10.21437/interspeech.2022-9996](https://doi.org/10.21437/interspeech.2022-9996)
+
+[46] Zhi Qiao, Yu Zhou, Wei Jin, Wei Wang, Yuan Zhang, Ning Jiang, et al. (2021). PIMNet: A Parallel, Iterative and Mimicking Network for Scene Text Recognition. *arXiv preprint*. [https://doi.org/10.1145/3474085.3475238](https://doi.org/10.1145/3474085.3475238)
+
+[47] Qiu Ran, Yankai Lin, Peng Li, Jie Zhou (2021). Guiding Non-Autoregressive Neural Machine Translation Decoding with Reordering Information. *Proceedings of the AAAI Conference on Artificial Intelligence*. [https://doi.org/10.1609/aaai.v35i15.17618](https://doi.org/10.1609/aaai.v35i15.17618)
+
+[48] Jiaao Chen, Aston Zhang, Mu Li, Alex Smola, Diyi Yang (2023). A Cheaper and Better Diffusion Language Model with Soft-Masked Noise. *arXiv preprint*. [https://doi.org/10.18653/v1/2023.emnlp-main.289](https://doi.org/10.18653/v1/2023.emnlp-main.289)
