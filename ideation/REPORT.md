@@ -194,3 +194,39 @@ at a scratch data directory, and stops instead of retrying when the pipeline wai
 gate. `ideation/output/` was git-ignored by the root `.gitignore` (only `litreview/` and
 `limitations/` were excepted), so no deliverable could have been committed; it is now excepted.
 
+## 7. Output audit (2026-10-21) — read before using the ideas
+
+The deliverable `output/research_problems_and_ideas.md` (and its PDF) is the **unedited** output of the
+run on locally hosted models, committed from the copy the team received. The run's LLM cache and
+`data/local_probe.json` have **not yet been pushed** by the teammate who ran it, so which models
+produced it, and whether the probe passed, is not yet on record.
+
+ResearchAgent has no fact-checking step; the paper itself notes it "may hallucinate" generated ideas.
+A review of the output against primary sources found:
+
+1. **Model-lineage errors.** Dream-7B is stated to be LLaMA-2-based (ideas 1.2, 1.5, 2.1, 2.5); it is
+   Qwen2.5-7B-based. LLaDA-8B is stated to be adapted from LLaMA-3-8B (idea 1.5); it is trained from
+   scratch, and is the natural no-AR-backbone control. DiffuCoder-7B is stated to be CodeLlama-based
+   (idea 1.5); it is Qwen2.5-Coder-7B-based. "8-bit (bitsandbytes NF4)" is self-contradictory, since NF4
+   is 4-bit. These matter most for P1, whose question is how much of the AR backbone each model retains.
+2. **Unavailable data.** The P2 problem statement and ideas 2.1–2.3 train a small schedule network on
+   "a held-out slice of the adaptation corpus". DiffuLLaMA's corpus manifest was never released (gap
+   L12). A public SlimPajama/Starcoder sample is the substitute; a true held-out split cannot be
+   guaranteed.
+3. **Saturated scores.** Across the ten submitted ideas, the 100 final ratings are 78 fives and 22 fours.
+   Every idea scored Feasibility 5 and Novelty 4, including ideas with the problems above. The paper's own
+   reviewer prompt warns against "uniformly high ratings"; refining each idea three times against the
+   reviewer that then scores it plausibly drives this. The top-5 ordering is therefore weak.
+4. **Novelty not checked** — the Originality/Innovativeness ratings are the reviewer's judgement, with no
+   literature search.
+
+These are recorded rather than corrected in the deliverable. Corrections apply where an idea is carried
+forward: see `../codification/IDEA_SELECTION.md` for the idea chosen for codification (1.1, which has
+none of the lineage errors).
+
+**PDF note.** The PDF was built with pandoc + XeLaTeX. Two LaTeX typos in the generated maths
+(`\{5\%, 10\%, 20\%}` with an unescaped closing brace) were corrected for typesetting, and five
+"Why this method/design" labels were split onto their own line so the lists after them render. No
+wording changed. That layout issue comes from `scripts/render.py`, which puts a rationale beginning with
+a numbered list on the same line as its bold label; it is not yet fixed.
+

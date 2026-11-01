@@ -9,10 +9,10 @@ review, refine and rank research ideas, submitting the top 5 per problem.
 **Deliverable:** `output/research_problems_and_ideas.md` (produced once the pipeline has run).
 **Methodology, every deviation from the paper, and known risks:** [`REPORT.md`](REPORT.md).
 
-> **Status (2026-10-08).** Problem stage complete; the team selected **P1 and P2**. The idea stage
-> (768 calls) is to be run on locally hosted models on the lab workstation —
-> **[`WORKSTATION_RUN.md`](WORKSTATION_RUN.md) has the full procedure.** The earlier OpenRouter run is
-> archived (`data/llm/archive/openrouter-2026-10/`). No deliverable yet.
+> **Status (2026-11-01).** Run complete on locally hosted models; the deliverable is
+> `output/research_problems_and_ideas.md` (+ PDF), with P1 and P2 and a ranked top 5 each. **Read
+> `REPORT.md` §7 (output audit) before using it** — it lists factual errors in some ideas. The
+> run's cache and `data/local_probe.json` are still to be pushed by the teammate who ran it.
 
 ## Pipeline
 
