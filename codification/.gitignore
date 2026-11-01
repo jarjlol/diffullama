@@ -1,0 +1,2 @@
+# Candidate caches are large and regenerable; the exported Arbor repo commits them.
+rerank_task/data/*/items.jsonl

@@ -1,0 +1,21 @@
+# Arbor project config (auto-loaded from the task root). Fill in model + base_url
+# for the workstation's vLLM server; see ../README.md "Run Arbor".
+llm:
+  provider: openai-chat                 # Arbor's documented choice for a self-hosted vLLM endpoint
+  model: Qwen/Qwen3.8-27B-FP8           # whatever `vllm serve` is serving (same as the ideation run)
+  base_url: http://127.0.0.1:8000/v1
+  api_key: dummy
+  reasoning_effort: medium
+
+max_cycles: 12
+executor_max_turns: 40
+
+coordinator:
+  max_depth: 2
+  # Relative held-out gain (percent) needed to merge, same unit as Arbor's
+  # examples/algotune_knn. 1% of ~0.4 accuracy ~= 0.004, about one SE of the
+  # macro accuracy on 5 x 1319 test items. Confirm with `arbor config show`.
+  merge_threshold: 1.0
+
+ui:
+  interaction_mode: auto

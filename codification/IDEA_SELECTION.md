@@ -63,3 +63,30 @@ Arbor (`REFERENCE_SYSTEMS.md`) — the only reference system with a complete, op
 driven by the local vLLM setup from `ideation/local/`. Arbor needs a runnable evaluation script and a
 dev / held-out test split; the reranking task provides both (e.g. GSM8K train-derived dev, test as
 held-out).
+
+## How the harness resolves each issue (2026-11-01)
+
+See `README.md` and `rerank_task/` for the code.
+
+1. **Baselines.** `rerank_task/baselines.py` reports first sample, random (exact expectation),
+   majority vote (self-consistency), AR summed NLL, AR mean NLL and the oracle (hit@N).
+   - Still open: the DLM self-score reranker and the published-method comparison
+     (README §D).
+2. **Length bias.** Summed and per-token NLL are both reported. The seed `solution.py` keeps
+   the summed version on purpose, as the specified starting point Arbor must improve on.
+3. **Power.** `pipeline/analyze.py` reports Spearman with an exact permutation p-value and
+   labels it descriptive. The per-model accuracy table is the main result.
+4. **LLaDA** is included as `llada-base`, with no AR base, as the control.
+5. **Extraction** is in `rerank_task/task.py`, shared by the pipeline and eval:
+   - the candidate is cut at the next `Question:`;
+   - the answer is taken from `#### N`, then "answer is N", then the last number;
+   - grading is numeric.
+
+   HumanEval is dropped (GSM8K only).
+6. **Novelty.** Still to do (README §A).
+
+Ambiguities settled while building:
+- The AR scorer conditions on `Question: q\nAnswer:` only, without the few-shot exemplars.
+- CKA uses mean-pooled block outputs on 2000 × 128-token WikiText-103 validation segments,
+  identical token ids for both models, with the DLM bidirectional and the base causal.
+- Each model runs in its own process, because `attention_patch` is process-wide.

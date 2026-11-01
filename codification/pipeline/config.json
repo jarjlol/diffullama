@@ -1,0 +1,28 @@
+{
+  "_doc": "Pipeline settings. One record per diffusion LM. 'base' is its autoregressive origin (for CKA); null = trained from scratch (the control).",
+  "dataset": "gsm8k",
+  "n_dev": 500,
+  "n_test": 1319,
+  "_n_test": "1319 = full GSM8K test. Lower it (e.g. 500) to cut generation time; record the value used.",
+  "n_shots": 4,
+  "_n_shots": "The anchor paper evaluates math with 4-shot prompts (sec 4.4).",
+  "n_candidates": 10,
+  "gen_tokens": 256,
+  "seed": 0,
+  "models": {
+    "diffugpt-s":  {"hf": "diffusionfamily/diffugpt-s",  "backend": "diffugpt",   "base": "openai-community/gpt2",        "venv": "anchor", "steps": 64,  "logits_temp": 0.95, "top_p": 0.9},
+    "diffugpt-m":  {"hf": "diffusionfamily/diffugpt-m",  "backend": "diffugpt",   "base": "openai-community/gpt2-medium", "venv": "anchor", "steps": 64,  "logits_temp": 0.95, "top_p": 0.9},
+    "diffullama":  {"hf": "diffusionfamily/diffullama",  "backend": "diffullama", "base": "meta-llama/Llama-2-7b-hf",     "venv": "anchor", "steps": 64,  "logits_temp": 0.9,  "top_p": 0.9},
+    "dream-base":  {"hf": "Dream-org/Dream-v0-Base-7B",  "backend": "dream",      "base": "Qwen/Qwen2.5-7B",              "venv": "dream",  "steps": 256, "temperature": 0.2, "top_p": 0.95, "alg": "entropy"},
+    "llada-base":  {"hf": "GSAI-ML/LLaDA-8B-Base",       "backend": "llada",      "base": null,                           "venv": "llada",  "steps": 256, "temperature": 0.7, "remasking": "low_confidence"}
+  },
+  "_models": "Decoding settings follow each model's own recommended sampler, so they differ between models -- a stated confound. Dream: alg MUST be 'entropy' (its default 'origin' is random-order decoding). LLaDA: block_length is forced = gen_tokens (smaller values switch on semi-autoregressive decoding); temperature > 0 is required for N distinct candidates (its default 0 makes all N identical).",
+  "scorers": {
+    "gpt2":       "openai-community/gpt2",
+    "qwen0.5b":   "Qwen/Qwen2.5-0.5B",
+    "tinyllama":  "TinyLlama/TinyLlama-1.1B-intermediate-step-1431k-3T"
+  },
+  "_scorers": "Small AR scorers for reranking (idea 1.1 names GPT-2 and TinyLlama). Run in a process WITHOUT attention_patch -- see score_candidates.py.",
+  "cka": {"corpus": "wikitext-103 validation", "n_segments": 2000, "seg_tokens": 128, "pooling": "mean"},
+  "llada_generate_commit": "f2683fd9cd10721f2853bafa52f8572ae8155d0c"
+}
