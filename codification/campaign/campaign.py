@@ -365,7 +365,8 @@ def main() -> int:
             for j in jobs:
                 if j.proc:
                     os.killpg(j.proc.pid, signal.SIGTERM); log(f"ABORT sent SIGTERM to our job {j.id} (pgid {j.proc.pid})")
-            (STATE / "ABORT").unlink(); stop = True
+            # ABORT implies STOP, persistently: without the STOP file the next poll relaunched the jobs
+            (STATE / "STOP").touch(); (STATE / "ABORT").unlink(); stop = True
         disk_ok = shutil.disk_usage(HOME).free / 1e9 > MIN_FREE_DISK_GB
         # launch
         for idx in sorted(usable):
