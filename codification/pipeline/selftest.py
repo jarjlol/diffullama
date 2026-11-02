@@ -50,9 +50,9 @@ def cka_tests():
     except ImportError:
         return "CKA reference + debiased OK (torch absent: torch versions not cross-checked)"
     for A, B in ((X, R), (X, S)):
-        t, ref = cka_torch(torch.tensor(A), torch.tensor(B)), cka_reference(A, B)
+        t, ref = cka_torch(torch.tensor(A, dtype=torch.float64), torch.tensor(B, dtype=torch.float64)), cka_reference(A, B)
         assert math.isclose(t, ref, rel_tol=1e-9), (t, ref)
-        t, ref = cka_debiased_torch(torch.tensor(A), torch.tensor(B)), cka_debiased_reference(A, B)
+        t, ref = cka_debiased_torch(torch.tensor(A, dtype=torch.float64), torch.tensor(B, dtype=torch.float64)), cka_debiased_reference(A, B)
         assert math.isclose(t, ref, rel_tol=1e-9, abs_tol=1e-12), (t, ref)
     return "CKA reference and torch agree (plain + debiased); identity/scale invariance OK"
 
