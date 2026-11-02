@@ -120,8 +120,10 @@ def main() -> int:
             # The all-zero 4D mask is what generate_samples passes. It is needed for DiffuGPT too:
             # under SDPA the patched GPT-2 forward turns attention_mask=None into is_causal=True,
             # and the bias.fill_(True) in model.py only affects eager attention (checked 2026-11-02).
-            att = get_anneal_attn_mask(x.shape[1], x.shape[0], torch.bfloat16, x.device, 1.0)
-            return m.denoise_model(inputs_embeds=m.get_embeds(x), attention_mask=att, return_dict=False)
+            # mask dtype follows the embeddings, as in generate_samples: DiffuGPT runs in fp32, DiffuLLaMA in bf16
+            emb = m.get_embeds(x)
+            att = get_anneal_attn_mask(x.shape[1], x.shape[0], emb.dtype, x.device, 1.0)
+            return m.denoise_model(inputs_embeds=emb, attention_mask=att, return_dict=False)
         net = m.denoise_model
     else:
         from transformers import AutoModel
