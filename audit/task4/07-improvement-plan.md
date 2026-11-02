@@ -8,10 +8,10 @@ Ranked by value per hour. **P0** = before the Thursday submission, cheap, no ext
 
 | # | Action | Why | Cost | Who |
 |---|---|---|---|---|
-| P0-1 | Log I-13 (idea 1.1's lineage error) and the four audit fixes (C-4, C-5, C-9, C-10) in `ITERATION_1.md`, and add a "feedback given to the model" column to the issue log | the brief grades the refinement loop; we have the evidence but have not written it down (`02`) | 30 min | anyone |
+| P0-1 🟡 issues logged a5f2c02, feedback column still to add | Log I-13 (idea 1.1's lineage error) and the four audit fixes (C-4, C-5, C-9, C-10) in `ITERATION_1.md`, and add a "feedback given to the model" column to the issue log | the brief grades the refinement loop; we have the evidence but have not written it down (`02`) | 30 min | anyone |
 | P0-2 | Three-way split for Arbor: iterate on dev-A, gate on dev-B, report test once; merge threshold about 2 SE | otherwise the reported test score is selected on test (`03` C-7, `04` §4) | 1 h, edits to protected files before Arbor first runs | Aaditya / Neel |
 | P0-3 | `interaction_mode: review` and the feedback table | brief compliance (`02`) | 5 min | whoever runs Arbor |
-| P0-4 | CKA robustness: also pool positions 1…127, and add debiased CKA | protects the one novel claim from two known artefacts (`03` C-9, C-10) | 1 h of code; **must land before the hidden-state jobs launch**, which are last in the queue | Aaditya |
+| P0-4 ✅ done 97ebc8d | CKA robustness: also pool positions 1…127, and add debiased CKA | protects the one novel claim from two known artefacts (`03` C-9, C-10) | 1 h of code; **must land before the hidden-state jobs launch**, which are last in the queue | Aaditya |
 | P0-5 | Paired statistics: per-model bootstrap CI, and McNemar selector vs majority, in `baselines.py --json` or a new `stats.py` | "beats majority vote" is not a claim without them (`04` §4) | 1 h, CPU only | anyone |
 | P0-6 | Commit the pre-registered predictions (`04` §7) before the first test table | turns iteration 1 into a test, not a search | 15 min | team |
 | P0-7 | Ask atharva for a GPU window; agree a claiming convention | the campaign cannot start otherwise (`06`) | a message | Aaditya / Arjun / Aryan |

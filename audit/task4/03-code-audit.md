@@ -23,8 +23,8 @@ run, **medium** = biased result or wasted time, **low** = cosmetic or defensive.
 |---|---|---|---|---|
 | C-7 | medium | `rerank_task/research_config.yaml:18`, `eval.sh` | Arbor gates every merge on `eval.sh test`. Over 12 cycles the "held-out" score becomes a selection target, so the final test number is optimistic. With 5 × 500 test items the SE of macro accuracy is ≈ 0.01 absolute, while the merge threshold (1% relative ≈ 0.004) sits *below* noise | three-way split: iterate on dev-A, gate on dev-B (the other half of dev), report test **once** at the end. No extra generation. Also set the threshold to about 2 SE |
 | C-8 | medium | `research_config.yaml` `ui.interaction_mode: auto` | contradicts the README and the brief's feedback requirement | `review` |
-| C-9 | medium | `extract_hidden.py` pooling `out.float().mean(1)` | mean over all 128 positions includes position 0, where causal LMs park a very large "attention-sink" activation even without BOS. Linear CKA is dominated by such outlier directions, so base-vs-DLM CKA can reflect the sink, not preservation | also store the mean over positions 1…127, and report CKA both ways. It must happen before the hidden-state jobs run (they are last in the campaign queue) |
-| C-10 | medium | `measure_preservation.py` / `cka.py` | biased linear CKA with n = 2000 samples and d up to 4096 dimensions. The biased estimator is inflated when n is small relative to d, and differently so for d = 768, 1024, 3584 and 4096, which differ across models | add debiased CKA (unbiased HSIC, Song et al. 2012) next to the biased one. CPU-only, runs on the stored activations |
+| C-9 | ✅ fixed 97ebc8d | `extract_hidden.py` pooling `out.float().mean(1)` | mean over all 128 positions includes position 0, where causal LMs park a very large "attention-sink" activation even without BOS. Linear CKA is dominated by such outlier directions, so base-vs-DLM CKA can reflect the sink, not preservation | also store the mean over positions 1…127, and report CKA both ways. It must happen before the hidden-state jobs run (they are last in the campaign queue) |
+| C-10 | ✅ fixed 97ebc8d | `measure_preservation.py` / `cka.py` | biased linear CKA with n = 2000 samples and d up to 4096 dimensions. The biased estimator is inflated when n is small relative to d, and differently so for d = 768, 1024, 3584 and 4096, which differ across models | add debiased CKA (unbiased HSIC, Song et al. 2012) next to the biased one. CPU-only, runs on the stored activations |
 | C-11 | low | `generate_candidates.py:87` | `[bos] + tok.encode(prompt)` gives two BOS tokens for LLaMA tokenisers (encode adds one) | matches upstream `inf_diffullama.py:63`, so keep it for fidelity, but record it |
 | C-12 | low | `score_candidates.py:71-74` | context and answer tokenised separately (`" " + t`), so the boundary token can differ from joint tokenisation | harmless for ranking, since every candidate is treated the same; note only |
 | C-13 | low | `rerank_task/task.py:19,60` | `trim` only cuts at a *newline* + `Question:`; the last-number fallback extracts some number from almost any text, so the extraction rate overstates well-formedness | report the `####`-marker rate separately in the gate |
@@ -45,3 +45,19 @@ run, **medium** = biased result or wasted time, **low** = cosmetic or defensive.
   gold in items; `make_arbor_repo.sh` refuses a pack with a gold field.
 - **Reproducibility**: `prepare_data.py` on Blackwell regenerated `gold.jsonl` byte-for-byte (`git status` clean).
 - **Selftest** passes after every change today (CPU, mock models).
+
+## Update — P0-4 done (2026-11-02, commits 97ebc8d, 4bf0551, a5f2c02 on `assignment/codification`)
+
+- **C-9 / C-10 fixed.** `extract_hidden.py` saves `layers` (all positions, as specified) and
+  `layers_nosink` (positions 1..end). `cka.py` adds `cka_debiased_torch` (unbiased HSIC) with a
+  pure-Python reference. `measure_preservation.py` keeps the specified score as `mean` and adds three
+  variants. `analyze.py` reports Spearman and permutation p under each.
+- **Synthetic demonstration (Blackwell CPU, scorer venv):** 2000 × 768 activations, DLM = 0.6·base +
+  noise, plus one large outlier direction with independent magnitudes. Results: plain CKA, all
+  positions **0.0007**; plain, no outlier **0.537**; debiased, no outlier **0.360**. One outlier
+  direction is enough to decide linear CKA, and debiasing removes about a third of the chance
+  similarity at this n/d.
+- **C-17 (new, fixed 4bf0551).** `selftest.py` built the torch cross-check tensors as float32
+  (`torch.tensor(list)` default). The plain-CKA comparison failed at 1e-8 relative. It had never
+  run with torch installed. Now float64; the full selftest passes on Blackwell with torch 2.7.1.
+- Synced to the Blackwell clone before any hidden-state job ran (the campaign had launched nothing).
