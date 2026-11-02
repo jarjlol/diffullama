@@ -55,6 +55,7 @@ MEM_IDLE_MIB = 2000
 # ("CUDA error: the launch timed out", seen 2026-11-02 on diffugpt-m dev). Generation resumes
 # by question uid, so a retry loses at most the question in flight.
 MAX_GEN_TRIES = 8
+SECOND_JOB_MAX_MIB = 48000       # --per-gpu 2: start a second job only below this (96 GB cards)
 MIN_FREE_DISK_GB = 150
 FOREIGN_GPU_RE = re.compile(r"vllm|VLLM::|sglang|text-generation-launcher|torchrun|deepspeed", re.I)
 PREFETCH = ["diffusionfamily/diffugpt-s", "diffusionfamily/diffugpt-m", "openai-community/gpt2",
@@ -292,6 +293,7 @@ def main() -> int:
     ap.add_argument("--polls", type=int, default=0, help="stop after N polls (0 = run to completion)")
     ap.add_argument("--poll", type=int, default=60)
     ap.add_argument("--settle-min", type=float, default=20)
+    ap.add_argument("--per-gpu", type=int, default=1, help="jobs per GPU (2 only if one job leaves the GPU underused)")
     ap.add_argument("--no-prefetch", action="store_true", help="skip the built-in model download")
     a = ap.parse_args()
     (STATE / "logs").mkdir(parents=True, exist_ok=True)
@@ -359,7 +361,7 @@ def main() -> int:
                     free_since.pop(idx, None)
                 if free and time.time() - free_since[idx] >= a.settle_min * 60:
                     usable.append(idx)
-        busy = {j.gpu_index for j in jobs if j.proc}
+        busy = [j.gpu_index for j in jobs if j.proc]           # one entry per running job
         stop = (STATE / "STOP").exists()
         if (STATE / "ABORT").exists():
             for j in jobs:
@@ -370,7 +372,9 @@ def main() -> int:
         disk_ok = shutil.disk_usage(HOME).free / 1e9 > MIN_FREE_DISK_GB
         # launch
         for idx in sorted(usable):
-            if idx in busy or stop or not disk_ok:
+            # a second job shares a GPU only with --per-gpu 2 and only while it has room for one more
+            if busy.count(idx) >= a.per_gpu or (idx in busy and snap["gpus"][idx]["mem"] > SECOND_JOB_MAX_MIB) \
+                    or stop or not disk_ok:
                 continue
             ready = [j for j in jobs if j.state == "pending" and j.gpu and all(by_id[d].state == "done" for d in j.deps)]
             # A job whose weights are not fully cached waits instead of failing on a blocked download.
@@ -386,7 +390,7 @@ def main() -> int:
                 j.kw["limit"] = pick_test_limit(j, jobs, timing, max(len(usable), 1))
             cmd = command(j, c)
             if a.dry_run:
-                log(f"DRY would launch {j.id} on GPU {idx}: {' '.join(cmd)}"); busy.add(idx); j.state = "dry"; continue
+                log(f"DRY would launch {j.id} on GPU {idx}: {' '.join(cmd)}"); busy.append(idx); j.state = "dry"; continue
             env = dict(os.environ, CUDA_DEVICE_ORDER="PCI_BUS_ID", CUDA_VISIBLE_DEVICES=str(idx),
                        PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True", TOKENIZERS_PARALLELISM="false",
                        OMP_NUM_THREADS="8", HF_HUB_DISABLE_TELEMETRY="1",
@@ -396,7 +400,7 @@ def main() -> int:
             logf = open(STATE / "logs" / f"{j.id.replace(':', '_')}.log", "a")
             logf.write(f"\n=== {now():%Y-%m-%d %H:%M:%S}Z GPU {idx}: {' '.join(cmd)}\n"); logf.flush()
             j.proc = subprocess.Popen(cmd, cwd=PIPE, env=env, stdout=logf, stderr=subprocess.STDOUT, start_new_session=True)
-            j.state, j.gpu_index, j.started = "running", idx, time.time(); j.tries += 1; busy.add(idx)
+            j.state, j.gpu_index, j.started = "running", idx, time.time(); j.tries += 1; busy.append(idx)
             log(f"LAUNCH {j.id} on GPU {idx} (pid {j.proc.pid}, try {j.tries}){' limit ' + str(j.kw['limit']) if 'limit' in j.kw else ''}")
         # persist state
         (done_file).write_text(json.dumps([j.id for j in jobs if j.state == "done"]))
