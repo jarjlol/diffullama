@@ -46,8 +46,10 @@ After initial trials (fill in from the smoke runs):
 
 | # | Issue | Evidence | Fix / feedback given |
 |---|---|---|---|
-| I-11 | first-sample and oracle accuracy per model on `--limit 20` | | |
-| I-16 | | | |
+| I-11 | first-sample and oracle accuracy per model on `--limit 20` | campaign gates (Blackwell, 2026-11-02): diffugpt-s first 0% / oracle 15%, 4.1 s/question; diffugpt-m 0% / 20%, 15.9 s/question; dream-base (T 0.2) 60% / 60%, 36 s/question | DiffuGPT is at the floor, as I-9 predicted: reranking can only recover what the oracle shows. LLaDA and DiffuLLaMA pending |
+| I-16 | **Dream at its recommended temperature 0.2 gives no candidate diversity.** Reranking N = 10 identical answers recovers nothing, so Dream would add no information to the CKA-vs-recovery correlation, and the near-zero result would reflect the temperature, not preservation | Dream smoke: 2.4 distinct answers per question, first = oracle = 60%; most questions have all 10 candidates identical | Dream raised to temperature 0.7, the same as LLaDA, so the two 7B diffusion models sample alike. The 20 smoke rows at 0.2 were set aside (`dev.jsonl.t02`) and the smoke gate re-run. Stated confound: first-sample accuracy is no longer Dream's best-case number |
+| I-17 | **CKA corpus too small.** WikiText-103 validation yields only 1854 segments of 128 GPT-2 tokens; the config asks for 2000 | `hidden:diffugpt-s:dlm` failed: `corpus too small: 1854 < 2000` | Corpus is now validation, then test (both held out from training text). Also: offline, `datasets.load_dataset` ignores the HF hub cache, so the parquet files are read directly |
+| I-18 | **Blackwell GPU 0 drives the display**, and its watchdog sometimes kills a CUDA kernel | `diffugpt-m` dev: `CUDA error: the launch timed out and was terminated` after 49 min | Generation resumes by question uid; the campaign now allows 8 tries per generation job. Both cards run at their 600 W limit, so a second job per GPU gains nothing |
 
 ## Published numbers (verified 2026-11-02 from arXiv HTML full text)
 
