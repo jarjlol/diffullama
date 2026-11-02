@@ -337,7 +337,7 @@ def main() -> int:
                 j.kw["limit"] = pick_test_limit(j, jobs, timing, max(len(usable), 1))
             cmd = command(j, c)
             if a.dry_run:
-                log(f"DRY would launch {j.id} on GPU {idx}: {' '.join(cmd)}"); busy.add(idx); continue
+                log(f"DRY would launch {j.id} on GPU {idx}: {' '.join(cmd)}"); busy.add(idx); j.state = "dry"; continue
             env = dict(os.environ, CUDA_DEVICE_ORDER="PCI_BUS_ID", CUDA_VISIBLE_DEVICES=str(idx),
                        PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True", TOKENIZERS_PARALLELISM="false",
                        OMP_NUM_THREADS="8", HF_HUB_DISABLE_TELEMETRY="1")
