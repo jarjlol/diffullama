@@ -175,9 +175,11 @@ def main() -> int:
     for k, q in enumerate(todo, 1):
         prompt = build_prompt(q["question"], shots)
         hint = q["answer"] if spec["backend"] == "mock" else None     # only the mock may see gold
+        tq = time.time()
         texts = backend.sample(q["uid"], prompt, c["n_candidates"], gold_hint=hint)
         assert len(texts) == c["n_candidates"]
         append_jsonl(out, {"uid": q["uid"], "model": a.model, "question": q["question"], "prompt": prompt,
+                           "gen_seconds": round(time.time() - tq, 3),        # idea 1.1's T_gen, all N candidates
                            "candidates": [{"text": t, "answer": task.extract_answer(t)} for t in texts]})
         if k % 10 == 0 or k == len(todo):
             el = time.time() - t0

@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import time
 
 from common import WORK, append_jsonl, cfg, read_jsonl, task
 
@@ -107,9 +108,10 @@ def main() -> int:
         return 0
     sc = MockScorer() if a.scorer == "mock" else HFScorer(c["scorers"][a.scorer])
     for r in todo:
+        t0 = time.time()
         texts = [task.trim(cd["text"]) for cd in r["candidates"]]
         res = sc.nll(f"Question: {r['question']}\nAnswer:", texts)
-        append_jsonl(out, {"uid": r["uid"], "features": [
+        append_jsonl(out, {"uid": r["uid"], "score_seconds": round(time.time() - t0, 3), "features": [
             {f"ar.{a.scorer}.nll_sum": s, f"ar.{a.scorer}.n_tokens": n} for s, n in res]})
     print(f"  wrote {out}")
     return 0

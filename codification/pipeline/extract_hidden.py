@@ -56,6 +56,19 @@ def find_blocks(model):
     return best
 
 
+def check_attention(run, ids, bidirectional):
+    """Abort unless the model attends the way its role requires: a DLM must see future
+    tokens, an AR base must not. Changing the last token must (DLM) or must not (base)
+    change the outputs at earlier positions."""
+    import torch
+    x = torch.tensor([ids], device="cuda"); alt = x.clone(); alt[0, -1] = (alt[0, -1] + 7) % 30000
+    with torch.no_grad():
+        d = (run(x)[0][0, :-1].float() - run(alt)[0][0, :-1].float()).abs().max().item()
+    seen = d > 1e-2
+    assert seen == bidirectional, (f"expected {'bidirectional' if bidirectional else 'causal'} attention, "
+                                   f"but earlier outputs changed by {d:.3g} when the last token changed")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--model", required=True)
@@ -92,7 +105,10 @@ def main() -> int:
             m = DiscreteDiffusionModel.from_pretrained(hf, model=spec["base"].split("/")[-1], config=conf,
                                                        tokenizer=tok, device="cuda").to("cuda").eval()
         def run(x):
-            att = get_anneal_attn_mask(x.shape[1], x.shape[0], torch.bfloat16, x.device, 1.0) if spec["backend"] == "diffullama" else None
+            # The all-zero 4D mask is what generate_samples passes. It is needed for DiffuGPT too:
+            # under SDPA the patched GPT-2 forward turns attention_mask=None into is_causal=True,
+            # and the bias.fill_(True) in model.py only affects eager attention (checked 2026-11-02).
+            att = get_anneal_attn_mask(x.shape[1], x.shape[0], torch.bfloat16, x.device, 1.0)
             return m.denoise_model(inputs_embeds=m.get_embeds(x), attention_mask=att, return_dict=False)
         net = m.denoise_model
     else:
@@ -101,6 +117,7 @@ def main() -> int:
         def run(x):
             return net(input_ids=x)
 
+    check_attention(run, segs[0][:16], bidirectional=(a.role == "dlm"))
     name, blocks = find_blocks(net)
     pooled = [[] for _ in blocks]
     hooks = [b.register_forward_hook(lambda mod, inp, out, i=i: pooled[i].append(
