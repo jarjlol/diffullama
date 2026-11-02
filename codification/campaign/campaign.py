@@ -51,6 +51,10 @@ SMOKE_N, DEV_N, TEST_N = 20, 200, 500
 TEST_FALLBACKS = [300, 200]
 DEADLINE = dt.datetime(2026, 11, 4, 16, 30, tzinfo=dt.timezone.utc)   # Wed 22:00 IST: all generation done
 MEM_IDLE_MIB = 2000
+# GPU 0 drives the workstation's display, so its watchdog now and then kills a kernel
+# ("CUDA error: the launch timed out", seen 2026-11-02 on diffugpt-m dev). Generation resumes
+# by question uid, so a retry loses at most the question in flight.
+MAX_GEN_TRIES = 8
 MIN_FREE_DISK_GB = 150
 FOREIGN_GPU_RE = re.compile(r"vllm|VLLM::|sglang|text-generation-launcher|torchrun|deepspeed", re.I)
 PREFETCH = ["diffusionfamily/diffugpt-s", "diffusionfamily/diffugpt-m", "openai-community/gpt2",
@@ -326,10 +330,10 @@ def main() -> int:
                         refresh_report(jobs)
                     if j.kind == "hidden" and j.kw["role"] == "base":
                         measure_cka(jobs); refresh_report(jobs)
-                elif j.tries < 2:
+                elif j.tries < (MAX_GEN_TRIES if j.kind == "gen" else 2):
                     j.state = "pending"; log(f"RETRY {j.id} exit {rc} after {mins:.0f} min (log {STATE}/logs/{j.id.replace(':', '_')}.log)")
                 else:
-                    j.state = "failed"; log(f"FAILED {j.id} exit {rc} twice (log {STATE}/logs/{j.id.replace(':', '_')}.log)")
+                    j.state = "failed"; log(f"FAILED {j.id} exit {rc} after {j.tries} tries (log {STATE}/logs/{j.id.replace(':', '_')}.log)")
         # skip dependents of failures
         changed = True
         while changed:

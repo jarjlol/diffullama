@@ -32,12 +32,15 @@ N_SEG_DEFAULT = None
 
 
 def corpus_segments(tok, n, seg_len):
-    """WikiText-103 validation (needs the `datasets` package in this venv)."""
-    from datasets import load_dataset
-    ds = load_dataset("Salesforce/wikitext", "wikitext-103-raw-v1", split="validation")
+    """WikiText-103 validation, read straight from the parquet file the Hub serves.
+    Not datasets.load_dataset: offline, it ignores the HF hub cache and wants its own
+    processed cache, which the workstation cannot build (the Hub is unreachable there)."""
+    import pyarrow.parquet as pq
+    from huggingface_hub import hf_hub_download
+    path = hf_hub_download("Salesforce/wikitext", "wikitext-103-raw-v1/validation-00000-of-00001.parquet", repo_type="dataset")
     buf, segs = [], []
-    for row in ds:
-        t = row["text"].strip()
+    for t in pq.read_table(path, columns=["text"]).column("text").to_pylist():
+        t = t.strip()
         if not t or t.startswith("="):
             continue
         buf.extend(tok(" " + t, add_special_tokens=False).input_ids)
