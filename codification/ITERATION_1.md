@@ -9,7 +9,7 @@ the iteration-1 slice of it and the running log of issues found.
 | Brief | Iteration 1 deliverable | Where |
 |---|---|---|
 | Codify the best of the top-5 ideas, using LLMs | Idea 1.1 chosen; codified through Arbor (LLM edits `solution.py`, merges only on held-out gain) | `IDEA_SELECTION.md`, `REFERENCE_SYSTEMS.md`, `rerank_task/` |
-| Identify spec gaps / infeasibilities, before or after initial trials | Issue log below: I-1–I-6 before codification, I-7–I-10 and I-12 found while preparing the run, I-11 and I-13+ from the first GPU trials | this file |
+| Identify spec gaps / infeasibilities, before or after initial trials | Issue log below: I-1–I-6 before codification, I-7–I-10 and I-12–I-15 found while preparing the run, I-11 and I-16+ from the first GPU trials | this file |
 | Refine the idea by giving feedback to the model | The feedback given to Arbor, verbatim, plus its session folder | §Arbor, `.arbor/sessions/<run>/` |
 | Final results on a relevant metric and dataset | GSM8K accuracy per model: first / majority / AR-rerank / Arbor selector / oracle, plus CKA vs headroom | §Results |
 | Compare with SOTA / baseline ideas | Majority vote (self-consistency, the anchor's own SC baseline) is the bar; published base-model GSM8K numbers check generation fidelity | §Published numbers |
@@ -38,13 +38,16 @@ Found while preparing the run (2026-11-02, before any GPU trial):
 | I-9 | **No published few-shot GSM8K number exists for DiffuGPT or DiffuLLaMA.** The anchor's GSM8K column (Table 1, ∗) is after fine-tuning on augmented GSM8K-symbolic data; its few-shot/SC/hit@k study (Table 2) is on MAWPS, SATMath and TriviaQA. LLaMA2-7B itself scores 13.1 4-shot (LLaDA Table 1), so DiffuLLaMA and especially DiffuGPT-S/M may sit near the floor, which leaves little headroom to rerank | anchor full text, `litreview/data/anchor_fulltext.txt` | Expect it, measure it on the smoke run (I-11), report it. `diffusionfamily/diffullama-gsm` (the released GSM8K LoRA adapter) is a possible iteration-2 addition with real headroom |
 | I-10 | `selftest.py` fails on Windows: `bash` resolves to WSL's `System32\bash.exe` | `execvpe(/bin/bash) failed` | Not a pipeline bug (the workstation is Linux). On Windows, run with Git Bash first in the resolution order |
 | I-12 | **Dream and LLaDA at 256 denoising steps do not fit the deadline.** The diffusion samplers have no KV cache, so every step reprocesses 10 candidates × ~900 tokens. Estimated ~45 GPU-hours each on the 700-question subset (table in §Run plan) | FLOP estimate: 2 × params × tokens × steps, ~150 TFLOPS effective | Both cut to **64 steps** (4 tokens per step), the same budget as the anchor models. This costs accuracy against their published numbers, which used more steps. Stated confound |
+| I-13 | **Idea 1.1 has a model-lineage error** the selection missed: its matched scorer is "TinyLlama for LLaMA-based DLMs (DiffuLLaMA, Dream-7B, LLaDA-8B, DiffuCoder-7B)". Dream and DiffuCoder are Qwen2.5-based, and LLaDA is trained from scratch | `ideation/output/research_problems_and_ideas.md` line 67; `ideation/REPORT.md` §7 lineages | A Qwen2.5-0.5B scorer is added next to TinyLlama, so Dream gets a same-family scorer. LLaDA has no base and is the control |
+| I-14 | **DiffuGPT's CKA would have been computed with causal attention.** `extract_hidden.py` passed `attention_mask=None`. DiffuGPT loads with SDPA attention, where the patched GPT-2 forward turns `None` into `is_causal=True`, and `model.py`'s `attn.bias.fill_(True)` only affects eager attention. That inflates exactly the preservation score being measured | CPU probe on Blackwell: when the last token changes, earlier hidden states move by 0 with `None` and by 4.36 with the all-zero 4D mask | Always pass the all-zero 4D mask that `generate_samples` uses. `check_attention()` aborts unless a DLM is bidirectional and an AR base is causal |
+| I-15 | **Plain linear CKA is unreliable here in two ways.** (a) It is biased upward when n = 2000 is not much larger than d, by different amounts for widths 768–4096. (b) It is dominated by outlier directions such as the attention-sink activation causal LMs put on position 0 | synthetic check on Blackwell: one outlier direction moves CKA from 0.537 to 0.0007; debiasing moves 0.537 to 0.360 | `extract_hidden.py` also saves pooling over positions 1..end. `cka.py` adds debiased CKA (unbiased HSIC). `measure_preservation.py` records all four variants, and `analyze.py` reports the correlation under each. The specified score stays primary; if the ranking changes under the variants, it is not reported as preservation |
 
 After initial trials (fill in from the smoke runs):
 
 | # | Issue | Evidence | Fix / feedback given |
 |---|---|---|---|
 | I-11 | first-sample and oracle accuracy per model on `--limit 20` | | |
-| I-13 | | | |
+| I-16 | | | |
 
 ## Published numbers (verified 2026-11-02 from arXiv HTML full text)
 

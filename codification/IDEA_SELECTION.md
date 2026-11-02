@@ -90,3 +90,12 @@ Ambiguities settled while building:
 - CKA uses mean-pooled block outputs on 2000 × 128-token WikiText-103 validation segments,
   identical token ids for both models, with the DLM bidirectional and the base causal.
 - Each model runs in its own process, because `attention_patch` is process-wide.
+
+## Correction (2026-11-02)
+
+The table above says idea 1.1 has "no factual errors found". That is wrong. Its matched-scorer
+definition calls Dream-7B, LLaDA-8B and DiffuCoder-7B "LLaMA-based" (idea text, line 67), which
+is the same lineage error recorded for the other ideas in `ideation/REPORT.md` §7. The
+codification already works around it: a Qwen2.5-0.5B scorer gives Dream a same-family scorer, and
+LLaDA has no base and serves as the control. Logged as I-13 in `ITERATION_1.md`. The choice of 1.1
+stands, because the error is in a secondary control, not in the method.
