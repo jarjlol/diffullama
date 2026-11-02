@@ -34,7 +34,7 @@ def run(args, env, cwd=HERE):
 
 
 def cka_tests():
-    from cka import cka_reference, cka_torch
+    from cka import cka_debiased_reference, cka_debiased_torch, cka_reference, cka_torch
     rng = random.Random(0); n, d = 40, 6
     X = [[rng.gauss(0, 1) for _ in range(d)] for _ in range(n)]
     R = [[rng.gauss(0, 1) for _ in range(d + 2)] for _ in range(n)]
@@ -42,14 +42,19 @@ def cka_tests():
     assert abs(cka_reference(X, X) - 1) < 1e-9
     assert abs(cka_reference(X, S) - 1) < 1e-9
     assert cka_reference(X, R) < 0.5
+    assert abs(cka_debiased_reference(X, X) - 1) < 1e-9
+    assert abs(cka_debiased_reference(X, S) - 1) < 1e-9     # U-centring removes the shift
+    assert abs(cka_debiased_reference(X, R)) < cka_reference(X, R), "debiasing should shrink chance similarity"
     try:
         import torch
     except ImportError:
-        return "CKA reference OK (torch absent: torch version not cross-checked)"
+        return "CKA reference + debiased OK (torch absent: torch versions not cross-checked)"
     for A, B in ((X, R), (X, S)):
         t, ref = cka_torch(torch.tensor(A), torch.tensor(B)), cka_reference(A, B)
         assert math.isclose(t, ref, rel_tol=1e-9), (t, ref)
-    return "CKA reference and torch agree; identity/scale invariance OK"
+        t, ref = cka_debiased_torch(torch.tensor(A), torch.tensor(B)), cka_debiased_reference(A, B)
+        assert math.isclose(t, ref, rel_tol=1e-9, abs_tol=1e-12), (t, ref)
+    return "CKA reference and torch agree (plain + debiased); identity/scale invariance OK"
 
 
 def main() -> int:
@@ -89,7 +94,19 @@ def main() -> int:
         assert json.loads(an)["per_scorer"]["ar.mock.sum"]["n_models"] == 1
         from analyze import spearman
         assert abs(spearman([1, 2, 3, 4], [10, 20, 30, 40]) - 1) < 1e-12 and abs(spearman([1, 2, 3], [3, 2, 1]) + 1) < 1e-12
-        print("analyze: join + Spearman OK")
+        # three fake models: the CKA-variant correlations must be computed and come out exact
+        pres = {m: {"mean": c, "per_layer": [c], "variants": {"mean_debiased": {"mean": c - 0.1}, "mean_nosink": {"mean": 1 - c}}}
+                for m, c in (("a", .9), ("b", .7), ("c", .5))}
+        (work / "preservation.json").write_text(json.dumps(pres), encoding="utf-8")
+        fake = ("import sys, analyze, baselines\n"
+                "baselines.run = lambda s: {m: {'first': .1, 'majority': .2, 'oracle': .5, 'ar.x.sum': a, 'n': 9,"
+                " '_headroom': {'ar.x.sum': (a - .1) / .4}} for m, a in (('a', .4), ('b', .3), ('c', .2))}\n"
+                "sys.argv = ['analyze.py', '--json']; analyze.main()\n")
+        rep = json.loads(run([PY, "-c", fake], env))["per_scorer"]["ar.x.sum"]
+        assert abs(rep["spearman"] - 1) < 1e-12 and rep["n_models"] == 3, rep
+        assert abs(rep["by_cka_variant"]["mean_debiased"]["spearman"] - 1) < 1e-12
+        assert abs(rep["by_cka_variant"]["mean_nosink"]["spearman"] + 1) < 1e-12
+        print("analyze: join + Spearman + CKA-variant robustness OK")
 
         exp = run(["bash", str(HERE.parent / "make_arbor_repo.sh"), str(tmp / "arbor_repo")], env)
         assert (tmp / "arbor_repo" / ".git").is_dir() and "correctness: PASS" in exp

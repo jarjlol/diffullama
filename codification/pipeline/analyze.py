@@ -72,6 +72,13 @@ def main() -> int:
             if len(with_base) >= 3:
                 xs, ys = [x["cka"] for x in with_base], [x["headroom"] for x in with_base]
                 out["spearman"], out["perm_p"] = spearman(xs, ys), perm_p(xs, ys)
+                # Robustness: the same correlation under each CKA variant (debiased, without position 0).
+                out["by_cka_variant"] = {}
+                for v in sorted({v for x in with_base for v in (pres[x["model"]].get("variants") or {})}):
+                    pts = [((pres[x["model"]]["variants"].get(v) or {}).get("mean"), x["headroom"]) for x in with_base]
+                    pts = [p for p in pts if p[0] is not None]
+                    if len(pts) >= 3:
+                        out["by_cka_variant"][v] = {"spearman": spearman(*zip(*pts)), "perm_p": perm_p(*map(list, zip(*pts))), "n": len(pts)}
             report["per_scorer"][key] = out
     if a.json:
         print(json.dumps(report, indent=2)); return 0
@@ -85,6 +92,8 @@ def main() -> int:
         if "spearman" in out:
             print(f"  Spearman(CKA, headroom) = {out['spearman']:+.3f}, exact permutation p = {out['perm_p']:.3f}, "
                   f"n = {out['n_models']} models  -- descriptive only at this n")
+            for v, r in out.get("by_cka_variant", {}).items():
+                print(f"    with {v:<22} rho = {r['spearman']:+.3f}, p = {r['perm_p']:.3f}, n = {r['n']}")
         else:
             print(f"  only {out['n_models']} models with both CKA and headroom: no correlation reported")
     return 0

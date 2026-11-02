@@ -11,6 +11,11 @@ mean-pooled over the segment's tokens. Hooks (not output_hidden_states) because 
 anchor's wrapper ignores that flag, and because HF applies the final norm to the last
 hidden state -- hooks give block i of the DLM and block i of the base the same treatment.
 
+Two poolings are saved: over all positions (`layers`, the idea as specified) and over
+positions 1..end (`layers_nosink`). Causal LMs put a very large "attention sink" activation
+on the first position even without a BOS token, and linear CKA is dominated by such outlier
+directions, so the all-positions CKA can measure the sink rather than preservation.
+
 Inputs are identical token ids for both roles: the dlm run writes them, the base run
 reads them back and asserts the tokenizer reproduces them.
   * DLM input: the clean segment, bidirectional attention (the fully-unmasked final state).
@@ -119,16 +124,22 @@ def main() -> int:
 
     check_attention(run, segs[0][:16], bidirectional=(a.role == "dlm"))
     name, blocks = find_blocks(net)
-    pooled = [[] for _ in blocks]
-    hooks = [b.register_forward_hook(lambda mod, inp, out, i=i: pooled[i].append(
-        (out[0] if isinstance(out, tuple) else out).float().mean(1).cpu())) for i, b in enumerate(blocks)]
+    pooled = [[] for _ in blocks]; pooled_ns = [[] for _ in blocks]
+
+    def capture(i):
+        def hook(mod, inp, out):
+            h = (out[0] if isinstance(out, tuple) else out).float()
+            pooled[i].append(h.mean(1).cpu()); pooled_ns[i].append(h[:, 1:].mean(1).cpu())
+        return hook
+    hooks = [b.register_forward_hook(capture(i)) for i, b in enumerate(blocks)]
     with torch.no_grad():
         for s in range(0, len(segs), 8):
             run(torch.tensor(segs[s:s + 8], device="cuda"))
     for h in hooks:
         h.remove()
     layers = torch.stack([torch.cat(p) for p in pooled]).half()            # L x n x d
-    torch.save({"hf": hf, "blocks": name, "layers": layers}, out_dir / f"{a.role}.pt")
+    layers_ns = torch.stack([torch.cat(p) for p in pooled_ns]).half()      # same, without position 0
+    torch.save({"hf": hf, "blocks": name, "layers": layers, "layers_nosink": layers_ns}, out_dir / f"{a.role}.pt")
     print(f"{a.model}/{a.role}: {hf}  {layers.shape[0]} blocks x {layers.shape[1]} segments x {layers.shape[2]} dims")
     return 0
 
