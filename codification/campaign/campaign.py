@@ -293,6 +293,8 @@ def main() -> int:
     ap.add_argument("--polls", type=int, default=0, help="stop after N polls (0 = run to completion)")
     ap.add_argument("--poll", type=int, default=60)
     ap.add_argument("--settle-min", type=float, default=20)
+    ap.add_argument("--warm-start", action="store_true",
+                    help="GPUs idle at the first poll count as settled; only for restarting our own campaign")
     ap.add_argument("--per-gpu", type=int, default=1, help="jobs per GPU (2 only if one job leaves the GPU underused)")
     ap.add_argument("--no-prefetch", action="store_true", help="skip the built-in model download")
     a = ap.parse_args()
@@ -356,7 +358,9 @@ def main() -> int:
             for idx, g in snap["gpus"].items():
                 free = not g["foreign"] and (g["mem"] - g["our_mem"]) < MEM_IDLE_MIB and not snap["foreign_servers"]
                 if free:
-                    free_since.setdefault(idx, time.time())
+                    # --warm-start: a GPU we just freed ourselves needs no wait; one another user
+                    # leaves later still waits the full settle time
+                    free_since.setdefault(idx, time.time() - (a.settle_min * 60 if a.warm_start and polls == 1 else 0))
                 else:
                     free_since.pop(idx, None)
                 if free and time.time() - free_since[idx] >= a.settle_min * 60:
