@@ -9,7 +9,7 @@ the iteration-1 slice of it and the running log of issues found.
 | Brief | Iteration 1 deliverable | Where |
 |---|---|---|
 | Codify the best of the top-5 ideas, using LLMs | Idea 1.1 chosen; codified through Arbor (LLM edits `solution.py`, merges only on held-out gain) | `IDEA_SELECTION.md`, `REFERENCE_SYSTEMS.md`, `rerank_task/` |
-| Identify spec gaps / infeasibilities, before or after initial trials | Issue log below: I-1–I-6 before codification, I-7–I-10 found while preparing the run, I-11+ from the first GPU trials | this file |
+| Identify spec gaps / infeasibilities, before or after initial trials | Issue log below: I-1–I-6 before codification, I-7–I-10 and I-12 found while preparing the run, I-11 and I-13+ from the first GPU trials | this file |
 | Refine the idea by giving feedback to the model | The feedback given to Arbor, verbatim, plus its session folder | §Arbor, `.arbor/sessions/<run>/` |
 | Final results on a relevant metric and dataset | GSM8K accuracy per model: first / majority / AR-rerank / Arbor selector / oracle, plus CKA vs headroom | §Results |
 | Compare with SOTA / baseline ideas | Majority vote (self-consistency, the anchor's own SC baseline) is the bar; published base-model GSM8K numbers check generation fidelity | §Published numbers |
@@ -37,13 +37,14 @@ Found while preparing the run (2026-11-02, before any GPU trial):
 | I-8 | DiffuLLaMA's CKA base `meta-llama/Llama-2-7b-hf` is gated (manual approval) | HF API | Use `NousResearch/Llama-2-7b-hf`. Both safetensors shards and `tokenizer.model` have identical SHA-256 to Meta's (HF API `?blobs=true`) |
 | I-9 | **No published few-shot GSM8K number exists for DiffuGPT or DiffuLLaMA.** The anchor's GSM8K column (Table 1, ∗) is after fine-tuning on augmented GSM8K-symbolic data; its few-shot/SC/hit@k study (Table 2) is on MAWPS, SATMath and TriviaQA. LLaMA2-7B itself scores 13.1 4-shot (LLaDA Table 1), so DiffuLLaMA and especially DiffuGPT-S/M may sit near the floor, which leaves little headroom to rerank | anchor full text, `litreview/data/anchor_fulltext.txt` | Expect it, measure it on the smoke run (I-11), report it. `diffusionfamily/diffullama-gsm` (the released GSM8K LoRA adapter) is a possible iteration-2 addition with real headroom |
 | I-10 | `selftest.py` fails on Windows: `bash` resolves to WSL's `System32\bash.exe` | `execvpe(/bin/bash) failed` | Not a pipeline bug (the workstation is Linux). On Windows, run with Git Bash first in the resolution order |
+| I-12 | **Dream and LLaDA at 256 denoising steps do not fit the deadline.** The diffusion samplers have no KV cache, so every step reprocesses 10 candidates × ~900 tokens. Estimated ~45 GPU-hours each on the 700-question subset (table in §Run plan) | FLOP estimate: 2 × params × tokens × steps, ~150 TFLOPS effective | Both cut to **64 steps** (4 tokens per step), the same budget as the anchor models. This costs accuracy against their published numbers, which used more steps. Stated confound |
 
 After initial trials (fill in from the smoke runs):
 
 | # | Issue | Evidence | Fix / feedback given |
 |---|---|---|---|
 | I-11 | first-sample and oracle accuracy per model on `--limit 20` | | |
-| I-12 | | | |
+| I-13 | | | |
 
 ## Published numbers (verified 2026-11-02 from arXiv HTML full text)
 
@@ -58,7 +59,8 @@ After initial trials (fill in from the smoke runs):
 
 Our first-sample accuracy is not expected to match these exactly. Our samplers run at
 temperature > 0 to get 10 distinct candidates, LLaDA runs fully non-autoregressive
-(block length = generation length), and Dream is 4-shot here, not 8. Report the gap as a
+(block length = generation length), Dream is 4-shot here, not 8, and both run 64 steps
+for 256 tokens (I-12). Report the gap as a
 fidelity check, not as a reproduction.
 
 ## Run plan for Thursday
@@ -77,8 +79,23 @@ Order is cheapest first, so problems surface before the 7B runs:
    `baselines.py --split dev`. A model whose oracle is ≈ 0 has no headroom to study. Record it
    and decide whether to keep it before spending GPU hours on it.
 3. **Timing gate.** `generate_candidates.py` prints s/question every 10 questions. Multiply
-   by 700 (200 dev + 500 test) per model and write the estimate here before launching.
+   by 700 (200 dev + 500 test) per model and replace the estimate below before launching.
    If the 7B total does not fit before Wednesday night, cut `test` to 300, never `dev` below 200.
+
+   Paper estimate (2026-11-02, not measured; 2 × params × tokens × steps at ~150 TFLOPS
+   effective, so trust it to about 2× either way):
+
+   | Model | Steps | s/question | 700 questions |
+   |---|---|---|---|
+   | diffugpt-s | 64 | ~1 | ~15 min |
+   | diffugpt-m | 64 | ~3 | ~35–60 min |
+   | diffullama | 64 | ~50 | ~10 h |
+   | dream-base | 64 (was 256: ~43 h) | ~55 | ~11 h |
+   | llada-base | 64 (was 256: ~47 h) | ~60 | ~12 h |
+   | scorers + CKA | — | — | < 1 h total |
+
+   About 34 GPU-hours in all, about 23 h with `test` cut to 300 for the three 7B models.
+   With both cards free, run two 7B models side by side, one per card.
 4. **Full subset runs**: diffugpt-m, diffugpt-s, diffullama, dream-base, llada-base.
 5. **Scoring**: all three scorers (`gpt2`, `qwen0.5b`, `tinyllama`) on both splits. These are small and fast.
 6. **CKA** for the four models with a base (README §B step 5).
