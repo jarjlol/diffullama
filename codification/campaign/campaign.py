@@ -345,6 +345,15 @@ def main() -> int:
             for j in jobs:
                 if j.state == "pending" and any(by_id[d].state in ("failed", "skipped") for d in j.deps):
                     j.state = "skipped"; changed = True; log(f"SKIP {j.id}: a dependency failed")
+        # Jobs listed in external.json run on another machine (ada): never launched here, and done
+        # once their rows have been copied into this clone's candidates file.
+        ext_file = STATE / "external.json"
+        external = set(json.loads(ext_file.read_text())) if ext_file.exists() else set()
+        for j in jobs:
+            if j.id in external and j.state == "pending" and j.kind == "gen":
+                out = PIPE / "work" / "candidates" / j.model / f"{j.kw['split']}.jsonl"
+                if len({r["uid"] for r in read_jsonl(out)}) >= j.kw["limit"]:
+                    j.state = "done"; log(f"DONE {j.id} (external, {j.kw['limit']} rows copied in)")
         # CPU gates
         for j in jobs:
             if j.kind == "gate" and j.state == "pending" and all(by_id[d].state == "done" for d in j.deps):
@@ -386,7 +395,7 @@ def main() -> int:
             if missing and missing != last_missing:
                 log(f"WAITING for downloads: {sorted(missing)}")
             last_missing = missing
-            ready = [j for j in ready if not (set(repos_needed(j, c)) & missing)]
+            ready = [j for j in ready if not (set(repos_needed(j, c)) & missing) and j.id not in external]
             if not ready:
                 break
             j = ready[0]
