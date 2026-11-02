@@ -10,13 +10,13 @@
   "gen_tokens": 256,
   "seed": 0,
   "models": {
-    "diffugpt-s":  {"hf": "diffusionfamily/diffugpt-s",  "backend": "diffugpt",   "base": "openai-community/gpt2",        "venv": "anchor", "steps": 64,  "logits_temp": 0.95, "top_p": 0.9},
+    "diffugpt-s":  {"hf": "diffusionfamily/diffugpt-s",  "backend": "diffugpt",   "base": "openai-community/gpt2",        "venv": "anchor", "steps": 64,  "logits_temp": 0.95, "top_p": 0.9, "n_shots": 1, "gen_tokens": 192},
     "diffugpt-m":  {"hf": "diffusionfamily/diffugpt-m",  "backend": "diffugpt",   "base": "openai-community/gpt2-medium", "venv": "anchor", "steps": 64,  "logits_temp": 0.95, "top_p": 0.9},
-    "diffullama":  {"hf": "diffusionfamily/diffullama",  "backend": "diffullama", "base": "meta-llama/Llama-2-7b-hf",     "venv": "anchor", "steps": 64,  "logits_temp": 0.9,  "top_p": 0.9},
+    "diffullama":  {"hf": "diffusionfamily/diffullama",  "backend": "diffullama", "base": "NousResearch/Llama-2-7b-hf",   "venv": "anchor", "steps": 64,  "logits_temp": 0.9,  "top_p": 0.9},
     "dream-base":  {"hf": "Dream-org/Dream-v0-Base-7B",  "backend": "dream",      "base": "Qwen/Qwen2.5-7B",              "venv": "dream",  "steps": 256, "temperature": 0.2, "top_p": 0.95, "alg": "entropy"},
     "llada-base":  {"hf": "GSAI-ML/LLaDA-8B-Base",       "backend": "llada",      "base": null,                           "venv": "llada",  "steps": 256, "temperature": 0.7, "remasking": "low_confidence"}
   },
-  "_models": "Decoding settings follow each model's own recommended sampler, so they differ between models -- a stated confound. Dream: alg MUST be 'entropy' (its default 'origin' is random-order decoding). LLaDA: block_length is forced = gen_tokens (smaller values switch on semi-autoregressive decoding); temperature > 0 is required for N distinct candidates (its default 0 makes all N identical).",
+  "_models": "Decoding settings follow each model's own recommended sampler, so they differ between models -- a stated confound. Dream: alg MUST be 'entropy' (its default 'origin' is random-order decoding). LLaDA: block_length is forced = gen_tokens (smaller values switch on semi-autoregressive decoding); temperature > 0 is required for N distinct candidates (its default 0 makes all N identical). A model may override n_shots and gen_tokens: diffugpt-s was adapted at context 512 (anchor App. B, training table) and every 4-shot prompt overflows it, so it runs 1-shot with 192 new tokens (0 of 1319 test prompts overflow; GSM8K gold solutions are 181 GPT-2 tokens at p99). diffullama's base is the ungated NousResearch copy of meta-llama/Llama-2-7b-hf: both safetensors shards and tokenizer.model have identical SHA-256 (checked 2026-11-02 via the HF API).",
   "scorers": {
     "gpt2":       "openai-community/gpt2",
     "qwen0.5b":   "Qwen/Qwen2.5-0.5B",

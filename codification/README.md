@@ -9,6 +9,9 @@ representation the DLM preserves (layer-wise linear CKA).
 (`REFERENCE_SYSTEMS.md`). Arbor's LLM, a local vLLM server, edits `rerank_task/solution.py`
 (the selection rule) and iterates on dev. It keeps a change only when held-out test improves.
 
+**Iteration 1** (due 2026-11-05): scope, issue log, verified published numbers and the
+subset run plan are in `ITERATION_1.md`.
+
 ## Layout
 
 ```
@@ -38,9 +41,9 @@ apart from the real models, against temp copies.
 
 ### A. Before the workstation (anyone)
 
-1. **Request Llama-2 access** for `meta-llama/Llama-2-7b-hf` on Hugging Face. It is gated
-   and approved by hand, and it is needed only as DiffuLLaMA's AR base for CKA. Without it,
-   DiffuLLaMA has no CKA score and the correlation drops to three models.
+1. ~~**Request Llama-2 access**~~ Not needed (2026-11-02). `config.json` now uses the ungated
+   `NousResearch/Llama-2-7b-hf`; both safetensors shards and `tokenizer.model` have the same
+   SHA-256 as `meta-llama/Llama-2-7b-hf` (HF API, `?blobs=true`).
 2. **Novelty check (issue 6).** Start with the anchor authors' later work, then the two
    litreview papers that already rerank DLM output with an AR model. The claim to defend is
    the preservation → gain link, not reranking itself.

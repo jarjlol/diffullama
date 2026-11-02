@@ -157,13 +157,17 @@ def main() -> int:
     a = ap.parse_args()
     c = cfg()
     spec = {"backend": "mock"} if a.model == "mock" else c["models"][a.model]
+    # Per-model overrides: DiffuGPT-S was adapted at context 512, which a 4-shot prompt
+    # alone exceeds (median 581 GPT-2 tokens), so it runs 1-shot with fewer new tokens.
+    c = {**c, "gen_tokens": spec.get("gen_tokens", c["gen_tokens"])}
     shots = json.loads((WORK / "data" / "shots.json").read_text(encoding="utf-8"))
+    shots = shots[:spec.get("n_shots", c["n_shots"])]
     qs = read_jsonl(WORK / "data" / f"{a.split}.jsonl")
     qs = qs[:a.limit] if a.limit else qs
     out = WORK / "candidates" / a.model / f"{a.split}.jsonl"
     done = {r["uid"] for r in read_jsonl(out)} if out.exists() else set()
     todo = [q for q in qs if q["uid"] not in done]
-    print(f"{a.model}/{a.split}: {len(done)} done, {len(todo)} to go")
+    print(f"{a.model}/{a.split}: {len(done)} done, {len(todo)} to go  ({len(shots)}-shot, {c['gen_tokens']} new tokens)")
     if not todo:
         return 0
     backend = BACKENDS[spec["backend"]](a.model, spec, c)
