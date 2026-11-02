@@ -75,7 +75,7 @@ class Anchor:
             self.model = DiscreteDiffusionModel(model=base, config=conf, tokenizer=self.tok, device="cuda").to("cuda")
             self.max_len = 2048
         else:
-            self.model = DiscreteDiffusionModel.from_pretrained(spec["hf"], model=spec["base"].split("/")[-1],
+            self.model = DiscreteDiffusionModel.from_pretrained(spec["hf"], model=spec["base"],
                                                                 config=conf, tokenizer=self.tok, device="cuda").to("cuda")
             self.max_len = conf.task_specific_params["text-generation"]["max_length"]
         self.args = types.SimpleNamespace(diffusion_steps=spec["steps"], logits_temp=spec["logits_temp"],

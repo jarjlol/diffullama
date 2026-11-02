@@ -107,7 +107,7 @@ def main() -> int:
             base = LlamaForCausalLM.from_pretrained(hf, torch_dtype=torch.bfloat16, _attn_implementation="eager")
             m = DiscreteDiffusionModel(model=base, config=conf, tokenizer=tok, device="cuda").to("cuda").eval()
         else:
-            m = DiscreteDiffusionModel.from_pretrained(hf, model=spec["base"].split("/")[-1], config=conf,
+            m = DiscreteDiffusionModel.from_pretrained(hf, model=spec["base"], config=conf,
                                                        tokenizer=tok, device="cuda").to("cuda").eval()
         def run(x):
             # The all-zero 4D mask is what generate_samples passes. It is needed for DiffuGPT too:

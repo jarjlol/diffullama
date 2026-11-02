@@ -170,6 +170,42 @@ def command(job: Job, c: dict) -> list[str]:
     raise ValueError(job.kind)
 
 
+HF_HUB = Path(os.environ.get("HF_HOME", HOME / ".cache" / "huggingface")) / "hub"
+
+
+def cached(repo: str) -> bool:
+    """True if a complete snapshot of `repo` is in the local HF cache (every indexed shard present)."""
+    if repo.startswith("dataset:"):
+        return any(HF_HUB.glob(f"datasets--{repo[8:].replace('/', '--')}/snapshots/*/*"))
+    for snap in (HF_HUB / f"models--{repo.replace('/', '--')}" / "snapshots").glob("*"):
+        if not (snap / "config.json").exists():
+            continue
+        for index in ("model.safetensors.index.json", "pytorch_model.bin.index.json"):
+            if (snap / index).exists():
+                shards = set(json.loads((snap / index).read_text())["weight_map"].values())
+                if all((snap / s).exists() for s in shards):
+                    return True
+                break
+        else:
+            if any(snap.glob("*.safetensors")) or any(snap.glob("*.bin")):
+                return True
+    return False
+
+
+def repos_needed(job: Job, c: dict) -> list[str]:
+    spec = c["models"][job.model]
+    anchor_base = [spec["base"]] if spec["backend"] == "diffugpt" else []   # DiscreteDiffusionModel reads its config
+    if job.kind == "gen":
+        return [spec["hf"]] + anchor_base
+    if job.kind == "hidden" and job.kw["role"] == "dlm":
+        return [spec["hf"], "dataset:Salesforce/wikitext"] + anchor_base
+    if job.kind == "hidden":
+        return [spec["base"]]
+    if job.kind == "score":
+        return [c["scorers"][job.kw["scorer"]]]
+    return []
+
+
 def read_jsonl(p: Path) -> list[dict]:
     if not p.exists():
         return []
@@ -252,6 +288,7 @@ def main() -> int:
     ap.add_argument("--polls", type=int, default=0, help="stop after N polls (0 = run to completion)")
     ap.add_argument("--poll", type=int, default=60)
     ap.add_argument("--settle-min", type=float, default=20)
+    ap.add_argument("--no-prefetch", action="store_true", help="skip the built-in model download")
     a = ap.parse_args()
     (STATE / "logs").mkdir(parents=True, exist_ok=True)
     lock = open(STATE / "lock", "w")
@@ -266,8 +303,9 @@ def main() -> int:
             by_id[jid].state = "done"
     timing = json.loads((STATE / "timing.json").read_text()) if (STATE / "timing.json").exists() else {}
     free_since: dict[int, float] = {}
+    last_missing: set[str] = set()
     prefetch = None
-    if not a.dry_run:
+    if not a.dry_run and not a.no_prefetch:
         script = "; ".join(f"from huggingface_hub import snapshot_download as s; s('{r}')" for r in PREFETCH)
         prefetch = subprocess.Popen(["nice", "-n", "10", py("scorer"), "-c", script], stdout=open(STATE / "logs" / "prefetch.log", "a"),
                                     stderr=subprocess.STDOUT, start_new_session=True)
@@ -330,6 +368,12 @@ def main() -> int:
             if idx in busy or stop or not disk_ok:
                 continue
             ready = [j for j in jobs if j.state == "pending" and j.gpu and all(by_id[d].state == "done" for d in j.deps)]
+            # A job whose weights are not fully cached waits instead of failing on a blocked download.
+            missing = {r for j in ready for r in repos_needed(j, c) if not cached(r)}
+            if missing and missing != last_missing:
+                log(f"WAITING for downloads: {sorted(missing)}")
+            last_missing = missing
+            ready = [j for j in ready if not (set(repos_needed(j, c)) & missing)]
             if not ready:
                 break
             j = ready[0]
@@ -340,7 +384,10 @@ def main() -> int:
                 log(f"DRY would launch {j.id} on GPU {idx}: {' '.join(cmd)}"); busy.add(idx); j.state = "dry"; continue
             env = dict(os.environ, CUDA_DEVICE_ORDER="PCI_BUS_ID", CUDA_VISIBLE_DEVICES=str(idx),
                        PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True", TOKENIZERS_PARALLELISM="false",
-                       OMP_NUM_THREADS="8", HF_HUB_DISABLE_TELEMETRY="1")
+                       OMP_NUM_THREADS="8", HF_HUB_DISABLE_TELEMETRY="1",
+                       # jobs start only once their weights are cached (see cached()); offline mode keeps
+                       # them off the network, where a TLS-intercepting firewall breaks HF requests
+                       HF_HUB_OFFLINE="1", HF_DATASETS_OFFLINE="1")
             logf = open(STATE / "logs" / f"{j.id.replace(':', '_')}.log", "a")
             logf.write(f"\n=== {now():%Y-%m-%d %H:%M:%S}Z GPU {idx}: {' '.join(cmd)}\n"); logf.flush()
             j.proc = subprocess.Popen(cmd, cwd=PIPE, env=env, stdout=logf, stderr=subprocess.STDOUT, start_new_session=True)
