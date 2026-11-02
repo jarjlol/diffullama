@@ -154,6 +154,8 @@ def main() -> int:
     ap.add_argument("--model", required=True, help="a key of config.json 'models', or 'mock'")
     ap.add_argument("--split", choices=["dev", "test"], required=True)
     ap.add_argument("--limit", type=int, default=0, help="first N questions only (smoke tests)")
+    ap.add_argument("--reverse", action="store_true",
+                    help="work from the last question back, so a second machine can share the split")
     a = ap.parse_args()
     c = cfg()
     spec = {"backend": "mock"} if a.model == "mock" else c["models"][a.model]
@@ -165,14 +167,31 @@ def main() -> int:
     qs = read_jsonl(WORK / "data" / f"{a.split}.jsonl")
     qs = qs[:a.limit] if a.limit else qs
     out = WORK / "candidates" / a.model / f"{a.split}.jsonl"
+    # Rows another machine generated for this split (same model, same settings), copied in while
+    # this run goes: skipped here, then merged into `out` at the end.
+    ext = out.with_name(f"{a.split}.ext.jsonl")
+    ext_uids = lambda: {r["uid"] for r in read_jsonl(ext)} if ext.exists() else set()
     done = {r["uid"] for r in read_jsonl(out)} if out.exists() else set()
-    todo = [q for q in qs if q["uid"] not in done]
+    todo = [q for q in qs if q["uid"] not in done | ext_uids()]
+    todo = todo[::-1] if a.reverse else todo
     print(f"{a.model}/{a.split}: {len(done)} done, {len(todo)} to go  ({len(shots)}-shot, {c['gen_tokens']} new tokens)")
-    if not todo:
-        return 0
+    if todo:
+        generate(a, spec, c, shots, todo, out, ext_uids)
+    if ext.exists():
+        have, want = {r["uid"] for r in read_jsonl(out)}, {q["uid"] for q in qs}
+        extra = [r for r in read_jsonl(ext) if r["uid"] in want and r["uid"] not in have]
+        for r in extra:
+            append_jsonl(out, r)
+        print(f"merged {len(extra)} rows from {ext.name}")
+    return 0
+
+
+def generate(a, spec, c, shots, todo, out, ext_uids):
     backend = BACKENDS[spec["backend"]](a.model, spec, c)
     t0 = time.time()
     for k, q in enumerate(todo, 1):
+        if q["uid"] in ext_uids():                                    # the other machine got here first
+            continue
         prompt = build_prompt(q["question"], shots)
         hint = q["answer"] if spec["backend"] == "mock" else None     # only the mock may see gold
         tq = time.time()
