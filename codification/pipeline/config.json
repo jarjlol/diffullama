@@ -20,9 +20,11 @@
   "scorers": {
     "gpt2":       "openai-community/gpt2",
     "qwen0.5b":   "Qwen/Qwen2.5-0.5B",
-    "tinyllama":  "TinyLlama/TinyLlama-1.1B-intermediate-step-1431k-3T"
+    "tinyllama":  "TinyLlama/TinyLlama-1.1B-intermediate-step-1431k-3T",
+    "qwen7b":     "Qwen/Qwen2.5-7B",
+    "llama2-7b":  "NousResearch/Llama-2-7b-hf"
   },
-  "_scorers": "Small AR scorers for reranking (idea 1.1 names GPT-2 and TinyLlama). Run in a process WITHOUT attention_patch -- see score_candidates.py.",
+  "_scorers": "AR scorers for reranking. Small ones as idea 1.1 names them (GPT-2, TinyLlama; Qwen2.5-0.5B added for Dream, I-13), plus the AR bases themselves as the strongest matched scorers: Qwen2.5-7B for Dream and Llama-2-7B for DiffuLLaMA (added 2026-11-03 after the small scorers lost to first-sample on Dream, I-20). Run in a process WITHOUT attention_patch -- see score_candidates.py.",
   "cka": {"corpus": "wikitext-103 validation, then test", "n_segments": 2000, "seg_tokens": 128, "pooling": "mean"},
   "llada_generate_commit": "f2683fd9cd10721f2853bafa52f8572ae8155d0c"
 }

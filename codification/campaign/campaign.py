@@ -46,7 +46,7 @@ SYS_PY = "/usr/bin/python3"
 
 MODELS = ["diffugpt-s", "diffugpt-m", "diffullama", "dream-base", "llada-base"]
 SEVEN_B = {"diffullama", "dream-base", "llada-base"}
-SCORERS = ["gpt2", "qwen0.5b", "tinyllama"]
+SCORERS = ["gpt2", "qwen0.5b", "tinyllama", "qwen7b", "llama2-7b"]
 SMOKE_N, DEV_N, TEST_N = 20, 200, 500
 TEST_FALLBACKS = [300, 200]
 DEADLINE = dt.datetime(2026, 11, 4, 16, 30, tzinfo=dt.timezone.utc)   # Wed 22:00 IST: all generation done
@@ -296,6 +296,7 @@ def main() -> int:
     ap.add_argument("--warm-start", action="store_true",
                     help="GPUs idle at the first poll count as settled; only for restarting our own campaign")
     ap.add_argument("--per-gpu", type=int, default=1, help="jobs per GPU (2 only if one job leaves the GPU underused)")
+    ap.add_argument("--gpus", default="0,1", help="GPU indices the campaign may use, e.g. 1 to leave GPU 0 to others")
     ap.add_argument("--no-prefetch", action="store_true", help="skip the built-in model download")
     a = ap.parse_args()
     (STATE / "logs").mkdir(parents=True, exist_ok=True)
@@ -318,6 +319,7 @@ def main() -> int:
         prefetch = subprocess.Popen(["nice", "-n", "10", py("scorer"), "-c", script], stdout=open(STATE / "logs" / "prefetch.log", "a"),
                                     stderr=subprocess.STDOUT, start_new_session=True)
     log(f"START pid {os.getpid()} dry_run={a.dry_run} settle={a.settle_min}min jobs={len(jobs)} done={sum(j.state == 'done' for j in jobs)}")
+    allowed_gpus = {int(x) for x in a.gpus.split(",")}
     polls = 0
     while True:
         polls += 1
@@ -365,6 +367,8 @@ def main() -> int:
         usable = []
         if snap["ok"]:
             for idx, g in snap["gpus"].items():
+                if idx not in allowed_gpus:
+                    continue
                 free = not g["foreign"] and (g["mem"] - g["our_mem"]) < MEM_IDLE_MIB and not snap["foreign_servers"]
                 if free:
                     # --warm-start: a GPU we just freed ourselves needs no wait; one another user
