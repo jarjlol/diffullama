@@ -134,6 +134,12 @@ already beats most single-sample selectors); (3) the three scorers can be combin
 | Cycle | Arbor proposed | Feedback given | Dev score | Test score | Merged? |
 |---|---|---|---|---|---|
 | seed | lowest summed GPT-2 NLL | — | | | — |
+| 0 (node 1) | plain majority vote | `approve` | | | |
+| 0 (node 2) | cross-model consensus: defer to another strong model's cached answer for the same question | Replaced with: "Mechanism: majority vote with an AR tie-break, using only this item's own 10 candidates. Rejected the cross-model cache: reading other models' answers to the same question is cross-model ensembling, which changes the task (one model's N samples), is unfair to every per-model baseline, and makes the score depend on evaluation order. Rule: count votes over extracted answers; among answers tied for the top count, pick the answer whose best candidate has the lowest per-token NLL (nll_sum / n_tokens) under qwen7b; earliest index as the last resort; all-None -> 0. Hypothesis: ties are where majority vote loses most, and per-token NLL from the strongest scorer may separate tied answers even though it is anti-predictive across all candidates. Observable: dream-base and llada-base dev >= majority (0.700 / 0.745); if not, report that AR likelihood adds nothing on top of the vote." | | | |
+| 0 (node 3) | likelihood-weighted voting (sum of exp(-per-token NLL) per answer), as a falsification test; claimed llada's AR base is llama2-7b | Replaced with the same idea plus: "Correction to the proposal: LLaDA has no AR base model; it is the control, so do not call llama2-7b its base." Scorers: dream-base and others qwen7b, diffullama llama2-7b. Report per-model dev scores | | | |
+| 0 (node 1 child) | plain majority again, as a depth-2 experiment | `skip` (read as a duplicate; it was the concrete run of node 1, see `NEXT_ITERATION.md`) | | | — |
+| 0 (node 2.1) | majority + qwen7b per-token tie-break, concrete | `approve` | | | |
+| 0 (node 3.1) | weighted vote, concrete, scorer mapping corrected | `approve` | | | |
 
 ## Results (to fill)
 
