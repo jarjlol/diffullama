@@ -54,7 +54,9 @@ def _mean_nll(cands, s):
 
 def run(split: str) -> dict:
     items, gold = task.load_items(split), task.load_gold(split)
-    scorers = sorted({k.split(".")[1] for it in items for c in it["candidates"] for k in c["features"] if k.startswith("ar.") and k.endswith(".nll_sum")})
+    # scorer names may contain dots ("qwen0.5b"): take everything between "ar." and ".nll_sum"
+    scorers = sorted({k[len("ar."):-len(".nll_sum")] for it in items for c in it["candidates"] for k in c["features"]
+                      if k.startswith("ar.") and k.endswith(".nll_sum")})
     has_self = any("dlm.selfscore" in c["features"] for it in items for c in it["candidates"])
     sel = {"first": lambda c: 0, "majority": _majority}
     if has_self:

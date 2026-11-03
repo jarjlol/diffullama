@@ -59,7 +59,8 @@ def main() -> int:
     a = ap.parse_args()
     pres = json.loads((WORK / "preservation.json").read_text(encoding="utf-8"))
     table = baselines.run(a.split)
-    scorers = sorted({k.split(".")[1] for r in table.values() for k in r if k.startswith("ar.")})
+    # selector keys are "ar.<scorer>.sum|mean" and scorer names may contain dots ("qwen0.5b")
+    scorers = sorted({k[len("ar."):].rsplit(".", 1)[0] for r in table.values() for k in r if k.startswith("ar.")})
     report = {"split": a.split, "per_scorer": {}}
     # Both variants are reported; picking the better one per model on the same split would be selection on test.
     for s in scorers:
