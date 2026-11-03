@@ -18,4 +18,8 @@ coordinator:
   merge_threshold: 1.0
 
 ui:
-  interaction_mode: auto
+  # review: every proposed idea waits for approve / skip / "edit <note>" before any compute.
+  # Our replies are the feedback the brief asks for; they are logged verbatim in ITERATION_1.md.
+  # An idea nobody answers within review_timeout is approved, so the run never stalls.
+  interaction_mode: review
+  review_timeout: 900
