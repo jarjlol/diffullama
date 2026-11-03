@@ -34,7 +34,7 @@ done
 CUDA_DEVICE_ORDER=PCI_BUS_ID CUDA_VISIBLE_DEVICES=1 HF_HUB_OFFLINE=1 \
   setsid ~/venvs/vllm/bin/vllm serve Qwen/Qwen3.8-27B-FP8 --host 127.0.0.1 --port 8000 \
   --gpu-memory-utilization 0.85 --max-model-len 32768 --max-num-seqs 4 \
-  --reasoning-parser qwen3 --enable-auto-tool-choice --tool-call-parser hermes \
+  --reasoning-parser qwen3 --enable-auto-tool-choice --tool-call-parser qwen3_xml \
   > ~/codify/vllm.log 2>&1 < /dev/null &
 echo $! > ~/codify/vllm.pid
 for i in $(seq 1 60); do
