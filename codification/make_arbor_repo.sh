@@ -15,6 +15,12 @@ done
 grep -q '"gold"' "$SRC"/data/*/items.jsonl && { echo "refusing: items.jsonl contains a gold field" >&2; exit 1; }
 mkdir -p "$DEST"
 ( cd "$SRC" && tar --exclude='__pycache__' -cf - . ) | ( cd "$DEST" && tar -xf - )
+# FINAL_DIR set: data/test becomes the gate split (first GATE_N test questions) and the rest
+# moves to FINAL_DIR, outside the repo, for the final comparison (split_gate_final.py).
+if [ -n "${FINAL_DIR:-}" ]; then
+  python3 "$(dirname "$0")/split_gate_final.py" "$DEST" "$FINAL_DIR" \
+      "$(dirname "$0")/pipeline/work/data/test.jsonl" --gate "${GATE_N:-200}"
+fi
 cd "$DEST"
 out="$(bash eval.sh dev)"; echo "$out"
 echo "$out" | grep -q '^correctness: PASS' || { echo "seed solution fails eval -- not exporting" >&2; exit 1; }
