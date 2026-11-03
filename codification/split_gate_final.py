@@ -37,14 +37,14 @@ def main() -> int:
     order = [r["uid"] for r in rows(a.questions)]
     test = a.repo / "data" / "test"
     items, gold = rows(test / "items.jsonl"), rows(test / "gold.jsonl")
-    present = {r["uid"] for r in gold}
+    present = {r["uid"] for r in items}                  # gold.jsonl lists every test question; items only those generated
     order = [u for u in order if u in present]
     gate = set(order[:a.gate])
     assert len(gate) == a.gate, f"only {len(gate)} test questions present, need {a.gate}"
     write(test / "items.jsonl", [r for r in items if r["uid"] in gate])
     write(test / "gold.jsonl", [r for r in gold if r["uid"] in gate])
     write(a.final / "items.jsonl", [r for r in items if r["uid"] not in gate])
-    write(a.final / "gold.jsonl", [r for r in gold if r["uid"] not in gate])
+    write(a.final / "gold.jsonl", [r for r in gold if r["uid"] in present - gate])
     n_final = len(present) - len(gate)
     print(f"gate: {len(gate)} questions in {test}; final: {n_final} questions in {a.final} (not in the repo)")
     return 0
