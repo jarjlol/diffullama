@@ -13,7 +13,11 @@ instructor's. Update the status column once Arbor and the final-split evaluation
 | Final results, metric + dataset | GSM8K test n = 500 per model for first / majority / random / AR sum+mean (5 scorers) / oracle; CKA for 4 models. Arbor selector on the 300 held-out final questions still to run | ~75% |
 | Compare with SOTA / baselines | Strong internal baselines (self-consistency, oracle, 5 AR scorers); published base-model GSM8K numbers as a fidelity check. No published test-time selection method for diffusion LMs compared | ~50% |
 
-Overall about 70% of iteration 1. Remaining: Arbor finish, `eval_final.sh` on the final
+Update 2026-11-04 03:20 IST: Arbor finished (7 cycles, 1 merge), the final split is scored
+and the paired statistics are in `ITERATION_1.md` §Results. The merged selector ties
+majority vote on the final split. Left: push, and the CKA-vs-headroom line in the write-up.
+
+Overall about 70% of iteration 1 (before the update above). Remaining: Arbor finish, `eval_final.sh` on the final
 split, bootstrap CIs and McNemar vs majority, results tables, push.
 
 ## Self-grade and why
@@ -78,6 +82,9 @@ Weak:
   nodes are the concrete experiments, so a depth-2 child that restates its parent is
   not a duplicate. Iteration 1 skipped node 1's child (plain majority) by mistake;
   majority is still measured by `baselines.py`.
+- Answer gates with slash commands: `/approve`, `/skip`, `/edit <note>`, `/answer <text>`.
+  Plain text typed at a gate goes to Arbor's "companion" LLM, which decides what to submit
+  (slow, and once it never submitted). `/answer` delivers the text verbatim at once.
 - Answer review prompts promptly; each unanswered one costs the 15-min timeout.
 - Plan the GPU window: generation and scoring took ~1.5 days on two shared GPUs with
   display-watchdog crashes. Start generation earlier, and budget the Arbor run as a

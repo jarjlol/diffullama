@@ -138,20 +138,58 @@ already beats most single-sample selectors); (3) the three scorers can be combin
 | 0 (node 2) | cross-model consensus: defer to another strong model's cached answer for the same question | Replaced with: "Mechanism: majority vote with an AR tie-break, using only this item's own 10 candidates. Rejected the cross-model cache: reading other models' answers to the same question is cross-model ensembling, which changes the task (one model's N samples), is unfair to every per-model baseline, and makes the score depend on evaluation order. Rule: count votes over extracted answers; among answers tied for the top count, pick the answer whose best candidate has the lowest per-token NLL (nll_sum / n_tokens) under qwen7b; earliest index as the last resort; all-None -> 0. Hypothesis: ties are where majority vote loses most, and per-token NLL from the strongest scorer may separate tied answers even though it is anti-predictive across all candidates. Observable: dream-base and llada-base dev >= majority (0.700 / 0.745); if not, report that AR likelihood adds nothing on top of the vote." | | | |
 | 0 (node 3) | likelihood-weighted voting (sum of exp(-per-token NLL) per answer), as a falsification test; claimed llada's AR base is llama2-7b | Replaced with the same idea plus: "Correction to the proposal: LLaDA has no AR base model; it is the control, so do not call llama2-7b its base." Scorers: dream-base and others qwen7b, diffullama llama2-7b. Report per-model dev scores | | | |
 | 0 (node 1 child) | plain majority again, as a depth-2 experiment | `skip` (read as a duplicate; it was the concrete run of node 1, see `NEXT_ITERATION.md`) | | | — |
-| 0 (node 2.1) | majority + qwen7b per-token tie-break, concrete | `approve` | | | |
-| 0 (node 3.1) | weighted vote, concrete, scorer mapping corrected | `approve` | | | |
+| 0 (node 2.1) | majority + qwen7b per-token tie-break, concrete | `approve` | 0.290 (14 turns, 460 s) | | |
+| 0 (node 3.1) | weighted vote, concrete, scorer mapping corrected | `approve` | 0.282 (12 turns, 166 s) | | |
+| 1 (exec 2.1, 3.1) | pre-execution review of both | `approve`, `approve`; both executors started in parallel | | | |
+| 2 (ROOT) | cross-model consensus again, as a depth-1 direction | Replaced with: "Direction: within-item arithmetic verification as a vote weight. Rejected again: cross-model consensus is out of scope for this task (one model's N samples per item; reading other models' answers is ensembling, unfair to the per-model baselines and order-dependent). Do not propose it again. Instead use the candidate text itself: parse every explicit calculation in a candidate's reasoning (patterns like "a op b = c", including GSM8K "<<a*b=c>>" annotations), re-evaluate it exactly, and record the fraction of correct calculations and whether the final answer equals the result of the last calculation. Weight each candidate's vote by a simple function of that (e.g. 1 if all checks pass, 0.5 otherwise), then majority over weighted votes; ties -> earliest index; all-None -> 0. Hypothesis: when majority is wrong, the wrong plurality often comes from samples with an arithmetic slip, which a deterministic checker can see and AR likelihood cannot. Observable: dream-base and llada-base dev >= majority (0.700 / 0.745); report per-model counts of majority-wrong items that the weighting fixes and breaks." | | | |
+| 2 (node 4 child) | verification-weighted voting: weight 1.0 if every parsed calculation re-checks, else 0.5; predicts dream +3 items, llada -1 | `/approve` | | | |
+| 2 (exec 4.1) | pre-execution review | `/edit Keep the weight at 0.5 as proposed; do not sweep it on dev (the gain is a few items and a sweep would overfit). Report per model the majority-wrong items fixed and the majority-right items broken, and the share of candidates with at least one checked calculation.` | 0.296 (25 turns, 390 s) | 0.296 (gate) | yes, against the seed's 0.157 gate score; majority vote alone was never merged, so this merge does not show 4.1 beats majority (checked on the final split) |
 
-## Results (to fill)
+## Results
 
-Per model, GSM8K test subset (n = 500), from `baselines.py --split test --json` after Arbor:
+Arbor run `iter1b` (2026-11-04, 68 min, 7 of 12 cycles, stopped on its own): 4 ideas
+executed, 1 merged (4.1, verification-weighted voting), AR-likelihood ideas pruned as
+verified negatives. Session: `~/arbor-rerank/.arbor/sessions/iter1b/` on Blackwell.
 
-| Model | Shots | First | Majority | AR best (sum/mean) | Arbor selector | Oracle | Headroom closed |
+Final split: the 300 GSM8K test questions Arbor never saw (`split_gate_final.py`), scored
+with `eval_final.sh` and `baselines.py`. Accuracy per model:
+
+| Model | Shots | First | Majority | AR best (scorer) | Arbor selector (4.1) | Oracle | Headroom closed by 4.1 |
 |---|---|---|---|---|---|---|---|
-| diffugpt-s | 1 | | | | | | |
-| diffugpt-m | 4 | | | | | | |
-| diffullama | 4 | | | | | | |
-| dream-base | 4 | | | | | | |
-| llada-base | 4 | | | | | | |
+| diffugpt-s | 1 | 1.7 | 2.3 | 2.0 (llama2-7b mean) | 2.3 | 14.7 | 5% |
+| diffugpt-m | 4 | 0.7 | 1.3 | 2.3 (tinyllama mean) | 1.3 | 8.7 | 8% |
+| diffullama | 4 | 0.3 | 2.0 | 2.3 (gpt2 mean) | 2.0 | 9.7 | 18% |
+| dream-base | 4 | 41.0 | **73.3** | 32.0 (qwen7b sum) | 73.0 | 88.0 | 68% |
+| llada-base | 4 | 48.7 | **73.0** | 52.0 (qwen7b sum) | 73.0 | 88.3 | 61% |
+| macro | | | | | 30.3 | | |
+
+Paired comparison, `paired_stats.py` (95% bootstrap CI over questions, exact McNemar on
+discordant pairs; "wins/losses" = questions only 4.1 / only majority gets right):
+
+| Split | Model | 4.1 − majority | 95% CI | wins/losses | McNemar p | 4.1 − first | p |
+|---|---|---|---|---|---|---|---|
+| final (n=300) | dream-base | −0.3 | [−2.0, +1.3] | 3/4 | 1.00 | +32.0 | 8e-27 |
+| final (n=300) | llada-base | 0.0 | [−1.7, +1.7] | 3/3 | 1.00 | +24.3 | 2.5e-16 |
+| gate (n=200) | dream-base | +1.5 | [−0.5, +4.0] | 4/1 | 0.38 | +33.0 | 3e-17 |
+| gate (n=200) | llada-base | −1.5 | [−3.5, 0.0] | 0/3 | 0.25 | +23.5 | 1e-12 |
+| dev (n=200) | dream-base | +1.5 | [0.0, +3.5] | 3/0 | 0.25 | +34.0 | 1e-19 |
+| dev (n=200) | llada-base | −0.5 | [−2.5, +1.0] | 1/2 | 1.00 | +26.5 | 1e-13 |
+
+On the three floor models 4.1 and majority pick the same answer on every question.
+
+What this says:
+1. **Idea 1.1 as specified is refuted.** Picking the candidate with the lowest AR-scorer NLL
+   is worse than the first sample on Dream (best 32.0 vs 41.0) and no better on LLaDA
+   (52.0 vs 48.7), even with each model's own 7B AR base as scorer. Majority vote beats every
+   AR selector by 21+ points on both. Using AR likelihood only to break vote ties (Arbor 2.1)
+   or to weight votes (3.1) also lost to plain majority on dev.
+2. **The best selector found is equivalent to self-consistency.** Arbor's merged rule
+   (arithmetic-verification-weighted voting) is indistinguishable from majority vote on
+   every split; its dev gain on Dream (+1.5, 3/0) did not hold on the final split (3/4).
+   The merge gate compared against the seed (GPT-2 NLL, 0.157), not against majority.
+3. **Majority vote closes 61-69% of the first-to-oracle gap** on the two non-floor models;
+   the remaining 15 points of oracle headroom are not reachable with any in-item signal
+   Arbor tried.
 
 CKA (mean over layers) vs headroom, `analyze.py --split test`: Spearman ρ and the exact
 permutation p, n ≤ 4, descriptive only.
