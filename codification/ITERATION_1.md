@@ -191,8 +191,26 @@ What this says:
    the remaining 15 points of oracle headroom are not reachable with any in-item signal
    Arbor tried.
 
-CKA (mean over layers) vs headroom, `analyze.py --split test`: Spearman ρ and the exact
-permutation p, n ≤ 4, descriptive only.
+CKA (mean over layers, DLM vs its AR base) vs headroom, `analyze.py --split test` (all 500
+test questions; headroom = (AR − first) / (oracle − first)). Descriptive only: with n = 4
+models the smallest possible exact permutation p is 2/24 = 0.083.
+
+| Model | CKA | Headroom, qwen7b sum | Headroom, qwen7b mean |
+|---|---|---|---|
+| diffugpt-s | 0.890 | +5.3% | +5.3% |
+| diffugpt-m | 0.866 | +2.5% | +10.0% |
+| diffullama | 0.748 | −2.2% | 0.0% |
+| dream-base | 0.509 | −9.7% | −13.9% |
+| llada-base (no AR base, control) | — | +9.4% | −8.4% |
+
+Across the 10 AR selectors, Spearman ρ is +1.0 (p = 0.083) for 4, +0.8 (p = 0.33) for 5
+and +0.4 (p = 0.75) for gpt2 mean. All four CKA variants (plain, debiased, no-sink, both)
+give the same ρ for every selector, so the ranking is not an artifact of I-15. The sign is
+the one idea 1.1 predicts (more preservation, more AR recovery), but it is not evidence:
+three of the four points are floor models whose headroom moves by one or two questions out
+of 500, and the order is set by Dream alone, the only non-floor model with an AR base.
+LLaDA, which has no AR base at all, also loses under most AR scorers (−25.1% vs Dream's
+−27.8% with tinyllama mean), so low preservation does not explain Dream's loss.
 
 ## Still open after iteration 1
 

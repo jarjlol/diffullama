@@ -15,7 +15,8 @@ instructor's. Update the status column once Arbor and the final-split evaluation
 
 Update 2026-11-04 03:20 IST: Arbor finished (7 cycles, 1 merge), the final split is scored
 and the paired statistics are in `ITERATION_1.md` §Results. The merged selector ties
-majority vote on the final split. Left: push, and the CKA-vs-headroom line in the write-up.
+majority vote on the final split. Pushed; CKA vs headroom added to §Results (ρ +0.4 to
++1.0, p ≥ 0.083, set by Dream alone).
 
 Overall about 70% of iteration 1 (before the update above). Remaining: Arbor finish, `eval_final.sh` on the final
 split, bootstrap CIs and McNemar vs majority, results tables, push.
