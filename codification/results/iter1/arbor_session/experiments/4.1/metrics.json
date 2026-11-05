@@ -1,0 +1,13 @@
+{
+  "node_id": "4.1",
+  "hypothesis": "Mechanism: verification-weighted voting — for each candidate (on its trimmed text: everything before a line matching /\\n\\s*(?:Question|Q)\\s*:/), parse explicit calculations with the regex \"<<\\s*(num)\\s*([+\\-*/])\\s*(num)\\s*=\\s*(num)\\s*>>\" and \"(num)\\s*([+\\-*/x×])\\s*(num)\\s*=\\s*(num)\" (num = -?[\\d,]+(\\.\\d+)?; 'x'/'×' treated as *; divisions by 0 skipped, unparsable pairs skipped); re-evaluate each exactly and flag candidates having >=1 checked calculation with at least one mismatch (or none at all) as unverified. Weight = 1.0 if all checked calculations pass (and >=1 was checked), else 0.5. Answer score = sum of weights of its candidates; select the highest; ties -> earliest candidate index; all answers None -> 0. Uniform across all 5 models; deterministic, no state.\nHypothesis: when the majority-vote answer is wrong, the wrong plurality comes from samples containing an arithmetic slip that a deterministic checker sees and AR likelihood cannot. Coordinator dev diagnostics: in the 29 dream majority-wrong cases the correct candidate has all-passing calcs 9x vs 4x for the plurality (and last-calc==answer 11 vs 8); expected dream dev ~0.715 (+3 items). LLaDA shows the OPPOSITE pattern (correct all-pass 4/26 vs plurality 8/26) so expect llada dev ~0.740 (-1 item); net macro ~0.296 > 0.294 majority.\nObservable: B_dev macro >= 0.295 with dream-base ~0.710-0.720; per-model report incl. floor models. If dream < 0.705 the mechanism is dead -> prune.\nConflicts: none — new evidence axis (in-item arithmetic consistency); orthogonal to the pruned AR-NLL axes (2, 3).",
+  "score": 0.296,
+  "insight": "Verification-weighted voting was live because it rewarded candidates with passing explicit calculations, producing the predicted dream-base gain and small llada-base loss. The improvement is modest because unverified candidates still receive 0.5 weight, so arithmetic slips dilute rather than veto wrong answers.",
+  "result": "The implementation replaced raw-NLL selection with deterministic verification-weighted voting in solution.py. Dev evaluation achieved B_dev macro 0.296 with dream-base 0.715 and llada-base 0.740, meeting the stated observable threshold.",
+  "branch": "coordinator/n4-1-mechanism-verification-weighted-6f5aa728",
+  "turns": 25,
+  "status": "done",
+  "eval_status": "scored",
+  "stop_reason": "finished",
+  "attempt": 1
+}

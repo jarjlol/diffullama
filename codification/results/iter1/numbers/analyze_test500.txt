@@ -1,0 +1,120 @@
+
+== selector ar.gpt2.sum  (split test)
+  model           CKA  first  major     AR oracle  headroom
+  diffugpt-m    0.866  0.006  0.016  0.010  0.086     +5.0%
+  diffugpt-s    0.890  0.012  0.016  0.020  0.126     +7.0%
+  diffullama    0.748  0.008  0.016  0.006  0.098     -2.2%
+  dream-base    0.509  0.404  0.724  0.268  0.878    -28.7%
+  llada-base      --   0.486  0.732  0.414  0.892    -17.7%
+  Spearman(CKA, headroom) = +1.000, exact permutation p = 0.083, n = 4 models  -- descriptive only at this n
+    with mean_debiased          rho = +1.000, p = 0.083, n = 4
+    with mean_debiased_nosink   rho = +1.000, p = 0.083, n = 4
+    with mean_nosink            rho = +1.000, p = 0.083, n = 4
+
+== selector ar.gpt2.mean  (split test)
+  model           CKA  first  major     AR oracle  headroom
+  diffugpt-m    0.866  0.006  0.016  0.016  0.086    +12.5%
+  diffugpt-s    0.890  0.012  0.016  0.016  0.126     +3.5%
+  diffullama    0.748  0.008  0.016  0.018  0.098    +11.1%
+  dream-base    0.509  0.404  0.724  0.346  0.878    -12.2%
+  llada-base      --   0.486  0.732  0.428  0.892    -14.3%
+  Spearman(CKA, headroom) = +0.400, exact permutation p = 0.750, n = 4 models  -- descriptive only at this n
+    with mean_debiased          rho = +0.400, p = 0.750, n = 4
+    with mean_debiased_nosink   rho = +0.400, p = 0.750, n = 4
+    with mean_nosink            rho = +0.400, p = 0.750, n = 4
+
+== selector ar.llama2-7b.sum  (split test)
+  model           CKA  first  major     AR oracle  headroom
+  diffugpt-m    0.866  0.006  0.016  0.010  0.086     +5.0%
+  diffugpt-s    0.890  0.012  0.016  0.016  0.126     +3.5%
+  diffullama    0.748  0.008  0.016  0.006  0.098     -2.2%
+  dream-base    0.509  0.404  0.724  0.304  0.878    -21.1%
+  llada-base      --   0.486  0.732  0.490  0.892     +1.0%
+  Spearman(CKA, headroom) = +0.800, exact permutation p = 0.333, n = 4 models  -- descriptive only at this n
+    with mean_debiased          rho = +0.800, p = 0.333, n = 4
+    with mean_debiased_nosink   rho = +0.800, p = 0.333, n = 4
+    with mean_nosink            rho = +0.800, p = 0.333, n = 4
+
+== selector ar.llama2-7b.mean  (split test)
+  model           CKA  first  major     AR oracle  headroom
+  diffugpt-m    0.866  0.006  0.016  0.016  0.086    +12.5%
+  diffugpt-s    0.890  0.012  0.016  0.018  0.126     +5.3%
+  diffullama    0.748  0.008  0.016  0.012  0.098     +4.4%
+  dream-base    0.509  0.404  0.724  0.288  0.878    -24.5%
+  llada-base      --   0.486  0.732  0.406  0.892    -19.7%
+  Spearman(CKA, headroom) = +0.800, exact permutation p = 0.333, n = 4 models  -- descriptive only at this n
+    with mean_debiased          rho = +0.800, p = 0.333, n = 4
+    with mean_debiased_nosink   rho = +0.800, p = 0.333, n = 4
+    with mean_nosink            rho = +0.800, p = 0.333, n = 4
+
+== selector ar.qwen0.5b.sum  (split test)
+  model           CKA  first  major     AR oracle  headroom
+  diffugpt-m    0.866  0.006  0.016  0.010  0.086     +5.0%
+  diffugpt-s    0.890  0.012  0.016  0.016  0.126     +3.5%
+  diffullama    0.748  0.008  0.016  0.006  0.098     -2.2%
+  dream-base    0.509  0.404  0.724  0.318  0.878    -18.1%
+  llada-base      --   0.486  0.732  0.510  0.892     +5.9%
+  Spearman(CKA, headroom) = +0.800, exact permutation p = 0.333, n = 4 models  -- descriptive only at this n
+    with mean_debiased          rho = +0.800, p = 0.333, n = 4
+    with mean_debiased_nosink   rho = +0.800, p = 0.333, n = 4
+    with mean_nosink            rho = +0.800, p = 0.333, n = 4
+
+== selector ar.qwen0.5b.mean  (split test)
+  model           CKA  first  major     AR oracle  headroom
+  diffugpt-m    0.866  0.006  0.016  0.012  0.086     +7.5%
+  diffugpt-s    0.890  0.012  0.016  0.022  0.126     +8.8%
+  diffullama    0.748  0.008  0.016  0.008  0.098     +0.0%
+  dream-base    0.509  0.404  0.724  0.290  0.878    -24.1%
+  llada-base      --   0.486  0.732  0.446  0.892     -9.9%
+  Spearman(CKA, headroom) = +1.000, exact permutation p = 0.083, n = 4 models  -- descriptive only at this n
+    with mean_debiased          rho = +1.000, p = 0.083, n = 4
+    with mean_debiased_nosink   rho = +1.000, p = 0.083, n = 4
+    with mean_nosink            rho = +1.000, p = 0.083, n = 4
+
+== selector ar.qwen7b.sum  (split test)
+  model           CKA  first  major     AR oracle  headroom
+  diffugpt-m    0.866  0.006  0.016  0.008  0.086     +2.5%
+  diffugpt-s    0.890  0.012  0.016  0.018  0.126     +5.3%
+  diffullama    0.748  0.008  0.016  0.006  0.098     -2.2%
+  dream-base    0.509  0.404  0.724  0.358  0.878     -9.7%
+  llada-base      --   0.486  0.732  0.524  0.892     +9.4%
+  Spearman(CKA, headroom) = +1.000, exact permutation p = 0.083, n = 4 models  -- descriptive only at this n
+    with mean_debiased          rho = +1.000, p = 0.083, n = 4
+    with mean_debiased_nosink   rho = +1.000, p = 0.083, n = 4
+    with mean_nosink            rho = +1.000, p = 0.083, n = 4
+
+== selector ar.qwen7b.mean  (split test)
+  model           CKA  first  major     AR oracle  headroom
+  diffugpt-m    0.866  0.006  0.016  0.014  0.086    +10.0%
+  diffugpt-s    0.890  0.012  0.016  0.018  0.126     +5.3%
+  diffullama    0.748  0.008  0.016  0.008  0.098     +0.0%
+  dream-base    0.509  0.404  0.724  0.338  0.878    -13.9%
+  llada-base      --   0.486  0.732  0.452  0.892     -8.4%
+  Spearman(CKA, headroom) = +0.800, exact permutation p = 0.333, n = 4 models  -- descriptive only at this n
+    with mean_debiased          rho = +0.800, p = 0.333, n = 4
+    with mean_debiased_nosink   rho = +0.800, p = 0.333, n = 4
+    with mean_nosink            rho = +0.800, p = 0.333, n = 4
+
+== selector ar.tinyllama.sum  (split test)
+  model           CKA  first  major     AR oracle  headroom
+  diffugpt-m    0.866  0.006  0.016  0.010  0.086     +5.0%
+  diffugpt-s    0.890  0.012  0.016  0.016  0.126     +3.5%
+  diffullama    0.748  0.008  0.016  0.006  0.098     -2.2%
+  dream-base    0.509  0.404  0.724  0.276  0.878    -27.0%
+  llada-base      --   0.486  0.732  0.454  0.892     -7.9%
+  Spearman(CKA, headroom) = +0.800, exact permutation p = 0.333, n = 4 models  -- descriptive only at this n
+    with mean_debiased          rho = +0.800, p = 0.333, n = 4
+    with mean_debiased_nosink   rho = +0.800, p = 0.333, n = 4
+    with mean_nosink            rho = +0.800, p = 0.333, n = 4
+
+== selector ar.tinyllama.mean  (split test)
+  model           CKA  first  major     AR oracle  headroom
+  diffugpt-m    0.866  0.006  0.016  0.018  0.086    +15.0%
+  diffugpt-s    0.890  0.012  0.016  0.016  0.126     +3.5%
+  diffullama    0.748  0.008  0.016  0.008  0.098     +0.0%
+  dream-base    0.509  0.404  0.724  0.272  0.878    -27.8%
+  llada-base      --   0.486  0.732  0.384  0.892    -25.1%
+  Spearman(CKA, headroom) = +0.800, exact permutation p = 0.333, n = 4 models  -- descriptive only at this n
+    with mean_debiased          rho = +0.800, p = 0.333, n = 4
+    with mean_debiased_nosink   rho = +0.800, p = 0.333, n = 4
+    with mean_nosink            rho = +0.800, p = 0.333, n = 4

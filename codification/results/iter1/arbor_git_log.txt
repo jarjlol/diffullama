@@ -1,0 +1,15 @@
+fc998f4 Merge 4.1: verification-weighted voting. B_dev 0.148 -> 0.296 (dream 0.715, llada 0.740). B_test verified 0.2960 (dream 0.725, llada 0.720, floors 0.005-0.02).
+400d14c Idea 4.1: verification-weighted voting (B_dev 0.2960, dream 0.715, llada 0.740)
+2386851 agent: Bash: cd /tmp/coordinator-worktrees-1000/coordinator__n4-1-mechanism-verification-weig
+2e54647 agent: Edit: /tmp/coordinator-worktrees-1000/coordinator__n4-1-mechanism-verification-weighte
+dc36c59 agent: Edit: /tmp/coordinator-worktrees-1000/coordinator__n4-1-mechanism-verification-weighte
+786e651 agent: Edit: /tmp/coordinator-worktrees-1000/coordinator__n4-1-mechanism-verification-weighte
+637b4f3 agent: Edit: /tmp/coordinator-worktrees-1000/coordinator__n4-1-mechanism-verification-weighte
+48e6ff5 agent: Edit: /tmp/coordinator-worktrees-1000/coordinator__n4-1-mechanism-verification-weighte
+1cd1665 agent: Edit: /tmp/coordinator-worktrees-1000/coordinator__n4-1-mechanism-verification-weighte
+b5f59e8 agent: Edit: /tmp/coordinator-worktrees-1000/coordinator__n4-1-mechanism-verification-weighte
+8ba4f1a agent: Edit: /tmp/coordinator-worktrees-1000/coordinator__n4-1-mechanism-verification-weighte
+3f441b4 agent: Write: /tmp/coordinator-worktrees-1000/coordinator__n4-1-mechanism-verification-weighte
+8de6f0f agent: Write: /tmp/coordinator-worktrees-1000/coordinator__n4-1-mechanism-verification-weighte
+3015522 chore: gitignore research agent artifacts
+70726cb rerank_task: seed solution and cached candidates

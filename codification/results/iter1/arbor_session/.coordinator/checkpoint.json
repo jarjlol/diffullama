@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "run_name": "iter1b",
+  "created_at": "2026-11-03T21:21:51.297113+00:00",
+  "cycle_num": 7,
+  "phase": "research",
+  "tree_path": "idea_tree.json",
+  "messages_path": "messages.jsonl",
+  "git": {
+    "trunk_branch": null,
+    "active_branches": [
+      "ordinator/n2-1-mechanism-majority-vote-with-qwe-deb33ae3",
+      "coordinator/n3-1-mechanism-likelihood-weighted-vo-4bdb7eb4",
+      "coordinator/n4-1-mechanism-verification-weighted-6f5aa728"
+    ],
+    "worktrees": [
+      "/home/antpc/arbor-rerank"
+    ]
+  },
+  "inflight_executors": [],
+  "cache": {
+    "prefix_anchor_hash": null,
+    "stable_system_hash": "3b8e93b7b69e7254952bce334acd1a340b8c775611ec76e9840967bdb3a2cf45"
+  },
+  "pending_user": null
+}

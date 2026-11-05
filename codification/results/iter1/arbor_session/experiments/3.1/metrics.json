@@ -1,0 +1,13 @@
+{
+  "node_id": "3.1",
+  "hypothesis": "Mechanism: likelihood-weighted voting (falsification) — score each distinct extracted answer by sum of exp(-per-token NLL) over its candidates; per-token NLL = ar.<scorer>.nll_sum/ar.<scorer>.n_tokens; scorer: dream-base -> qwen7b, diffullama -> llama2-7b (its own AR base), all other models -> qwen7b; pick highest-scoring answer; ties -> earliest index; all-None -> 0.\nHypothesis: per-token NLL carries no usable signal in the decisive cases (correct-minority lower NLL in 2/14 dev-dream, 8/18 dev-llada — at/below chance), so this lands below plain majority; node exists to record the audited negative (or a surprising positive).\nObservable: B_dev macro below node 1.1's ~0.294 (dream ~0.65, llada ~0.71-0.73 predicted) -> prune with lesson; >= 0.295 -> retain.\nConflicts: none — tests the brief's proposed mechanism head-on.",
+  "score": 0.282,
+  "insight": "Per-token NLL under the AR scorer is anti-predictive in decisive cases, often favoring fluent but wrong minority answers over correct majorities. NLL magnitude appears to capture fluency/length-style artifacts rather than correctness, so plain majority outperforms likelihood-weighted voting.",
+  "result": "Likelihood-weighted voting was implemented in solution.py and evaluated on B_dev, achieving a macro score of 0.2820 versus 0.2940 for plain majority, below the retention threshold and leading to pruning.",
+  "branch": "coordinator/n3-1-mechanism-likelihood-weighted-vo-4bdb7eb4",
+  "turns": 12,
+  "status": "done",
+  "eval_status": "scored",
+  "stop_reason": "finished",
+  "attempt": 1
+}

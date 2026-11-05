@@ -1,0 +1,13 @@
+{
+  "node_id": "2.1",
+  "hypothesis": "Mechanism: majority vote with qwen7b per-token NLL tie-break — count non-None answers; among answers TIED for the top count, pick the answer whose best candidate has the lowest per-token NLL (min of ar.qwen7b.nll_sum/ar.qwen7b.n_tokens over that answer's candidates); remaining ties/missing features -> earliest candidate index; all-None -> 0.\nHypothesis: ties are where majority loses most (23 dev dream tie items, 8 of 23 earliest-choice correct), and qwen7b per-token NLL may separate tied answers even though it is anti-predictive across all candidates.\nObservable: dream-base and llada-base dev >= 0.7000/0.7450; coordinator diagnostic predicts ~neutral to slightly negative (qwen7b fixed only 1/14 dream, 4/4 llada majority-wrong ties) — report per-model deltas vs plain majority.\nConflicts: none — complements node 1; same decision-rule axis (vote), different tie-handling.",
+  "score": 0.29,
+  "insight": "The qwen7b per-token NLL tie-break is anti-predictive even when restricted to majority-vote ties, flipping correct answers on dream-base and llada-base as often as it fixes them. It yields a small net loss versus plain majority, helping only where the base model is already strong and its wrong ties happen to be separable by NLL.",
+  "result": "Majority voting with qwen7b per-token NLL tie-breaking reached a dev macro score of 0.2900, slightly below plain majority at 0.2940. dream-base scored 0.6750, below the 0.7000 target, while llada-base hit the 0.7450 floor exactly.",
+  "branch": "coordinator/n2-1-mechanism-majority-vote-with-qwe-deb33ae3",
+  "turns": 14,
+  "status": "done",
+  "eval_status": "scored",
+  "stop_reason": "finished",
+  "attempt": 1
+}

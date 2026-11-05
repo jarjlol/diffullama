@@ -1,0 +1,67 @@
+============================================================
+COORDINATOR FINAL REPORT
+============================================================
+
+--- TEST SET (primary) ---
+  Baseline (test): 0.2%
+  Final (test):    0.3%
+  Improvement:     +0.1%
+
+--- DEV SET (iteration) ---
+  Baseline (dev): 0.1%
+  Final (dev):    0.3%
+  Improvement:    +0.1%
+
+Nodes:
+  done: 2
+  merged: 1
+  pruned: 4
+
+Top results:
+  4.1: Mechanism: verification-weighted voting — for each candidate (on its trimmed text: everything before a line matching /\n\s*(?:Question|Q)\s*:/), parse explicit calculations with the regex "<<\s*(num)\s*([+\-*/])\s*(num)\s*=\s*(num)\s*>>" and "(num)\s*([+\-*/x×])\s*(num)\s*=\s*(num)" (num = -?[\d,]+(\.\d+)?; 'x'/'×' treated as *; divisions by 0 skipped, unparsable pairs skipped); re-evaluate each exactly and flag candidates having >=1 checked calculation with at least one mismatch (or none at all) as unverified. Weight = 1.0 if all checked calculations pass (and >=1 was checked), else 0.5. Answer score = sum of weights of its candidates; select the highest; ties -> earliest candidate index; all answers None -> 0. Uniform across all 5 models; deterministic, no state.
+Hypothesis: when the majority-vote answer is wrong, the wrong plurality comes from samples containing an arithmetic slip that a deterministic checker sees and AR likelihood cannot. Coordinator dev diagnostics: in the 29 dream majority-wrong cases the correct candidate has all-passing calcs 9x vs 4x for the plurality (and last-calc==answer 11 vs 8); expected dream dev ~0.715 (+3 items). LLaDA shows the OPPOSITE pattern (correct all-pass 4/26 vs plurality 8/26) so expect llada dev ~0.740 (-1 item); net macro ~0.296 > 0.294 majority.
+Observable: B_dev macro >= 0.295 with dream-base ~0.710-0.720; per-model report incl. floor models. If dream < 0.705 the mechanism is dead -> prune.
+Conflicts: none — new evidence axis (in-item arithmetic consistency); orthogonal to the pruned AR-NLL axes (2, 3). (score=0.3%, merged)
+  1: Direction: answer-level self-consistency — decide by consensus over the 10 extracted candidate answers (vote counting) instead of ranking candidates by AR likelihood. The brief's iteration-1 evidence: majority already beats every AR selector; the job is choosing among answers. (score=0.3%, done)
+
+Artifacts:
+  Tree (JSON): /home/antpc/arbor-rerank/.arbor/sessions/iter1b/.coordinator/idea_tree.json
+  Tree (MD):   /home/antpc/arbor-rerank/.arbor/sessions/iter1b/.coordinator/idea_tree.md
+
+============================================================
+IDEA TREE
+============================================================
+TREE (baseline=0.1%, trunk=0.3%, nodes=8, done=2 merged=1 pruned=4, best=4.1 score=0.3%):
+ROOT [done]: Goal: maximize `score` from `bash eval.sh dev`. Merges ar...
+  1 [done] (0.3%, Δ-0.0): Direction: answer-level self-consistency — decide by cons... | Plain majority vote (earliest-index tie-break, all-None -> 0) verified at B_dev ...
+  2 [pruned]: Direction: AR likelihood as a TIE-BREAKER on top of self-... | AR-likelihood tie-breaking is not useful here. When vote counts tie, using qwen7...
+    2.1 [pruned] (0.3%, Δ-0.0): Mechanism: majority vote with qwen7b per-token NLL tie-br... | The qwen7b per-token NLL tie-break is anti-predictive even when restricted to ma...
+  3 [pruned]: Direction: AR likelihood as a VOTE WEIGHT (the brief's pr... | Using AR per-token NLL as a vote weight did not improve answer selection and was...
+    3.1 [pruned] (0.3%, Δ-0.0): Mechanism: likelihood-weighted voting (falsification) — s... | Per-token NLL under the AR scorer is anti-predictive in decisive cases, often fa...
+  4 [done]: Direction: within-item arithmetic verification as a vote ... | Within-item arithmetic verification is the only remaining in-item signal with po...
+    4.1 [merged] (0.3%, Δ+0.0): Mechanism: verification-weighted voting — for each candid... | MERGED (verified B_test 0.2960, up from 0.157 baseline). Verification-weighted v...
+
+============================================================
+Agent's final message:
+
+
+All closing evidence is now in hand. Research complete.
+
+## Final state (verified this turn)
+
+**Git/rep** (tool evidence): `master` == `trunk` == `fc998f4` ("Merge 4.1: verification-weighted voting…"), working tree clean. The on-disk `solution.py` is exactly the merged rule — verification-weighted voting: candidate weight 1.0 iff ≥1 parsed calculation re-evaluates correctly, else 0.5; pick the highest total-weight answer, ties → earliest candidate index, all-None → 0. Deterministic, stdlib `re` only, passes the protected static check.
+
+**Final scores** (fresh runs this turn, both `correctness: PASS`):
+
+| model | **B_dev** final (oracle) | **B_test** final (oracle) |
+|---|---|---|
+| diffugpt-s | 0.0150 (0.110) | 0.0050 (0.095) |
+| diffugpt-m | 0.0100 (0.085) | 0.0200 (0.085) |
+| diffullama | 0.0000 (0.070) | 0.0100 (0.100) |
+| dream-base | 0.7150 (0.845) | 0.7250 (0.875) |
+| llada-base | 0.7400 (0.875) | 0.7200 (0.905) |
+| **macro** | **0.2960** (baseline 0.1480) | **0.2960** (baseline 0.1570) |
+
+**Tree accounting**: 7 of 12 cycle cap used — majority core validated (node 1, 0.2940), AR-NLL tie-break (2.1, 0.2900) and AR-NLL vote weights (3.1, 0.2820) run and pruned as audited negatives, verification-weighted voting (4.1) merged with independent B_test verification (0.2960). All remaining in-item signals were systematically audited and recorded as dead ends or sub-threshold (commitment discounting 0.2980 vs 0.29896 gate; floor models 2–5/200 items; cross-candidate consistency and question-number priors anti-predictive). Cross-model consensus, which the data shows is the only source that would fix most residual errors, remains out of scope per review.
+
+**Bottom line**: dev 0.1480 → 0.2960, test 0.1570 → 0.2960 (+100% / +89% relative), with the brief's AR-likelihood direction tested head-on and falsified, and the winning mechanism being the one signal a deterministic checker sees that NLL cannot: arithmetic slips in the wrong plurality.

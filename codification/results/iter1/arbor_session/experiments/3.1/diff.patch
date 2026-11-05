@@ -1,0 +1,94 @@
+diff --git a/results/3.1-likelihood-weighted-voting/summary.md b/results/3.1-likelihood-weighted-voting/summary.md
+new file mode 100644
+index 0000000..3516196
+--- /dev/null
++++ b/results/3.1-likelihood-weighted-voting/summary.md
+@@ -0,0 +1,32 @@
++# Node 3.1 — Likelihood-weighted voting (falsification)
++
++**Verdict: FALSIFIED (prune).** B_dev macro = **0.2820** < 0.294 (node 1.1 threshold).
++
++Mechanism: score each distinct extracted answer by sum of exp(-per-token NLL) over
++its candidates; per-token NLL = ar.<scorer>.nll_sum / ar.<scorer>.n_tokens;
++scorer: dream-base -> qwen7b, diffullama -> llama2-7b (its own AR base), all
++others -> qwen7b. Pick highest-scoring answer; ties -> earliest index;
++all-None / no scores -> 0.
++
++## Dev per-model accuracy (n=200 each)
++
++| model      | lw   | majority | delta   |
++|------------|------|----------|---------|
++| diffugpt-s | 0.0100 | 0.0150 | -0.0050 |
++| diffugpt-m | 0.0050 | 0.0100 | -0.0050 |
++| diffullama | 0.0150 | 0.0000 | +0.0150 |
++| dream-base | 0.6500 | 0.7000 | -0.0500 |
++| llada-base | 0.7300 | 0.7450 | -0.0150 |
++| **macro**  | **0.2820** | 0.2940 | -0.0120 |
++
++## Coordinator prediction check
++
++- dream-base predicted ~0.65 (below plain majority 0.7000): **CONFIRMED — exactly 0.6500**
++- llada-base predicted ~0.71-0.73 (below plain majority 0.7450): **CONFIRMED — 0.7300 (top of band)**
++- Macro below 0.294 -> prune: **CONFIRMED — 0.2820**
++
++Lesson: per-token NLL under the AR scorer carries no usable signal in the
++decisive (split-majority) cases — correct-minority answers have at-or-below-chance
++lower-NLL rates (2/14 dev-dream, 8/18 dev-llada). NLL-weighted voting degrades
++the two models where signal exists (dream, llada) because it downweights the
++plurality's high-likelihood candidates instead of counting them.
+diff --git a/solution.py b/solution.py
+index b685ad7..9886099 100644
+--- a/solution.py
++++ b/solution.py
+@@ -14,17 +14,43 @@ No gold answer is ever passed in. Use only the question, the candidate texts,
+ their extracted answers and the cached features. The loop must stay CPU-only:
+ features needing a GPU are precomputed by ../pipeline/score_candidates.py.
+ 
+-SEED (idea 1.1 as specified): pick the candidate with the lowest summed NLL
+-under the GPT-2 scorer. Known weaknesses, left for the search to fix: summed
+-NLL favours short candidates, and it ignores agreement between candidates.
++IDEA 3.1 (falsification): likelihood-weighted voting. Score each distinct
++extracted answer by the sum, over its candidates, of exp(-per-token NLL) where
++per-token NLL = ar.<scorer>.nll_sum / ar.<scorer>.n_tokens. Scorer is
++model-specific: dream-base -> qwen7b, diffullama -> llama2-7b (its own AR
++base), all other models -> qwen7b. Pick the highest-scoring answer; ties go to
++the answer with the earliest candidate index; all-None / no scores -> 0.
+ """
+ from __future__ import annotations
+ 
++import math
++
++_SCORER = {"dream-base": "qwen7b", "diffullama": "llama2-7b"}
++_DEFAULT_SCORER = "qwen7b"
++
+ 
+ def select(item: dict) -> int:
+-    cands = item["candidates"]
+-    scored = [(c["features"].get("ar.gpt2.nll_sum"), i) for i, c in enumerate(cands)]
+-    scored = [(s, i) for s, i in scored if s is not None]
+-    if not scored:
++    scorer = _SCORER.get(item.get("model", ""), _DEFAULT_SCORER)
++    k_sum = f"ar.{scorer}.nll_sum"
++    k_tok = f"ar.{scorer}.n_tokens"
++
++    scores: dict = {}
++    first_idx: dict = {}
++    for i, c in enumerate(item["candidates"]):
++        a = c.get("answer")
++        if a is None:
++            continue
++        f = c.get("features") or {}
++        nll_sum, n_tok = f.get(k_sum), f.get(k_tok)
++        if nll_sum is None or not n_tok:
++            continue  # missing feature: contributes nothing to any score
++        w = math.exp(-(nll_sum / n_tok))
++        scores[a] = scores.get(a, 0.0) + w
++        if a not in first_idx:
++            first_idx[a] = i
++
++    if not scores:
+         return 0
+-    return min(scored)[1]
++
++    best = max(scores, key=lambda a: (scores[a], -first_idx[a]))
++    return first_idx[best]

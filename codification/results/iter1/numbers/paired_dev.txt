@@ -1,0 +1,5 @@
+diffugpt-m   n= 200  sol 0.010  maj 0.010  first 0.000  oracle 0.085 | vs maj +0.000 [+0.000,+0.000] 0/0 p=1.000 | vs first +0.010 [+0.000,+0.025] p=0.5
+diffugpt-s   n= 200  sol 0.015  maj 0.015  first 0.015  oracle 0.110 | vs maj +0.000 [+0.000,+0.000] 0/0 p=1.000 | vs first +0.000 [+0.000,+0.000] p=1
+diffullama   n= 200  sol 0.000  maj 0.000  first 0.000  oracle 0.070 | vs maj +0.000 [+0.000,+0.000] 0/0 p=1.000 | vs first +0.000 [+0.000,+0.000] p=1
+dream-base   n= 200  sol 0.715  maj 0.700  first 0.375  oracle 0.845 | vs maj +0.015 [+0.000,+0.035] 3/0 p=0.250 | vs first +0.340 [+0.275,+0.410] p=1.2e-19
+llada-base   n= 200  sol 0.740  maj 0.745  first 0.475  oracle 0.875 | vs maj -0.005 [-0.025,+0.010] 1/2 p=1.000 | vs first +0.265 [+0.200,+0.330] p=1.2e-13

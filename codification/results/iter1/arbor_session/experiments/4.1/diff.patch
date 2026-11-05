@@ -1,0 +1,153 @@
+diff --git a/results/4.1-verification-weighted-voting/dev.log b/results/4.1-verification-weighted-voting/dev.log
+new file mode 100644
+index 0000000..02fd353
+--- /dev/null
++++ b/results/4.1-verification-weighted-voting/dev.log
+@@ -0,0 +1,9 @@
++split: dev
++correctness: PASS
++model diffugpt-m: acc 0.0100  oracle(hit@N) 0.0850  n 200
++model diffugpt-s: acc 0.0150  oracle(hit@N) 0.1100  n 200
++model diffullama: acc 0.0000  oracle(hit@N) 0.0700  n 200
++model dream-base: acc 0.7150  oracle(hit@N) 0.8450  n 200
++model llada-base: acc 0.7400  oracle(hit@N) 0.8750  n 200
++seconds: 0.56
++score: 0.2960
+diff --git a/results/4.1-verification-weighted-voting/summary.md b/results/4.1-verification-weighted-voting/summary.md
+new file mode 100644
+index 0000000..2c1abe8
+--- /dev/null
++++ b/results/4.1-verification-weighted-voting/summary.md
+@@ -0,0 +1,35 @@
++# Idea 4.1 — verification-weighted voting
++
++Weighted self-consistency voting: each candidate contributes weight 1.0 iff every
++explicit calculation in its trimmed text (GSM8K `<<a op b = c>>` and plain
++`a op b = c`, op ∈ + - * / x ×, trim = text before `\n\s*(?:Question|Q)\s*:`)
++re-evaluates within 1e-6 (div-by-0 / unparsable pairs skipped), and it contains
++>=1 checkable calculation; else 0.5. Answer score = sum of weights of candidates
++with that extracted answer; ties -> earliest candidate index; all None -> 0.
++
++## Result (B_dev, `bash eval.sh dev`)
++
++**score: 0.2960** (trunk baseline 0.1480; plain-majority reference 0.2940)
++
++| model      | n   | majority | weighted | Δ      | changed | fixed | broken | cands w/ ≥1 checked calc |
++|------------|-----|----------|----------|--------|---------|-------|--------|--------------------------|
++| diffugpt-m | 200 | 0.0100   | 0.0100   | +0.000 | 1       | 0     | 0      | 5.40%                    |
++| diffugpt-s | 200 | 0.0150   | 0.0150   | +0.000 | 0       | 0     | 0      | 0.10%                    |
++| diffullama | 200 | 0.0000   | 0.0000   | +0.000 | 9       | 0     | 0      | 53.70%                   |
++| dream-base | 200 | 0.7000   | 0.7150   | +0.015 | 16      | 3     | 0      | 63.60%                   |
++| llada-base | 200 | 0.7450   | 0.7400   | -0.005 | 6       | 1     | 2      | 68.50%                   |
++| **MACRO**  | 1000| **0.2940** | **0.2960** | **+0.002** | 32 | 4 | 2 | — |
++
++## Observations
++
++- Coordinator predictions hit almost exactly: dream-base 0.715 (+3 items: 3 fixed,
++  0 broken), llada-base 0.740 (-1 item net: 1 fixed, 2 broken), macro 0.296.
++- Observable B_dev macro >= 0.295 met (0.2960); dream 0.715 in [0.710, 0.720].
++- Mechanism is dead on the 3 floor models (diffugpt-s/diffugpt-m/diffullama) —
++  their candidates rarely contain checkable explicit calculations (0.1–5.4%)
++  or correct answers at all, so weighting changes nothing that matters.
++- On dream, every flip was a fix (3/3); on llada, flips were net negative
++  (1 fixed, 2 broken), matching the opposite pattern found in dev diagnostics
++  (llada correct-cand all-pass 4/26 vs plurality 8/26).
++- Deterministic, stdlib-only (re), no module state; weight fixed at 0.5 per
++  review note (no dev sweep).
+diff --git a/solution.py b/solution.py
+index b685ad7..00f2e03 100644
+--- a/solution.py
++++ b/solution.py
+@@ -14,17 +14,84 @@ No gold answer is ever passed in. Use only the question, the candidate texts,
+ their extracted answers and the cached features. The loop must stay CPU-only:
+ features needing a GPU are precomputed by ../pipeline/score_candidates.py.
+ 
+-SEED (idea 1.1 as specified): pick the candidate with the lowest summed NLL
+-under the GPT-2 scorer. Known weaknesses, left for the search to fix: summed
+-NLL favours short candidates, and it ignores agreement between candidates.
++IDEA 4.1 (verification-weighted voting): majority voting over extracted answers,
++but each candidate contributes weight 1.0 only if every explicit calculation in
++its trimmed text re-evaluates correctly (and it contains at least one checkable
++calculation); otherwise it contributes 0.5. A wrong majority often rests on
++samples with an arithmetic slip that a deterministic checker sees. Select the
++answer with the highest total weight; ties -> the answer whose earliest
++candidate index is smallest; all answers None -> 0.
+ """
+ from __future__ import annotations
+ 
++import re
++
++_NUM = r"-?[\d,]+(?:\.\d+)?"
++
++# The candidate's own answer: everything before it starts a new 'Question:'
++# (same trim as task.trim, reimplemented here since solution.py is standalone).
++_MARKERS = re.compile(r"\n\s*(?:Question|Q)\s*:", re.I)
++
++# Explicit calculations. One alternation, annotated form first so a
++# <<a op b = c>> is matched whole before the plain form could match inside it.
++#   annotated: << num op num = num >>   (op in + - * /)
++#   plain:     num op num = num         (op in + - * / x ×)
++_CALC = re.compile(
++    r"<<\s*(" + _NUM + r")\s*([+\-*/])\s*(" + _NUM + r")\s*=\s*(" + _NUM + r")\s*>>"
++    r"|(" + _NUM + r")\s*([+\-*/x×])\s*(" + _NUM + r")\s*=\s*(" + _NUM + r")"
++)
++
++
++def _trim(text: str) -> str:
++    return _MARKERS.split(text or "", maxsplit=1)[0].strip()
++
++
++def _num(s: str) -> float | None:
++    try:
++        return float(s.replace(",", ""))
++    except ValueError:
++        return None
++
++
++def _verified(text: str) -> bool:
++    """True iff the candidate has >=1 checkable calculation and all of them pass."""
++    checked = 0
++    for m in _CALC.finditer(_trim(text)):
++        if m.group(1) is not None:  # annotated form
++            a, op, b, stated = m.group(1), m.group(2), m.group(3), m.group(4)
++        else:                       # plain form
++            a, op, b, stated = m.group(5), m.group(6), m.group(7), m.group(8)
++        av, bv, sv = _num(a), _num(b), _num(stated)
++        if av is None or bv is None or sv is None:
++            continue  # unparsable pair: skip
++        if op == "/":
++            if bv == 0:
++                continue  # division by zero: skip
++            expected = av / bv
++        elif op in ("*", "x", "×"):
++            expected = av * bv
++        elif op == "+":
++            expected = av + bv
++        else:
++            expected = av - bv
++        checked += 1
++        if abs(expected - sv) >= 1e-6:
++            return False  # arithmetic slip
++    return checked >= 1
++
+ 
+ def select(item: dict) -> int:
+-    cands = item["candidates"]
+-    scored = [(c["features"].get("ar.gpt2.nll_sum"), i) for i, c in enumerate(cands)]
+-    scored = [(s, i) for s, i in scored if s is not None]
+-    if not scored:
++    scores: dict[str, list] = {}  # answer -> [total_weight, first_candidate_index]
++    for i, c in enumerate(item["candidates"]):
++        a = c.get("answer")
++        if a is None:
++            continue
++        w = 1.0 if _verified(c["text"]) else 0.5
++        rec = scores.get(a)
++        if rec is None:
++            scores[a] = [w, i]
++        else:
++            rec[0] += w
++    if not scores:
+         return 0
+-    return min(scored)[1]
++    return min(scores.items(), key=lambda kv: (-kv[1][0], kv[1][1]))[1][1]

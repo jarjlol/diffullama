@@ -9,8 +9,9 @@ representation the DLM preserves (layer-wise linear CKA).
 (`REFERENCE_SYSTEMS.md`). Arbor's LLM, a local vLLM server, edits `rerank_task/solution.py`
 (the selection rule) and iterates on dev. It keeps a change only when held-out test improves.
 
-**Iteration 1** (due 2026-11-05): scope, issue log, verified published numbers and the
-subset run plan are in `ITERATION_1.md`.
+**Iteration 1** (due 2026-11-05) is done: scope, issue log, Arbor feedback and results are
+in `ITERATION_1.md`, evidence in `results/iter1/`, the plan for iteration 2 in
+`NEXT_ITERATION.md`. **Taking over? Start with `HANDOFF.md`** (state, machines, how to rerun).
 
 ## Layout
 
@@ -151,5 +152,7 @@ agreement/majority signal, combining scorers. Keep Arbor's session folder
 - HumanEval and WinoGrande, also named in the idea, are out of scope. GSM8K only.
 - Decoding settings differ between models (each follows its authors' recommendation). This
   is a stated confound.
-- Nothing has run on a GPU yet. Every GPU path is written against the model code but has
+- Every step above ran on Blackwell for iteration 1 (2026-11-02 to 11-04); the issues it
+  hit are I-11 to I-20 in `ITERATION_1.md`. The original note, kept for history:
+  nothing had run on a GPU yet. Every GPU path was written against the model code but had
   not been executed.

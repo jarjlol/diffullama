@@ -1,0 +1,15 @@
+{
+  "baseline_score": 0.148,
+  "trunk_score": 0.296,
+  "test_baseline_score": 0.157,
+  "test_trunk_score": 0.296,
+  "eval_cmd": "cd {cwd} && bash eval.sh dev | tee /tmp/arbor_eval_{node_id}_dev.log && python3 -c \"import re,json; out=open('/tmp/arbor_eval_{node_id}_dev.log').read(); s=re.findall(r'score: ([0-9.]+)', out); print(json.dumps({'score': float(s[-1])}))\"",
+  "eval_cmd_test": "cd {cwd} && bash eval.sh test | tee /tmp/arbor_eval_{node_id}_test.log && python3 -c \"import re,json; out=open('/tmp/arbor_eval_{node_id}_test.log').read(); s=re.findall(r'score: ([0-9.]+)', out); print(json.dumps({'score': float(s[-1])}))\"",
+  "eval_timeout": null,
+  "eval_retries": null,
+  "eval_retry_base_delay": null,
+  "eval_retry_max_delay": null,
+  "dataset_info": "GSM8K answer selection. data/dev/items.jsonl (1000 items = 5 models x 200) and data/test/items.jsonl (1319 items). Each item: uid, model (diffugpt-s/diffugpt-m/diffullama/dream-base/llada-base), question, candidates[10] with {text, answer (extracted number or None), features}. Features: ar.{gpt2,qwen0.5b,tinyllama,qwen7b,llama2-7b}.{nll_sum,n_tokens}, len_chars. Gold in gold.jsonl (never passed to select()). B_dev=dev (iteration), B_test=test (merge gate + final). Score = macro-avg accuracy over the 5 models; higher is better. Only solution.py may be edited; static check restricts imports to stdlib whitelist (math, re, collections, statistics, itertools, functools, heapq, bisect, typing), forbids open/exec/eval etc.",
+  "metric_direction": "maximize",
+  "created_at": "2026-11-03T21:12:02.939818+00:00"
+}

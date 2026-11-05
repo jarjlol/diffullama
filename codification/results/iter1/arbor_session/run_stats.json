@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "token_scope": "research_agent_process_llm_only; excludes LLM calls made by external Bash/RunTraining/eval subprocesses",
+  "duration_seconds": 4081,
+  "duration_human": "1h08m01s",
+  "emergency_timeout": false,
+  "iterations": {
+    "total_nodes": 7,
+    "scored_nodes": 4,
+    "by_status": {
+      "done": 2,
+      "pruned": 4,
+      "merged": 1
+    },
+    "best_score": 0.296,
+    "baseline_score": 0.148,
+    "trunk_score": 0.296,
+    "test_baseline_score": 0.157,
+    "test_trunk_score": 0.296
+  },
+  "coordinator": {
+    "turns": 69,
+    "input_tokens": 4063784,
+    "uncached_input_tokens": 4063784,
+    "cache_read_tokens": 0,
+    "cache_creation_tokens": 0,
+    "output_tokens": 92080,
+    "total_tokens": 4155864
+  },
+  "all_agents": {
+    "total_input_tokens": 5284750,
+    "total_uncached_input_tokens": 5284750,
+    "total_cache_read_tokens": 0,
+    "total_cache_creation_tokens": 0,
+    "total_output_tokens": 142780,
+    "total_tokens": 5427530,
+    "total_llm_calls": 132,
+    "total_agents_spawned": 4
+  },
+  "model": "Qwen/Qwen3.8-27B-FP8",
+  "provider": "OpenAICompatProvider"
+}
