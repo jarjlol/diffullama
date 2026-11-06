@@ -88,3 +88,9 @@ CRITICAL: When you encounter a file reference above (e.g. `docs/model-code.md`),
 with the Read tool **only if** the current task matches its Triggers. Do NOT preload all
 references. When loaded, treat the content as mandatory; follow nested references only if
 the task needs them.
+
+<!-- issuemesh:begin -->
+## IssueMesh
+
+Work is coordinated through GitHub issues. Config: `.issuemesh/team.json`. Start with `mesh whoami` and `mesh inbox` (Claude Code: `/issuemesh:work`); rules in `docs/issuemesh.md` (**Triggers:** issue, claim, inbox, mesh, ping, triage, handoff, board).
+<!-- issuemesh:end -->

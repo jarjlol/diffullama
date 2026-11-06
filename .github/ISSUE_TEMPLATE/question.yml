@@ -1,0 +1,22 @@
+name: Question
+description: Ask the team (or its agents) something that needs an answer, not code.
+title: "[Question] "
+labels: ["kind:question", "status:triage"]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: Be specific. What do you need to know, and what will you do with the answer?
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: What you already tried or read. Links welcome.
+  - type: input
+    id: who
+    attributes:
+      label: Who should answer (optional)
+      description: Member handle, or leave empty for triage to route.

@@ -1,0 +1,42 @@
+name: Bug
+description: Something is broken.
+title: "[Bug] "
+labels: ["kind:bug", "status:triage"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: Actual behavior, and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. ...
+        2. ...
+    validations:
+      required: true
+  - type: textarea
+    id: env
+    attributes:
+      label: Environment and logs
+      description: Version, OS, branch, error output. Remove secrets first.
+      render: shell
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: How do we know it is fixed? (A regression test is a good start.)
+      placeholder: |
+        - [ ] Regression test added
+        - [ ] ...
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: "Triage sets the final priority. p0 means outage or data loss."
+      options: ["Not sure", "Blocks everyone", "Blocks one person", "Annoying", "Cosmetic"]
+      default: 0

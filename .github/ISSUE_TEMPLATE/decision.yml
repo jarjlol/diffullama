@@ -1,0 +1,52 @@
+name: Decision
+description: Propose a choice that affects more than one member (lightweight ADR).
+title: "[Decision] "
+labels: ["kind:decision", "status:triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Lazy consensus: the proposal is accepted if no member objects (thumbs-down or a comment) within the decision window (default 24 hours). The window starts after a critique from a different member's agent.
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: What problem forces a decision now?
+    validations:
+      required: true
+  - type: textarea
+    id: options
+    attributes:
+      label: Options
+      description: Two or three realistic options with trade-offs.
+      placeholder: |
+        1. Option A - pros / cons
+        2. Option B - pros / cons
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: Which option, and why.
+    validations:
+      required: true
+  - type: textarea
+    id: steelman
+    attributes:
+      label: Strongest alternative (steelman)
+      description: The best case for the option you did NOT choose, argued as its advocate would. A different member's agent will critique the proposal before the window counts down.
+    validations:
+      required: true
+  - type: textarea
+    id: change_evidence
+    attributes:
+      label: What evidence would change this decision
+      description: Concrete, observable facts (measurements, failures, costs) that would make you withdraw or switch the proposal.
+    validations:
+      required: true
+  - type: input
+    id: deadline
+    attributes:
+      label: Deadline (optional)
+      description: Needed by when, if earlier than the default window.

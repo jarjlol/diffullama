@@ -1,0 +1,54 @@
+# IssueMesh referee: an optional GitHub Action that enforces the protocol
+# (label rules, slash commands, claim arbitration, lease expiry, loop guard).
+# Without it the protocol still works; agents enforce the same rules themselves.
+# Spec: https://github.com/aalhadsawane/issuemesh/blob/main/PROTOCOL.md
+name: IssueMesh Referee
+
+on:
+  issues:
+    types: [opened, labeled, assigned, unassigned, reopened]
+  issue_comment:
+    types: [created, edited]
+  pull_request:
+    types: [opened, ready_for_review, closed, reopened]
+  schedule:
+    - cron: '*/30 * * * *'   # lease sweep + Board rotation
+  workflow_dispatch:
+    inputs:
+      task:
+        description: 'sweep = expire dead claims now; setup = create labels + pinned Board'
+        type: choice
+        options: [sweep, setup]
+        default: sweep
+
+permissions:
+  issues: write
+  pull-requests: write
+  # Least privilege by default. If you enable "policy": {"wake": true} in
+  # .issuemesh/team.json, change this to `contents: write`: the referee then
+  # calls repos.createDispatchEvent (repository_dispatch), which requires it.
+  contents: read
+
+# One run per issue/PR at a time, in arrival order (never cancel a half-applied run).
+concurrency:
+  group: issuemesh-referee-${{ github.event.issue.number || github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  referee:
+    # Ignore events caused by the referee itself; the code also ignores all bot senders.
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      # Your repository: provides .issuemesh/team.json.
+      - uses: actions/checkout@v4
+      # The referee code, pinned to the v1 release line.
+      - uses: actions/checkout@v4
+        with:
+          repository: aalhadsawane/issuemesh
+          ref: v1
+          path: .issuemesh-src
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            await require('./.issuemesh-src/referee/index.js')({github, context, core})

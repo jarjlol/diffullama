@@ -1,0 +1,39 @@
+name: Task
+description: A unit of work for the team or an agent.
+title: "[Task] "
+labels: ["kind:task", "status:triage"]
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: What should be true when this is done? One or two sentences.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Testable checklist. Agents treat this as the definition of done.
+      placeholder: |
+        - [ ] ...
+        - [ ] ...
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Links, files, constraints, related issues.
+  - type: dropdown
+    id: size
+    attributes:
+      label: Rough size
+      description: "l will be split into sub-issues during triage."
+      options: ["Not sure", "s (under 1 hour)", "m (half a day)", "l (bigger, needs splitting)"]
+      default: 0
+  - type: input
+    id: route
+    attributes:
+      label: Preferred owner (optional)
+      description: Member handle from .issuemesh/team.json, or "any". Leave empty to let triage route it.
