@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Group 3 Project Timeline</title>
+<style>
+:root{
+  --bg:#fbfaf7; --panel:#ffffff; --ink:#1d1f23; --muted:#5d6470; --line:#e3e0d8;
+  --accent:#1f5fa8; --accent-soft:#e8f0fa; --good:#1d7a46; --good-soft:#e6f4ec;
+  --warn:#9a5b00; --warn-soft:#fbf0dc; --bad:#a3302a; --bad-soft:#f9e6e4; --code:#f2f0ea;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15171a; --panel:#1d2024; --ink:#e7e5e0; --muted:#9aa1ab; --line:#30343a;
+    --accent:#7fb0ee; --accent-soft:#1d2a3a; --good:#6cc794; --good-soft:#173024;
+    --warn:#e0a84e; --warn-soft:#33281a; --bad:#ec8a83; --bad-soft:#3a1f1d; --code:#262a2f;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15171a; --panel:#1d2024; --ink:#e7e5e0; --muted:#9aa1ab; --line:#30343a;
+  --accent:#7fb0ee; --accent-soft:#1d2a3a; --good:#6cc794; --good-soft:#173024;
+  --warn:#e0a84e; --warn-soft:#33281a; --bad:#ec8a83; --bad-soft:#3a1f1d; --code:#262a2f;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:1000px;margin:0 auto;padding:24px 16px 80px}
+h1{font-size:1.9rem;line-height:1.25;margin:.2em 0 .3em}
+h2{font-size:1.35rem;margin:2.4em 0 .6em;padding-top:.6em;border-top:1px solid var(--line)}
+h3{font-size:1.08rem;margin:1.6em 0 .4em}
+p{margin:.5em 0}
+a{color:var(--accent)}
+code{background:var(--code);padding:.08em .35em;border-radius:4px;font-size:.9em;word-break:break-word}
+.lede{color:var(--muted);font-size:1.02rem}
+nav.toc{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin:18px 0}
+nav.toc ol{margin:.3em 0;padding-left:1.3em;columns:2;column-gap:28px}
+@media (max-width:640px){nav.toc ol{columns:1}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
+.note{border-left:4px solid var(--accent);background:var(--accent-soft);padding:10px 14px;border-radius:6px;margin:12px 0}
+.warn{border-left:4px solid var(--warn);background:var(--warn-soft);padding:10px 14px;border-radius:6px;margin:12px 0}
+.bad{border-left:4px solid var(--bad);background:var(--bad-soft);padding:10px 14px;border-radius:6px;margin:12px 0}
+.good{border-left:4px solid var(--good);background:var(--good-soft);padding:10px 14px;border-radius:6px;margin:12px 0}
+.tablewrap{overflow-x:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:.93rem;background:var(--panel)}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+th{background:var(--code);font-weight:600}
+td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ev{font-size:.82rem;color:var(--muted)}
+.ev a{color:var(--muted)}
+.tl{position:relative;margin:10px 0 0;padding-left:26px}
+.tl::before{content:"";position:absolute;left:8px;top:4px;bottom:4px;width:2px;background:var(--line)}
+.ph{position:relative;margin:0 0 22px}
+.ph::before{content:"";position:absolute;left:-23px;top:8px;width:12px;height:12px;border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
+.ph .date{font-weight:700;color:var(--accent);font-size:.92rem}
+.ph h3{margin:.1em 0 .3em}
+.ph ul{margin:.3em 0;padding-left:1.2em}
+.ph li{margin:.25em 0}
+.tag{display:inline-block;font-size:.74rem;font-weight:600;padding:1px 7px;border-radius:10px;margin-right:4px;vertical-align:1px}
+.t-asg{background:var(--accent-soft);color:var(--accent)}
+.t-dir{background:var(--warn-soft);color:var(--warn)}
+.t-cod{background:var(--good-soft);color:var(--good)}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:12px 0}
+.flow .box{flex:1 1 150px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:.88rem}
+.flow .box b{display:block;color:var(--accent);font-size:.8rem;text-transform:uppercase;letter-spacing:.03em}
+.k{font-weight:600}
+footer{margin-top:50px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--line);padding-top:12px}
+</style>
+</head>
+<body>
+<main>
+
+<h1>Group 3 project timeline: from the anchor paper to Task 4</h1>
+<p class="lede">BITS F471, Introduction to LLMs. This page tells what the team did, when, where, and why. It covers the period from 13 August 2026 to 5 November 2026.</p>
+
+<div class="note">
+<p><span class="k">Evidence rule.</span> Each statement on this page has a source in the repository <code>jarjlol/diffullama</code>. A source is a commit (for example <code>61527e0</code>) or a file path. Each link opens the source on GitHub. If a fact has no source in the repository, this page does not state it. Some items are open questions. This page shows them as open.</p>
+<p><span class="k">Main record.</span> The team keeps its record in <code>project-docs/</code>. The decision log is <a href="https://github.com/jarjlol/diffullama/blob/assignment/codification/project-docs/02-decision-log.md">project-docs/02-decision-log.md</a>. Decision IDs on this page (for example D-2026-11-01-a) come from that file.</p>
+</div>
+
+<nav class="toc"><b>Contents</b>
+<ol>
+<li><a href="#glance">The project in short</a></li>
+<li><a href="#people">Team and who did what</a></li>
+<li><a href="#timeline">Timeline</a></li>
+<li><a href="#decisions">Decisions</a></li>
+<li><a href="#task4">Task 4 (codification) in detail</a></li>
+<li><a href="#results">Task 4 results</a></li>
+<li><a href="#issues">Task 4 problems found and fixed</a></li>
+<li><a href="#where">Where things are</a></li>
+<li><a href="#open">Open items for the meeting</a></li>
+<li><a href="#glossary">Terms</a></li>
+</ol></nav>
+
+<!-- ================================================================== -->
+<h2 id="glance">1. The project in short</h2>
+
+<p>The course project is an "AI-augmented research cycle". It has six stages. Each stage pairs a usual research step with an LLM-assisted method. The stages are: idea extraction, reproduction, idea enhancement, implementation, paper writing, and review.</p>
+<p class="ev">Source: <a href="https://github.com/jarjlol/diffullama/blob/assignment/codification/project-docs/01-project-brief.md">project-docs/01-project-brief.md</a>, "The project format".</p>
+
+<p>The anchor paper is <i>Scaling Diffusion Language Models via Adaptation from Autoregressive Models</i> (Gong et al., ICLR 2025, arXiv:2410.17891). The paper changes a pretrained autoregressive (AR) model into a masked diffusion language model (DLM). It makes DiffuGPT (124M and 355M) and DiffuLLaMA (6.74B). The team uses a fork of the authors' code.</p>
+<p class="ev">Source: <a href="https://github.com/jarjlol/diffullama/blob/assignment/codification/project-docs/01-project-brief.md">01-project-brief.md</a>, "Anchor paper"; decision D-2026-08-13-a.</p>
+
+<h3>Status of each deliverable</h3>
+<div class="tablewrap"><table>
+<tr><th>Deliverable</th><th>What it asks</th><th>What the team did</th><th>Status in the repo</th></tr>
+<tr><td>Assignment Part 1</td><td>Choose and understand an anchor paper</td><td>DiffuLLaMA</td><td>Done (D-2026-08-13-a)</td></tr>
+<tr><td>Assignment Part 2</td><td>Describe one new task in the research lifecycle that a machine can do</td><td>"Continuous Gap Liveness Verification (Automated Novelty Invalidation)"</td><td>Submitted as PDF (D-2026-08-18-a)</td></tr>
+<tr><td>SOTA (literature review)</td><td>Use a 2024+ method to write a literature review; compare it with the anchor's related work</td><td>QUAL-SG from SurveyGen, plus the evaluation framework of arXiv:2412.13612</td><td>Submitted (recorded 2026-09-27 in 01-project-brief.md)</td></tr>
+<tr><td>Limitations</td><td>Find the limitations of the anchor with a given framework</td><td>Multi-agent pipeline of arXiv:2601.11578; 12 gaps (L1 to L12); the team declined all 12 with reasons</td><td>Done (D-2026-09-27-a). The repo does not record a submission</td></tr>
+<tr><td>Ideation</td><td>From the gaps, find 1 or 2 research problems; rank the top 5 ideas for each</td><td>ResearchAgent (arXiv:2404.07738); problems P1 and P2</td><td>Run complete; output committed in <code>4559f77</code> as "submitted artifacts"</td></tr>
+<tr><td>Codification (Task 4)</td><td>Codify the best idea with LLMs; find and fix spec gaps; get results; compare with SOTA and baselines</td><td>Idea 1.1 with the Arbor system</td><td>Iteration 1 written and pushed (<code>61527e0</code>). <b>The repo does not record a submission.</b></td></tr>
+<tr><td>Main project</td><td>Stages 2 to 6</td><td>Many directions studied</td><td>Direction still open (P-5 in the decision log)</td></tr>
+</table></div>
+<p class="ev">Source: <a href="https://github.com/jarjlol/diffullama/blob/assignment/codification/project-docs/01-project-brief.md">01-project-brief.md</a>, "Deliverables and status"; <a href="https://github.com/jarjlol/diffullama/blob/assignment/codification/project-docs/02-decision-log.md">02-decision-log.md</a>.</p>
+
+<!-- ================================================================== -->
+<h2 id="people">2. Team and who did what</h2>
+
+<p>The team is Group 3. It has seven members. Neel Naik is the leader. The workstation (2 × RTX 6000 Pro Blackwell, 96 GB each) is open to Aaditya, Aryan and Arjun only. Other lab users share it.</p>
+<p class="ev">Source: <a href="https://github.com/jarjlol/diffullama/blob/assignment/codification/project-docs/01-project-brief.md">01-project-brief.md</a>, "Team" and "Compute available".</p>
+
+<div class="tablewrap"><table>
+<tr><th>Member</th><th>Commits (since Aug 2026)</th><th>Main work shown in the git history</th></tr>
+<tr><td>Neel Naik (leader)</td><td class="n">22</td><td>SOTA pipeline (<code>0a7c31d</code>); limitations pipeline (<code>a131e13</code>, <code>3e74ef5</code>, <code>0bca405</code>); AGENTS.md (<code>ecf6ed8</code>); ResearchAgent ideation (<code>816bda3</code>, <code>1e7a767</code>); start of Task 4: reference systems, idea choice, Arbor task pack (<code>d2d420a</code>, <code>0c960aa</code>, <code>5c2daef</code>)</td></tr>
+<tr><td>Aaditya H Vernenker</td><td class="n">48</td><td>LLM-judge extension to SOTA (<code>d606628</code>); design audit (<code>0b25835</code> to <code>9038db1</code>); <code>project-docs/</code> (<code>36fa537</code>); second SOTA paper (<code>6316fd1</code>); direction analyses (<code>88cba26</code>, <code>666df2f</code>); Task 4 audit, fixes, GPU runs, Arbor run, results and handoff (<code>42c8866</code> to <code>61527e0</code>)</td></tr>
+<tr><td>Aalhad M Sawane</td><td class="n">5</td><td>Simplified inference README with diagrams (<code>39c8f90</code>, <code>2bcca68</code>); EGR repair plan and code (<code>4a885d8</code>, <code>918e1dc</code>, <code>35a6486</code>)</td></tr>
+<tr><td>Aryan Bethmangalkar</td><td class="n">1</td><td>Trace-guided repair proposal (<code>4b4d9f5</code>). He also found the CDC paper that preempted structure-guided remasking (D-2026-08-28-a)</td></tr>
+<tr><td>Arjun P Thakur</td><td class="n">1</td><td>OpenRouter multi-key support and server runbook for ideation (<code>909f107</code>); his run resolved P-7</td></tr>
+<tr><td>Khushi Pandey, Diya Srivastava</td><td class="n">0</td><td>The git history has no commits under these names. Their work can be outside the repository.</td></tr>
+</table></div>
+<p class="ev">Source: <code>git log --all</code>, author field, from 2026-08-01. Other authors in the log (summmeer, Sansa Gong, Shivam Agarwal and others) are the upstream paper authors, from 2024.</p>
+
+<!-- ================================================================== -->
+<h2 id="timeline">3. Timeline</h2>
+<p>Tags: <span class="tag t-asg">assignment</span> course deliverable. <span class="tag t-dir">direction</span> choice of the main project. <span class="tag t-cod">Task 4</span> codification.</p>
+
+<div class="tl">
+
+<div class="ph"><div class="date">13 to 18 August 2026</div>
+<h3><span class="tag t-asg">assignment</span>Anchor paper and Assignment Part 2</h3>
+<ul>
+<li>The team chose DiffuLLaMA as the anchor. It did not use the seven topics from the instructor. The team wanted an independent paper (D-2026-08-13-a).</li>
+<li>The team did not use best-paper winners as anchors. Such papers get much follow-up work, so an open gap is less likely. A 50-paper survey gave 15 candidates with a verified gap (D-2026-08-13-b).</li>
+<li>Part 2: the team chose "Continuous Gap Liveness Verification". This task checks again and again that nobody else has published the team's idea. The team submitted it as PDF (D-2026-08-18-a).</li>
+</ul></div>
+
+<div class="ph"><div class="date">24 to 29 August 2026</div>
+<h3><span class="tag t-asg">assignment</span>SOTA literature review, and the first audit</h3>
+<ul>
+<li>24 Aug: Neel added the QUAL-SG pipeline (<code>0a7c31d</code>). It found 48 references. All 48 are real. F1 against the anchor's related work was 0.222 (D-2026-08-24-a).</li>
+<li>28 Aug: Aaditya replaced the keyword relevance score with an LLM judge (<code>d606628</code>). F1 went from 0.222 to 0.272. No off-topic papers stayed in the pool (D-2026-08-28-b).</li>
+<li>28 Aug: Aryan found CDC (arXiv:2605.16829). CDC already does structure-guided remasking. The team removed the claim that this idea is new (D-2026-08-28-a).</li>
+<li>29 Aug: Aaditya wrote a design audit on branch <code>audit/opus-review</code> (<code>0b25835</code> to <code>9038db1</code>). It recommended Option B, an "adaptation audit". It rejected bets 1, 2 and 5 and Option E (D-2026-08-29-a, D-2026-08-29-b).</li>
+<li>29 Aug: Aaditya started <code>project-docs/</code> as the team record (<code>36fa537</code>). He also added the second SOTA paper's evaluation framework (<code>6316fd1</code>). Reference accuracy was 1.000 and hallucination rate 0.000 (D-2026-08-29-d).</li>
+</ul></div>
+
+<div class="ph"><div class="date">31 August 2026</div>
+<h3><span class="tag t-dir">direction</span>Proposals for the main project</h3>
+<ul>
+<li>Aryan proposed trace-guided repair of code from frozen diffusion models (<code>4b4d9f5</code>, file <code>project-docs/08-trace-guided-repair-proposal.md</code>).</li>
+<li>Aalhad planned EGR, execution-grounded remasking for code repair (<code>4a885d8</code>). He also added a simplified inference README with diagrams (<code>39c8f90</code>).</li>
+</ul></div>
+
+<div class="ph"><div class="date">16 to 21 September 2026</div>
+<h3><span class="tag t-asg">assignment</span><span class="tag t-dir">direction</span>Limitations, and the compute constraint</h3>
+<ul>
+<li>16 Sep: Neel added the limitations pipeline (<code>a131e13</code>). On 21 Sep he made it again as a multi-agent pipeline that follows the paper (<code>3e74ef5</code>). It found 12 gaps, L1 to L12.</li>
+<li>16 Sep: Neel added <code>AGENTS.md</code>, the instructions for AI agents (<code>ecf6ed8</code>).</li>
+<li>19 Sep: Aalhad added EGR code, about 3,600 lines, CPU only (<code>918e1dc</code>, <code>35a6486</code>). The same day, a direction analysis found EGR preempted by DiffPDE. It recommended Option B with about 75% confidence (<code>project-docs/09-p1-direction-analysis-2026-09-19.md</code>).</li>
+<li>21 Sep: the team said compute is the limit. The shared workstation cannot give the ~160 GPU-hours that Option B needs. Decision: the main project is inference only, on released checkpoints (D-2026-09-21-a). The analysis proposed L6 (the answer-selection headroom) as the main direction (<code>88cba26</code>).</li>
+</ul></div>
+
+<div class="ph"><div class="date">27 to 28 September 2026</div>
+<h3><span class="tag t-asg">assignment</span>All 12 gaps declined; ideation starts</h3>
+<ul>
+<li>Neel corrected a false claim in gap L8 (<code>b0dc799</code>). The error came from an agent hallucination in reviewer REV-1 (P-6 in the decision log).</li>
+<li>The team declined all 12 gaps. Each gap has a reason and a link to the SOTA output (<code>0bca405</code>, D-2026-09-27-a). L1 and L4 were declined because of resources, not because they are weak.</li>
+<li>Neel added ResearchAgent for ideation (<code>816bda3</code>). The team used only this one of the three given papers (D-2026-09-27-b).</li>
+<li>28 Sep: Neel merged the limitations and agent-docs branches into <code>main</code> (<code>f96ea8f</code>, <code>066d8f2</code>).</li>
+</ul></div>
+
+<div class="ph"><div class="date">7 to 21 October 2026</div>
+<h3><span class="tag t-asg">assignment</span>Ideation runs</h3>
+<ul>
+<li>7 Oct: Arjun added OpenRouter multi-key support and a server runbook (<code>909f107</code>). His run used free OpenRouter models (P-7).</li>
+<li>8 Oct: the team chose problems P1 and P2 (D-2026-10-08-a). P1: does the share of the AR model that a DLM keeps predict how much an AR reranker can recover? P2: how do noise schedules change the quality-to-speed balance?</li>
+<li>8 Oct: OpenRouter's free tier allows only 50 requests per day. The team moved the run to local vLLM models on the workstation (<code>1e7a767</code>, D-2026-10-08-b).</li>
+<li>21 Oct: an audit of the ideation output found errors in model lineage, data that does not exist, and scores that are too high (78 of 100 ratings are 5). Source: <code>ideation/REPORT.md</code> §7.</li>
+</ul></div>
+
+<div class="ph"><div class="date">1 November 2026</div>
+<h3><span class="tag t-cod">Task 4</span>Codification starts (Neel)</h3>
+<ul>
+<li>Neel checked the four reference systems. Only Arbor has public code that does what its paper says (<code>d2d420a</code>, D-2026-11-01-a, <code>codification/REFERENCE_SYSTEMS.md</code>).</li>
+<li>Neel chose idea 1.1 (<code>0c960aa</code>, D-2026-11-01-b). The decision log says the team must still confirm it.</li>
+<li>Neel committed the ideation deliverable (<code>4559f77</code>). He added the Arbor task pack and the GPU pipeline (<code>5c2daef</code>). Nothing had run on a GPU yet.</li>
+</ul></div>
+
+<div class="ph"><div class="date">2 November 2026</div>
+<h3><span class="tag t-cod">Task 4</span>Audit, fixes, and the GPU campaign</h3>
+<ul>
+<li>Aaditya audited Task 4 on branch <code>audit/task4-codification</code> (<code>9fd5884</code>). He fixed four problems before any GPU time: the DiffuGPT-S context, the Llama-2 access gate, the 256-step cost, and causal attention in CKA (<code>42c8866</code>, <code>1530aa8</code>, <code>36dbff2</code>).</li>
+<li>He added a robust CKA (debiased, and without the first-token "sink") (<code>97ebc8d</code>).</li>
+<li>He added a GPU campaign supervisor. It waits until a GPU is free of other users for 20 minutes. It never stops jobs that it did not start (<code>36dbff2</code>, <code>143f6e0</code>, <code>3dcaad7</code>).</li>
+</ul></div>
+
+<div class="ph"><div class="date">3 November 2026</div>
+<h3><span class="tag t-cod">Task 4</span>GPU runs and first results</h3>
+<ul>
+<li>The runs found new problems, I-16 to I-20 (see <a href="#issues">section 7</a>). Dream gave 10 identical answers at temperature 0.2, so the team set it to 0.7 (<code>f2fd2c4</code>).</li>
+<li>One Dream job ran on a second machine (ada) (<code>f59c66d</code>, <code>a608e78</code>, <code>5d34805</code>).</li>
+<li>First result: every small AR scorer is worse than the first sample on Dream. Majority vote is much better (I-20). Feedback to the idea: use each model's own 7B AR base as scorer, and set the target "beat majority vote" (<code>391e3b1</code>, <code>e484df0</code>).</li>
+<li>The test questions were split: 200 for Arbor's merge gate, and 300 that Arbor never sees (<code>0bba23f</code>, <code>dff4af8</code>).</li>
+</ul></div>
+
+<div class="ph"><div class="date">4 November 2026</div>
+<h3><span class="tag t-cod">Task 4</span>Arbor run and final results</h3>
+<ul>
+<li>Arbor ran for 68 minutes in review mode. It did 7 of 12 cycles and ran 4 ideas. It merged one idea, 4.1 (verification-weighted voting). Each reply to Arbor is in <code>ITERATION_1.md</code> §Arbor.</li>
+<li>On the 300 held-out questions, 4.1 is equal to majority vote. Idea 1.1 as written is refuted (<code>f83e5c9</code>, <code>45035d7</code>).</li>
+<li>Aaditya wrote the self-grade and the plan for iteration 2 (<code>66e25de</code>, <code>codification/NEXT_ITERATION.md</code>).</li>
+</ul></div>
+
+<div class="ph"><div class="date">5 November 2026</div>
+<h3><span class="tag t-cod">Task 4</span>Handoff to Arjun and Neel; due date of iteration 1</h3>
+<ul>
+<li>Aaditya wrote <code>codification/HANDOFF.md</code> and put all Arbor logs and numbers in <code>codification/results/iter1/</code> (<code>61527e0</code>). This is the newest commit on any branch.</li>
+<li>Iteration 1 was due on Thursday 5 November 2026 (<code>codification/ITERATION_1.md</code>, first line). The repository does not record a submission.</li>
+</ul></div>
+
+</div>
+
+<!-- ================================================================== -->
+<h2 id="decisions">4. Decisions</h2>
+<p>All rows come from <a href="https://github.com/jarjlol/diffullama/blob/assignment/codification/project-docs/02-decision-log.md">project-docs/02-decision-log.md</a>.</p>
+<div class="tablewrap"><table>
+<tr><th>ID</th><th>Decision</th><th>Reason</th></tr>
+<tr><td>D-2026-08-13-a</td><td>Anchor paper: DiffuLLaMA</td><td>It meets all rules (NLP, GenAI, top venue, recent) and has public code</td></tr>
+<tr><td>D-2026-08-13-b</td><td>Do not use best-paper winners</td><td>They get the most follow-up work, so gaps close fast</td></tr>
+<tr><td>D-2026-08-18-a</td><td>Part 2 task: gap liveness verification</td><td>It is different from the examples the instructor gave</td></tr>
+<tr><td>D-2026-08-24-a</td><td>SOTA method: QUAL-SG</td><td>It is a generation method; the other paper is an evaluation tool</td></tr>
+<tr><td>D-2026-08-28-a</td><td>Do not claim that structure-guided remasking is new</td><td>CDC (arXiv:2605.16829) already does it</td></tr>
+<tr><td>D-2026-08-28-b</td><td>Add an LLM judge to the SOTA pipeline</td><td>The keyword score let off-topic papers in</td></tr>
+<tr><td>D-2026-08-29-a/b</td><td>Reject bets 1, 2, 5 and Option E</td><td>False premise, already published, or a crowded area</td></tr>
+<tr><td>D-2026-08-29-d</td><td>Also use the second SOTA paper's evaluation</td><td>It uses both given papers and costs no GPU</td></tr>
+<tr><td>D-2026-09-21-a</td><td>Main project is inference only</td><td>Option B needs ~160 GPU-hours; the shared workstation cannot give this</td></tr>
+<tr><td>D-2026-09-27-a</td><td>Decline all 12 limitation gaps</td><td>Each gap needs training, or its claim is weak or closed</td></tr>
+<tr><td>D-2026-09-27-b</td><td>Ideation: use ResearchAgent only</td><td>Only it covers both problem finding and method design</td></tr>
+<tr><td>D-2026-10-08-a</td><td>Ideation problems: P1 and P2</td><td>The brief asks for one or two; P3 overlaps P2</td></tr>
+<tr><td>D-2026-10-08-b</td><td>Ideation on local vLLM, not OpenRouter</td><td>OpenRouter free tier: 50 requests per day</td></tr>
+<tr><td>D-2026-11-01-a</td><td>Task 4 system: Arbor</td><td>Only Arbor's public code does what its paper says</td></tr>
+<tr><td>D-2026-11-01-b</td><td>Task 4 idea: 1.1</td><td>It gives task accuracy to compare, needs no training, and has no lineage errors. <b>Team confirmation is still open.</b></td></tr>
+</table></div>
+
+<div class="warn"><p><span class="k">Still open in the decision log:</span> P-5 (which inference-time direction for the main project), P-2 (target venue: no 2026 Agents4Science edition found), P-3 (Sharanga access). The log also records an ID clash: two different entries are both called "P-6".</p></div>
+
+<!-- ================================================================== -->
+<h2 id="task4">5. Task 4 (codification) in detail</h2>
+
+<h3>5.1 What the brief asks</h3>
+<p>The brief has five parts. Each part has a place in <code>codification/ITERATION_1.md</code>:</p>
+<ol>
+<li>Codify the best idea with LLMs. The team uses Arbor. An LLM changes the selection code, and Arbor keeps a change only if it is better on held-out data.</li>
+<li>Find spec gaps and infeasibilities. The issue log has I-1 to I-20.</li>
+<li>Refine the idea with feedback to the model. Each reply to Arbor is in §Arbor.</li>
+<li>Get final results on a metric and a dataset: GSM8K accuracy, in §Results.</li>
+<li>Compare with SOTA and baselines. Majority vote (self-consistency) is the main baseline. Published numbers are a check on the generation.</li>
+</ol>
+<p class="ev">Source: <a href="https://github.com/jarjlol/diffullama/blob/assignment/codification/codification/ITERATION_1.md">codification/ITERATION_1.md</a>, "What the brief asks for".</p>
+
+<h3>5.2 The idea (1.1)</h3>
+<p>A diffusion model writes N = 10 answers to each GSM8K maths question. A small AR model gives each answer a score (its negative log-likelihood, NLL). The method selects the answer with the best score. The idea says: the accuracy that this recovers depends on how much of its AR base the diffusion model keeps. CKA between the two models, layer by layer, measures this.</p>
+<p class="ev">Source: <a href="https://github.com/jarjlol/diffullama/blob/assignment/codification/codification/IDEA_SELECTION.md">codification/IDEA_SELECTION.md</a>; <a href="https://github.com/jarjlol/diffullama/blob/assignment/codification/codification/README.md">codification/README.md</a>.</p>
+
+<h3>5.3 The pipeline</h3>
+<div class="flow">
+<div class="box"><b>1 Data</b>GSM8K: dev 200 (from train), test 500 (from the official 1319)</div>
+<div class="box"><b>2 Generate</b>10 answers per question, for each of 5 DLMs</div>
+<div class="box"><b>3 Score</b>NLL of each answer under 5 AR scorers</div>
+<div class="box"><b>4 CKA</b>Each DLM against its AR base, 4 models</div>
+<div class="box"><b>5 Arbor</b>An LLM changes <code>solution.py</code>; merge only on gain</div>
+<div class="box"><b>6 Evaluate</b>300 final questions; paired statistics</div>
+</div>
+<p class="ev">Source: <code>codification/pipeline/</code> (one script for each step); <code>codification/ITERATION_1.md</code>, "Run plan"; <code>codification/split_gate_final.py</code>.</p>
+
+<div class="tablewrap"><table>
+<tr><th>Diffusion model</th><th>AR base (for CKA)</th><th>Note</th></tr>
+<tr><td>diffugpt-s</td><td>GPT-2</td><td>1-shot, because its context is 512 tokens (I-7)</td></tr>
+<tr><td>diffugpt-m</td><td>GPT-2 medium</td><td>4-shot</td></tr>
+<tr><td>diffullama</td><td>Llama-2-7B (ungated copy, same SHA-256)</td><td>4-shot (I-8)</td></tr>
+<tr><td>dream-base</td><td>Qwen2.5-7B</td><td>Temperature 0.7, not 0.2 (I-16)</td></tr>
+<tr><td>llada-base</td><td>none (trained from scratch)</td><td>Control model (I-4)</td></tr>
+</table></div>
+<p>AR scorers: gpt2, qwen0.5b, tinyllama, and two 7B bases (qwen7b, llama2-7b). Each scorer gives two scores: summed NLL and NLL per token.</p>
+<p class="ev">Source: <code>codification/pipeline/config.json</code>; <code>ITERATION_1.md</code> issues I-7, I-8, I-16, I-20; commit <code>391e3b1</code>.</p>
+
+<h3>5.4 The Arbor loop and the feedback</h3>
+<p>Arbor ran in review mode. In this mode a person checks each idea before Arbor runs it. The LLM was Qwen3.8-27B-FP8 on a local vLLM server. The main feedback was:</p>
+<ul>
+<li>Arbor proposed twice to use other models' answers to the same question. The reply rejected this both times. That is ensembling across models, and it is not fair to the per-model baselines.</li>
+<li>A reply corrected a wrong fact: LLaDA has no AR base.</li>
+<li>A reply gave a new direction: check the arithmetic in each answer, and use the result as a vote weight. This became idea 4.1, the one that Arbor merged.</li>
+<li>A reply told Arbor not to tune the weight on dev data, because a tuned weight would overfit.</li>
+</ul>
+<p class="ev">Source: <a href="https://github.com/jarjlol/diffullama/blob/assignment/codification/codification/ITERATION_1.md">ITERATION_1.md</a> §Arbor (replies verbatim); <code>codification/results/iter1/arbor_session/</code>; <code>codification/results/iter1/ops/start_vllm.sh</code>.</p>
+
+<!-- ================================================================== -->
+<h2 id="results">6. Task 4 results</h2>
+
+<p>The table shows accuracy (%) on the 300 final questions. Arbor did not see these questions.</p>
+<div class="tablewrap"><table>
+<tr><th>Model</th><th>First sample</th><th>Majority vote</th><th>Best AR pick (scorer)</th><th>Arbor 4.1</th><th>Oracle</th></tr>
+<tr><td>diffugpt-s</td><td class="n">1.7</td><td class="n">2.3</td><td class="n">2.0 (llama2-7b mean)</td><td class="n">2.3</td><td class="n">14.7</td></tr>
+<tr><td>diffugpt-m</td><td class="n">0.7</td><td class="n">1.3</td><td class="n">2.3 (tinyllama mean)</td><td class="n">1.3</td><td class="n">8.7</td></tr>
+<tr><td>diffullama</td><td class="n">0.3</td><td class="n">2.0</td><td class="n">2.3 (gpt2 mean)</td><td class="n">2.0</td><td class="n">9.7</td></tr>
+<tr><td>dream-base</td><td class="n">41.0</td><td class="n"><b>73.3</b></td><td class="n">32.0 (qwen7b sum)</td><td class="n">73.0</td><td class="n">88.0</td></tr>
+<tr><td>llada-base</td><td class="n">48.7</td><td class="n"><b>73.0</b></td><td class="n">52.0 (qwen7b sum)</td><td class="n">73.0</td><td class="n">88.3</td></tr>
+</table></div>
+<p class="ev">Source: <code>ITERATION_1.md</code> §Results; <code>codification/results/iter1/numbers/baselines_final300.json</code>.</p>
+
+<p>Paired test of 4.1 against majority vote (95% bootstrap interval; exact McNemar test):</p>
+<div class="tablewrap"><table>
+<tr><th>Split</th><th>Model</th><th>4.1 minus majority</th><th>95% interval</th><th>Wins / losses</th><th>p</th></tr>
+<tr><td>final (300)</td><td>dream-base</td><td class="n">−0.3</td><td class="n">[−2.0, +1.3]</td><td class="n">3 / 4</td><td class="n">1.00</td></tr>
+<tr><td>final (300)</td><td>llada-base</td><td class="n">0.0</td><td class="n">[−1.7, +1.7]</td><td class="n">3 / 3</td><td class="n">1.00</td></tr>
+<tr><td>gate (200)</td><td>dream-base</td><td class="n">+1.5</td><td class="n">[−0.5, +4.0]</td><td class="n">4 / 1</td><td class="n">0.38</td></tr>
+<tr><td>gate (200)</td><td>llada-base</td><td class="n">−1.5</td><td class="n">[−3.5, 0.0]</td><td class="n">0 / 3</td><td class="n">0.25</td></tr>
+</table></div>
+<p class="ev">Source: <code>codification/results/iter1/numbers/paired_final300.txt</code>, <code>paired_gate200.txt</code>; script <code>codification/paired_stats.py</code>.</p>
+
+<div class="bad"><p><span class="k">Finding 1. Idea 1.1 as written is refuted.</span> On Dream, the best AR pick (32.0) is worse than the first sample (41.0). On LLaDA it is almost the same (52.0 against 48.7). Majority vote is more than 20 points better than each AR pick on both models. The result stays the same when each model's own 7B base is the scorer.</p></div>
+<div class="warn"><p><span class="k">Finding 2. The best selector is equal to majority vote.</span> Arbor's merged rule 4.1 has no significant difference from majority vote on any split. Arbor's merge gate compared 4.1 with the seed rule (GPT-2 NLL, 0.157), not with majority vote. So the merge does not show that 4.1 is better than majority vote.</p></div>
+<div class="good"><p><span class="k">Finding 3. Majority vote gives a large gain.</span> Against the first sample, 4.1 adds +32.0 points on Dream (p = 8e-27) and +24.3 on LLaDA (p = 2.5e-16). Majority vote closes 61% to 69% of the distance from the first sample to the oracle.</p></div>
+
+<h3>CKA against headroom</h3>
+<p>The idea predicts: a higher CKA gives more gain from AR reranking. Spearman ρ is positive for all 10 AR selectors (+0.4 to +1.0). But only 4 models have an AR base. With 4 models, the smallest possible p is 0.083. Three of the four models are near 0% accuracy. So the order comes from Dream only. LLaDA has no AR base, and it also loses with most AR scorers. This result is descriptive only. It is not evidence.</p>
+<p class="ev">Source: <code>ITERATION_1.md</code> §Results, "CKA vs headroom"; <code>codification/results/iter1/numbers/analyze_test500.txt</code>.</p>
+
+<!-- ================================================================== -->
+<h2 id="issues">7. Task 4 problems found and fixed</h2>
+<p>The issue log has 20 entries. The table shows the most important ones. Each one has evidence and a fix in <a href="https://github.com/jarjlol/diffullama/blob/assignment/codification/codification/ITERATION_1.md">ITERATION_1.md</a> §Issue log.</p>
+<div class="tablewrap"><table>
+<tr><th>ID</th><th>Problem</th><th>Fix</th></tr>
+<tr><td>I-1</td><td>The spec had no self-consistency baseline</td><td>Add majority vote; it became the bar to beat</td></tr>
+<tr><td>I-2</td><td>Summed NLL prefers short answers</td><td>Also report NLL per token. The seed rule keeps the summed form, so Arbor has a problem to fix</td></tr>
+<tr><td>I-3</td><td>A correlation over ~4 models has no statistical power</td><td>Report it as descriptive, with an exact permutation p</td></tr>
+<tr><td>I-7</td><td>DiffuGPT-S cannot take a 4-shot prompt (512-token context); the run would stop at question 1</td><td>Run it 1-shot with 192 new tokens</td></tr>
+<tr><td>I-12</td><td>Dream and LLaDA at 256 steps need too much GPU time</td><td>Use 64 steps</td></tr>
+<tr><td>I-13</td><td>The idea says that Dream and LLaDA are LLaMA-based. Dream is Qwen2.5-based; LLaDA has no base</td><td>Add a Qwen2.5-0.5B scorer for Dream; keep LLaDA as the control</td></tr>
+<tr><td>I-14</td><td>DiffuGPT's CKA used causal attention by mistake; this makes the measured value too high</td><td>Always pass the bidirectional mask; add a check</td></tr>
+<tr><td>I-15</td><td>Plain linear CKA has bias and is sensitive to outliers</td><td>Add debiased CKA and no-sink pooling</td></tr>
+<tr><td>I-16</td><td>Dream at temperature 0.2 gives 10 identical answers</td><td>Use temperature 0.7, the same as LLaDA</td></tr>
+<tr><td>I-18</td><td>The display watchdog on Blackwell stops long GPU jobs</td><td>Jobs restart and continue, up to 8 times</td></tr>
+<tr><td>I-19</td><td>Each <code>qwen0.5b</code> result showed 0.000 (the dot in the name broke the key)</td><td>Fix the key parsing (<code>dc0485c</code>)</td></tr>
+<tr><td>I-20</td><td>Small AR scorers are worse than the first sample</td><td>Use the 7B bases as scorers; give Arbor the target "beat majority vote"</td></tr>
+</table></div>
+
+<h3>Lessons from operations</h3>
+<ul>
+<li>A vLLM server held a shared GPU for about 8 hours with no work, while a decision was not made. Rule now: start the server together with its job, and stop it when the job ends.</li>
+<li>vLLM for Arbor needs a 131072-token context. The first Arbor run failed at 32k on its 4th turn.</li>
+<li>Tensor-parallel vLLM hangs on Blackwell. Data-parallel works.</li>
+<li>Answer Arbor's review prompts with its commands (<code>/approve</code>, <code>/edit</code>, <code>/answer</code>). Plain text goes to a helper LLM, which is slow.</li>
+</ul>
+<p class="ev">Source: <a href="https://github.com/jarjlol/diffullama/blob/assignment/codification/codification/NEXT_ITERATION.md">codification/NEXT_ITERATION.md</a>, "Process lessons".</p>
+
+<!-- ================================================================== -->
+<h2 id="where">8. Where things are</h2>
+<div class="tablewrap"><table>
+<tr><th>Item</th><th>Location</th></tr>
+<tr><td>Task 4 start point for the team</td><td><a href="https://github.com/jarjlol/diffullama/blob/assignment/codification/codification/HANDOFF.md">codification/HANDOFF.md</a></td></tr>
+<tr><td>Task 4 report (iteration 1)</td><td><a href="https://github.com/jarjlol/diffullama/blob/assignment/codification/codification/ITERATION_1.md">codification/ITERATION_1.md</a></td></tr>
+<tr><td>Self-grade and plan for iteration 2</td><td><a href="https://github.com/jarjlol/diffullama/blob/assignment/codification/codification/NEXT_ITERATION.md">codification/NEXT_ITERATION.md</a></td></tr>
+<tr><td>Evidence (Arbor session, merged rule, numbers, scripts)</td><td><a href="https://github.com/jarjlol/diffullama/tree/assignment/codification/codification/results/iter1">codification/results/iter1/</a></td></tr>
+<tr><td>Team record and decision log</td><td><a href="https://github.com/jarjlol/diffullama/tree/assignment/codification/project-docs">project-docs/</a></td></tr>
+<tr><td>SOTA / limitations / ideation code and reports</td><td><code>litreview/</code>, <code>limitations/</code>, <code>ideation/</code></td></tr>
+<tr><td>Audits</td><td>Branch <code>audit/opus-review</code> (29 Aug); branch <code>audit/task4-codification</code> (2 Nov)</td></tr>
+<tr><td>Big GPU files (4.1 GB, not in git)</td><td>Blackwell, <code>~/codify/diffullama/codification/pipeline/work/</code> (HANDOFF.md §3)</td></tr>
+</table></div>
+
+<div class="tablewrap"><table>
+<tr><th>Branch</th><th>Last commit</th><th>Content</th></tr>
+<tr><td><code>main</code></td><td><code>066d8f2</code> (28 Sep)</td><td>Limitations and agent docs, merged</td></tr>
+<tr><td><code>assignment/codification</code></td><td><code>61527e0</code> (5 Nov)</td><td>Task 4. It also has the ideation work merged in (<code>3288e7d</code>)</td></tr>
+<tr><td><code>assignment/research-ideation</code></td><td><code>4559f77</code> (1 Nov)</td><td>Ideation</td></tr>
+<tr><td><code>assignment/limitations-multiagent</code></td><td><code>0bca405</code> (27 Sep)</td><td>Limitations</td></tr>
+<tr><td><code>plan/execution-grounded-repair</code></td><td><code>35a6486</code> (19 Sep)</td><td>EGR (Aalhad)</td></tr>
+<tr><td><code>plan/inference-time-direction</code></td><td><code>666df2f</code> (21 Sep)</td><td>Direction analysis</td></tr>
+<tr><td><code>audit/opus-review</code>, <code>audit/task4-codification</code></td><td><code>9038db1</code>, <code>2054244</code></td><td>Audits</td></tr>
+</table></div>
+
+<!-- ================================================================== -->
+<h2 id="open">9. Open items for the meeting</h2>
+<div class="bad"><p><span class="k">1. Submission of iteration 1.</span> The due date was 5 November 2026. The repository does not record a submission. Find out who submitted it, or submit it now.</p></div>
+<div class="warn">
+<p><span class="k">2. Parts of ITERATION_1.md are old.</span> Correct them before you submit:</p>
+<ul>
+<li>Issue I-11 still says "fill in from the smoke runs" and "LLaDA and DiffuLLaMA pending".</li>
+<li>The section "Run plan for Thursday" is a plan in the future tense. It shows estimates, not the real times.</li>
+<li>In the Arbor table, the seed row and the node-1 row have no scores. Rows 2.1 and 3.1 do not say that Arbor did not merge them.</li>
+</ul>
+</div>
+<div class="warn"><p><span class="k">3. Team confirmation of idea 1.1.</span> D-2026-11-01-b says that the team must confirm the idea. The repository does not record this.</p></div>
+<div class="note">
+<p><span class="k">4. Known weak points.</span> <code>NEXT_ITERATION.md</code> lists these. They are the plan for iteration 2:</p>
+<ul>
+<li>No published test-time selection method for DLMs is in the comparison.</li>
+<li>The DLM's own likelihood (<code>dlm.selfscore</code>) is not used as a scorer.</li>
+<li>The novelty check (I-6) is not done.</li>
+<li>The CKA claim has only 4 models. Three of them are near 0%.</li>
+<li>Fidelity: 64 steps, 4-shot, and Dream at temperature 0.7. These make our first-sample numbers lower than the published ones.</li>
+</ul>
+<p>The self-grade in that file is "B" now, and "B+ to A−" when the items are done.</p>
+</div>
+<div class="note"><p><span class="k">5. Main project.</span> The direction (P-5) is still open. Task 4 showed that majority vote is strong and AR reranking is weak. That is evidence for the L6 direction (answer-selection headroom).</p></div>
+
+<!-- ================================================================== -->
+<h2 id="glossary">10. Terms</h2>
+<div class="tablewrap"><table>
+<tr><th>Term</th><th>Meaning</th></tr>
+<tr><td>AR model</td><td>Autoregressive language model. It writes one token at a time, from left to right.</td></tr>
+<tr><td>DLM</td><td>Diffusion language model. It starts from masked tokens and fills them in over many steps.</td></tr>
+<tr><td>CKA</td><td>Centered kernel alignment. A number from 0 to 1 that shows how similar two models' hidden layers are.</td></tr>
+<tr><td>NLL</td><td>Negative log-likelihood. A lower value means the scorer model finds the text more likely.</td></tr>
+<tr><td>First sample</td><td>Use the first of the 10 answers. This is the simplest baseline.</td></tr>
+<tr><td>Majority vote</td><td>Use the answer that most of the 10 samples give. Also called self-consistency.</td></tr>
+<tr><td>Oracle</td><td>The question counts as correct if any of the 10 answers is correct. No real method can do better.</td></tr>
+<tr><td>Headroom</td><td>(selector − first) / (oracle − first). The share of the possible gain that a selector gets.</td></tr>
+<tr><td>McNemar test</td><td>A paired test. It uses only the questions where the two methods give different results.</td></tr>
+<tr><td>Arbor</td><td>An LLM research system (arXiv:2606.11926). It suggests changes, tests them on dev data, and merges a change only if a held-out test improves.</td></tr>
+<tr><td>Dev / gate / final</td><td>Dev: 200 questions for Arbor to try ideas. Gate: 200 test questions for Arbor's merge check. Final: 300 test questions that Arbor never sees.</td></tr>
+</table></div>
+
+<footer>
+<p>Made on 6 November 2026 from branch <code>assignment/codification</code> at commit <code>61527e0</code> and the other branches of <code>jarjlol/diffullama</code>. Written in ASD-STE100 style (short sentences, active voice, approved words) for most of the text. Technical names stay as they are.</p>
+</footer>
+</main>
+</body>
+</html>
