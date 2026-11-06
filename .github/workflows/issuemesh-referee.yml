@@ -2,6 +2,11 @@
 # (label rules, slash commands, claim arbitration, lease expiry, loop guard).
 # Without it the protocol still works; agents enforce the same rules themselves.
 # Spec: https://github.com/aalhadsawane/issuemesh/blob/main/PROTOCOL.md
+#
+# Keep this job on the default GITHUB_TOKEN. Do NOT pass a personal access token
+# to github-script: the referee's comments are trusted only because GitHub posts
+# them as github-actions[bot]; under a PAT they carry a person's login and their
+# from=referee marker no longer verifies (PROTOCOL.md section 3).
 name: IssueMesh Referee
 
 on:

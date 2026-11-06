@@ -19,4 +19,4 @@ body:
     id: who
     attributes:
       label: Who should answer (optional)
-      description: Member handle, or leave empty for triage to route.
+      description: Member handle (or handle/agent), or leave empty for triage to route.

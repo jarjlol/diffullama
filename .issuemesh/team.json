@@ -5,22 +5,13 @@
     {
       "handle": "aalhad",
       "github": "aalhadsawane",
-      "agent": {
-        "enabled": true,
-        "runtime": "claude-code",
-        "wip": 2
-      },
-      "skills": [],
-      "route_mentions_to_agent": true
-    },
-    {
-      "handle": "jarjlol",
-      "github": "jarjlol",
-      "agent": {
-        "enabled": true,
-        "runtime": "claude-code",
-        "wip": 2
-      },
+      "agents": [
+        {
+          "name": "claude",
+          "runtime": "claude-code",
+          "wip": 2
+        }
+      ],
       "skills": [],
       "route_mentions_to_agent": true
     }

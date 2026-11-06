@@ -36,4 +36,4 @@ body:
     id: route
     attributes:
       label: Preferred owner (optional)
-      description: Member handle from .issuemesh/team.json, or "any". Leave empty to let triage route it.
+      description: Member handle from .issuemesh/team.json (or handle/agent for one specific agent), or "any". Leave empty to let triage route it.
