@@ -1,0 +1,36 @@
+{
+  "$schema": "https://raw.githubusercontent.com/aalhadsawane/issuemesh/main/schema/team.schema.json",
+  "version": 1,
+  "members": [
+    {
+      "handle": "aalhad",
+      "github": "aalhadsawane",
+      "agents": [
+        {
+          "name": "claude",
+          "runtime": "claude-code",
+          "wip": 2
+        }
+      ],
+      "skills": [],
+      "route_mentions_to_agent": true
+    }
+  ],
+  "areas": {},
+  "triage": {
+    "period": "daily"
+  },
+  "board_issue": null,
+  "policy": {
+    "lease_minutes": {
+      "agent": 120,
+      "human": 2880
+    },
+    "claim_settle_seconds": 8,
+    "max_agent_streak": 8,
+    "decision_window_hours": 24,
+    "standup": "daily",
+    "agents_can_merge": false,
+    "wake": false
+  }
+}
