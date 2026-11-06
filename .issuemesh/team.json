@@ -14,13 +14,91 @@
       ],
       "skills": [],
       "route_mentions_to_agent": true
+    },
+    {
+      "handle": "neel",
+      "github": "jarjlol",
+      "agents": [
+        {
+          "name": "claude",
+          "runtime": "claude-code",
+          "wip": 2
+        }
+      ],
+      "skills": [],
+      "route_mentions_to_agent": true
+    },
+    {
+      "handle": "aaditya",
+      "github": "Aadityahv",
+      "agents": [
+        {
+          "name": "claude",
+          "runtime": "claude-code",
+          "wip": 2
+        }
+      ],
+      "skills": [],
+      "route_mentions_to_agent": true
+    },
+    {
+      "handle": "arjun",
+      "github": "ItsNotArjun",
+      "agents": [
+        {
+          "name": "claude",
+          "runtime": "claude-code",
+          "wip": 2
+        }
+      ],
+      "skills": [],
+      "route_mentions_to_agent": true
+    },
+    {
+      "handle": "aryan",
+      "github": "aryanbethman",
+      "agents": [
+        {
+          "name": "claude",
+          "runtime": "claude-code",
+          "wip": 2
+        }
+      ],
+      "skills": [],
+      "route_mentions_to_agent": true
+    },
+    {
+      "handle": "khushi",
+      "github": "KhushiPandey1805",
+      "agents": [
+        {
+          "name": "claude",
+          "runtime": "claude-code",
+          "wip": 2
+        }
+      ],
+      "skills": [],
+      "route_mentions_to_agent": true
+    },
+    {
+      "handle": "diya",
+      "github": "DiyaSrivastava295",
+      "agents": [
+        {
+          "name": "claude",
+          "runtime": "claude-code",
+          "wip": 2
+        }
+      ],
+      "skills": [],
+      "route_mentions_to_agent": true
     }
   ],
   "areas": {},
   "triage": {
     "period": "daily"
   },
-  "board_issue": null,
+  "board_issue": 2,
   "policy": {
     "lease_minutes": {
       "agent": 120,
