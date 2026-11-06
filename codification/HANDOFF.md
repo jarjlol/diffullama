@@ -1,13 +1,18 @@
-# Codification handoff (Aaditya to Arjun and Neel, 2026-11-05)
+# Codification handoff (written for Arjun and Neel on 2026-11-05; for the whole team since 2026-11-06)
 
 Everything needed to carry Task 4 (codification) on from here. Read this first, then
 `ITERATION_1.md` (what was done and found) and `NEXT_ITERATION.md` (what to do next).
 Branch: `assignment/codification` on GitHub. Everything below is pushed; nothing lives only
 on Aaditya's laptop any more.
 
-Suggested split: **Arjun** owns anything that needs the Blackwell workstation (he has
+**Iteration 2 (added 2026-11-06).** Every member has a task. Start your agent with prompt T0 in
+`ITERATION_2_PROMPTS.md`, then run your own prompts from the table at its top. The design for
+iteration 2, which borrows mechanisms from DeepScientist, EvoScientist and AutoSOTA around Arbor,
+is `BORROWED_IDEAS.md`. A plain-language history of the whole project is `../project-docs/timeline.html`.
+
+Original split (2026-11-05): **Arjun** owns anything that needs the Blackwell workstation (he has
 access, Neel does not). **Neel** owns the write-up, the submission and the iteration-2 plan,
-which need only this repo.
+which need only this repo. Aryan also has workstation access and takes the GPU prompts A1-A3.
 
 ## 1. Where things stand
 

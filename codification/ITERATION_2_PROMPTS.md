@@ -1,16 +1,58 @@
-# Task 4: prompts for Neel and Aryan (written 2026-11-06)
+# Task 4: prompts for the whole team (written 2026-11-06)
 
 These are prompts to paste into a coding agent (Claude Code, opencode or Codex) started in the repo root
-on branch `assignment/codification`. Each prompt is self-contained. Run them in the order given. The
-review that produced them is summarised at the end of this file.
+on branch `assignment/codification`. Every member starts with **T0** (it loads the context), then runs
+their own prompts. Each prompt is self-contained. The review of iteration 1 that produced them is at
+the end of this file. The design that the T-prompts build is `codification/BORROWED_IDEAS.md`: ideas
+borrowed from DeepScientist, EvoScientist and AutoSOTA, re-implemented around Arbor.
 
-Who runs what:
-- **Neel** (no workstation access): N1 to N4. Everything is CPU or API only.
-- **Aryan** (workstation access): A1 to A4 on Blackwell. A1 and A2 can run in parallel, one per GPU.
-  A3 needs the output of A1 and A2. A4 is optional and needs model downloads.
+## Who runs what (suggested; agree it at the meeting)
 
-Each person works on their own branch (`iter2/neel`, `iter2/aryan`), commits small, and pushes. Merge
-into `assignment/codification` after the other has read the diff.
+| Member | Workstation? | Prompts | Needs |
+|---|---|---|---|
+| Neel | no | N1 (today), N2, N3, N4 | an LLM endpoint for N2 |
+| Aryan | yes | A1, A2, then A3 | Blackwell, both GPUs for hours |
+| Arjun | yes (and ada) | A4, T4 | Blackwell or ada; laptop for downloads |
+| Aalhad | no | T1 | CPU only |
+| Khushi | no | T2 | an LLM endpoint (about 60 calls) |
+| Diya | no | T3 | an LLM endpoint (about 20 calls) |
+| Aaditya | yes | T5, review of every merge, A3 together with Aryan | — |
+
+Order and dependencies: N1 first (submission). T1, T3 and T4 must land before A3 (Arbor iteration 2
+reads their files). A1 and A2 run in parallel, one per GPU. N4 waits for the data A2 shares. T2 and T5
+are independent.
+
+Branches: each person works on `iter2/<name>`, commits small, and pushes. Merge into
+`assignment/codification` after one other person has read the diff. GPU users must follow the
+Blackwell rules in `codification/HANDOFF.md` §3.
+
+---
+
+## T0 (everyone, first): load the context
+
+```text
+You are helping a member of BITS F471 Group 3 with Task 4 (codification) of the course project.
+Read these files in order, fully: AGENTS.md; codification/HANDOFF.md; codification/ITERATION_1.md;
+codification/NEXT_ITERATION.md; codification/BORROWED_IDEAS.md; codification/ITERATION_2_PROMPTS.md;
+codification/REFERENCE_SYSTEMS.md; and the timeline page project-docs/timeline.html (read it as text).
+Also read docs/verification-standards.md.
+
+Then tell me, in under 25 lines:
+1. what Task 4 asks (the brief is quoted in ITERATION_1.md "What the brief asks for");
+2. what iteration 1 did and found (the three findings in ITERATION_1.md §Results);
+3. what the four reference papers are, why we built on Arbor, and what we borrow from the other three;
+4. which prompt in ITERATION_2_PROMPTS.md is mine (I will tell you my name), what it needs, and what
+   it depends on.
+
+Rules for everything you do after this:
+- Every claim and number must come from a file in the repo, a command you ran, or a paper you read
+  at the full text. Say "not verified" otherwise.
+- Never commit data files (rerank_task/data/*/items.jsonl), model weights, secrets or API keys.
+- Work on branch iter2/<my name>; never force-push; ask me before pushing.
+- If the task needs the workstation (Blackwell), follow HANDOFF.md §3 exactly: never kill a process
+  you did not start, do not touch ~/diffullama, no idle GPU holds, no TLS bypass.
+- Record the exact model name, date and settings for every LLM call you make for the project.
+```
 
 ---
 
@@ -247,9 +289,8 @@ Commit on iter2/aryan, push via the laptop. Report real outputs. Free the GPUs w
 Same rules as A1. Read HANDOFF.md §3 "Rerun Arbor" and NEXT_ITERATION.md "Process lessons" first.
 
 Iteration 1's merge gate compared against the seed rule (GPT-2 NLL), not majority vote, so Arbor
-could merge a rule that only ties majority. Fix that, and carry iteration 1's findings into the run
-(the "findings memory" idea that DeepScientist and EvoScientist build their loops on; see
-codification/REFERENCE_SYSTEMS.md).
+could merge a rule that only ties majority. Fix that, and wrap Arbor in the pieces borrowed from
+the other reference papers (codification/BORROWED_IDEAS.md). Needs T1, T3 and T4 merged first.
 
 1. Rebuild the Arbor task repo (codification/make_arbor_repo.sh) into ~/arbor-rerank-iter2 with:
    - seed solution.py = majority vote (copy baselines._majority logic);
@@ -260,22 +301,39 @@ codification/REFERENCE_SYSTEMS.md).
      team whether eval.py (a protected file, change it only before Arbor starts) should print a
      score over dream-base and llada-base only, so the gate means "beats majority vote where there
      is headroom". One point on a 200-question split is 2 questions; ask for at least 3 net questions.
-2. Write the instruction from codification/arbor_instruction.txt plus a "What iteration 1 learned"
-   block: the four directions it tried and their dev scores (results/iter1/arbor_session/REPORT.md),
-   that AR likelihood is anti-predictive on Dream, that cross-model consensus is out of scope, that
-   verification weighting tied majority. Tell it not to retry these.
+2. Write the instruction from codification/arbor_instruction.txt plus three blocks built from the
+   memory files (codification/BORROWED_IDEAS.md §3; they come from prompts T1, T3, T4):
+   - "Red lines" = codification/memory/RED_LINES.md, verbatim (AutoSOTA's red-line idea).
+   - "What earlier runs learned" = the Idea, Implement and Progress findings in
+     codification/memory/FINDINGS.md (DeepScientist's Findings Memory): the four directions
+     iteration 1 tried with their dev scores, that AR likelihood is anti-predictive on Dream, that
+     cross-model consensus is out of scope, that verification weighting tied majority. Tell it not
+     to retry these.
+   - "Opening directions" = the CLEARED ideas of codification/memory/IDEA_LIBRARY.md, highest
+     priority first, with their PARAM/CODE/ALGO type.
+   Give your own agent codification/memory/STRATEGIES.md too, and check it before you debug any
+   failure (AutoSOTA's "retrieval before repair").
 3. Start vLLM only when you are ready to answer review prompts; stop it the moment Arbor ends.
-   Answer every gate with /approve, /skip, /edit <note> or /answer <text>, and paste each reply
-   verbatim into a new §Arbor iteration 2 table in ITERATION_1.md's successor (codification/ITERATION_2.md).
+   Answer every gate with /approve, /skip, /edit <note> or /answer <text>. Review rules:
+   - Reject (/answer with the reason) any proposal that breaks a red line, and name the line.
+   - Leap rule (AutoSOTA): if the last three proposals were all PARAM tweaks (weights, thresholds),
+     reply with /edit asking for a structural (CODE or ALGO) idea from the idea library.
+   - Ask for an ablation of any rule that reaches the gate (EvoScientist's fourth stage): the rule
+     without its new part, on dev.
+   Paste each reply verbatim into a §Arbor table in codification/ITERATION_2.md.
 4. After Arbor ends, score the merged rule (if any) on the final split once with
    codification/eval_final.sh and codification/paired_stats.py against majority vote.
+   Promotion rule (DeepScientist's Progress Finding): call it an improvement only if it beats
+   majority on the final split with a paired test, its ablation loses, and it also holds on a second
+   dataset (for example SVAMP; agree which with the team first). Otherwise record it in
+   FINDINGS.jsonl as an Implement Finding with its numbers.
 
 Copy the session folder to codification/results/iter2/arbor_session/, commit, push via the laptop.
 ```
 
 ---
 
-## A4 (Aryan, optional, needs downloads): models that make the comparison fair
+## A4 (Arjun, optional, needs downloads): models that make the comparison fair
 
 ```text
 Same rules as A1. Blackwell cannot reach huggingface.co (TLS interception). Download on a laptop,
@@ -288,21 +346,205 @@ Add to codification/pipeline/config.json and run at N = 10, 64 steps, test first
 - Dream-org/Dream-v0-Instruct-7B and GSAI-ML/LLaDA-8B-Instruct (published test-time methods report
   on these, so our majority vote and selectors become comparable to them; check N3's table first).
 Then scorers, CKA for the models with an AR base, baselines, analyze.py. Each 7B model costs hours of
-GPU time: measure on --limit 5 and agree a window with the team first.
+GPU time: measure on --limit 5 and agree a window with the team first. Check
+codification/memory/GPU_QUEUE.md (prompt T3) for which of these the team ranked highest.
+```
+
+---
+
+## T1 (Aalhad, CPU): red lines and a typed, audited idea library (from AutoSOTA)
+
+```text
+Run T0 first. Then read codification/BORROWED_IDEAS.md §1 "AutoSOTA" and §4, codification/rerank_task/
+(task.py, eval.py, baselines.py, solution.py, README.md), codification/arbor_instruction.txt, and
+ITERATION_1.md §Arbor and §Results. Branch iter2/aalhad.
+
+Goal: two files that Arbor iteration 2 (prompt A3) and every human reviewer will use.
+
+1. codification/memory/RED_LINES.md. Finish the draft in BORROWED_IDEAS.md §4. For each red line:
+   the rule in one sentence; why (AutoSOTA's R-number it follows, and our own evidence: e.g. Arbor
+   proposed cross-model consensus twice in iteration 1); how a reviewer checks it (which file or test
+   would show a violation). Then check eval.py's existing leakage and correctness gates: list which
+   red lines they already enforce automatically and which only a human review catches.
+2. codification/memory/IDEA_LIBRARY.md. At least 12 candidate selector ideas for Arbor iteration 2,
+   like AutoSOTA's Phase 2 library. Each row: id, one-line idea, type (PARAM / CODE / ALGO), risk
+   (LOW / MEDIUM / HIGH), which features in items.jsonl it needs (check what assemble.py writes;
+   mark features that do not exist yet, e.g. dlm.self from prompt A2), expected effect and why, and
+   its red-line audit: CLEARED or REJECTED with the line it breaks. Mix low-risk tuning with
+   structural ideas. Include ideas from ITERATION_1.md issue log and NEXT_ITERATION.md, and do NOT
+   repeat the four directions iteration 1 already ran (2.1, 3.1, 4.1, plain majority) unless you
+   say what is different. Include at least two REJECTED examples so the audit is visible.
+3. Priority order: rank the CLEARED ideas by feasibility and expected gain, with one line of reason.
+
+Verify: every feature name you cite appears in codification/pipeline/assemble.py or is marked
+"needs A2/A1". Commit "docs(codification): red lines and audited idea library for Arbor iteration 2"
+on iter2/aalhad and push. Report the counts (CLEARED / REJECTED) and the top 3.
+```
+
+---
+
+## T2 (Khushi, LLM API): re-rank P1's ideas with an Elo tournament (from EvoScientist)
+
+```text
+Run T0 first. Then read codification/BORROWED_IDEAS.md §1 "EvoScientist", ideation/REPORT.md §7
+(why the ideation scores are weak: 78 of 100 ratings were 5), codification/IDEA_SELECTION.md, and
+the 8 P1 ideas in ideation/output/research_problems_and_ideas.md (section "Research problem 1").
+Branch iter2/khushi.
+
+Goal: check, with a method that does not need calibrated scores, whether idea 1.1 was the right
+choice to codify. This supports the brief's "codify the idea which you think is the best".
+
+1. Write codification/memory/elo_tournament.py (stdlib + the existing ideation/scripts/llm.py
+   backend). For every pair of P1's 8 ideas (28 pairs), ask a judge model which idea is better on
+   EvoScientist's four criteria (novelty, feasibility, relevance, clarity), one call per pair per
+   order, so 56 calls; randomise which idea is shown first and run both orders to cancel position
+   bias. Give the judge our real constraints (inference only, one shared 96 GB GPU, weeks left) and
+   the lineage facts in ideation/REPORT.md §7, so feasibility is judged against reality.
+2. Use a judge from a different model family than the ideation generator (Qwen3.8) and reviewer
+   (Gemma). Record model, date and temperature. Cache every response (the run must be resumable;
+   the free OpenRouter tier allows only 50 requests a day, see the decision log D-2026-10-08-b).
+3. Compute Elo ratings (start 1000, K = 32, fixed order of games, then repeat with 20 random orders
+   and report the mean and spread of each rating). Report the ranking per criterion and overall.
+4. Write codification/memory/ELO_RANKING.md: method, model, the table, and a short verdict: does
+   1.1 stay top? If another idea wins clearly, say what that would mean for iteration 2, but do not
+   change the project direction; the team decides.
+
+Commit the script, the cached responses (no API keys), and ELO_RANKING.md on iter2/khushi; push.
+```
+
+---
+
+## T3 (Diya, CPU + LLM API): Findings Memory and a surrogate-ranked GPU queue (from DeepScientist)
+
+```text
+Run T0 first. Then read codification/BORROWED_IDEAS.md §1 "DeepScientist", ITERATION_1.md (issue log,
+§Arbor, §Results), NEXT_ITERATION.md, and codification/results/iter1/arbor_session/ (REPORT.md,
+findings.jsonl, EXPERIENCE.md, experiments/*/report.md). Branch iter2/diya.
+
+Goal: a persistent Findings Memory that Arbor iteration 2 and every teammate's agent reads, and a
+ranked list of the GPU experiments we could run next.
+
+1. codification/memory/FINDINGS.jsonl: one JSON record per finding, fields: id, date, source (Arbor
+   node id, issue id, or commit), hypothesis, tier ("idea" / "implement" / "progress", as in
+   DeepScientist §3.2), result (numbers with split and n), verdict, evidence (file path). Seed it
+   from iteration 1: every Arbor node (incl. the rejected cross-model idea and the skipped node-1
+   child), every selector in results/iter1/numbers/baselines_*.json, and issues I-16 to I-20.
+   Use only numbers from those files. Also write FINDINGS.md, a readable view grouped by tier.
+2. codification/memory/GPU_QUEUE.md: list every GPU experiment proposed so far (A1 step arm, A2
+   self-score and fidelity, A4 models, NEXT_ITERATION.md ideas 2-7, the per-question preservation
+   test in audit/task4 04-science-audit.md). Ask one surrogate LLM reviewer, with FINDINGS.md and our
+   constraints in its context, to score each with DeepScientist's vector <utility, quality,
+   exploration> (integers 0-100) and a short reason. Rank by UCB = 0.5*u + 0.5*q + 0.3*e (our chosen
+   weights; record them). Add your estimate of GPU-hours from the timings in ITERATION_1.md and the
+   prompts. Record model, date, temperature.
+3. Write a 5-line rule in FINDINGS.md for how a finding moves up a tier, using BORROWED_IDEAS.md §3
+   (promotion needs the final split, an ablation and a second dataset).
+
+Verify: every number in FINDINGS.jsonl can be found in the cited file (write a tiny check script
+that loads the JSON and prints each evidence path; open a sample of 5 by hand). Commit on
+iter2/diya and push.
+```
+
+---
+
+## T4 (Arjun): experimentation memory, from what broke and how it was fixed (from EvoScientist and AutoSOTA)
+
+```text
+Run T0 first. Then read codification/BORROWED_IDEAS.md (EvoScientist experimentation memory; AutoSOTA
+"retrieval before repair"), codification/HANDOFF.md §3, NEXT_ITERATION.md "Process lessons",
+ITERATION_1.md issues I-7 to I-20, codification/results/iter1/ops/, ideation/SERVER_RUNBOOK.md and
+ideation/WORKSTATION_RUN.md, and `git log --format='%h %ad %s' --date=short` for fix(...) commits.
+Branch iter2/arjun.
+
+Goal: codification/memory/STRATEGIES.md, a short, searchable list of known failures and their fixes,
+so any agent checks it before debugging on the workstation.
+
+1. One entry per failure: symptom (the exact error string where the repo has it), cause, fix, the
+   command or flag, and evidence (commit hash or file). Cover at least: vLLM context too small for
+   Arbor (131072), tensor-parallel hang (use data-parallel), Qwen3 XML tool calls, Arbor plain-text
+   replies going to the helper LLM, HF unreachable from Blackwell (offline cache, laptop download,
+   sha256), datasets.load_dataset ignoring the hub cache offline, display watchdog killing kernels
+   (resume up to 8 tries), DiffuGPT-S 512 context, Dream temperature 0.2 giving identical
+   candidates, causal attention in DiffuGPT CKA, scorer names with dots, GitHub/LFS push timeouts
+   (bundle sync), Windows selftest needing Git Bash, idle GPU hold.
+2. Group entries by area (vLLM/Arbor, models and sampling, data and cache, GPU and machine, git).
+3. Add any failures you met yourself in the ideation runs (OpenRouter limits, retired model slugs)
+   from ideation/REPORT.md, with evidence.
+
+Commit on iter2/arjun and push. Then do A4 if the team agrees on a GPU window.
+```
+
+---
+
+## T5 (Aaditya or anyone, CPU + optional LLM): a Pass/Fail rubric for the write-up (from AutoSOTA)
+
+```text
+Run T0 first. Then read codification/BORROWED_IDEAS.md (AutoSOTA AgentObjective), the Task 4 brief
+as quoted at the top of ITERATION_1.md, idea 1.1's spec (ideation/output/research_problems_and_ideas.md,
+"Idea 1.1"), and the review at the end of codification/ITERATION_2_PROMPTS.md. Branch iter2/<name>.
+
+Goal: codification/memory/RUBRIC.md, a weighted tree of Pass/Fail checks that any agent can apply
+to ITERATION_1.md or ITERATION_2.md before submission.
+
+1. Root = "Task 4 iteration is complete and honest" with weight 100. Children = the brief's clauses
+   (choose best idea; codify with LLMs; spec gaps before and after trials; refinement by feedback to
+   the model; final results on metric + dataset; SOTA / baseline comparison; use of the reference
+   papers), plus "fidelity of our setup" and "statistics". Split each weight among concrete Pass/Fail
+   leaves (e.g. "majority vote is in the results table", "every spec element has a row in the spec
+   vs implementation table", "every Arbor reply is quoted verbatim", "every number has a file
+   source"). Stop splitting when a leaf weighs less than 3.
+2. Apply it to the current ITERATION_1.md yourself and give the score with each failed leaf.
+3. Optional: ask one LLM judge to apply the same rubric and compare its verdicts with yours; record
+   disagreements. Record model, date, temperature.
+
+Commit on iter2/<name> and push. Report the score and the failed leaves.
 ```
 
 ---
 
 ## Review summary (why these prompts)
 
-Iteration 1 meets every clause of the brief at least in part. It is strongest on finding spec
-gaps (20 issues, before and after trials, with evidence) and on honest results with paired
-statistics on a held-out split. It is weakest in four places, which the prompts target:
+### Did iteration 1 meet the brief?
+
+| Clause | Verdict | Why |
+|---|---|---|
+| Pick the best of the top 5 | done | `IDEA_SELECTION.md`. Team confirmation not recorded; the selection missed a lineage error (I-13) |
+| Codify it using LLMs | partial | Arbor rewrote only `solution.py`, the selection rule. The pipeline was written by people with a coding agent, and that role is not documented as method. The CKA half of the idea never went through the LLM loop |
+| Spec gaps, before and after trials | done, strong | 20 issues with evidence and fixes; several were real bugs caught before results |
+| Refine by feedback to the model | partial | Every Arbor reply is quoted. The idea itself was never revised by a model; most fixes were human edits; no "feedback given" column |
+| Final results on a metric and dataset | partial | GSM8K, 300 held-out questions, paired tests. One task of the four the spec names, one step budget, three floor models |
+| SOTA or baselines | partial | Strong baselines. No published method reproduced; first-sample accuracy far below published numbers, not measured |
+| Use of the reference papers | partial | All four assessed, Arbor used. No ideas borrowed from the other three (fixed by `BORROWED_IDEAS.md` and T1-T5) |
+
+### Where it could have been better
+
+1. **The main claim of idea 1.1 was not tested.** The spec's dependent variable is the Reranking
+   Advantage A_rerank = dQ_rerank - dQ_steps(16->32), and research problem P1 asks whether
+   reranking beats more denoising steps. Iteration 1 ran one budget (64), so it tested a reduced
+   claim ("CKA predicts reranking headroom"). "Idea 1.1 is refuted" holds for AR-likelihood
+   reranking, not for the full hypothesis.
+2. **Spec elements were cut without all being logged:** SIQA, WinoGrande, HumanEval; DiffuCoder; the
+   BERT non-AR control; compute accounting; the random-init CKA floor and normalised score; the
+   5,000-segment stratified CKA corpus.
+3. **Arbor's gate compared against the seed, not majority vote,** and the macro score was diluted by
+   three floor models.
+4. **Process:** deadline (5 Nov) possibly missed; stale write-up; Arbor ran 7 of 12 cycles; one node
+   skipped by mistake; GPU idle for 8 h. The 2 Nov audit (`audit/task4-codification`) had flagged
+   most of these gaps (n = 4, SOTA, step arm, feedback column); only some were acted on.
+
+### Which prompt fixes which gap
 
 | Gap | Prompt |
 |---|---|
 | The spec's dependent variable (A_rerank, rerank vs more steps) and half of problem P1 were not measured | A1, N1 |
 | The idea was never revised *by a model* from our feedback; most fixes were human code edits | N2, N1 (feedback column) |
 | No published method was reproduced or compared; our first-sample accuracy is far below published numbers and not explained by a measurement | N3, A2 (fidelity), A4 |
-| Arbor's gate compared against the seed, not majority vote; Arbor only edited the selector, not the preservation half | A3 |
+| Arbor's gate compared against the seed, not majority vote; Arbor only edited the selector, not the preservation half | A3, T1 |
 | Known open items: dlm.selfscore, novelty check, n = 4 for CKA | A2, N3, A4 |
+| Nothing borrowed from DeepScientist, EvoScientist or AutoSOTA | T1 (red lines, idea library), T2 (Elo), T3 (Findings Memory, surrogate + UCB), T4 (experimentation memory), T5 (rubric), A3 (leap rule, ablation stage, promotion rule) |
+| The top-5 order rests on saturated scores | T2 |
+| Lessons live in notes, not where agents read them | T3, T4 |
+
+Overall: iteration 1 meets every clause at least in part. It is strongest on finding spec gaps and on
+honest, held-out results with paired statistics. Self-grade B now (`NEXT_ITERATION.md`); A- is
+reachable if A1, N1-N3 and A3 land.

@@ -41,8 +41,10 @@ Set `export HF_HOME=/path-to-huggingface/cache/` before running inference.
 - `ideation/` — ideation assignment: ResearchAgent problem discovery and idea ranking
   (to run it on the workstation: `ideation/WORKSTATION_RUN.md`)
 - `codification/` — codification assignment: codify the selected idea (1.1) via Arbor
-  (start at `codification/HANDOFF.md`; runbook: `codification/README.md`; wiring test:
-  `python3 codification/pipeline/selftest.py`)
+  (start at `codification/HANDOFF.md`; iteration-2 tasks per member: `codification/ITERATION_2_PROMPTS.md`,
+  begin with prompt T0; borrowed-ideas design: `codification/BORROWED_IDEAS.md`; runbook:
+  `codification/README.md`; wiring test: `python3 codification/pipeline/selftest.py`)
+- `project-docs/timeline.html` — plain-language history of the whole project with sources
 - `docs/` — triggered detail files for agents (this index points at them)
 
 ## Conventions

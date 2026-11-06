@@ -88,6 +88,8 @@ footer{margin-top:50px;color:var(--muted);font-size:.85rem;border-top:1px solid 
 <li><a href="#issues">Task 4 problems found and fixed</a></li>
 <li><a href="#where">Where things are</a></li>
 <li><a href="#open">Open items for the meeting</a></li>
+<li><a href="#review">Review of iteration 1</a></li>
+<li><a href="#iter2">Plan for iteration 2</a></li>
 <li><a href="#glossary">Terms</a></li>
 </ol></nav>
 
@@ -415,7 +417,56 @@ footer{margin-top:50px;color:var(--muted);font-size:.85rem;border-top:1px solid 
 <div class="note"><p><span class="k">5. Main project.</span> The direction (P-5) is still open. Task 4 showed that majority vote is strong and AR reranking is weak. That is evidence for the L6 direction (answer-selection headroom).</p></div>
 
 <!-- ================================================================== -->
-<h2 id="glossary">10. Terms</h2>
+<h2 id="review">10. Review of iteration 1 against the brief</h2>
+<p>This review was written on 6 November 2026. It compares iteration 1 with each part of the Task 4 brief.</p>
+<div class="tablewrap"><table>
+<tr><th>Part of the brief</th><th>Status</th><th>Reason</th></tr>
+<tr><td>Choose the best of the top 5 ideas</td><td>Done</td><td>Reasons are in <code>IDEA_SELECTION.md</code>. The team did not record its confirmation. The selection did not see a lineage error (I-13).</td></tr>
+<tr><td>Codify the idea with LLMs</td><td>Partly done</td><td>Arbor changed only the selection rule (<code>solution.py</code>). People wrote the pipeline with a coding agent. The CKA half of the idea did not go through the LLM loop.</td></tr>
+<tr><td>Find spec gaps, before and after trials</td><td>Done</td><td>20 issues, each with evidence and a fix.</td></tr>
+<tr><td>Refine the idea with feedback to the model</td><td>Partly done</td><td>Each reply to Arbor is recorded. But no model revised the idea text itself. People made most fixes in the code.</td></tr>
+<tr><td>Final results on a metric and a dataset</td><td>Partly done</td><td>GSM8K only (the spec names 4 tasks). One step budget only. Three of five models are near 0%.</td></tr>
+<tr><td>Compare with SOTA and baselines</td><td>Partly done</td><td>The baselines are strong. No published method was reproduced. Our first-sample accuracy is much lower than the published numbers, and we did not measure why.</td></tr>
+<tr><td>Use the four reference papers</td><td>Partly done</td><td>We checked all four and used Arbor. We did not borrow ideas from the other three.</td></tr>
+</table></div>
+<div class="bad"><p><span class="k">Most important gap.</span> The spec of idea 1.1 says that CKA predicts the "Reranking Advantage": the gain from reranking minus the gain from 16 to 32 denoising steps. Research problem P1 also asks if reranking is better than more steps. Iteration 1 used one step budget (64). So it tested a smaller claim. The result "idea 1.1 is refuted" is true for AR-likelihood reranking. It is not yet true for the full idea.</p></div>
+<p class="ev">Source: <a href="https://github.com/jarjlol/diffullama/blob/assignment/codification/codification/ITERATION_2_PROMPTS.md">codification/ITERATION_2_PROMPTS.md</a>, "Review summary"; <code>ideation/output/research_problems_and_ideas.md</code>, idea 1.1, "Statistical Correlation Analysis".</p>
+
+<!-- ================================================================== -->
+<h2 id="iter2">11. Plan for iteration 2: Arbor plus borrowed ideas</h2>
+<p>The brief lets us borrow ideas from the four reference papers. We keep Arbor as the system. Arbor's coordinator, executors, idea tree and held-out merge gate stay the same. We add files and review rules around Arbor. Each one copies an idea from one of the other three papers. We write our own code for each idea, because their code does not contain these parts.</p>
+<p class="ev">Source: <a href="https://github.com/jarjlol/diffullama/blob/assignment/codification/codification/BORROWED_IDEAS.md">codification/BORROWED_IDEAS.md</a> (each paper read at its arXiv full text on 6 Nov 2026, with section numbers); <code>codification/REFERENCE_SYSTEMS.md</code>.</p>
+<div class="tablewrap"><table>
+<tr><th>Borrowed idea</th><th>From</th><th>What it does for us</th><th>Prompt</th></tr>
+<tr><td>Red lines (rules that a change must not break)</td><td>AutoSOTA §3.9</td><td>Arbor proposed cross-model answers twice. With written red lines, Arbor and the reviewer can see the rule at once.</td><td>T1</td></tr>
+<tr><td>Typed idea library with an audit before each run</td><td>AutoSOTA §3.7, §3.8.1</td><td>At least 10 ideas, each with a type (PARAM, CODE, ALGO), a risk level and CLEARED or REJECTED.</td><td>T1</td></tr>
+<tr><td>Leap rule</td><td>AutoSOTA §3.8.1</td><td>After three small tuning changes in a row, ask for a structural idea.</td><td>A3</td></tr>
+<tr><td>Measure the baseline yourself</td><td>AutoSOTA §3.8.1</td><td>The seed rule and the bar become majority vote on our own candidates.</td><td>A3</td></tr>
+<tr><td>Elo tournament for ideas</td><td>EvoScientist §3.3</td><td>Pairwise comparison checks again whether idea 1.1 was the best choice. The old scores were too high (78 of 100 were 5).</td><td>T2</td></tr>
+<tr><td>Findings Memory with three tiers</td><td>DeepScientist §3.2</td><td>Each idea and result goes into one file. Arbor and each member's agent read it, so nobody tries a failed idea again.</td><td>T3</td></tr>
+<tr><td>Cheap reviewer and UCB before GPU work</td><td>DeepScientist §3.2</td><td>An LLM gives each GPU experiment a score. We run the best ones first on the shared GPU.</td><td>T3</td></tr>
+<tr><td>Experimentation memory and "retrieval before repair"</td><td>EvoScientist §3.4; AutoSOTA §3.6</td><td>A list of known failures and fixes. Agents read it before they debug.</td><td>T4</td></tr>
+<tr><td>Ablation stage</td><td>EvoScientist §3.4</td><td>Each rule that reaches the gate is also tested without its new part.</td><td>A3</td></tr>
+<tr><td>Promotion rule</td><td>DeepScientist §3.2</td><td>A rule counts as a gain only after the final split, an ablation and a second dataset.</td><td>A3</td></tr>
+<tr><td>Weighted Pass/Fail rubric</td><td>AutoSOTA §3.3</td><td>A check of the write-up against the brief before each submission.</td><td>T5</td></tr>
+</table></div>
+
+<h3>Who runs what (to agree at the meeting)</h3>
+<div class="tablewrap"><table>
+<tr><th>Member</th><th>Workstation</th><th>Prompts</th></tr>
+<tr><td>Neel</td><td>No</td><td>N1 (make iteration 1 ready to submit, today), N2 (refine the idea with the ideation model), N3 (SOTA and novelty), N4 (CPU analysis)</td></tr>
+<tr><td>Aryan</td><td>Yes</td><td>A1 (16 and 32 steps), A2 (DLM self-score, fidelity check, data for Neel), A3 (Arbor iteration 2)</td></tr>
+<tr><td>Arjun</td><td>Yes</td><td>T4 (experimentation memory), A4 (more models, optional)</td></tr>
+<tr><td>Aalhad</td><td>No</td><td>T1 (red lines and idea library)</td></tr>
+<tr><td>Khushi</td><td>No</td><td>T2 (Elo tournament)</td></tr>
+<tr><td>Diya</td><td>No</td><td>T3 (Findings Memory and GPU queue)</td></tr>
+<tr><td>Aaditya</td><td>Yes</td><td>T5 (rubric), review of each merge, A3 together with Aryan</td></tr>
+</table></div>
+<div class="note"><p><span class="k">How to start.</span> Each member opens a coding agent in the repo, on branch <code>assignment/codification</code>. Paste prompt T0 first. T0 tells the agent to read the main files and gives the rules. Then paste your own prompt. All prompts are in <a href="https://github.com/jarjlol/diffullama/blob/assignment/codification/codification/ITERATION_2_PROMPTS.md">codification/ITERATION_2_PROMPTS.md</a>.</p>
+<p>Order: N1 first. T1, T3 and T4 must be done before A3. A1 and A2 can run at the same time, one on each GPU.</p></div>
+
+<!-- ================================================================== -->
+<h2 id="glossary">12. Terms</h2>
 <div class="tablewrap"><table>
 <tr><th>Term</th><th>Meaning</th></tr>
 <tr><td>AR model</td><td>Autoregressive language model. It writes one token at a time, from left to right.</td></tr>
@@ -432,7 +483,7 @@ footer{margin-top:50px;color:var(--muted);font-size:.85rem;border-top:1px solid 
 </table></div>
 
 <footer>
-<p>Made on 6 November 2026 from branch <code>assignment/codification</code> at commit <code>61527e0</code> and the other branches of <code>jarjlol/diffullama</code>. Written in ASD-STE100 style (short sentences, active voice, approved words) for most of the text. Technical names stay as they are.</p>
+<p>Made on 6 November 2026 from branch <code>assignment/codification</code> at commit <code>61527e0</code> and the other branches of <code>jarjlol/diffullama</code>. Sections 10 and 11 were added the same day from <code>ITERATION_2_PROMPTS.md</code> and <code>BORROWED_IDEAS.md</code>. Written in ASD-STE100 style (short sentences, active voice, approved words) for most of the text. Technical names stay as they are.</p>
 </footer>
 </main>
 </body>
