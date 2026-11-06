@@ -12,9 +12,10 @@ executor_max_turns: 40
 
 coordinator:
   max_depth: 2
-  # Relative held-out gain (percent) needed to merge, same unit as Arbor's
-  # examples/algotune_knn. 1% of ~0.4 accuracy ~= 0.004, about one SE of the
-  # macro accuracy on 5 x 1319 test items. Confirm with `arbor config show`.
+  # Soft hint only. In Arbor v0.1.4 this number appears in the coordinator prompt
+  # ("B_dev exceeds trunk_score by >= ~X%") but the merge gate (src/coordinator/
+  # tools/git_ops.py) merges on ANY strict held-out gain and only logs a warning
+  # below it. Enforce a real margin at review time (../BORROWED_IDEAS_REVIEW.md §3).
   merge_threshold: 1.0
 
 ui:

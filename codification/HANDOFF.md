@@ -9,6 +9,13 @@ on Aaditya's laptop any more.
 `ITERATION_2_PROMPTS.md`, then run your own prompts from the table at its top. The design for
 iteration 2, which borrows mechanisms from DeepScientist, EvoScientist and AutoSOTA around Arbor,
 is `BORROWED_IDEAS.md`. A plain-language history of the whole project is `../project-docs/timeline.html`.
+A second, independent review of what to borrow (`BORROWED_IDEAS_REVIEW.md`, 2026-11-06) reread the
+papers and Arbor's v0.1.4 code. Read its §1 before A3, because it found four things that change the
+Arbor setup:
+- Arbor's own iteration-1 memory recommends the banned cross-model cache.
+- `eval.py` does not stop cross-item state.
+- `merge_threshold` is not enforced at the merge gate.
+- Arbor's native guards (protected paths, plugin, plateau detector) were all off in iteration 1.
 
 Original split (2026-11-05): **Arjun** owns anything that needs the Blackwell workstation (he has
 access, Neel does not). **Neel** owns the write-up, the submission and the iteration-2 plan,
@@ -120,6 +127,12 @@ iteration 1:
 - Arbor's merge gate compares against the trunk (the seed), not against majority vote.
   For iteration 2, make the seed `solution.py` majority vote so a merge means "beats
   self-consistency".
+- The gate merges on any strict held-out gain. `merge_threshold` is only a hint in the
+  coordinator prompt (Arbor v0.1.4 `src/coordinator/tools/git_ops.py`). The reviewer
+  enforces any margin.
+- `arbor run ... --yes` does not reuse earlier runs' `EXPERIENCE.md` (recall happens only in
+  the intake chat). Pass memory in explicitly, and never the raw iteration-1 file
+  (`BORROWED_IDEAS_REVIEW.md` §3).
 
 ## 4. Other machines and clean-up
 

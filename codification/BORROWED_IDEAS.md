@@ -107,6 +107,10 @@ held-out merge gate. What we add are files and review rules around it, not a new
 | Surrogate + UCB ranking of GPU jobs | `codification/memory/GPU_QUEUE.md` | T3 |
 | Experimentation memory | `codification/memory/STRATEGIES.md` | T4 |
 | Rubric for the write-up | `codification/memory/RUBRIC.md` | T5 |
+| Arbor plugin: red lines as prompt injections, protected paths, convergence (added 2026-11-06, §6) | `codification/rerank_task/plugins/rerank_guard.yaml` | T1 |
+| Curated Arbor experience, without the banned cross-model "leverage" (added 2026-11-06) | `codification/memory/EXPERIENCE_CURATED.md` | T3 |
+| Research report for ideation (added 2026-11-06) | `codification/memory/RESEARCH_REPORT.md` | N3 |
+| Majority-vote failure taxonomy and tuned-majority bar (added 2026-11-06) | `codification/ANALYSIS_ITER2.md` | N4 |
 | Arbor instruction for iteration 2 | built from the files above | A3 |
 
 ## 4. Our red lines (draft, to be finished in T1)
@@ -133,3 +137,71 @@ These follow AutoSOTA's R1-R7, mapped to our task:
   hyperparameters; we choose our own and record them.
 - With the free OpenRouter tier at 50 requests per day (D-2026-10-08-b), LLM-judged steps (Elo,
   surrogate) must stay small, or run on another endpoint. Record the model used for every call.
+
+## 6. Second review and amendments (2026-11-06)
+
+An independent second reading of all four papers, plus Arbor's v0.1.4 source code, is in
+`BORROWED_IDEAS_REVIEW.md`. It confirms §1-§5 above, with these amendments. The prompts in
+`ITERATION_2_PROMPTS.md` were changed to match (marked "Review 2026-11-06").
+
+**Corrections to this file.**
+- DeepScientist's own UCB weights are w_u = w_q = κ = 1, with retrieval top-K = 15 (App. C).
+- AutoSOTA's red-line count is inconsistent three ways: "six" in the text, seven listed, and "all
+  eight" in the third enforcement layer (§3.9).
+- AutoSOTA enforces the red lines in four layers: list the constraints before ideation, audit the
+  idea library, re-check each Leap idea, and state them in the main prompt as absolute
+  prohibitions. Our plan should copy the layering, not only the list.
+
+**Arbor already does part of this (read in its code; we used none of it in iteration 1).**
+- Cross-run memory (`EXPERIENCE.md`, recalled at intake).
+- A plateau detector that forces a "paradigm shift", close to the leap rule.
+- SHA-256 runtime protection of protected files.
+- Plugins with six prompt-injection points.
+
+So we build the red lines, the curated memory and the leap rule **as an Arbor project plugin**
+(`codification/rerank_task/plugins/rerank_guard.yaml`, written in T1, used in A3), not only as side
+files.
+
+**Two safety problems.**
+- Iteration 1's `EXPERIENCE.md` records cross-model consensus as a "[leverage]" finding. Never
+  reuse it unedited; T3 curates it.
+- `eval.py` does not stop `select()` from keeping state across items, which is how the
+  cross-model cache worked. Fix before A3: an order-invariance check (call `select()` in two orders;
+  any difference scores 0.0).
+
+**Two Arbor settings that do not do what our files say.**
+- `merge_threshold` is not enforced at the merge gate (`src/coordinator/tools/git_ops.py`
+  merges on any strict held-out gain).
+- Experience recall runs only in intake, not under `arbor run`.
+
+**Red lines, additions to §4.**
+- **R7 (tightened):** `select(item)` is a pure function of one item. No state across calls, and
+  the output does not depend on item order.
+- **R8 (new, compute):** report the extra inference compute per question. A gain that needs more
+  compute is compared at matched compute against more samples or more steps.
+
+**Twelve more mechanisms (B-12 to B-23):**
+- DeepScientist's limitation-first search, starting from majority vote's failure classes.
+- AutoSOTA's external research report, built from N3's verified SOTA table.
+- AutoSOTA's "debug the baseline first": the fidelity gap goes before Arbor.
+- EvoScientist's "tune the baseline before the method": a frozen, tuned majority-vote bar.
+- EvoScientist's failure-memory schema.
+- EvoScientist's check of the LLM judge against human judgments.
+- Arbor's own frozen transfer test, as the second-dataset step.
+- Arbor's BrowseComp lessons on the selection ceiling and normalization effects.
+- R8 compute.
+- Automatic R7 enforcement.
+- An exploration score that rewards testing the idea's core claim.
+- DeepScientist's reviewer complaints as rubric leaves.
+
+Details, with sections and owners: `BORROWED_IDEAS_REVIEW.md` §4.
+
+**Main conclusion of the review.** Borrowed process alone will not beat majority vote. Arbor's own
+iteration-1 audit found the in-item signals over the current features exhausted, at about 0.296-0.298
+macro. Point the borrowed machinery at four levers, in this order:
+1. Fix the fidelity gap.
+2. Add new per-candidate information (DLM self-likelihood, a verifier).
+3. Raise the oracle ceiling at matched compute (the step arm).
+4. Test a restated, per-question version of idea 1.1's claim.
+
+See `BORROWED_IDEAS_REVIEW.md` §6.

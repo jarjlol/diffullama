@@ -415,6 +415,16 @@ footer{margin-top:50px;color:var(--muted);font-size:.85rem;border-top:1px solid 
 <p>The self-grade in that file is "B" now, and "B+ to A−" when the items are done.</p>
 </div>
 <div class="note"><p><span class="k">5. Main project.</span> The direction (P-5) is still open. Task 4 showed that majority vote is strong and AR reranking is weak. That is evidence for the L6 direction (answer-selection headroom).</p></div>
+<div class="warn">
+<p><span class="k">6. From the second review of borrowed ideas (6 November).</span> Agree these before A3 starts:</p>
+<ul>
+<li>the <code>eval.py</code> order check (it changes a protected file);</li>
+<li>running A2's fidelity check before Arbor;</li>
+<li>which second dataset to use for the frozen transfer test;</li>
+<li>that T1 also writes the Arbor plugin.</li>
+</ul>
+<p>See <code>codification/BORROWED_IDEAS_REVIEW.md</code> §8.</p>
+</div>
 
 <!-- ================================================================== -->
 <h2 id="review">10. Review of iteration 1 against the brief</h2>
@@ -451,6 +461,41 @@ footer{margin-top:50px;color:var(--muted);font-size:.85rem;border-top:1px solid 
 <tr><td>Weighted Pass/Fail rubric</td><td>AutoSOTA §3.3</td><td>A check of the write-up against the brief before each submission.</td><td>T5</td></tr>
 </table></div>
 
+<h3>Second review of what to borrow (6 November 2026)</h3>
+<p>We read the four papers a second time, independently, at their arXiv full text. We also read Arbor's own code (version 0.1.4). The review agrees with the table above and adds twelve mechanisms (B-12 to B-23). It also found problems in how we set up Arbor.</p>
+<div class="bad">
+<p><span class="k">Safety problems.</span></p>
+<ul>
+<li>Arbor's memory of iteration 1 (<code>EXPERIENCE.md</code>) lists cross-model consensus as a useful finding. We rejected that idea twice. If iteration 2 reuses the file unedited, Arbor gets the banned idea back. T3 now writes a corrected copy.</li>
+<li><code>eval.py</code> lets the selection rule keep information from one question to the next. That is how Arbor built the cross-model cache. T1 now drafts a check that runs the rule in two orders and fails it if any choice changes.</li>
+</ul>
+</div>
+<div class="warn">
+<p><span class="k">Arbor settings we misread.</span></p>
+<ul>
+<li><code>merge_threshold</code> does not block merges. Arbor merges on any held-out gain, however small. The reviewer must enforce a margin (at least 3 questions net).</li>
+<li>Arbor reuses earlier runs' memory only in its chat start-up, not with <code>arbor run</code>, which is how we start it.</li>
+<li>Arbor's own guards were all off in iteration 1: protected files, plugins, and the plateau detector. T1 now writes a plugin that turns them on.</li>
+</ul>
+</div>
+<div class="tablewrap"><table>
+<tr><th>New mechanism</th><th>From</th><th>What it does for us</th><th>Prompt</th></tr>
+<tr><td>Start from the failures of the best method</td><td>DeepScientist §2, §3.2</td><td>Classify where majority vote fails. Each failure class becomes one direction for Arbor.</td><td>N4, A3</td></tr>
+<tr><td>Research report</td><td>AutoSOTA §3.7</td><td>N3's checked list of published methods becomes Arbor's source of big ideas.</td><td>N3</td></tr>
+<tr><td>Debug the baseline first</td><td>AutoSOTA §4.3 cases</td><td>Their biggest gains were bugs in the baseline. Our first-sample accuracy is about 30 points below published numbers, so A2's fidelity check runs first.</td><td>A2</td></tr>
+<tr><td>Tune the baseline before the method</td><td>EvoScientist §3.4</td><td>Arbor must beat the best simple version of majority vote, fixed in advance.</td><td>N4</td></tr>
+<tr><td>Check the LLM judge against people</td><td>EvoScientist App. C.3</td><td>Teammates judge 10 idea pairs. We report how often they agree with the LLM.</td><td>T2</td></tr>
+<tr><td>Frozen transfer test</td><td>Arbor §5.6</td><td>Run the final rule, unchanged, on a second dataset.</td><td>A3</td></tr>
+<tr><td>Compute is a metric (red line R8)</td><td>AutoSOTA R4, §4.3.6</td><td>Each rule reports its extra compute. Comparisons use matched compute.</td><td>T1, A1</td></tr>
+</table></div>
+<div class="note"><p><span class="k">Main conclusion.</span> The borrowed process makes iteration 2 more valid. It cannot beat majority vote by itself. Arbor's own check at the end of iteration 1 found that simple rules over our current features are used up. A real gain needs one of these:</p>
+<ul>
+<li>a fixed pipeline;</li>
+<li>new information about each answer (the diffusion model's own likelihood, or a verifier);</li>
+<li>more steps or samples at matched compute.</li>
+</ul></div>
+<p class="ev">Source: <a href="https://github.com/jarjlol/diffullama/blob/assignment/codification/codification/BORROWED_IDEAS_REVIEW.md">codification/BORROWED_IDEAS_REVIEW.md</a> (papers at arXiv full text: Arbor 2606.11926v1, DeepScientist 2509.26603v1, EvoScientist 2603.08127v2, AutoSOTA 2604.05550v2; Arbor code at tag v0.1.4).</p>
+
 <h3>Who runs what (to agree at the meeting)</h3>
 <div class="tablewrap"><table>
 <tr><th>Member</th><th>Workstation</th><th>Prompts</th></tr>
@@ -463,7 +508,7 @@ footer{margin-top:50px;color:var(--muted);font-size:.85rem;border-top:1px solid 
 <tr><td>Aaditya</td><td>Yes</td><td>T5 (rubric), review of each merge, A3 together with Aryan</td></tr>
 </table></div>
 <div class="note"><p><span class="k">How to start.</span> Each member opens a coding agent in the repo, on branch <code>assignment/codification</code>. Paste prompt T0 first. T0 tells the agent to read the main files and gives the rules. Then paste your own prompt. All prompts are in <a href="https://github.com/jarjlol/diffullama/blob/assignment/codification/codification/ITERATION_2_PROMPTS.md">codification/ITERATION_2_PROMPTS.md</a>.</p>
-<p>Order: N1 first. T1, T3 and T4 must be done before A3. A1 and A2 can run at the same time, one on each GPU.</p></div>
+<p>Order: N1 first. T1, T3 and T4 must be done before A3. A1 and A2 can run at the same time, one on each GPU. Since the second review, A3 also waits for A2's fidelity check and for N4's failure classes and tuned-majority bar.</p></div>
 
 <!-- ================================================================== -->
 <h2 id="glossary">12. Terms</h2>
@@ -483,7 +528,7 @@ footer{margin-top:50px;color:var(--muted);font-size:.85rem;border-top:1px solid 
 </table></div>
 
 <footer>
-<p>Made on 6 November 2026 from branch <code>assignment/codification</code> at commit <code>61527e0</code> and the other branches of <code>jarjlol/diffullama</code>. Sections 10 and 11 were added the same day from <code>ITERATION_2_PROMPTS.md</code> and <code>BORROWED_IDEAS.md</code>. Written in ASD-STE100 style (short sentences, active voice, approved words) for most of the text. Technical names stay as they are.</p>
+<p>Made on 6 November 2026 from branch <code>assignment/codification</code> at commit <code>61527e0</code> and the other branches of <code>jarjlol/diffullama</code>. Sections 10 and 11 were added the same day from <code>ITERATION_2_PROMPTS.md</code> and <code>BORROWED_IDEAS.md</code>. The "Second review" part of section 11 and open item 6 come from <code>BORROWED_IDEAS_REVIEW.md</code>. Written in ASD-STE100 style (short sentences, active voice, approved words) for most of the text. Technical names stay as they are.</p>
 </footer>
 </main>
 </body>

@@ -4,7 +4,10 @@ These are prompts to paste into a coding agent (Claude Code, opencode or Codex) 
 on branch `assignment/codification`. Every member starts with **T0** (it loads the context), then runs
 their own prompts. Each prompt is self-contained. The review of iteration 1 that produced them is at
 the end of this file. The design that the T-prompts build is `codification/BORROWED_IDEAS.md`: ideas
-borrowed from DeepScientist, EvoScientist and AutoSOTA, re-implemented around Arbor.
+borrowed from DeepScientist, EvoScientist and AutoSOTA, re-implemented around Arbor. A second,
+independent review (`codification/BORROWED_IDEAS_REVIEW.md`, 2026-11-06) read the papers and Arbor's
+source again. It added mechanisms B-12 to B-23 and found two safety problems and two misread Arbor
+settings. Prompts it changed carry a paragraph marked **Review 2026-11-06**.
 
 ## Who runs what (suggested; agree it at the meeting)
 
@@ -22,6 +25,13 @@ Order and dependencies: N1 first (submission). T1, T3 and T4 must land before A3
 reads their files). A1 and A2 run in parallel, one per GPU. N4 waits for the data A2 shares. T2 and T5
 are independent.
 
+Since the review of 2026-11-06, A3 also waits for:
+- A2's fidelity check, which runs first in A2;
+- N4's failure classes and tuned-majority bar;
+- N3's RESEARCH_REPORT.md (A3 may start without it).
+
+The team must also agree the eval.py order-invariance change (T1) before A3.
+
 Branches: each person works on `iter2/<name>`, commits small, and pushes. Merge into
 `assignment/codification` after one other person has read the diff. GPU users must follow the
 Blackwell rules in `codification/HANDOFF.md` §3.
@@ -33,14 +43,15 @@ Blackwell rules in `codification/HANDOFF.md` §3.
 ```text
 You are helping a member of BITS F471 Group 3 with Task 4 (codification) of the course project.
 Read these files in order, fully: AGENTS.md; codification/HANDOFF.md; codification/ITERATION_1.md;
-codification/NEXT_ITERATION.md; codification/BORROWED_IDEAS.md; codification/ITERATION_2_PROMPTS.md;
-codification/REFERENCE_SYSTEMS.md; and the timeline page project-docs/timeline.html (read it as text).
-Also read docs/verification-standards.md.
+codification/NEXT_ITERATION.md; codification/BORROWED_IDEAS.md; codification/BORROWED_IDEAS_REVIEW.md;
+codification/ITERATION_2_PROMPTS.md; codification/REFERENCE_SYSTEMS.md; and the timeline page
+project-docs/timeline.html (read it as text). Also read docs/verification-standards.md.
 
 Then tell me, in under 25 lines:
 1. what Task 4 asks (the brief is quoted in ITERATION_1.md "What the brief asks for");
 2. what iteration 1 did and found (the three findings in ITERATION_1.md §Results);
-3. what the four reference papers are, why we built on Arbor, and what we borrow from the other three;
+3. what the four reference papers are, why we built on Arbor, and what we borrow from the other three
+   (BORROWED_IDEAS.md and the second review's verdict, BORROWED_IDEAS_REVIEW.md §1);
 4. which prompt in ITERATION_2_PROMPTS.md is mine (I will tell you my name), what it needs, and what
    it depends on.
 
@@ -180,6 +191,12 @@ the novelty status of idea 1.1.
 5. Novelty: state whether anyone has already linked AR-representation preservation to selection or
    reranking gain. If yes, idea 1.1's claim is preempted; write that clearly.
 
+6. Review 2026-11-06 (AutoSOTA §3.7 / §3.5.2 "research_report.md"; BORROWED_IDEAS_REVIEW.md B-13):
+   also write codification/memory/RESEARCH_REPORT.md, at most 60 lines, for Arbor to read at ideation.
+   For each verified method, give one line on the mechanism and the per-candidate signal it uses. Mark
+   whether it is admissible under our red lines: it must score one candidate of one item at a time,
+   with no other model's answers and no gold. Arbor's Leap ideas come from this list.
+
 Commit as "docs(codification): verified SOTA and novelty for idea 1.1" on iter2/neel and push.
 Report the table and the selector spec. Do not write any number you did not read in the paper.
 ```
@@ -204,6 +221,20 @@ for reporting. Write down any rule before you look at the final split.
 4. If N3 gives a post-hoc selector that needs no GPU, implement it as a selector in a COPY of
    baselines.py (do not edit the protected file) and run it with codification/paired_stats.py on
    dev and gate.
+
+5. Review 2026-11-06 (BORROWED_IDEAS_REVIEW.md B-12, B-14, B-15). Three additions:
+   - Failure taxonomy (step 2) is the input to Arbor iteration 2, following DeepScientist's
+     "start from a limitation of the SOTA method". End ANALYSIS_ITER2.md with a short block
+     "Failure classes for A3": one line per class, with its dev count per model and a one-line
+     example. Use counts and labels only, never a gold answer.
+   - Extraction audit, following AutoSOTA's lesson that its largest gains were bugs in the baseline
+     pipeline. On the dev items where the oracle is right and majority is wrong, read 20 candidates
+     by hand. Check that task.extract_answer took the number the candidate meant. Report every
+     mismatch.
+   - Tuned-majority bar, following EvoScientist's stage 2: tune the baseline before testing the
+     method. Fix this set before looking: tie-break by earliest index, by shortest text, or by most
+     explicit calculations; with None answers counted or ignored. Run each on dev. Freeze the best as
+     "tuned majority" and report it with plain majority on dev and gate. A3 must beat tuned majority.
 
 Write codification/ANALYSIS_ITER2.md with the commands you ran and their real output. Commit on
 iter2/neel and push.
@@ -277,6 +308,11 @@ Same rules as A1 (read HANDOFF.md §3). Branch iter2/aryan.
    settings, stop and report: something in prompt format or answer extraction may be wrong.
 4. Run baselines.py and codification/paired_stats.py with dlm.self as a selector vs majority vote
    (dev and gate only; do not look at the final split yet).
+5. Review 2026-11-06 (BORROWED_IDEAS_REVIEW.md B-14): do step 3, the fidelity reference, FIRST, before
+   steps 2 and 4 and before A3. AutoSOTA's biggest gains in its own case studies came from bugs in the
+   reproduced baseline (§4.3.1, §4.3.3). Our first-sample accuracy is about 30 points below the
+   published numbers. If a prompt-format or extraction bug explains part of that, every later number
+   changes. Report the result to the team before you start A3.
 
 Commit on iter2/aryan, push via the laptop. Report real outputs. Free the GPUs when done.
 ```
@@ -291,16 +327,25 @@ Same rules as A1. Read HANDOFF.md §3 "Rerun Arbor" and NEXT_ITERATION.md "Proce
 Iteration 1's merge gate compared against the seed rule (GPT-2 NLL), not majority vote, so Arbor
 could merge a rule that only ties majority. Fix that, and wrap Arbor in the pieces borrowed from
 the other reference papers (codification/BORROWED_IDEAS.md). Needs T1, T3 and T4 merged first.
+Since the review of 2026-11-06 it also needs:
+- N4's failure classes and tuned-majority bar;
+- N3's RESEARCH_REPORT.md (if it is not ready, start without it and say so);
+- A2's fidelity result.
 
 1. Rebuild the Arbor task repo (codification/make_arbor_repo.sh) into ~/arbor-rerank-iter2 with:
    - seed solution.py = majority vote (copy baselines._majority logic);
    - the new features from A1/A2 in items (dlm.self, the 7B scorers; candidates at K = 16/32 only if
      you also give Arbor a compute budget per question, otherwise leave them out);
-   - research_config.yaml: interaction_mode review. Note that merge_threshold is a RELATIVE percent
-     gain on the macro score over all 5 models, and the 3 floor models dilute it. Decide with the
-     team whether eval.py (a protected file, change it only before Arbor starts) should print a
-     score over dream-base and llada-base only, so the gate means "beats majority vote where there
-     is headroom". One point on a 200-question split is 2 questions; ask for at least 3 net questions.
+   - research_config.yaml: interaction_mode review. The macro score averages all 5 models, and the
+     3 floor models dilute it. Decide with the team whether eval.py (a protected file, change it only
+     before Arbor starts) should print a score over dream-base and llada-base only, so the gate means
+     "beats majority vote where there is headroom". One point on a 200-question split is 2
+     questions; ask for at least 3 net questions.
+     Correction (Review 2026-11-06, read in Arbor v0.1.4 src/coordinator/tools/git_ops.py):
+     merge_threshold is NOT enforced at the merge gate. Arbor merges on ANY strict held-out gain
+     and only logs a warning below the threshold. The threshold appears only as a soft hint in the
+     coordinator prompt. So "at least 3 net questions" must be enforced by you at the merge gate,
+     and by the plugin's meta_decide_inject text (step 2b).
 2. Write the instruction from codification/arbor_instruction.txt plus three blocks built from the
    memory files (codification/BORROWED_IDEAS.md §3; they come from prompts T1, T3, T4):
    - "Red lines" = codification/memory/RED_LINES.md, verbatim (AutoSOTA's red-line idea).
@@ -313,6 +358,27 @@ the other reference papers (codification/BORROWED_IDEAS.md). Needs T1, T3 and T4
      priority first, with their PARAM/CODE/ALGO type.
    Give your own agent codification/memory/STRATEGIES.md too, and check it before you debug any
    failure (AutoSOTA's "retrieval before repair").
+2b. Review 2026-11-06 (codification/BORROWED_IDEAS_REVIEW.md §3-§4). Put the blocks into Arbor
+   natively, not only into the instruction text:
+   - Plugin. Copy codification/rerank_task/plugins/rerank_guard.yaml (from T1) into the Arbor repo's
+     plugins/ folder and set `plugin: rerank_guard` in research_config.yaml. Then check that
+     `arbor config show` lists it. The plugin provides:
+     - protected_paths, so Arbor hash-checks task.py, eval.py, eval.sh, baselines.py and data/**.
+       This was inactive in iteration 1.
+     - The red lines in all six injection points, matching AutoSOTA's four enforcement layers.
+     - A convergence block that forces a "paradigm shift" after 3 non-improving experiments (native
+       leap rule).
+   - Memory. Use codification/memory/EXPERIENCE_CURATED.md (T3), never the raw iteration-1
+     EXPERIENCE.md. The raw file lists cross-model consensus as a "[leverage]" finding. Also, our
+     `arbor run ... --yes` launch never runs Arbor's experience recall (that happens only in the
+     intake chat), so the curated memory must go in through the plugin's meta_ideate_inject or the
+     instruction.
+   - Opening directions. One depth-1 direction per failure class of majority vote, from N4's
+     "Failure classes for A3" (DeepScientist's limitation-first search). Add Leap candidates from
+     codification/memory/RESEARCH_REPORT.md (N3).
+   - Bar and evaluation. The seed is N4's frozen "tuned majority", not plain majority. Before
+     launch, apply the eval.py order-invariance check drafted in T1. Only do this if the team
+     agreed, and never change it during the run.
 3. Start vLLM only when you are ready to answer review prompts; stop it the moment Arbor ends.
    Answer every gate with /approve, /skip, /edit <note> or /answer <text>. Review rules:
    - Reject (/answer with the reason) any proposal that breaks a red line, and name the line.
@@ -327,6 +393,11 @@ the other reference papers (codification/BORROWED_IDEAS.md). Needs T1, T3 and T4
    majority on the final split with a paired test, its ablation loses, and it also holds on a second
    dataset (for example SVAMP; agree which with the team first). Otherwise record it in
    FINDINGS.jsonl as an Implement Finding with its numbers.
+   Review 2026-11-06: run the second dataset as Arbor's own frozen transfer test (Arbor §5.6). Freeze
+   the merged solution.py and evaluate it unchanged on the new candidates, with no re-tuning and no
+   Arbor. Report the extra compute per question (red line R8). Also check whether the gain comes
+   from answer extraction or normalization rather than from the rule (Arbor §6.1 found part of a
+   verifier gain was answer normalization).
 
 Copy the session folder to codification/results/iter2/arbor_session/, commit, push via the laptop.
 ```
@@ -375,6 +446,42 @@ Goal: two files that Arbor iteration 2 (prompt A3) and every human reviewer will
    repeat the four directions iteration 1 already ran (2.1, 3.1, 4.1, plain majority) unless you
    say what is different. Include at least two REJECTED examples so the audit is visible.
 3. Priority order: rank the CLEARED ideas by feasibility and expected gain, with one line of reason.
+4. Review 2026-11-06 (codification/BORROWED_IDEAS_REVIEW.md §3-§5). Four additions:
+   a. Red lines. Tighten R7: select(item) is a pure function of one item, with no state across calls
+      (no module-level caches or counters) and no dependence on item order. Add R8, compute: report
+      the extra inference compute per question, and compare at matched compute.
+   b. Idea library.
+      - Tag each idea micro / meso / macro as well (AutoSOTA §3.8.1 Phase 2).
+      - Add the in-item signals Arbor iteration 1 already found anti-predictive. They are in the
+        last pitfall of codification/results/iter1/arbor_session/EXPERIENCE.md: cross-candidate
+        verified-result consistency, question-number derivability, extraction-commitment weighting.
+        Mark them "REJECTED (evidence)" with the numbers, separate from red-line rejections.
+   c. Arbor plugin. Write codification/rerank_task/plugins/rerank_guard.yaml in Arbor's plugin format.
+      The format is in docs/plugins.md and src/plugins/base.py of RUC-NLPIR/Arbor at tag v0.1.4. It
+      needs:
+      - name, description, schema_version: 1;
+      - eval_contract: metric_direction maximize, eval_cmd "bash {cwd}/eval.sh dev";
+      - protected_paths: task.py, eval.py, eval.sh, baselines.py, "data/**".
+      - Red lines in the six injections, following AutoSOTA's four enforcement layers:
+        - meta_preamble_inject and sub_preamble_inject: R1-R8 as "absolute prohibitions, with no
+          exceptions" (layer 4).
+        - meta_init_inject: "list the task-specific constraints before ideating" (layer 1).
+        - meta_ideate_inject: "audit every proposed child against R1-R8 and write CLEARED or
+          REJECTED (rule) into its hypothesis" (layers 2-3).
+        - meta_decide_inject: "merge only with >= 3 net questions on the gate split per non-floor
+          model, and ask for an ablation first".
+        - sub_workflow_inject: "report per-model accuracy and extra compute".
+      - A convergence block with min_experiments: 2, warn_after: 2, force_after: 3,
+        parent_exhaustion_count: 2. This makes Arbor's paradigm-shift signal fire early enough to
+        act as the leap rule.
+      Check it parses: python3 -c "import yaml; print(sorted(yaml.safe_load(open(
+      'codification/rerank_task/plugins/rerank_guard.yaml', encoding='utf-8'))))".
+   d. eval.py patch, a draft only: write it to codification/memory/eval_order_check.patch and do
+      not apply it. Call select() on every item in file order, then again in reversed order. Score
+      0.0 with "correctness: FAIL (order-dependent select)" if any choice differs. This catches the
+      module-level cross-model cache Arbor built in iteration 1. Test it on a copy:
+      results/iter1/solution_merged_4_1.py must pass, and a toy solution with a module-level dict
+      keyed on item["question"] must fail. Paste both outputs.
 
 Verify: every feature name you cite appears in codification/pipeline/assemble.py or is marked
 "needs A2/A1". Commit "docs(codification): red lines and audited idea library for Arbor iteration 2"
@@ -408,6 +515,11 @@ choice to codify. This supports the brief's "codify the idea which you think is 
 4. Write codification/memory/ELO_RANKING.md: method, model, the table, and a short verdict: does
    1.1 stay top? If another idea wins clearly, say what that would mean for iteration 2, but do not
    change the project direction; the team decides.
+5. Review 2026-11-06 (EvoScientist App. C.3; BORROWED_IDEAS_REVIEW.md B-17): validate the judge before
+   trusting it. EvoScientist reports 90.0% LLM-human agreement (108/120 pairs) before relying on its
+   judge. Pick 10 of the 28 pairs at random (fixed seed). Ask 2-3 teammates to judge them blind on
+   the same four criteria, then report agreement with the LLM judge per criterion. If agreement on
+   a criterion is under ~70%, say that this criterion's Elo is not reliable.
 
 Commit the script, the cached responses (no API keys), and ELO_RANKING.md on iter2/khushi; push.
 ```
@@ -439,6 +551,25 @@ ranked list of the GPU experiments we could run next.
    prompts. Record model, date, temperature.
 3. Write a 5-line rule in FINDINGS.md for how a finding moves up a tier, using BORROWED_IDEAS.md §3
    (promotion needs the final split, an ablation and a second dataset).
+4. Review 2026-11-06 (codification/BORROWED_IDEAS_REVIEW.md §3, B-16, B-22):
+   a. Fields. Add EvoScientist's idea-validation fields to every FINDINGS.jsonl record (App. D,
+      Fig. 11):
+      - outcome: FAILED (NoExecutableWithinBudget), FAILED (WorseThanBaseline) or NOT_FAILED;
+      - trigger_conditions;
+      - do_not_repeat;
+      - retrieval_tags.
+   b. Curated Arbor memory. Write codification/memory/EXPERIENCE_CURATED.md in the same format as
+      results/iter1/arbor_session/EXPERIENCE.md (front matter, then "- **[kind] about** — note").
+      Copy the raw file's findings, with one change: the "[leverage] ... cross-model consensus"
+      item must become a "[pitfall]" that says it breaks red line R7 and was rejected twice. That
+      raw item recommends the banned idea, and Arbor would read it as a prior. Add the tier of each
+      finding. A3 injects this file into Arbor.
+   c. UCB. The paper's own weights are w_u = w_q = κ = 1 (DeepScientist App. C). Rank by those, and
+      by your 0.5/0.5/0.3 as a sensitivity check. Report both orders.
+   d. Exploration score. Tell the surrogate that v_e should be high for runs that test idea 1.1's
+      own claim (the A1 step arm; the per-question preservation test) and low for engineering
+      add-ons. DeepScientist's exploration assessment avoids "combinations of existing knowledge"
+      (§4.1).
 
 Verify: every number in FINDINGS.jsonl can be found in the cited file (write a tiny check script
 that loads the JSON and prints each evidence path; open a sample of 5 by hand). Commit on
@@ -496,6 +627,13 @@ to ITERATION_1.md or ITERATION_2.md before submission.
 2. Apply it to the current ITERATION_1.md yourself and give the score with each failed leaf.
 3. Optional: ask one LLM judge to apply the same rubric and compare its verdicts with yours; record
    disagreements. Record model, date, temperature.
+4. Review 2026-11-06 (DeepScientist App. A.2; BORROWED_IDEAS_REVIEW.md B-23, B-20). Add these leaves.
+   The first three are what human reviewers attacked in DeepScientist's own papers:
+   - "every baseline a reviewer would expect is in the table (incl. tuned majority and a published
+     DLM selector)";
+   - "every claimed gain has an ablation";
+   - "closely related work is compared, not only cited";
+   - "every selector reports its extra compute per question (R8)".
 
 Commit on iter2/<name> and push. Report the score and the failed leaves.
 ```
@@ -544,6 +682,11 @@ Commit on iter2/<name> and push. Report the score and the failed leaves.
 | Nothing borrowed from DeepScientist, EvoScientist or AutoSOTA | T1 (red lines, idea library), T2 (Elo), T3 (Findings Memory, surrogate + UCB), T4 (experimentation memory), T5 (rubric), A3 (leap rule, ablation stage, promotion rule) |
 | The top-5 order rests on saturated scores | T2 |
 | Lessons live in notes, not where agents read them | T3, T4 |
+| (Review 2026-11-06) Arbor's native guards were off: no protected_paths, no plugin, convergence never fired | T1 (plugin), A3 |
+| (Review 2026-11-06) Arbor's own iteration-1 memory recommends the banned cross-model cache | T3 (curated memory), A3 |
+| (Review 2026-11-06) eval.py lets select() keep state across items (R7 not enforced) | T1 (patch draft), A3 |
+| (Review 2026-11-06) merge_threshold is not enforced by Arbor's merge gate | A3 (reviewer rule), T1 (meta_decide_inject) |
+| (Review 2026-11-06) In-item rules over current features are exhausted; gains need new information, a higher ceiling, or a fixed pipeline | A2 (fidelity first), N3 (research report), N4 (failure classes, tuned bar), A1 |
 
 Overall: iteration 1 meets every clause at least in part. It is strongest on finding spec gaps and on
 honest, held-out results with paired statistics. Self-grade B now (`NEXT_ITERATION.md`); A- is
