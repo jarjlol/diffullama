@@ -62,6 +62,11 @@
           "name": "claude",
           "runtime": "claude-code",
           "wip": 2
+        },
+        {
+          "name": "codex",
+          "runtime": "codex",
+          "wip": 2
         }
       ],
       "skills": [],
