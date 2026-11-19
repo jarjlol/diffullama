@@ -69,6 +69,8 @@ Read the matching file **before** working in that area. Do not preload the other
   **Triggers:** inference, sampling, remasking, attention, tokenizer, shift, mask token
 - `project-docs/README.md` — team decision log, established facts, open questions.
   **Triggers:** decision, status, why did we, what's blocked, direction, P-1
+- `final_submission/README.md` — Task 5: the research paper, report and repo due 26 Nov 2026; who writes which section.
+  **Triggers:** paper, final submission, task 5, abstract, introduction, related work, conclusion
 - `README.md` / `README_SIMPLIFIED.md` — upstream usage; the latter is a from-zero
   walkthrough of the inference call path. **Triggers:** how does inference work, onboarding
 
