@@ -46,8 +46,8 @@
       "github": "ItsNotArjun",
       "agents": [
         {
-          "name": "claude",
-          "runtime": "claude-code",
+          "name": "opencode",
+          "runtime": "opencode",
           "wip": 2
         }
       ],
@@ -75,28 +75,20 @@
     {
       "handle": "khushi",
       "github": "KhushiPandey1805",
-      "agents": [
-        {
-          "name": "claude",
-          "runtime": "claude-code",
-          "wip": 2
-        }
-      ],
       "skills": [],
-      "route_mentions_to_agent": true
+      "route_mentions_to_agent": true,
+      "agent": {
+        "enabled": false
+      }
     },
     {
       "handle": "diya",
       "github": "DiyaSrivastava295",
-      "agents": [
-        {
-          "name": "claude",
-          "runtime": "claude-code",
-          "wip": 2
-        }
-      ],
       "skills": [],
-      "route_mentions_to_agent": true
+      "route_mentions_to_agent": true,
+      "agent": {
+        "enabled": false
+      }
     }
   ],
   "areas": {},
