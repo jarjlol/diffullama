@@ -239,7 +239,7 @@ def analyze(a) -> int:
              f"oracle {y['oracle'].mean():.3f}; n(first wrong) = {int((~y['first']).sum())}", ""]
     res = {}
     s_prim = pred["centered/nosink (PRIMARY)"].mean(1)
-    lines.append("primary predictor summary: mean %.4f sd %.4f; corr with log length %.3f; Spearman-free Pearson with share-correct %.3f" % (
+    lines.append("primary predictor summary: mean %.4f sd %.4f; corr with log length %.3f; Pearson with share-correct %.3f" % (
         s_prim.mean(), s_prim.std(), np.corrcoef(s_prim, np.log(length))[0, 1], np.corrcoef(s_prim, y["share"])[0, 1]))
     lines.append("")
     hdr = f"{'predictor':28s} {'outcome':6s} {'n':>4s} {'events':>6s} {'AUC':>6s} {'perm p':>8s} {'OR/SD':>6s} {'95% CI':>14s} {'Wald p':>8s}"
