@@ -2,7 +2,24 @@
 
 <!-- Owner: neel (issue #10). Target length in the final paper: ~0.5 page. Delete this comment block when the section is final. -->
 <!-- Professor's instruction: The output of problem formulation assignment can be fed to LLM to get the mathematical definition of the defined research problem, which can be further manually verified. -->
-<!-- Sources: The problem formulation assignment output (`project-docs/01-project-brief.md`, Assignment Part 2; ask in #10 if unsure which file). -->
-<!-- Rules: every claim or number traces to a repo file or a paper read at full text; mark anything unchecked [unverified]. One branch per section: mesh/10-<slug>, only this file in the PR. -->
+<!-- Source problem: research problem P1 in `ideation/output/research_problems_and_ideas.md` (branch assignment/research-ideation), narrowed to idea 1.1 as built in Task 4 (`codification/` on branch assignment/codification). Every definition below is checked against the code path given in the status comment of #10. -->
+<!-- DRAFT 2026-11-20. Human check pending: see #10. -->
 
-_TODO: draft here._
+**Setting.** Let $\mathcal{M}$ be a set of masked diffusion language models (DLMs). A model $m \in \mathcal{M}$ is either adapted from an autoregressive (AR) base $b(m)$ or, for the control, trained from scratch ($b(m) = \varnothing$). Let $\mathcal{D} = \{(q_j, a_j^\ast)\}_{j=1}^{n}$ be math word problems $q_j$ with numeric gold answers $a_j^\ast$ (GSM8K). For each question, $m$ is prompted with a $k$-shot prompt $x_j$ and draws $N$ candidates independently,
+$$y_{j,1}, \dots, y_{j,N} \overset{\text{i.i.d.}}{\sim} p_m(\cdot \mid x_j).$$
+An extractor $\phi : \mathcal{Y} \to \mathbb{R} \cup \{\bot\}$ maps a candidate to its final number, and $c_{j,i} = \mathbb{1}[\phi(y_{j,i}) = a_j^\ast]$ marks a correct candidate ($\bot$ is never correct).
+
+**Selectors.** A selector $s$ maps an item $(x_j, y_{j,1:N})$ to an index $s(\cdot) \in \{1, \dots, N\}$. It may use only the item's own $N$ candidates and features computed from them, never $a_j^\ast$ or other models' candidates. Its accuracy on $m$ is
+$$\mathrm{Acc}_m(s) = \frac{1}{n} \sum_{j=1}^{n} c_{j,\, s(x_j, y_{j,1:N})}.$$
+Reference selectors: *first*, $s_{\text{first}} = 1$ (one run of the model); *majority vote* (self-consistency), the index of the first candidate whose answer has the most votes $|\{i : \phi(y_{j,i}) = v\}|$ over $v \neq \bot$ (index 1 if every answer is $\bot$); and the *AR scorer*
+$$s_{\psi}(\cdot) = \arg\min_{i} \; \mathrm{NLL}_{\psi}(y_{j,i} \mid q_j) \quad \text{or} \quad \arg\min_{i} \; \frac{\mathrm{NLL}_{\psi}(y_{j,i} \mid q_j)}{|y_{j,i}|_{\psi}},$$
+the summed and per-token negative log-likelihood under a frozen AR model $\psi$. No selector can exceed the *oracle* (hit@$N$), $\mathrm{Acc}_m^{\ast} = \frac{1}{n}\sum_j \max_i c_{j,i}$. The share of the reachable gap that $s$ closes is its *headroom*
+$$H_m(s) = \frac{\mathrm{Acc}_m(s) - \mathrm{Acc}_m(s_{\text{first}})}{\mathrm{Acc}_m^{\ast} - \mathrm{Acc}_m(s_{\text{first}})}.$$
+
+**Objective.** Find a training-free selector $s$ that maximises the macro accuracy $\frac{1}{|\mathcal{M}|}\sum_{m} \mathrm{Acc}_m(s)$ on held-out questions, where success means $\mathrm{Acc}_m(s) > \mathrm{Acc}_m(s_{\text{maj}})$, i.e. beating self-consistency.
+
+**Hypothesis (idea 1.1).** For each adapted model, let $H^{(\ell)}_m, H^{(\ell)}_{b(m)} \in \mathbb{R}^{T \times d}$ be mean-pooled layer-$\ell$ hidden states of $m$ (bidirectional) and of $b(m)$ (causal) on the same $T$ held-out text segments, and define the preservation score
+$$\rho_m = \frac{1}{L}\sum_{\ell=1}^{L} \mathrm{CKA}\big(H^{(\ell)}_m, H^{(\ell)}_{b(m)}\big), \qquad \mathrm{CKA}(X, Y) = \frac{\lVert \bar{Y}^{\top}\bar{X} \rVert_F^2}{\lVert \bar{X}^{\top}\bar{X} \rVert_F \, \lVert \bar{Y}^{\top}\bar{Y} \rVert_F},$$
+with $\bar{X}, \bar{Y}$ column-centred. The hypothesis is that more preservation means more AR-recoverable accuracy: $\mathrm{Spearman}\big(\rho_m, H_m(s_\psi)\big) > 0$ across $\{m : b(m) \neq \varnothing\}$.
+
+**Assumptions and scope.** Decoding settings (steps, temperature, shots) are fixed per model and differ between models. Dev and test questions are disjoint, and selectors are chosen on dev. With $|\{m : b(m) \neq \varnothing\}| = 4$, the hypothesis test is descriptive only: the smallest attainable exact permutation $p$ is $1/12$. The broader research problem P1 also asks whether selection is more compute-efficient than raising the denoising-step budget; that comparison is not measured here.
