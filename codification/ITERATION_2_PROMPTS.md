@@ -36,6 +36,54 @@ Branches: each person works on `iter2/<name>`, commits small, and pushes. Merge 
 `assignment/codification` after one other person has read the diff. GPU users must follow the
 Blackwell rules in `codification/HANDOFF.md` §3.
 
+## Priority tiers (added 2026-11-20 for decision #7; final once a human answers #7)
+
+**Principle: aim above the mark to hit the mark.** We plan for the full iteration 2 (option B in #7),
+but we run it in priority order. Tier 1 is what the paper needs; it is never delayed by anything
+else. Tier 2 and Tier 3 are extra credit: run them when a GPU is free that Tier 1 is not using, or
+when they are CPU-only and nobody waits on them. Results that go into the paper must be in by the
+**results freeze, Sun 22 Nov 18:00 IST**. Extra-credit results that land later go into the report
+(#15) as additional effort, not into the paper.
+
+Why this is realistic: on Fri 20 Nov 22:02 IST both Blackwell GPUs were idle (`nvidia-smi`: 171 MiB
+and 82 MiB used, 0% load). Iteration 1 measured Dream at 36 s per question at 64 steps (I-11). From
+that, Dream at 16 + 32 steps on 500 questions is about 4 GPU-h; LLaDA has no measured time in the
+repo (paper estimate about 60 s per question at 64 steps, so about 6 GPU-h). These are estimates;
+the smoke test in A1 replaces them.
+
+| Tier | Item | Prompt | GPU | Owner | Needs first |
+|---|---|---|---|---|---|
+| 1 | Fidelity check: 100 test questions, one greedy sample, published settings, Dream + LLaDA. If still more than about 10 points below the published numbers, it is a pipeline bug: stop A1, report it, do not regenerate before the freeze | A2 step 3 | about 1-2 h | Aryan / Aaditya | the fidelity script |
+| 1 | Step-budget arm: K = 16 and 32, Dream + LLaDA, test 500, N = 10, T 0.7. Drop K = 32 if the K = 16 smoke test says it cannot finish by Sun 12:00 IST | A1 | about 10 h | Aryan / Aaditya | the `--steps` override |
+| 1 | Share the items zip with Neel | A2 step 1 | none | whoever is on Blackwell first | — |
+| 1 | Failure classes of majority vote, tuned-majority bar, extraction audit | N4 | none | Neel | items zip |
+| 1 | Verified SOTA table (the paper must place us against published methods) | N3 | none | Neel | — |
+| 2 | DLM self-score as a new selector signal | A2 step 2 | about 1-2 h | whoever holds a free GPU | — |
+| 2 | Per-question preservation test on Dream (tests the novel part of idea 1.1 at n = 500, not n = 4; `audit/task4` 04 §1) | new, see below | about 1-2 h | whoever holds a free GPU | — |
+| 2 | Red lines, idea library, Arbor plugin, eval order-invariance draft | T1 | none | Aalhad | — |
+| 2 | Curated findings memory and ranked GPU queue | T3 | none | Diya | — |
+| 2 | Experimentation memory | T4 | none | Arjun | — |
+| 2 | Refine idea 1.1 with feedback to the ideation model | N2 | none | Neel | — |
+| 2 | Arbor iteration 2 from the tuned-majority bar, with the new signals | A3 | both GPUs for vLLM, about 1-2 h | Aryan + Aaditya | T1, T3, T4, N4, A2 step 2 |
+| 3 | Frozen transfer to a second dataset | A3 step 4 | hours | Aryan | A3 merged something |
+| 3 | More models: diffullama-gsm, Dream-Instruct, LLaDA-Instruct | A4 | many hours + downloads | Arjun | a free window |
+| 3 | Elo re-rank of P1 ideas; rubric | T2, T5 | none | Khushi, Aaditya | — |
+
+Rules for running the tiers:
+- **Tier 1 first, always.** A Tier 2 job never takes a GPU that a Tier 1 job needs next.
+- **No pipelining on the critical path.** Do not start a Tier 2 or Tier 3 job if a Tier 1 job would
+  have to wait for it. CPU-only items in Tier 2 start now, in parallel, because they block nothing.
+- **One operator per GPU.** Before you start a job, say which GPU and until when, in the team chat
+  and on #4. Check `nvidia-smi` first; the `antpc` account is shared.
+- **No idle holds.** Stop vLLM or any loaded model when its job ends (HANDOFF.md §3).
+- **SSH:** try the direct alias (`blackwell`) and the jump-host alias (`jump-blackwell`) before
+  calling the machine unreachable. On 20 Nov the jump host timed out while the direct route worked.
+
+Per-question preservation (Tier 2, not yet a prompt): for each test question, take Dream's and
+Qwen2.5-7B's hidden states on the prompt (mean over tokens, per layer), compute their cosine
+similarity, and test whether it predicts per-question reranking success (first sample wrong, AR pick
+right) with a logistic regression or a rank test. Report it as exploratory.
+
 ---
 
 ## T0 (everyone, first): load the context
