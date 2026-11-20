@@ -1,0 +1,9 @@
+# job operator_bar_paired   started 2026-11-21 02:58:22   worker commit 3bc19b6   try 1
+# inputs: -
+$ cd ~/codify/worker/codification/pipeline && python3 /home/antpc/codify/iter2/aryan/codification/paired_stats.py /home/antpc/arbor-rerank-iter2 test /home/antpc/codify/iter2/aryan/support-N4/frozen_tuned_majority.py --reference /home/antpc/codify/iter2/aryan/support-N4/frozen_tuned_majority.py
+
+dream-base   n= 200  sol 0.710  maj 0.710  first 0.395  oracle 0.875 | vs maj +0.000 [+0.000,+0.000] 0/0 p=1.000 | vs first +0.315 [+0.245,+0.385] p=1.9e-16 | vs tuned +0.000 [+0.000,+0.000] 0/0 p=1.000
+llada-base   n= 200  sol 0.735  maj 0.735  first 0.485  oracle 0.905 | vs maj +0.000 [+0.000,+0.000] 0/0 p=1.000 | vs first +0.250 [+0.190,+0.315] p=2.4e-14 | vs tuned +0.000 [+0.000,+0.000] 0/0 p=1.000
+{"dream-base": {"n": 200, "acc": {"sol": 0.71, "oracle": 0.875, "majority": 0.71, "first": 0.395, "tuned": 0.71}, "vs": {"majority": {"diff": 0.0, "ci95": [0.0, 0.0], "wins": 0, "losses": 0, "mcnemar_p": 1.0}, "first": {"diff": 0.315, "ci95": [0.245, 0.385], "wins": 66, "losses": 3, "mcnemar_p": 1.857035033560328e-16}, "tuned": {"diff": 0.0, "ci95": [0.0, 0.0], "wins": 0, "losses": 0, "mcnemar_p": 1.0}}}, "llada-base": {"n": 200, "acc": {"sol": 0.735, "oracle": 0.905, "majority": 0.735, "first": 0.485, "tuned": 0.735}, "vs": {"majority": {"diff": 0.0, "ci95": [0.0, 0.0], "wins": 0, "losses": 0, "mcnemar_p": 1.0}, "first": {"diff": 0.25, "ci95": [0.19, 0.315], "wins": 51, "losses": 1, "mcnemar_p": 2.353672812205332e-14}, "tuned": {"diff": 0.0, "ci95": [0.0, 0.0], "wins": 0, "losses": 0, "mcnemar_p": 1.0}}}}
+
+# exit code 0, finished 2026-11-21 02:58:24

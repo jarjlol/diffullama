@@ -4,9 +4,7 @@ Structure follows `ITERATION_1.md`. Everything marked **TODO** or **not run** is
 without the command that produced it. Paper results freeze: **Sun 22 Nov 2026, 18:00 IST**. Later extra-credit results go
 into the report (#15), not the paper.
 
-Status of this file at drafting time (Fri 20 Nov 2026, about 23:15 IST on the Blackwell clock): **no iteration-2 GPU run has
-finished.** Both lanes were killed at 22:56 (see "Operations note"). The only iteration-2 results so far are the fidelity
-checks in I-21.
+Updated by aryan/codex on21Nov at02:59IST: **all three100-question fidelity checks are complete**; Dream/LLaDA K16 generation is running, with queues behind both lanes. The02:39 early start was announced by Aaditya on the board and independently checked. Step-arm/cut/selfscore/Arbor results below remain pending until their receipts exist.
 
 ## What iteration 2 changed, and why
 
@@ -21,8 +19,8 @@ still pending when this was written [unverified].
 
 | Tier | Item | Prompt | Why | Status |
 |---|---|---|---|---|
-| 1 | Fidelity check: greedy, published settings, 100 test questions, Dream and LLaDA | A2 step 3 | Our first-sample accuracy is 36 points (Dream, 41.0 vs 77.2) and 22 points (LLaDA, 48.7 vs 70.3) below published; rule out a pipeline bug | **done for dream-sampler and llada-published; dream-published stopped at 55 of 100** (I-21) |
-| 1 | Step-budget arm: K = 16 and 32 on 500 test questions, Dream and LLaDA | A1 | Part (b) of problem P1 (rerank vs more steps) was unanswered | **not finished**: LLaDA K = 16 had 65 of 500 questions at 22:56; Dream K = 16 not started |
+| 1 | Fidelity check: greedy, published settings, 100 test questions, Dream and LLaDA | A2 step 3 | Our first-sample accuracy is 36 points (Dream, 41.0 vs 77.2) and 22 points (LLaDA, 48.7 vs 70.3) below published; rule out a pipeline bug | **done for all three configs**,100 unique questions each (I-21; operator receipt) |
+| 1 | Step-budget arm: K = 16 and 32 on 500 test questions, Dream and LLaDA | A1 | Part (b) of problem P1 (rerank vs more steps) was unanswered | **running** on both GPUs since early restart; retained the65 earlier LLaDA rows |
 | 1 | Re-score the iteration-1 64-step candidates on the text cut after `#### N` | `score_candidates.py --cut` | Junk after the answer line confounds the AR scores (I-22) | **not run** (queued) |
 | 1 | Share cached items with Neel; failure classes of majority vote (N4); SOTA table (N3) | A2 step 1, N4, N3 | The paper must place us against published methods | not in this file's scope |
 | 2 | DLM self-score (the model's own likelihood) as a selector | A2 step 2, `self_score.py` | Obvious competitor to an external AR scorer; gap `dlm.selfscore` in iteration 1 | **not run** (queued) |
@@ -62,15 +60,31 @@ id, so the 65 LLaDA rows are kept.
 Fill from the commands shown; do not interpret in the tables. All on GSM8K test, N = 10, temperature 0.7, 64 steps unless
 the budget says otherwise.
 
-### 1. Fidelity (done for two configs)
+### 1. Fidelity (all three configs complete)
 
 Command: `python3 fidelity_check.py --report` (in `codification/pipeline/`, Blackwell).
 
 | Config | n | Greedy (published settings) | Iter-1 first sample, same Qs | Iter-1 majority, same Qs | Published |
 |---|---|---|---|---|---|
 | Dream, our 4-shot prompt, 256 steps (`dream-sampler`) | 100 | 0.810 | 0.410 | 0.700 | 77.2 (8-shot) |
-| Dream, published 8-shot CoT prompt (`dream-published`) | 55 (stopped) | 0.782 | 0.400 | 0.655 | 77.2 (8-shot) |
+| Dream, published 8-shot CoT prompt (`dream-published`) | 100 | 0.800 | 0.410 | 0.700 | 77.2 (8-shot) |
 | LLaDA, our 4-shot prompt, 256 steps (`llada-published`) | 100 | 0.730 | 0.510 | 0.750 | 70.3 (4-shot) |
+
+Completed Dream published at02:51:52IST21Nov; the same lane immediately started K16.
+Source-digest/count receipt: `results/iter2/aryan/fidelity_complete.json`; exact report:
+`results/iter2/aryan/fidelity_report.txt`. Report command in the separate worker clone:
+`CODIFY_WORK_DIR=/home/antpc/codify/diffullama/codification/pipeline/work CUDA_VISIBLE_DEVICES="" python3 fidelity_check.py --report`.
+The older55-question I-21 entry above records the interrupted state; the100-question
+receipt supersedes its partial number. Matching aggregate accuracy does not prove the
+absence of extraction errors: the operator's20-candidate dev audit flags four cases
+(`a3_support/EXTRACTION_REVIEW.md`). Protected grading remains unchanged.
+
+Operator N4 support: six protocol-specified majority variants selected on dev; earliest
+index/ignoreNone wins (macro.7225), then frozen before the script loads gate. Gate
+Dream.710/LLaDA.735, identical to ordinary majority (zero discordances, exact McNemar
+p=1 for both). No new method gain. Outputs and original run-source hash:
+`results/iter2/aryan/support-N4/`; agent extraction review is separate, and full semantic
+failure taxonomy/leave-one-out analysis remains Neel's task. No final300 was evaluated.
 
 ### 2. Cut-text re-scoring of iteration 1 (does AR reranking still lose?): not run
 

@@ -42,7 +42,7 @@ Set `export HF_HOME=/path-to-huggingface/cache/` before running inference.
   (to run it on the workstation: `ideation/WORKSTATION_RUN.md`)
 - `codification/` — codification assignment: codify the selected idea (1.1) via Arbor
   (start at `codification/HANDOFF.md`; iteration-2 tasks per member: `codification/ITERATION_2_PROMPTS.md`,
-  begin with prompt T0; A3 readiness/export: `codification/A3_PREPARATION.md`; borrowed-ideas design: `codification/BORROWED_IDEAS.md`, second review with
+  begin with prompt T0; A3 readiness/export: `codification/A3_PREPARATION.md`; explicitly labelled operator fallback assets: `codification/a3_support/README.md`; borrowed-ideas design: `codification/BORROWED_IDEAS.md`, second review with
   Arbor-code findings: `codification/BORROWED_IDEAS_REVIEW.md`; runbook:
   `codification/README.md`; wiring test: `python3 codification/pipeline/selftest.py`)
 - `project-docs/timeline.html` — plain-language history of the whole project with sources

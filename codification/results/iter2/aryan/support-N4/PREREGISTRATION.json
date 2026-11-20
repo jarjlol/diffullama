@@ -1,0 +1,35 @@
+{
+  "variants_in_tiebreak_order": [
+    [
+      "earliest",
+      true
+    ],
+    [
+      "earliest",
+      false
+    ],
+    [
+      "shortest",
+      true
+    ],
+    [
+      "shortest",
+      false
+    ],
+    [
+      "calculations",
+      true
+    ],
+    [
+      "calculations",
+      false
+    ]
+  ],
+  "criterion": "dev macro accuracy; earliest registry row on ties",
+  "models": [
+    "dream-base",
+    "llada-base"
+  ],
+  "code_sha256": "0a6a10c896236c784b02bf08be40cc19f2517ac3f0fda0c76885ac19f0b91a09",
+  "note": "Saved before any dev labels are loaded. Gate does not select the bar."
+}

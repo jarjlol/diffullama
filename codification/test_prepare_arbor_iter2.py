@@ -91,6 +91,9 @@ class PreparationTests(unittest.TestCase):
         self.assertFalse((self.args.dest / "data/final").exists())
         self.assertNotIn("DO_NOT_INJECT_THIS", prep.read(self.args.dest / "INSTRUCTION.md"))
         self.assertIn("correctness: PASS", prep.read(self.args.dest / "seed_test.txt"))
+        self.assertEqual(original_run(["git", "log", "-1", "--format=%an <%ae>"], self.args.dest).strip(),
+                         "Aryan Bethmangalkar <aryanbethman@gmail.com>")
+        self.assertNotIn("__pycache__", original_run(["git", "ls-files"], self.args.dest))
 
     def test_missing_dependencies_fail_closed(self):
         self.seed.unlink()
@@ -125,6 +128,42 @@ class PreparationTests(unittest.TestCase):
         report, _ = prep.inspect(self.args)
         self.assertTrue(report["ready"], report["errors"])
         self.assertTrue(report["optional_research_report_omitted"])
+
+    def test_preserve_evaluator_uses_external_guard_without_patch_or_agreement(self):
+        self.args.preserve_evaluator = True
+        self.args.agreement = None
+        self.patch.unlink()
+        report, files = prep.inspect(self.args)
+        self.assertTrue(report["ready"], report["errors"])
+        self.assertNotIn("eval_patch", files)
+        self.assertNotIn("agreement", files)
+        self.assertIn("order_checker", files)
+        self.assertEqual(report["evaluation_mode"], "unchanged-with-external-review")
+        self.assertIn("official evaluator is unchanged", prep.instruction(files, False))
+        self.test_complete_export_preserves_source_and_excludes_other_files()
+        self.assertEqual(prep.digest(self.pack / "eval.py"), prep.digest(self.args.dest / "eval.py"))
+        self.assertTrue((self.args.dest / "seed_order_test.json").is_file())
+
+    def test_preserve_mode_does_not_accept_a_patch_agreement(self):
+        self.args.preserve_evaluator = True
+        self.assertFalse(prep.inspect(self.args)[0]["ready"])
+
+    def test_completed_empty_candidate_is_distinct_from_missing_or_nan_feature(self):
+        path = self.pack / "data/test/items.jsonl"
+        rows = prep.jsonl(path)
+        c = rows[0]["candidates"][0]
+        c.update(text=" \n ", answer=None)
+        c["features"].update({"dlm.selfscore": None, "dlm.self.n_tokens": 0})
+        def save():
+            path.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
+        save()
+        self.assertTrue(prep.inspect(self.args)[0]["ready"])
+        c["features"].pop("dlm.self.n_tokens")
+        save()
+        self.assertFalse(prep.inspect(self.args)[0]["ready"])
+        c["features"].update({"dlm.selfscore": float("nan"), "dlm.self.n_tokens": 0})
+        save()
+        self.assertFalse(prep.inspect(self.args)[0]["ready"])
 
 
 if __name__ == "__main__":

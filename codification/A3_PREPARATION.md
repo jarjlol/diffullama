@@ -6,9 +6,11 @@ requests there. This is preparation, not a completed Arbor run. Do not start a
 server or claim idle GPUs while prerequisites are missing.
 
 `prepare_arbor_iter2.py` checks inputs and exports a new private task repository. It does
-not change the original task pack, launch Arbor, or read the final split. Only the approved
-Dream/LLaDA models enter this export; this model scope and the evaluation patch need a
-recorded team agreement before export.
+not change the original task pack, launch Arbor, or read the final split. Only the
+user-assigned Dream/LLaDA models enter this export. Applying an evaluation patch
+requires a recorded agreement to its exact hash. `--preserve-evaluator` leaves the
+official evaluator unchanged and requires external operator order checks; it does
+not claim patch agreement or change Arbor's automatic score/merge behavior.
 
 Bootstrap completed on 21 Nov: `~/arbor-rerank-iter2`, ordinary majority seed, two models,
 200 dev and 200 gate questions each. CPU eval passed: Dream/LLaDA dev 0.700/0.745,
@@ -34,6 +36,17 @@ prove a review occurred or an agreement was authored by the named person. Read t
 member comment, review T1's patch and plugin, and inspect the frozen seed before export.
 Do not pass the full test500 task as `--task-dir`: test must already be the 200-question gate.
 Final300 stays outside this task. New step-budget candidates are excluded from this export.
+
+The agreement/patch rows apply only to patched-evaluator exports. When preserving
+the evaluator, supply `--preserve-evaluator` and omit `--agreement`; a gold-free external
+order check is copied into the task and run on the seed for dev/gate. The operator
+must repeat it on each proposed rule and review the code. This is a regression check,
+not a proof of purity. The native evaluation command remains `bash {cwd}/eval.sh dev`.
+
+Operator-authored fallback assets are explicitly selectable with
+`--assets-dir codification/a3_support/assets`. They are labelled support for the
+assigned owners, not their completed work. See `a3_support/README.md`. Peer-reviewed
+assets take priority before search. Missing features and split checks still fail closed.
 
 ## Check and prepare
 
@@ -110,10 +123,13 @@ verbatim. Never allow the unattended review timeout to approve a proposal. Stop 
 service after the consumer ends, through its owner. Do not kill another user's process.
 Tier 1 jobs keep priority. Paper results freeze: **22 Nov 2026 18:00 IST**.
 
-The inherited `resume_at.sh` processes are already armed for 21 Nov 03:00 IST, with
-one lane then one queue per GPU. Keep those processes, pending lines and CPU queue
-running across laptop shutdown; do not start duplicate consumers. CPU analyses and
-tests go through `~/codify/iter2/cpu_queue.sh` at nice 10. Live paths and queue formats:
+The lanes and queues started early on21Nov at02:39IST on Aaditya's instruction.
+The old resume processes were absent at02:49; startup singleton guards refuse duplicate
+consumers. Keep healthy lanes, pending lines and CPU queue running across laptop shutdown.
+CPU analyses/tests go through `~/codify/iter2/cpu_queue.sh` at nice10. The CPU
+`operator_a3_ready` job waits for eight complete cut/selfscore caches, exports a new
+private task and evaluates the seed. Failed attempt folders are preserved. It never
+starts vLLM or Arbor; the operator inspects it first. Live paths and queue formats:
 `results/iter2/README.md`. Never create artificial work merely to keep hardware busy.
 
 After the run, freeze the selector and use the held-out final split once; report paired
@@ -125,3 +141,8 @@ task. `paired_stats.py REPO SPLIT SOLUTION --reference /path/to/frozen_tuned_maj
 reports the tuned comparison separately from plain majority and first sample. The
 original invocation without `--reference` retains the original comparisons. Never
 substitute plain majority for the tuned bar when reporting the A3 gate or final result.
+
+A completed zero-token score may be null only for an actually empty candidate with
+no extracted answer and an explicit zero token count. Missing keys, other nulls and
+non-finite scores still fail readiness. The LLaDA gate contains one such blank
+candidate; do not regenerate or drop it to satisfy a feature-presence check.

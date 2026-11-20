@@ -1,0 +1,44 @@
+name: rerank_guard
+description: Operator fallback constraints for the fixed-candidate Dream and LLaDA task.
+schema_version: 1
+eval_contract:
+  metric_direction: maximize
+  eval_cmd: "bash {cwd}/eval.sh dev"
+protected_paths:
+  - task.py
+  - eval.py
+  - eval.sh
+  - baselines.py
+  - research_config.yaml
+  - INSTRUCTION.md
+  - A3_MANIFEST.json
+  - order_check.py
+  - "plugins/**"
+  - "data/**"
+meta_preamble_inject: &rules |
+  Absolute prohibitions, with no exceptions: R1 keep metric fixed; R2 edit only solution.py;
+  R3 return an existing candidate index; R4 no per-model trade-off; R5 dev for search, gate
+  for checks, never access final300; R6 fixed items and N; R7 pure deterministic one-item
+  selection, no cross-call state, other-model answers, gold, file or network access;
+  R8 report all added compute and compare at matched compute. Read INSTRUCTION.md.
+sub_preamble_inject: *rules
+meta_init_inject: |
+  List task-specific constraints R1–R8 before ideating. The seed is frozen dev-tuned majority.
+  Explain what new information is available and what remains unknown. Read curated memory.
+meta_ideate_inject: |
+  Audit every proposed child against R1–R8 and write CLEARED or REJECTED(rule) in its hypothesis.
+  Start one direction per measured failure class. Do not retry cross-model consensus or
+  unmodified iteration1 dead ends. After three PARAM proposals require a structural CODE/ALGO.
+meta_decide_inject: |
+  Request an ablation before any merge. Require at least3 net correct gate questions on EACH
+  of dream-base and llada-base versus the frozen tuned-majority bar, paired bootstrap intervals
+  and exact McNemar tests, and an external fresh-namespace order_check.py PASS. Report all
+  wins and losses. merge_threshold is only a hint. The operator must review these receipts.
+sub_workflow_inject: |
+  Report per-model correct/n, macro accuracy, selector CPU time and extra inference passes/question.
+  Freeze choices on dev before the gate. Do not read gold or final files. Preserve protected hashes.
+convergence:
+  min_experiments: 2
+  warn_after: 2
+  force_after: 3
+  parent_exhaustion_count: 2

@@ -1,70 +1,83 @@
-# Aryan operator checkpoint 21 November 2026
+# Aryan operator checkpoint,21 November2026
 
-User-confirmed role: `aryan/codex`, sole Blackwell GPU operator. No PRs or merges.
-All new job requests come as asks on #4. Maintain comment `7048350518` in place;
-`mesh status 4` cannot currently edit it because it is a note, not an active claim.
-Do not claim the entire tracker or create repeated acknowledgement comments.
+Sole team GPU operator: aryan/codex. Latest user instruction: start now, not03:00,
+and finish everything. No PRs or merges. Git identity is Aryan Bethmangalkar
+<aryanbethman@gmail.com>; Blackwell global identity belongs to a teammate, so the
+private preparation repository and every exported task use explicit LOCAL identity.
 
-## Live state checked
+## Live work
 
-At 01:02 IST both GPUs were at 100% load with about 6.7 GB free, occupied by the
-other lab workload. No new team GPU job was launched. Existing processes were kept:
+Aaditya announced an early start at02:39IST; independently checked. Do not duplicate:
+GPU0 lane2546948, queue2547133; GPU1 lane2547149, queue2547423; CPU queue2447076.
+At02:58 both K16 generations are progressing (Dream~9.4s/q, LLaDA~13.6s/q).
+These estimates are from progress logs; no complete step-arm result yet.
+Tier1 K16/K32/scoring, then queued cut scoring, reverse assist, selfscore, preservation
+and K256. Keep one job/card and Tier1 first. Use STOP_gpu0/1 between steps; never
+signal inherited/foreign jobs. Never touch ~/diffullama or modify the live source
+checkout ~/codify/diffullama while lanes run. Separate prep: ~/codify/iter2/aryan.
 
-- `2409442`: `resume_at.sh 0 dream-base dream 2026-11-21 03:00`.
-- `2409444`: `resume_at.sh 1 llada-base llada 2026-11-21 03:00`.
-- `2447076`: `cpu_queue.sh`.
+The old foreign job root2399970 already exited. Its obsolete03:00 privileged helper
+is a no-signal cancellation stub (original preserved). No process was signalled by
+this agent. The old resume PIDs2409442/2409444 were absent at02:49. Atomic startup
+wrappers now refuse duplicate lane/queue consumers, verified without restarting
+live consumers. Originals remain lane_body_pre_guard.sh/queue_body_pre_guard.sh.
+At03:00:04 the service exited successfully with signals_sent=0; all four lane/queue PIDs survived. Receipt: early_start_handoff_receipt.txt.
 
-PIDs are observations, not identities to act on later. Recheck actual command lines.
-`STOP_gpu0/1` remain from the agreed overnight pause. The resume scripts remove them
-at the scheduled time after their idle checks, then start each lane and its queue.
-Never restart healthy consumers, signal inherited/foreign processes, or modify the
-live `~/codify/diffullama` checkout while a lane runs. `~/diffullama` is off limits.
-Pending GPU queues contain Tier 1 cut scores, reverse assist, self-score, preservation
-extraction and 256-step candidates. Preserve Tier 1 priority and one job per GPU.
+Maintain the ONE operator status note7048350518 on#4 through gh API; mesh status
+cannot find an active claim. Do not claim the whole tracker or spam ack comments.
+The app heartbeat operate-blackwell-iteration-2 is active every15min; remote queues
+survive laptop shutdown, while app check-ins require the app. Latest team assets
+were absent after fetch; no new asks. Read current inbox/board/comments every wake.
 
-The app heartbeat **Operate Blackwell iteration 2** is active every 30 minutes in
-this thread (`operate-blackwell-iteration-2`). It must inspect logs, progress and
-asks, update the one operator status, and continue useful work until a member says
-stop. Remote resume/GPU/CPU queues do not depend on a laptop remaining connected.
-The heartbeat is local to the Codex app; its scheduling is separate from those
-remote processes. Keep a staffed active agent turn during Arbor review gates.
+## Completed CPU preparation and fidelity
 
-## A3 bootstrap completed
+All fidelity configs100 unique questions: Dream sampler81, Dream published80,
+LLaDA published73. Dream published finished02:51:52 and K16 began immediately.
+Exact report/count/digest receipts: fidelity_report.txt / fidelity_complete.json.
 
-`~/arbor-rerank-iter2` is a new clean Git task, exported with `make_arbor_repo.sh`
-copied from `iter2/aaditya`, outside the lane checkout. It contains Dream/LLaDA only,
-200 dev and 200 gate questions per model, ordinary majority seed, and unchanged
-protected evaluator. The source dev gold file covered more questions than the
-generated dev items; bootstrap filters it to the existing approved 200 item IDs
-rather than treating the gold-file length as the generated-subset length.
+Bootstrap ~/arbor-rerank-iter2: two models, dev200/gate200, ordinary majority,
+unchanged evaluator, no final files. Dev.700/.745; gate.710/.735. Do not overwrite.
+Operator fallback N4: six prescribed variants; dev selects earliest/ignoreNone,
+freeze SHA256651b5bd90bfc2db5e9327d11488cbd0a09898f6a0bf1033be7d7c9d43ec6d3f7;
+gate equals ordinary majority,0 discordances on each model. Original source,
+preregistration, aggregate results and paired receipt in support-N4/.
+20 dev-candidate agent extraction audit:16 clear marker matches, one trailing-junk
+mismatch, one ambiguous repetition, two malformed long numbers with float digit
+changes. No protected grader repair or accuracy gain claimed. Detailed review:
+a3_support/EXTRACTION_REVIEW.md. Do not inject answer-bearing audit into Arbor.
+Full N4 semantic taxonomy and leave-one-out remain Neel's work.
 
-CPU eval: dev Dream/LLaDA 0.700/0.745; gate 0.710/0.735; macro 0.7225 on both.
-`bootstrap_receipt.txt` records the outputs and protected-file hashes. No final-split
-path was opened, no final metric calculated, no GPU or LLM loaded by the bootstrap.
-Private task commits are `ea745c5` and `4899204`, with Aryan's verified identity.
+Fallback T1/T3/T4 assets are labelled operator support in a3_support/assets:
+R1–R8,17 audited ideas,83 evidence-linked findings, forbidden cache leverage changed
+to pitfall, strategies, native six-injection/convergence plugin. Native Arbor0.1.4
+loading passes on Blackwell. No surrogate LLM/UCB or new literature verification is
+claimed. Prefer reviewed Neel/Aalhad assets before search when available.
 
-This is **not ready for search**. Outstanding: complete cut AR/self-score features;
-T1 plugin/patch and T4 strategies from Aalhad; T3 curated memory and N4 frozen tuned
-majority/failure classes from Neel; actual team agreement before changing eval.py.
-The strict exporter refuses an existing destination: use a fresh ready-task folder
-or explicitly prepare the private bootstrap before launch. Do not weaken checks.
+## Queued CPU export and next actions
 
-`paired_stats.py --reference FROZEN_SEED.py` now reports a separate tuned comparison,
-in addition to plain majority/first. Its synthetic regression passes; the real N4
-reference has not landed, so no tuned-baseline result is claimed. Gate review needs
-at least 3 net questions on each non-floor model plus paired statistics. Final split
-is evaluated once after a rule is frozen, with the frozen N4 bar and an ablation.
+operator_a3_ready waits for eight caches (both models,dev200/test500,qwen7b-cut and
+dlmself), then prepare_job.py assembles a NEW dev200/gate200 task using CODIFY_TASK_DIR.
+It exports ~/arbor-rerank-iter2-ready-<input-hash>-<attempt>; source/seed/evaluator
+hashes, CPU eval and order receipts retained. It reuses only verified clean exports;
+partial attempts are preserved. operator_bar_paired already passed at02:58:24.
 
-## Validation and next actions
+Explicit --preserve-evaluator leaves eval.py unchanged and supplies external R7
+fresh forward/reverse/isolated/repeated checks; no patch agreement is fabricated.
+The patch path STILL requires actual team agreement to its exact hash. N3 research
+report is explicitly omitted by fallback; no novelty claim. The plugin's score
+remains bash {cwd}/eval.sh dev. Operator checks are required before each merge;
+merge_threshold is only a hint. Require>=3 net gate questions on EACH model vs the
+frozen tuned bar, paired tests and ablation. No final300 before freezing the rule.
 
-- Existing pipeline selftest and six A3 boundary tests passed before this checkpoint.
-- On Blackwell, `self_score.py --selftest` and `per_question_preservation.py selftest`
-  pass with `~/venvs/scorer/bin/python`, `CUDA_VISIBLE_DEVICES=""`, offline mode and
-  OMP threads 8. System Python lacks torch; use the scorer environment for these tests.
-- The paired-reference regression passed on Blackwell through the CPU queue at
-  01:20:20 IST (exit 0); receipt: `paired_reference_receipt.txt`.
-- Read `logs/resume_gpu*.log` and fresh `nvidia-smi` around the 03:00 window. Post the
-  actual start/stop timestamps from receipts in the existing status comment.
-- Fetch new team assets into the separate preparation workspace; never merge or edit
-  the live lane checkout. Do not start vLLM before the ready task and review consumer.
-- Paper freeze: 22 Nov 18:00 IST. Useful later results belong in the report.
+Validation: nine prep boundary tests locally/Blackwell; three R7 regressions
+locally/Blackwell; singleton test; real frozen bar R7 PASS on400 dev and400 gate
+items; pipeline selftest and paired-reference regression; CPU/mock end-to-end queued
+export/reuse PASS. Seed is valid but feature-complete A3 is still pending GPU caches.
+
+After prerequisites and Tier1: coordinate both cards via STOP files BETWEEN steps;
+start OWNED vLLM(data-parallel2,maxlen131072,qwen3_xml) together with Arbor and stay
+active answering every review /approve /skip /edit /answer. Stop owned vLLM when
+consumer ends, resume queues, never hold idle. Freeze final rule, evaluate final
+split ONCE with eval_final.sh + paired_stats --reference frozen bar and ablation.
+Send real receipts to Aaditya on#4. Paper freeze22Nov18:00IST; useful late results
+belong in#15. Continue useful work until completion or a member says stop.

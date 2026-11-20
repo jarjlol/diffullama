@@ -1,0 +1,3 @@
+Nov 21 03:00:04 antpc systemd[1]: Started aryan-approved-gpu-handoff.service - /usr/bin/python3 /home/antpc/codify/iter2/aryan/approved_gpu_handoff.py --execute.
+Nov 21 03:00:04 antpc python3[2555998]: {"time": "2026-11-21T03:00:04.433446+05:30", "event": "cancelled_late_handoff_ours_already_running", "signals_sent": 0}
+Nov 21 03:00:04 antpc systemd[1]: aryan-approved-gpu-handoff.service: Deactivated successfully.

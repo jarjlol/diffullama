@@ -1,0 +1,22 @@
+21 Nov2026, operator CPU checks and receipts (no GPU tests added to running lanes)
+Local: python3 codification/pipeline/selftest.py -> SELFTEST PASSED
+Local/Blackwell: python3 codification/test_prepare_arbor_iter2.py ->9 tests OK
+  includes protected-evaluator preservation, patch consent, split/features boundaries,
+  verified export identity, no bytecode tracked, blank zero-token versus missing/NaN.
+Local/Blackwell: python3 codification/a3_support/test_order_check.py ->3 tests OK
+  old merged4.1 passes; question-keyed cross-model cache fails; counter/input mutation fail.
+Local: python3 codification/a3_support/test_operator_start_guard.py ->1 test OK
+Local/Blackwell: python3 codification/a3_support/test_prepare_job.py ->1 CPU/mock test OK
+  complete synthetic200dev/500feature-cache -> dev200/gate200 export; unchanged eval.py;
+  no final data; second invocation reuses verified clean export.
+Local: python3 codification/test_paired_reference.py ->1 test OK
+Blackwell: order_check.py frozen_tuned_majority.py <bootstrap dev items> ->PASS,400 items
+Blackwell: order_check.py frozen_tuned_majority.py <bootstrap gate items> ->PASS,400 items
+Blackwell: native Arbor0.1.4 load_plugin strict ->PASS eval contract, protected paths,
+  six nonempty injections, convergence2/2/3/2.
+Blackwell CPU queue operator_n4_support ->exit0,02:46:21–02:46:22
+Blackwell CPU queue operator_bar_paired ->exit0,02:58:22–02:58:24
+Source matching: run_tune_majority.py SHA256 == PREREGISTRATION.json code_sha256.
+Memory generator ->83 records, all evidence paths/SHA256 and baseline numeric pointers checked.
+03:00:04 privileged stale timer ->success,signals_sent0. Exact journal separately retained.
+No Arbor run, new selector gain or final300 evaluation is claimed by these checks.

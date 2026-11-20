@@ -8,6 +8,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import re
 import shutil
 import subprocess
@@ -51,14 +52,19 @@ def failure_block(analysis):
 
 
 def inspect(a):
-    files = {f"memory/{name}": HERE / "memory" / name for name in MEMORY}
+    assets = getattr(a, "assets_dir", None) or HERE
+    preserve = getattr(a, "preserve_evaluator", False)
+    files = {f"memory/{name}": assets / "memory" / name for name in MEMORY}
     files.update({
-        "plugin": HERE / "rerank_task/plugins/rerank_guard.yaml",
-        "analysis": HERE / "ANALYSIS_ITER2.md",
-        "seed": a.seed, "agreement": a.agreement, "fidelity": a.fidelity,
-        "eval_patch": a.eval_patch,
+        "plugin": assets / "rerank_task/plugins/rerank_guard.yaml",
+        "analysis": assets / "ANALYSIS_ITER2.md",
+        "seed": a.seed, "fidelity": a.fidelity,
     })
-    research = HERE / "memory/RESEARCH_REPORT.md"
+    if preserve:
+        files["order_checker"] = Path(__file__).resolve().parent / "a3_support/order_check.py"
+    else:
+        files.update({"agreement": a.agreement, "eval_patch": a.eval_patch})
+    research = assets / "memory/RESEARCH_REPORT.md"
     if research.exists() or not a.allow_no_research_report:
         files["research_report"] = research
     for name in TASK_FILES:
@@ -69,6 +75,8 @@ def inspect(a):
     errors = [f"missing {key}: {path}" for key, path in files.items()
               if path is None or not path.is_file() or path.stat().st_size == 0]
     report = {"ready": False, "errors": errors,
+              "evaluation_mode": "unchanged-with-external-review" if preserve else "approved-patch",
+              "assets_dir": str(assets),
               "optional_research_report_omitted": "research_report" not in files,
               "task_dir": str(a.task_dir), "models": sorted(MODELS), "files": {}}
     if errors:
@@ -81,13 +89,16 @@ def inspect(a):
             record = receipt["configs"][config]
             if record["n"] < 100 or record.get("unique_uids") != record["n"]:
                 raise ValueError(f"incomplete or duplicate fidelity receipt: {config}")
-        # The agreement is a preserved member-authored issue comment, not a boolean switch.
-        agreement = json.loads(read(a.agreement))
-        for field in ("author", "url", "body"):
-            if not agreement.get(field):
-                raise ValueError(f"agreement receipt missing {field}")
-        if agreement.get("models") != sorted(MODELS) or agreement.get("eval_patch_sha256") != digest(a.eval_patch):
-            raise ValueError("agreement receipt must name both models and the exact eval patch SHA-256")
+        if not preserve:
+            # A patch still requires preserved member consent to that exact hash.
+            agreement = json.loads(read(a.agreement))
+            for field in ("author", "url", "body"):
+                if not agreement.get(field):
+                    raise ValueError(f"agreement receipt missing {field}")
+            if agreement.get("models") != sorted(MODELS) or agreement.get("eval_patch_sha256") != digest(a.eval_patch):
+                raise ValueError("agreement receipt must name both models and the exact eval patch SHA-256")
+        elif a.agreement is not None:
+            raise ValueError("do not supply patch agreement in preserve-evaluator mode")
         seen = {}
         for split in ("dev", "test"):
             items = jsonl(files[f"{split}/items"])
@@ -107,8 +118,19 @@ def inspect(a):
                         raise ValueError(f"bad item schema or leaked gold: {split}/{model}/{row['uid']}")
                     for candidate in row["candidates"]:
                         features = candidate.get("features", {})
-                        if features.get("dlm.selfscore") is None or features.get("ar.qwen7b-cut.nll_sum") is None:
-                            raise ValueError(f"missing self-score/cut AR feature: {split}/{model}/{row['uid']}")
+                        empty = not re.split(r"\n\s*(?:Question|Q)\s*:", candidate.get("text", ""),
+                                             maxsplit=1, flags=re.I)[0].strip() and candidate.get("answer") is None
+                        for key, tokens in (("dlm.selfscore", "dlm.self.n_tokens"),
+                                            ("ar.qwen7b-cut.nll_sum", "ar.qwen7b-cut.n_tokens")):
+                            if key not in features:
+                                raise ValueError(f"missing self-score/cut AR feature: {split}/{model}/{row['uid']}")
+                            value = features[key]
+                            # The real LLaDA gate contains one blank candidate. Its
+                            # completed zero-token native score is legitimately null.
+                            if value is None and empty and features.get(tokens) == 0:
+                                continue
+                            if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+                                raise ValueError(f"invalid or incomplete feature {key}: {split}/{model}/{row['uid']}")
             seen[split] = {r["uid"] for r in items if r["model"] in MODELS}
         if seen["dev"] & seen["test"]:
             raise ValueError("dev/gate uids overlap")
@@ -135,6 +157,11 @@ Never inspect the final split during search. Record every review reply verbatim 
 An improvement claim additionally requires the once-only final comparison, paired statistics, an ablation
 and frozen transfer to an agreed second dataset. Otherwise record an Implement Finding only.
 """]
+    if "order_checker" in files:
+        blocks.append("The official evaluator is unchanged. Before every merge the operator must run "
+                      "order_check.py on the proposed selector with dev and gate items, from fresh "
+                      "namespaces, plus static review. This external check is not part of Arbor's score "
+                      "or automatic merge gate. No evaluator-patch agreement is asserted.\n")
     for name, key in (("Red lines", "memory/RED_LINES.md"),
                       ("Earlier findings", "memory/FINDINGS.md"),
                       ("Curated experience", "memory/EXPERIENCE_CURATED.md"),
@@ -173,12 +200,26 @@ def export(a, report, files):
     if re.search(r"^plugin\s*:", config, re.M):
         raise ValueError("source config already selects a plugin: resolve it before export")
     (dest / "research_config.yaml").write_text(config + "\nplugin: rerank_guard\n", encoding="utf-8")
+    (dest / ".gitignore").write_text("__pycache__/\n*.py[cod]\n", encoding="utf-8")
     run(["git", "init", "-q"], dest)
-    changes = run(["git", "apply", "--numstat", str(a.eval_patch.resolve())], dest)
-    if [line.split("\t")[-1] for line in changes.splitlines()] != ["eval.py"]:
-        raise ValueError("approved order-check patch must change eval.py only")
-    run(["git", "apply", "--check", str(a.eval_patch.resolve())], dest)
-    run(["git", "apply", str(a.eval_patch.resolve())], dest)
+    # Blackwell is shared: its global Git identity belongs to another teammate.
+    for key, value in identity.items():
+        run(["git", "config", "--local", f"user.{key}", value], dest)
+    if "order_checker" in files:
+        run([sys.executable, "-c", "from pathlib import Path; import eval as e; "
+             "e.static_check(Path('solution.py'))"], dest)
+        shutil.copy2(files["order_checker"], dest / "order_check.py")
+        for split in ("dev", "test"):
+            output = run([sys.executable, "order_check.py", "solution.py", f"data/{split}/items.jsonl"], dest)
+            (dest / f"seed_order_{split}.json").write_text(output, encoding="utf-8")
+        if digest(dest / "eval.py") != digest(files["task/eval.py"]):
+            raise ValueError("preserve-evaluator mode changed eval.py")
+    else:
+        changes = run(["git", "apply", "--numstat", str(a.eval_patch.resolve())], dest)
+        if [line.split("\t")[-1] for line in changes.splitlines()] != ["eval.py"]:
+            raise ValueError("approved order-check patch must change eval.py only")
+        run(["git", "apply", "--check", str(a.eval_patch.resolve())], dest)
+        run(["git", "apply", str(a.eval_patch.resolve())], dest)
     (dest / "INSTRUCTION.md").write_text(instruction(files, report["optional_research_report_omitted"]), encoding="utf-8")
     (dest / "README.md").write_text("# Arbor iteration 2\n\nRead INSTRUCTION.md. Only solution.py is editable.\n"
                                    "data/test is the 200-question gate. No final-split files are in this task.\n", encoding="utf-8")
@@ -199,6 +240,9 @@ def export(a, report, files):
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--task-dir", type=Path, default=HERE / "rerank_task")
+    ap.add_argument("--assets-dir", type=Path, help="explicit reviewed asset root; defaults to codification/")
+    ap.add_argument("--preserve-evaluator", action="store_true",
+                    help="leave eval.py unchanged; require external operator order checks, no patch consent asserted")
     ap.add_argument("--seed", type=Path)
     ap.add_argument("--agreement", type=Path)
     ap.add_argument("--fidelity", type=Path)
