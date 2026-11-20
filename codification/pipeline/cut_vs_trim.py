@@ -59,10 +59,18 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--model", required=True)
     ap.add_argument("--split", choices=["dev", "test"], default="test")
+    ap.add_argument("--subset", choices=["all", "gate"], default="all",
+                    help="gate = the first 200 test questions in work/data/test.jsonl order (Arbor's gate split); "
+                         "the final 300 are never read here")
     ap.add_argument("--json")
     a = ap.parse_args()
     gold = {q["uid"]: q["answer"] for q in read_jsonl(WORK / "data" / f"{a.split}.jsonl")}
     rows = load(a.model, a.split)
+    if a.subset == "gate":
+        assert a.split == "test"
+        order = [q["uid"] for q in read_jsonl(WORK / "data" / "test.jsonl")]
+        keep = set(order[:200])
+        rows = {u: r for u, r in rows.items() if u in keep}
     names = scorer_names(rows)
     pairs = [s for s in names if not s.endswith("-cut") and f"{s}-cut" in names]
     # only questions where every compared selector produced a pick, so all columns share the same n
@@ -71,6 +79,9 @@ def main() -> int:
     for s in names:
         sel[f"{s}:sum"] = lambda c, s=s: baselines._argbest(c, f"ar.{s}.nll_sum")
         sel[f"{s}:mean"] = lambda c, s=s: baselines._mean_nll(c, s)
+    for key in ("dlm.selfscore", "dlm.selftrim"):          # the diffusion model's own likelihood (self_score.py), higher = better
+        if any(key in c["features"] for r in rows.values() for c in r["candidates"]):
+            sel[key] = lambda c, key=key: baselines._argbest(c, key, lower=False)
     cor = {}
     for n, f in sel.items():
         v = []
@@ -80,7 +91,11 @@ def main() -> int:
         cor[n] = v
     oracle = [any(task.is_correct(c.get("answer"), gold[u]) for c in rows[u]["candidates"]) for u in uids]
     N = len(uids)
-    print(f"{a.model} {a.split}: {N} questions, 64-step candidates (iteration 1), N = 10")
+    print(f"{a.model} {a.split} ({a.subset}): {N} questions, 64-step candidates (iteration 1), N = 10")
+    for key in ("dlm.selfscore", "dlm.selftrim"):
+        if key in sel:
+            have = sum(all(c["features"].get(key) is not None for c in rows[u]["candidates"]) for u in uids)
+            print(f"  coverage {key}: {have}/{N} questions" + ("   <-- INCOMPLETE" if have < N else ""))
     print(f"  first {sum(cor['first']) / N:.3f}  majority {sum(cor['majority']) / N:.3f}  oracle {sum(oracle) / N:.3f}")
     print(f"  scorers with a cut version: {pairs or 'none yet'};  all scorers: {names}")
     for s in names:
