@@ -88,6 +88,15 @@ trap 'finish abort "controller interrupted"' INT TERM
 
 [ "$ATT" -gt 3 ] && finish abort "more than 3 attempts"
 
+# paper results freeze: Sun 22 Nov 2026 18:00 IST. A window that STARTS after 14:00 IST that day cannot finish in time (vLLM load,
+# Arbor, evaluation take 2-4 h), so its outputs are labelled post-freeze, report only. The window still runs.
+NOW=${A3_NOW_EPOCH:-$(date +%s)}
+POST=""
+if [ "$NOW" -ge "$(date -d '2026-11-22 14:00 IST' +%s)" ]; then
+  POST="_POST_FREEZE_REPORT_ONLY"
+  echo "window started $(date -d @$NOW '+%F %T') IST, after Sun 22 Nov 14:00 IST: results are POST-FREEZE, REPORT ONLY (not for the paper)" | tee "$D/POST_FREEZE_REPORT_ONLY.txt" | tee -a "$LOG"
+fi
+
 # 1. prerequisites: the Arbor task export (CPU; reuses a verified export, refuses incomplete features)
 if [ "$DRY" = 1 ] && [ -n "${A3_READY:-}" ]; then READY=$A3_READY; log "dry run: using READY=$READY"
 else
@@ -161,10 +170,10 @@ elif [ -e "$D/final_eval.done" ] && [ "$DRY" != 1 ]; then
   log "final evaluation already done earlier, not repeated"
 else
   WHICH=final; [ "$DRY" = 1 ] && WHICH=gate
-  OUTD="$HOME/codify/worker/codification/results/iter2/cpu/a3_${WHICH}_eval"
+  OUTD="$HOME/codify/worker/codification/results/iter2/cpu/a3_${WHICH}_eval${POST}"
   [ "$DRY" = 1 ] && OUTD="$D/dry_eval"
   log "evaluating merged solution.py on the $WHICH split -> $OUTD"
-  bash "$HOME/codify/iter2/a3/a3_final_eval.sh" "$READY" "$WHICH" "$OUTD" > "$OUTD.txt" 2>&1
+  { [ -n "$POST" ] && echo "### POST-FREEZE, REPORT ONLY: this window started after Sun 22 Nov 2026 14:00 IST; do not put these numbers in the paper";     bash "$HOME/codify/iter2/a3/a3_final_eval.sh" "$READY" "$WHICH" "$OUTD"; } > "$OUTD.txt" 2>&1
   log "evaluation exit code $? (output $OUTD.txt)"
   [ "$DRY" != 1 ] && date > "$D/final_eval.done"
 fi
