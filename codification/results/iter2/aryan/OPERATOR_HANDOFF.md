@@ -81,3 +81,21 @@ consumer ends, resume queues, never hold idle. Freeze final rule, evaluate final
 split ONCE with eval_final.sh + paired_stats --reference frozen bar and ablation.
 Send real receipts to Aaditya on#4. Paper freeze22Nov18:00IST; useful late results
 belong in#15. Continue useful work until completion or a member says stop.
+
+## New worker A3 helper reviewed at 03:07 IST
+
+Fetched `iter2/aaditya-worker` commit `1580b6e`. It adds `a3_window.sh`,
+`a3_final_items.py`, and `a3_final_eval.sh`, deployed under `~/codify/iter2/a3/`.
+Neither GPU queue contains an A3 line; no Arbor/vLLM consumer is running.
+**Do not queue the controller as written.** It explicitly forces `interaction_mode:
+auto`, contrary to Aryan's assigned staffed review gates. It also selects the newest
+ready directory by mtime, and marks final evaluation done/window complete even when
+that evaluation fails. Its final wrapper omits the frozen tuned-majority reference
+and the required ablation. The final item builder unions features across models,
+which can incorrectly require Dream-only scorer keys on LLaDA. These are source
+review findings; no final split was opened or evaluation run to test them.
+
+Keep the existing safe CPU export, Tier 1 lanes and queues. Use a staffed, explicitly
+selected/verified ready task for Arbor; review the final builder/wrapper before any
+once-only frozen final evaluation. The helper's statement that a senior chose auto
+mode is not authorization to override the user's instructions in this thread.
