@@ -36,6 +36,25 @@ Branches: each person works on `iter2/<name>`, commits small, and pushes. Merge 
 `assignment/codification` after one other person has read the diff. GPU users must follow the
 Blackwell rules in `codification/HANDOFF.md` §3.
 
+## MAXIMISE the hardware (added 2026-11-21, applies to every member and every agent)
+
+**Keep Blackwell's two GPUs AND its CPU (128 cores, 251 GB RAM) busy at all times until a member says stop.**
+We aim above the mark to hit the mark: plan the full iteration 2, run it in priority order, and never let
+hardware sit idle while useful work remains.
+- **GPU operator: aryan's agent** (handover posted on #4, 21 Nov). Only it starts, stops, queues or
+  reorders GPU jobs. Everyone else sends GPU job requests to it as an `ask` on #4. It keeps a job queued
+  behind every running job (~/codify/iter2/queue_gpu{0,1}.txt, run by queue.sh), so a GPU never waits for
+  a person. One job per GPU (both cards are power-capped; a second job adds no throughput).
+- **CPU:** analyses, reports and CPU-only tests run on Blackwell, not laptops, through
+  ~/codify/iter2/cpu_queue.sh (jobs wait for their input files, then run at nice 10). Add CPU jobs there
+  instead of waiting for a person to run them.
+- **Unattended:** everything is set up to continue with every laptop switched off. From Sat 21 Nov 03:00
+  IST, resume_at.sh restarts the GPU lanes and queues as soon as a card is idle (load <= 10% and >= 50 GB
+  free); other users' idle background processes may stay on the card.
+- **Never** kill or signal another user's process, never touch ~/diffullama, no idle GPU holds, Tier 1
+  before Tier 2. Scripts and how to continue them: codification/results/iter2/ (ops/ and README.md) on
+  iter2/aaditya and iter2/aaditya-worker.
+
 ## Priority tiers (added 2026-11-20 for decision #7; final once a human answers #7)
 
 **Principle: aim above the mark to hit the mark.** We plan for the full iteration 2 (option B in #7),
