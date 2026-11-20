@@ -23,8 +23,8 @@ WHAT IS TESTED (analyze).
              before the cosine: raw cosines of mean-pooled LLM states are near 1 for every question (shared
              large-norm directions), so only the question-specific part says anything. Raw (uncentered) cosine and
              the `all` pooling are reported as sensitivity checks. Per-layer results are reported too.
-  outcomes   O1  first sample wrong AND the Qwen2.5-7B AR pick right (AR pick = lowest summed NLL, the
-                 `ar.qwen7b.sum` selector of baselines.py; the per-token variant is O1m)
+  outcomes   O1  first sample wrong AND the Qwen2.5-7B AR pick right (AR pick = lowest summed NLL of --scorer, default qwen7b-cut, the
+                 `ar.<scorer>.sum` selector of baselines.py; the per-token variant is O1m)
              O2  majority vote right
              O3  AR pick right among the questions whose first sample is wrong (conditional version of O1)
              control: oracle (any of the 10 candidates right) = how easy the question is
@@ -192,18 +192,18 @@ def test_outcome(s, y, length, n_perm, seed):
 
 # ------------------------------------------------------------------ outcomes from the cached candidates
 
-def outcomes(split, uids):
+def outcomes(split, uids, scorer):
     import numpy as np
     sys.path.insert(0, str(TASK))
     from baselines import _argbest, _majority, _mean_nll
     gold = {r["uid"]: r["answer"] for r in read_jsonl(WORK / "data" / f"{split}.jsonl")}
     cands = {r["uid"]: r for r in read_jsonl(WORK / "candidates" / "dream-base" / f"{split}.jsonl")}
-    feats = {r["uid"]: r["features"] for r in read_jsonl(WORK / "features" / "dream-base" / f"{split}.qwen7b.jsonl")}
+    feats = {r["uid"]: r["features"] for r in read_jsonl(WORK / "features" / "dream-base" / f"{split}.{scorer}.jsonl")}
     rows = []
     for u in uids:
         cs = [{"answer": cd["answer"], "features": feats[u][j]} for j, cd in enumerate(cands[u]["candidates"])]
         ok = [task.is_correct(cd["answer"], gold[u]) for cd in cs]
-        pick_sum = _argbest(cs, "ar.qwen7b.nll_sum"); pick_mean = _mean_nll(cs, "qwen7b")
+        pick_sum = _argbest(cs, f"ar.{scorer}.nll_sum"); pick_mean = _mean_nll(cs, scorer)
         rows.append({"first": ok[0], "maj": ok[_majority(cs)], "oracle": any(ok), "share": sum(ok) / len(ok),
                      "pick": None if pick_sum is None else ok[pick_sum], "pickm": None if pick_mean is None else ok[pick_mean]})
     f = lambda k: np.array([bool(r[k]) for r in rows])
@@ -225,12 +225,13 @@ def analyze(a) -> int:
     N, L, _ = A["all"].shape
     same_ids = sum(i == j for i, j in zip(dre["ids"], qwe["ids"]))
     length = np.array(dre["n_tokens"], dtype=float)
-    y = outcomes(a.split, uids)
+    y = outcomes(a.split, uids, a.scorer)
     pred = {"centered/nosink (PRIMARY)": centered_cosine(A["nosink"], B["nosink"]),
             "centered/all": centered_cosine(A["all"], B["all"]),
             "raw/nosink": raw_cosine(A["nosink"], B["nosink"]),
             "raw/all": raw_cosine(A["all"], B["all"])}
     lines = [f"per-question preservation, Dream-v0-Base-7B vs Qwen2.5-7B, split {a.split}, n = {N} questions, {L} blocks",
+             f"AR pick = lowest summed NLL of scorer '{a.scorer}' ('qwen7b-cut' = text cut after the '#### N' line, 'qwen7b' = iteration-1 trimmed text) on the cached 64-step Dream candidates",
              f"tokenisations identical for {same_ids}/{N} questions (Dream and Qwen tokenizers); permutations {a.perms}, seed {a.seed}",
              "predictor: layer-mean cosine of the pooled hidden states of the question text; primary = centered, no-sink pooling",
              "tests: AUC + two-sided permutation p; logistic y ~ z(s) + z(log prompt tokens), odds ratio per SD, Wald 95% CI",
@@ -323,6 +324,7 @@ def main() -> int:
     e.add_argument("--out")
     an = sub.add_parser("analyze")
     an.add_argument("--split", choices=["dev", "test"], default="test")
+    an.add_argument("--scorer", default="qwen7b-cut", help="AR scorer feature file for the 'AR pick' outcome (default: the cut-text re-scoring)")
     an.add_argument("--perms", type=int, default=10000)
     an.add_argument("--seed", type=int, default=0)
     an.add_argument("--dir", help="where extract wrote its files (default work/preservation_pq)")
