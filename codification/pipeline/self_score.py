@@ -249,7 +249,7 @@ def main() -> int:
             ans_ids = sc.encode(" " + task.trim(cd["text"]))[:ANSWER_CAP]
             if not ans_ids:
                 feats.append({"dlm.selfscore": None, "dlm.self.nll_sum": None, "dlm.self.n_tokens": 0}); continue
-            assert len(prompt_ids) + len(ans_ids) <= 2048, f"{r['uid']}: prompt+answer too long for Dream/LLaDA windows"
+            assert a.model == "mock" or len(prompt_ids) + len(ans_ids) <= 2048, f"{r['uid']}: prompt+answer too long for Dream/LLaDA windows"
             gen = torch.Generator().manual_seed(seed_for(a.seed, r["uid"], j))
             elbo = mc_elbo(sc.logits_fn, prompt_ids, ans_ids, sc.mask_id, a.k, gen, device)
             feats.append({"dlm.selfscore": elbo / len(ans_ids), "dlm.self.nll_sum": -elbo, "dlm.self.n_tokens": len(ans_ids)})
