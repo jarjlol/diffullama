@@ -10,7 +10,8 @@ Writes work/features/<model>/<split>.dlmself.jsonl in the format score_candidate
 question, one feature dict per candidate, resumed by uid), so assemble.py merges it and the protected
 rerank_task/baselines.py picks up `dlm.selfscore` unchanged (it selects the HIGHEST value).
 
-Per candidate j of a question, three features:
+Per candidate j of a question, three features (with --text cut the keys are dlm.selfcut / dlm.selfcut.nll_sum /
+dlm.selfcut.n_tokens and the file is <split>.dlmselfcut.jsonl; baselines.py does not read them, see answer_text):
     dlm.selfscore      mean log-likelihood per answer token (ELBO / n_tokens); HIGHER = better. Used by baselines.py
     dlm.self.nll_sum   -ELBO, the summed negative log-likelihood bound
     dlm.self.n_tokens  number of answer tokens scored
@@ -33,7 +34,7 @@ with a leading space, tokenised separately. The answer is capped at ANSWER_CAP t
 
 PER-MODEL DETAILS (each checked in the model code, 2026-11-20):
   llada  mask id 126336; logits at position i predict token i (no shift); official code uses cfg 0.
-  dream  mask id = model.generation_config.mask_token_id; Dream's own sampler shifts the logits right by
+  dream  mask id 151666 (<|mask|>; tokenizer.mask_token_id == model.config.mask_token_id); Dream's own sampler shifts the logits right by
          one position before reading them (generation_utils.py line 412:
          `logits = torch.cat([logits[:,:1], logits[:, :-1]], dim=1)`), so token i is read from raw
          logits[i-1]. `shift_right` below does the same; the estimator reads aligned logits.
@@ -49,6 +50,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import math
+import re
 import time
 from pathlib import Path
 
@@ -99,6 +101,19 @@ def mc_elbo(logits_fn, prompt_ids, answer_ids, mask_id, k, gen, device="cpu"):
     return -float(loss)
 
 
+def answer_text(raw, mode):
+    """The text that is scored. 'trim' = task.trim(text), exactly what the AR scorers score and what is graded.
+    'cut' = trim, then cut after the first '#### <number>' (the graded final answer). Dream often keeps
+    writing junk after that line (repeated words, unrelated sentences), up to the 256-token window, which
+    would dominate a mean log-likelihood over ~250 tokens; 'cut' leaves the reasoning and the answer."""
+    s = task.trim(raw)
+    if mode == "cut":
+        m = re.search(rf"####\s*{task._NUM}", s)
+        if m:
+            s = s[:m.end()]
+    return s
+
+
 # ------------------------------------------------------------------ backends
 
 class Mock:
@@ -147,8 +162,10 @@ class DreamScorer:
         self.torch, self.device = torch, device
         self.tok = AutoTokenizer.from_pretrained(spec["hf"], trust_remote_code=True)
         self.model = AutoModel.from_pretrained(spec["hf"], torch_dtype=dtype, trust_remote_code=True).to(device).eval()
-        self.mask_id = self.model.generation_config.mask_token_id
-        assert self.mask_id is not None, "Dream generation_config has no mask_token_id"
+        # generation_config.mask_token_id is None in the checkpoint; the model config (configuration_dream.py)
+        # and the tokenizer both say <|mask|> = 151666, which is what the sampler masks with.
+        self.mask_id = self.tok.mask_token_id
+        assert self.mask_id == self.model.config.mask_token_id == 151666, (self.mask_id, self.model.config.mask_token_id)
 
     def encode(self, text):
         return self.tok(text, add_special_tokens=False).input_ids
@@ -213,6 +230,9 @@ def main() -> int:
     ap.add_argument("--max-cands", type=int, default=0, help="first M candidates of each question only (CPU tests)")
     ap.add_argument("--device", default="cuda")
     ap.add_argument("--dtype", default="bfloat16", choices=["bfloat16", "float32"])
+    ap.add_argument("--text", choices=["trim", "cut"], default="trim",
+                    help="trim: the AR scorers' text (default, feature dlm.selfscore); cut: stop after '#### N' "
+                         "(feature dlm.selfcut, file <split>.dlmselfcut.jsonl)")
     ap.add_argument("--candidates-from", help="read candidates of this model instead (mock wiring test)")
     ap.add_argument("--out", help="output file (default work/features/<model>/<split>.dlmself.jsonl)")
     ap.add_argument("--selftest", action="store_true")
@@ -224,7 +244,7 @@ def main() -> int:
     c = cfg()
     src_model = a.candidates_from or a.model
     src = WORK / "candidates" / src_model / f"{a.split}.jsonl"
-    out = Path(a.out) if a.out else WORK / "features" / a.model / f"{a.split}.dlmself.jsonl"
+    out = Path(a.out) if a.out else WORK / "features" / a.model / f"{a.split}.dlmself{'cut' if a.text == 'cut' else ''}.jsonl"
     done = {r["uid"] for r in read_jsonl(out)} if out.exists() else set()
     rows = read_jsonl(src)
     rows = rows[:a.limit] if a.limit else rows
@@ -232,6 +252,7 @@ def main() -> int:
     print(f"{a.model}/{a.split} x dlm.selfscore: {len(done)} done, {len(todo)} to go (k={a.k}, seed={a.seed}, cap={ANSWER_CAP})", flush=True)
     if not todo:
         return 0
+    KEY, PRE = ("dlm.selfscore", "dlm.self") if a.text == "trim" else ("dlm.selfcut", "dlm.selfcut")
     dtype = getattr(torch, a.dtype)
     if a.model == "mock":
         sc, device = Mock(), "cpu"
@@ -246,15 +267,15 @@ def main() -> int:
         feats = []
         cands = r["candidates"][:a.max_cands] if a.max_cands else r["candidates"]
         for j, cd in enumerate(cands):
-            ans_ids = sc.encode(" " + task.trim(cd["text"]))[:ANSWER_CAP]
+            ans_ids = sc.encode(" " + answer_text(cd["text"], a.text))[:ANSWER_CAP]
             if not ans_ids:
-                feats.append({"dlm.selfscore": None, "dlm.self.nll_sum": None, "dlm.self.n_tokens": 0}); continue
+                feats.append({KEY: None, f"{PRE}.nll_sum": None, f"{PRE}.n_tokens": 0}); continue
             assert a.model == "mock" or len(prompt_ids) + len(ans_ids) <= 2048, f"{r['uid']}: prompt+answer too long for Dream/LLaDA windows"
             gen = torch.Generator().manual_seed(seed_for(a.seed, r["uid"], j))
             elbo = mc_elbo(sc.logits_fn, prompt_ids, ans_ids, sc.mask_id, a.k, gen, device)
-            feats.append({"dlm.selfscore": elbo / len(ans_ids), "dlm.self.nll_sum": -elbo, "dlm.self.n_tokens": len(ans_ids)})
+            feats.append({KEY: elbo / len(ans_ids), f"{PRE}.nll_sum": -elbo, f"{PRE}.n_tokens": len(ans_ids)})
         if n == 1:
-            vals = [f["dlm.selfscore"] for f in feats]
+            vals = [f[KEY] for f in feats]
             print(f"  first item {r['uid']}: dlm.selfscore per candidate = {[None if v is None else round(v, 4) for v in vals]}", flush=True)
             real = [v for v in vals if v is not None]
             assert len(real) < 2 or len(set(round(v, 6) for v in real)) > 1, "all candidate scores equal: mask or shift is broken"
