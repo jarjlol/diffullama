@@ -92,7 +92,7 @@ trap 'finish abort "controller interrupted"' INT TERM
 # Arbor, evaluation take 2-4 h), so its outputs are labelled post-freeze, report only. The window still runs.
 NOW=${A3_NOW_EPOCH:-$(date +%s)}
 POST=""
-if [ "$NOW" -ge "$(date -d '2026-11-22 14:00 IST' +%s)" ]; then
+if [ "$NOW" -ge "$(TZ=Asia/Kolkata date -d '2026-11-22 14:00' +%s)" ]; then
   POST="_POST_FREEZE_REPORT_ONLY"
   echo "window started $(date -d @$NOW '+%F %T') IST, after Sun 22 Nov 14:00 IST: results are POST-FREEZE, REPORT ONLY (not for the paper)" | tee "$D/POST_FREEZE_REPORT_ONLY.txt" | tee -a "$LOG"
 fi
