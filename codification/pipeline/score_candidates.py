@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import re
 import time
 
 from common import WORK, append_jsonl, cfg, read_jsonl, task
@@ -92,27 +93,48 @@ class HFScorer:
         return out
 
 
+_ANSWER_LINE = re.compile(r"####[^\n]*")
+
+
+def cut_after_answer(text: str) -> str:
+    """Iteration 2: the candidate up to the end of its '#### N' line.
+
+    Most 64-step candidates keep writing after the answer line (repeated words, unrelated text):
+    753 of 1000 Dream and 581 of 1000 LLaDA candidates on the first 100 test questions carry more
+    than 20 characters after '#### N' (median about 450). task.trim keeps that tail, so the
+    iteration-1 AR scores mostly scored junk. Candidates without '####' are left as task.trim gives them.
+    """
+    body = task.trim(text)
+    m = _ANSWER_LINE.search(body)
+    return body[:m.end()] if m else body
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--model", required=True)
     ap.add_argument("--split", choices=["dev", "test"], required=True)
     ap.add_argument("--scorer", required=True, help="a key of config.json 'scorers', or 'mock'")
+    ap.add_argument("--cut", action="store_true",
+                    help="score the text only up to the '#### N' line; features are named ar.<scorer>-cut.*, "
+                         "so baselines.py reports them as a separate scorer")
     a = ap.parse_args()
     c = cfg()
+    name = f"{a.scorer}-cut" if a.cut else a.scorer
     src = WORK / "candidates" / a.model / f"{a.split}.jsonl"
-    out = WORK / "features" / a.model / f"{a.split}.{a.scorer}.jsonl"
+    out = WORK / "features" / a.model / f"{a.split}.{name}.jsonl"
     done = {r["uid"] for r in read_jsonl(out)} if out.exists() else set()
     todo = [r for r in read_jsonl(src) if r["uid"] not in done]
-    print(f"{a.model}/{a.split} x {a.scorer}: {len(done)} done, {len(todo)} to go")
+    print(f"{a.model}/{a.split} x {name}: {len(done)} done, {len(todo)} to go")
     if not todo:
         return 0
     sc = MockScorer() if a.scorer == "mock" else HFScorer(c["scorers"][a.scorer])
+    prep = cut_after_answer if a.cut else task.trim
     for r in todo:
         t0 = time.time()
-        texts = [task.trim(cd["text"]) for cd in r["candidates"]]
+        texts = [prep(cd["text"]) for cd in r["candidates"]]
         res = sc.nll(f"Question: {r['question']}\nAnswer:", texts)
         append_jsonl(out, {"uid": r["uid"], "score_seconds": round(time.time() - t0, 3), "features": [
-            {f"ar.{a.scorer}.nll_sum": s, f"ar.{a.scorer}.n_tokens": n} for s, n in res]})
+            {f"ar.{name}.nll_sum": s, f"ar.{name}.n_tokens": n} for s, n in res]})
     print(f"  wrote {out}")
     return 0
 
