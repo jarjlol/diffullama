@@ -46,8 +46,8 @@
       "github": "ItsNotArjun",
       "agents": [
         {
-          "name": "claude",
-          "runtime": "claude-code",
+          "name": "opencode",
+          "runtime": "opencode",
           "wip": 2
         }
       ],
