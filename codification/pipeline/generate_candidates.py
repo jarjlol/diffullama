@@ -156,9 +156,15 @@ def main() -> int:
     ap.add_argument("--limit", type=int, default=0, help="first N questions only (smoke tests)")
     ap.add_argument("--reverse", action="store_true",
                     help="work from the last question back, so a second machine can share the split")
+    ap.add_argument("--steps", type=int, default=0,
+                    help="override the denoising-step budget (iteration 2 step arm, prompt A1); output goes to "
+                         "candidates/<model>@k<steps>/ so the 64-step files are never overwritten")
     a = ap.parse_args()
     c = cfg()
     spec = {"backend": "mock"} if a.model == "mock" else c["models"][a.model]
+    if a.steps:
+        spec = {**spec, "steps": a.steps}
+        a.model = f"{a.model}@k{a.steps}"      # a new tag: score_candidates/assemble/baselines key on it as-is
     # Per-model overrides: DiffuGPT-S was adapted at context 512, which a 4-shot prompt
     # alone exceeds (median 581 GPT-2 tokens), so it runs 1-shot with fewer new tokens.
     c = {**c, "gen_tokens": spec.get("gen_tokens", c["gen_tokens"])}
