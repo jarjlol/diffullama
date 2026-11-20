@@ -61,8 +61,8 @@ is evaluated once after a rule is frozen, with the frozen N4 bar and an ablation
 - On Blackwell, `self_score.py --selftest` and `per_question_preservation.py selftest`
   pass with `~/venvs/scorer/bin/python`, `CUDA_VISIBLE_DEVICES=""`, offline mode and
   OMP threads 8. System Python lacks torch; use the scorer environment for these tests.
-- The new paired-reference regression is queued as `a3_paired_reference_tests` in
-  `cpu_queue.txt`; inspect its receipt before claiming it passed on Blackwell.
+- The paired-reference regression passed on Blackwell through the CPU queue at
+  01:20:20 IST (exit 0); receipt: `paired_reference_receipt.txt`.
 - Read `logs/resume_gpu*.log` and fresh `nvidia-smi` around the 03:00 window. Post the
   actual start/stop timestamps from receipts in the existing status comment.
 - Fetch new team assets into the separate preparation workspace; never merge or edit
