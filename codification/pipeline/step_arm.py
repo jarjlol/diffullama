@@ -33,14 +33,14 @@ from paired_stats import binom_two_sided, boot_ci  # noqa: E402  (same bootstrap
 BUDGETS = {16: "@k16", 32: "@k32", 64: ""}
 
 
-def load(model: str, tag: str) -> dict:
+def load(model: str, tag: str, split: str = "test") -> dict:
     d = WORK / "candidates" / f"{model}{tag}"
-    p = d / "test.jsonl"
+    p = d / f"{split}.jsonl"
     if not p.exists():
         return {}
     rows = {r["uid"]: r for r in read_jsonl(p)}
     fdir = WORK / "features" / f"{model}{tag}"
-    for f in sorted(fdir.glob("test.*.jsonl")) if fdir.exists() else []:
+    for f in sorted(fdir.glob(f"{split}.*.jsonl")) if fdir.exists() else []:
         for r in read_jsonl(f):
             if r["uid"] in rows:
                 for c, feat in zip(rows[r["uid"]]["candidates"], r["features"]):
@@ -129,12 +129,14 @@ def sel_by_K(rows: dict, uids: list) -> dict:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--models", nargs="*", default=["dream-base", "llada-base"])
+    ap.add_argument("--split", choices=["dev", "test"], default="test",
+                    help="dev = the step arm on the first 200 dev questions (extra credit); the K = 256 table is test only")
     ap.add_argument("--json")
     a = ap.parse_args()
-    gold = {q["uid"]: q["answer"] for q in read_jsonl(WORK / "data" / "test.jsonl")}
+    gold = {q["uid"]: q["answer"] for q in read_jsonl(WORK / "data" / f"{a.split}.jsonl")}
     out = {}
     for m in a.models:
-        runs = {K: load(m, tag) for K, tag in BUDGETS.items()}
+        runs = {K: load(m, tag, a.split) for K, tag in BUDGETS.items()}
         runs = {K: r for K, r in runs.items() if r}
         if len(runs) < 2:
             print(f"{m}: need at least two step budgets, have {sorted(runs)}"); continue
@@ -171,7 +173,7 @@ def main() -> int:
                                                         correct(runs[K], uids, sel_by_K(runs[K], uids)["first"], gold))
         out[m]["paired"] = pr
 
-        print(f"\n== {m}  (test, n = {len(uids)} questions common to K = {Ks})")
+        print(f"\n== {m}  ({a.split}, n = {len(uids)} questions common to K = {Ks})")
         print(f"  {'K':>4} {'first':>7} {'major':>7} {'oracle':>7}  best AR (name)            s/q (N=10)")
         for K in Ks:
             r = res[K]["acc"]
@@ -189,7 +191,7 @@ def main() -> int:
         print("  paired differences on the common questions (95% bootstrap CI, exact McNemar):")
         for label, r in out[m]["paired"].items():
             print(fmt_pair(label, r))
-    for m in a.models:
+    for m in (a.models if a.split == "test" else []):
         k256_table(m, gold, out)
     if a.json:
         with open(a.json, "w", encoding="utf-8") as f:
