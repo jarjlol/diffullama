@@ -52,3 +52,19 @@ plus a `<name>.json` where the script produces one. A failing job is retried up 
 3. When jobs finish, fill the TODO tables of `codification/ITERATION_2.md` from the result files, receipts only; leave "What this says" to a human.
 4. Move code and results off the box with a git bundle (GitHub is unreliable from Blackwell, `HANDOFF.md` §3); push only `iter2/aaditya-worker`. Never commit `items.jsonl`, candidates, weights.
 5. The final 300 test questions are not read by anything here. Run them once, after the senior session or Aaditya says so.
+
+## 6. A3 (Arbor iteration 2) window and extra-credit jobs (appended 2026-11-21 by the worker acting as operator)
+
+- Each GPU queue ends with: `SH ~/codify/iter2/a3/a3_window.sh <gpu>` (A3 window), extra-credit jobs, a second window line, more extra-credit, a third window line.
+  `a3_window.sh` (source: `ops/a3/`) makes the two queues rendezvous: the first to arrive parks for 25 min, the second becomes the controller
+  and runs prerequisites, vLLM (DP = 2), Arbor UNATTENDED (`interaction_mode: auto` in a copy of the config; review mode NOT used, see
+  `~/codify/iter2/a3/REVIEW_MODE_NOT_USED.txt`), stops vLLM, scores a merged `solution.py` once on the final 300 (CPU, `a3_final_eval.sh`) and writes
+  `window.done`. State, log and markers: `~/codify/iter2/a3/` (`a3.log`, `attempts`, `window.done|abort|gaveup`, `final_eval.done`).
+  Unmet prerequisites make the window abort and the queues carry on; at most 3 windows are tried.
+- Extra credit appended per GPU: step arm K = 16 and 32 on the first 200 dev questions (+ AR scoring, trim and cut), self-score trim on dev,
+  256-step majority on test questions 101-200 (+ scoring).
+- Matching CPU jobs (cpu_queue.txt): `step_arm_dev`, `selftrim_*_dev`, `k256_200_*`, `a3_summary`.
+- Snapshots of the queues as armed: `ops/snapshot_queue_gpu0.txt`, `snapshot_queue_gpu1.txt`, `snapshot_cpu_queue.txt`.
+- Dry run of the window (two queues, separate state dir, no vLLM or Arbor): the first queue parked, the second became controller, all steps ran
+  in order, the evaluation on the gate split (400 items) ran, `window.done` written, the parked queue was released.
+- Not tested: the real vLLM start (`~/codify/start_vllm.sh`) and a real Arbor run under this controller; they are the same commands as iteration 1.

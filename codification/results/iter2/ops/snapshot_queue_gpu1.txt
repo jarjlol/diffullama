@@ -1,0 +1,29 @@
+# GPU 1 queue (runs after lane 1 ends). Edit pending lines freely; see queue.sh for the format.
+# Tier 1: re-score iteration-1 64-step LLaDA candidates on cut text
+scorer score_candidates.py --model llada-base --split test --scorer qwen7b --cut
+scorer score_candidates.py --model llada-base --split test --scorer gpt2 --cut
+scorer score_candidates.py --model llada-base --split dev --scorer qwen7b --cut
+# Tier 2 (worker, cut text first): DLM self-score + per-question preservation extraction
+SH /home/antpc/codify/iter2/worker/run_selfscore.sh llada-base test cut
+SH /home/antpc/codify/iter2/worker/run_selfscore.sh llada-base dev cut
+# Tier 2: majority vote at 256 steps on the 100 fidelity questions, then scorers
+llada generate_candidates.py --model llada-base --split test --limit 100 --steps 256
+scorer score_candidates.py --model llada-base@k256 --split test --scorer qwen7b --cut
+scorer score_candidates.py --model llada-base@k256 --split test --scorer qwen7b
+# Tier 2, lowest: self-score on trim text
+SH /home/antpc/codify/iter2/worker/run_selfscore.sh llada-base test trim
+
+# --- appended 2026-11-21 by the worker (operator): A3 window (both GPUs, gated, unattended), then extra credit; see results/iter2/README.md
+SH /home/antpc/codify/iter2/a3/a3_window.sh 1
+llada generate_candidates.py --model llada-base --split dev --limit 200 --steps 16
+scorer score_candidates.py --model llada-base@k16 --split dev --scorer qwen7b
+scorer score_candidates.py --model llada-base@k16 --split dev --scorer qwen7b --cut
+llada generate_candidates.py --model llada-base --split dev --limit 200 --steps 32
+scorer score_candidates.py --model llada-base@k32 --split dev --scorer qwen7b
+scorer score_candidates.py --model llada-base@k32 --split dev --scorer qwen7b --cut
+SH /home/antpc/codify/iter2/worker/run_selfscore.sh llada-base dev trim
+SH /home/antpc/codify/iter2/a3/a3_window.sh 1
+llada generate_candidates.py --model llada-base --split test --limit 200 --steps 256
+scorer score_candidates.py --model llada-base@k256 --split test --scorer qwen7b
+scorer score_candidates.py --model llada-base@k256 --split test --scorer qwen7b --cut
+SH /home/antpc/codify/iter2/a3/a3_window.sh 1

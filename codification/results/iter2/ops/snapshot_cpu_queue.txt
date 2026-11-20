@@ -1,0 +1,19 @@
+# CPU queue, format name|spec|command (see cpu_queue.sh). Order = priority; every job waits for its own inputs.
+cvt_dream_test|lines:features/dream-base/test.qwen7b-cut.jsonl:500,lines:features/dream-base/test.gpt2-cut.jsonl:500,lines:features/dream-base/test.qwen0.5b-cut.jsonl:500|python3 cut_vs_trim.py --model dream-base --split test --json $OUT.json
+cvt_llada_test|lines:features/llada-base/test.qwen7b-cut.jsonl:500,lines:features/llada-base/test.gpt2-cut.jsonl:500|python3 cut_vs_trim.py --model llada-base --split test --json $OUT.json
+pq_analyze|lines:features/dream-base/test.qwen7b-cut.jsonl:500,file:preservation_pq/dream.test.pt,file:preservation_pq/qwen7b.test.pt|~/venvs/scorer/bin/python per_question_preservation.py analyze --split test --json $OUT.json --report $OUT.report.txt
+cvt_dream_dev|lines:features/dream-base/dev.qwen7b-cut.jsonl:200|python3 cut_vs_trim.py --model dream-base --split dev --json $OUT.json
+cvt_llada_dev|lines:features/llada-base/dev.qwen7b-cut.jsonl:200|python3 cut_vs_trim.py --model llada-base --split dev --json $OUT.json
+self_dream_dev|lines:features/dream-base/dev.dlmself.jsonl:200|python3 cut_vs_trim.py --model dream-base --split dev --json $OUT.json
+self_llada_dev|lines:features/llada-base/dev.dlmself.jsonl:200|python3 cut_vs_trim.py --model llada-base --split dev --json $OUT.json
+self_dream_gate|lines:features/dream-base/test.dlmself.jsonl:500|python3 cut_vs_trim.py --model dream-base --split test --subset gate --json $OUT.json
+self_llada_gate|lines:features/llada-base/test.dlmself.jsonl:500|python3 cut_vs_trim.py --model llada-base --split test --subset gate --json $OUT.json
+k256_table|lines:candidates/dream-base@k256/test.jsonl:100,lines:candidates/llada-base@k256/test.jsonl:100,lines:features/dream-base@k256/test.qwen7b-cut.jsonl:100,lines:features/dream-base@k256/test.qwen7b.jsonl:100,lines:features/llada-base@k256/test.qwen7b-cut.jsonl:100,lines:features/llada-base@k256/test.qwen7b.jsonl:100|python3 step_arm.py --json $OUT.json
+reports|lane:0,lane:1|python3 make_iter2_reports.py
+operator_a3_ready|lines:features/dream-base/dev.qwen7b-cut.jsonl:200,lines:features/dream-base/dev.dlmself.jsonl:200,lines:features/dream-base/test.qwen7b-cut.jsonl:500,lines:features/dream-base/test.dlmself.jsonl:500,lines:features/llada-base/dev.qwen7b-cut.jsonl:200,lines:features/llada-base/dev.dlmself.jsonl:200,lines:features/llada-base/test.qwen7b-cut.jsonl:500,lines:features/llada-base/test.dlmself.jsonl:500|python3 /home/antpc/codify/iter2/aryan/codification/a3_support/prepare_job.py
+step_arm_dev|lines:candidates/dream-base@k16/dev.jsonl:200,lines:candidates/dream-base@k32/dev.jsonl:200,lines:candidates/llada-base@k16/dev.jsonl:200,lines:candidates/llada-base@k32/dev.jsonl:200,lines:features/dream-base@k32/dev.qwen7b-cut.jsonl:200,lines:features/llada-base@k32/dev.qwen7b-cut.jsonl:200|python3 step_arm.py --split dev --json $OUT.json
+selftrim_dream_dev|lines:features/dream-base/dev.dlmselftrim.jsonl:200|python3 cut_vs_trim.py --model dream-base --split dev --json $OUT.json
+selftrim_llada_dev|lines:features/llada-base/dev.dlmselftrim.jsonl:200|python3 cut_vs_trim.py --model llada-base --split dev --json $OUT.json
+k256_200_dream|lines:candidates/dream-base@k256/test.jsonl:200,lines:features/dream-base@k256/test.qwen7b.jsonl:200,lines:features/dream-base@k256/test.qwen7b-cut.jsonl:200|python3 cut_vs_trim.py --model dream-base@k256 --split test --json $OUT.json
+k256_200_llada|lines:candidates/llada-base@k256/test.jsonl:200,lines:features/llada-base@k256/test.qwen7b.jsonl:200,lines:features/llada-base@k256/test.qwen7b-cut.jsonl:200|python3 cut_vs_trim.py --model llada-base@k256 --split test --json $OUT.json
+a3_summary|file:../../../../iter2/a3/window.done|tail -n 60 ~/codify/iter2/a3/a3.log; for d in ~/arbor-rerank-iter2-ready-*; do echo "== $d"; git -C $d log --oneline | head -20; done; ls ~/codify/iter2/a3
