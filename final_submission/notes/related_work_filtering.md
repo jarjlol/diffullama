@@ -4,7 +4,7 @@ Source: `litreview/data/reference_brief.txt` (48 references `[1]`-`[48]`, the nu
 
 Criteria: keep papers that support the three groups of the section (text diffusion LMs, adaptation of AR models, non-autoregressive generation as background) or the reasoning/GSM8K setting. Remove other modalities and tasks, narrow technique papers, and overlaps. Two kinds of removal are labelled: **unrelated** (other modality or task) and **space** (related, but the paper has one reference page in total).
 
-Result: 15 of 48 kept from the lit review, +1 added from outside it (DiffuLLaMA, the anchor paper, which a survey about the anchor does not list). 33 removed.
+Result: 12 of 48 kept from the lit review, +1 added from outside it (DiffuLLaMA, the anchor paper, which a survey about the anchor does not list), +8 added for the two new groups (below). 36 removed.
 
 ## Kept (survey number -> BibTeX key)
 
@@ -16,12 +16,9 @@ Result: 15 of 48 kept from the lit review, +1 added from outside it (DiffuLLaMA,
 | 12 | `zheng2023reparam` | A Reparameterized Discrete Diffusion Model for Text Generation |
 | 14 | `tae2025tess2` | TESS 2: A Large-Scale Generalist Diffusion Language Model |
 | 21 | `berrayana2025planner` | Planner and Executor: Collaboration between Discrete Diffusion And Autoregressive Models in Reasoning |
-| 24 | `wang2018sat` | Semi-Autoregressive Neural Machine Translation |
-| 29 | `lin2022genie` | Text Generation with Diffusion Language Models: A Pre-training Approach with Continuous Paragraph Denoise |
 | 30 | `sahoo2024mdlm` | Simple and Effective Masked Diffusion Language Models |
 | 31 | `han2023ssdlm` | SSD-LM: Semi-autoregressive Simplex-based Diffusion Language Model for Text Generation and Modular Control |
 | 32 | `ke2023continual` | Continual Pre-training of Language Models |
-| 36 | `gupta2023rewarm` | Continual Pre-Training of Large Language Models: How to (re)warm your model? |
 | 39 | `gu2017nat` | Non-Autoregressive Neural Machine Translation |
 | 40 | `he2023diffusionbert` | DiffusionBERT: Improving Generative Masked Language Models with Diffusion Models |
 | 42 | `gong2022diffuseq` | DiffuSeq: Sequence to Sequence Text Generation with Diffusion Models |
@@ -64,9 +61,30 @@ Result: 15 of 48 kept from the lit review, +1 added from outside it (DiffuLLaMA,
 | 46 | PIMNet: A Parallel, Iterative and Mimicking Network for Scene Text Recognition | PIMNet: scene-text recognition: unrelated modality (images). |
 | 47 | Guiding Non-Autoregressive Neural Machine Translation Decoding with Reordering Information | Reordering information for NAR translation: translation-only, dropped for space. |
 | 48 | A Cheaper and Better Diffusion Language Model with Soft-Masked Noise | Soft-masked diffusion LM: overlaps the kept discrete-diffusion papers (space). |
+| 24 | Semi-Autoregressive Neural Machine Translation | Semi-autoregressive NMT: NAR background, cut on 2026-11-20 (space). |
+| 29 | Text Generation with Diffusion Language Models: A Pre-training Approach with Continuous Pa | GENIE: continuous diffusion pre-training; overlaps Diffusion-LM and DiffuSeq (space, cut on 2026-11-20 to make room for the two new groups). |
+| 36 | Continual Pre-Training of Large Language Models: How to (re)warm your model? | Re-warming the learning rate for continual pre-training: narrow, cut on 2026-11-20 (space). |
 
 ## Verification
 
-- Title, author list and year of all 16 bib entries were fetched from the arXiv API on 2026-11-20 (script output in the issue #9 status comment); titles match the lit review's titles exactly. Venues: ICLR 2023 for `ke2023continual` is arXiv's `journal_ref`; ACL 2023 for DiffusionBERT and SSD-LM comes from their ACL Anthology DOIs in `litreview/data/candidates_topK.json`; ICLR 2025 for the anchor comes from the repo README. Other entries are cited as arXiv preprints, no venue claimed.
+- Title, author list and year of all 17 bib entries in `refs_related_work.bib` were fetched from the arXiv API on 2026-11-20 (script output in the issue #9 status comment); titles match the lit review's titles exactly. Venues: ICLR 2023 for `ke2023continual` is arXiv's `journal_ref`; ACL 2023 for DiffusionBERT and SSD-LM comes from their ACL Anthology DOIs in `litreview/data/candidates_topK.json`; ICLR 2025 for the anchor comes from the repo README. Other entries are cited as arXiv preprints, no venue claimed.
 - Every statement about a paper in the section was checked against that paper's abstract in `litreview/data/candidates_topK.json`. Only abstracts were read, **not full texts**: the section describes what each paper proposes, not its detailed results.
 - Not used as evidence: the survey's statements that the field 'converged' on a recipe, and its Mamba architecture-transfer paragraph (it names no retrieved paper).
+
+## Added on 2026-11-20 (groups 3 and 4, requested by the team; the lit review has none)
+
+| key | paper | where it came from |
+|---|---|---|
+| `lee2025hex` | HEX: Test-Time Scaling in Diffusion LLMs via Hidden Semi-Autoregressive Experts (arXiv:2510.05040) | in the lit review's candidate pool (`litreview/data/candidates_merged_reranked.json`) but not in the top-48 |
+| `shao2025diffusethinking` | Diffuse Thinking (arXiv:2510.27469) | named in `codification/IDEA_SELECTION.md` as a near neighbour; no title match in the three pool files, found by arXiv title search |
+| `wang2023selfconsistency` | Self-Consistency (arXiv:2203.11171) | the anchor's own baseline, per `codification/IDEA_SELECTION.md`; bib entry lives in `refs_methodology.bib` (#11) |
+| `cobbe2021gsm8k` | Training Verifiers to Solve Math Word Problems / GSM8K (arXiv:2110.14168) | the dataset paper; entry in `refs_methodology.bib` (#11) |
+| `lu2024aiscientist` | The AI Scientist (arXiv:2408.06292) | general background on research agents, new |
+| `weng2025deepscientist` | DeepScientist (arXiv:2509.26603) | compared in `codification/REFERENCE_SYSTEMS.md` |
+| `baek2024researchagent` | ResearchAgent (arXiv:2404.07738) | used for ideation (`ideation/output/research_problems_and_ideas.md`); entry in `refs_methodology.bib` |
+| `jin2026arbor` | Arbor (arXiv:2606.11926) | used for codification; entry in `refs_methodology.bib` |
+
+Left out of the paper for space: EvoScientist (arXiv:2603.08127), AutoSOTA (arXiv:2604.05550), both in `REFERENCE_SYSTEMS.md`; Snell et al. on test-time compute (arXiv:2408.03314).
+Titles, authors and years of all added papers were fetched from the arXiv API on 2026-11-20. Claims were checked against abstracts only.
+
+Reference count for the paper's one reference page: **21** for this section, 17 of them in this section's bib plus the four shared with #11. Cut list if needed: `han2023ssdlm`, `ke2023continual`, `gu2017nat`, `xie2025dreamcoder`.
