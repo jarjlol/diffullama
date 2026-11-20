@@ -1,0 +1,17 @@
+A3 preparation checks on Blackwell, 21 Nov 2026
+Source archive: iter2/aryan eb73bf5; tests use synthetic temporary data only.
+No model or GPU loaded by this test.
+
+# job a3_prepare_tests   started 2026-11-21 00:44:18   worker commit 3bc19b6   try 1
+# inputs: -
+$ cd ~/codify/worker/codification/pipeline && python3 /home/antpc/codify/iter2/aryan/codification/test_prepare_arbor_iter2.py
+
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.419s
+
+OK
+
+# exit code 0, finished 2026-11-21 00:44:18
+7767365fade8b37965478076333bd28fbf99943ae55f379e1c7b4d6c6cd6c85a  /home/antpc/codify/iter2/aryan/codification/prepare_arbor_iter2.py
+5396b1b1ddeaab00a0ed9270bdf73abf25bd2db5e90324a57ac7bd2d03d9aed1  /home/antpc/codify/iter2/aryan/codification/test_prepare_arbor_iter2.py
