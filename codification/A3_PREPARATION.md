@@ -1,7 +1,8 @@
 # Preparing Arbor iteration 2
 
-Owner: Aryan, with Aaditya operating the GPU queues. Tracker: issue #4, latest ownership
-correction `7047475382`. This is preparation, not a completed Arbor run. Do not start a
+Owner: Aryan/Codex is the sole GPU/queue operator after accepting the handover on #4
+(`7048134564`, followed by the operator acknowledgement). Aaditya and other agents send
+requests there. This is preparation, not a completed Arbor run. Do not start a
 server or claim idle GPUs while prerequisites are missing.
 
 `prepare_arbor_iter2.py` checks inputs and exports a new private task repository. It does
@@ -87,8 +88,8 @@ and frozen manifest hashes, and keep evaluator/data/config fixed throughout the 
 
 ## Launch and review handoff
 
-Only after the above checks and T1/T3/T4/N4/A2 are ready, send Aaditya the exact launch
-command as an `ask` on #4 and arrange a staffed review window. The request is:
+Only after the above checks and T1/T3/T4/N4/A2 are ready, post the exact launch command
+and GPU window on #4 and arrange a staffed review window. The launch command is:
 
 ```bash
 cd /home/antpc/arbor-rerank-iter2
@@ -97,11 +98,17 @@ HF_HUB_OFFLINE=1 OPENAI_API_KEY=dummy ~/venvs/arbor/bin/arbor run \
   --run-name iter2
 ```
 
-This consumes the vLLM service only when Aaditya has started it with its consumer.
+This consumes the vLLM service only when the operator has started it with its consumer.
 Review replies must use `/approve`, `/skip`, `/edit ...` or `/answer ...`; log them
 verbatim. Never allow the unattended review timeout to approve a proposal. Stop the
 service after the consumer ends, through its owner. Do not kill another user's process.
 Tier 1 jobs keep priority. Paper results freeze: **22 Nov 2026 18:00 IST**.
+
+The inherited `resume_at.sh` processes are already armed for 21 Nov 03:00 IST, with
+one lane then one queue per GPU. Keep those processes, pending lines and CPU queue
+running across laptop shutdown; do not start duplicate consumers. CPU analyses and
+tests go through `~/codify/iter2/cpu_queue.sh` at nice 10. Live paths and queue formats:
+`results/iter2/README.md`. Never create artificial work merely to keep hardware busy.
 
 After the run, freeze the selector and use the held-out final split once; report paired
 statistics, the ablation and extra compute. A second dataset remains a team choice.
