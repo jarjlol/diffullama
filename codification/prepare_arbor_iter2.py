@@ -129,7 +129,8 @@ Seed one depth-1 direction per N4 failure class. Audit every child CLEARED or RE
 After three consecutive PARAM proposals, propose a CODE or ALGO direction from the audited library.
 Report per-model accuracy and extra inference/selector compute. Request an ablation before any merge.
 At review, require at least 3 net correct questions on EACH non-floor model's gate, against frozen tuned
-majority, with no material regression. Arbor's merge_threshold is a prompt hint, not an enforced gate.
+majority, with no material regression. Report paired bootstrap intervals and exact McNemar p against
+that frozen tuned-majority seed on the gate. Arbor's merge_threshold is a hint, not an enforced gate.
 Never inspect the final split during search. Record every review reply verbatim in ITERATION_2.md.
 An improvement claim additionally requires the once-only final comparison, paired statistics, an ablation
 and frozen transfer to an agreed second dataset. Otherwise record an Implement Finding only.

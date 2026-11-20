@@ -10,6 +10,12 @@ not change the original task pack, launch Arbor, or read the final split. Only t
 Dream/LLaDA models enter this export; this model scope and the evaluation patch need a
 recorded team agreement before export.
 
+Bootstrap completed on 21 Nov: `~/arbor-rerank-iter2`, ordinary majority seed, two models,
+200 dev and 200 gate questions each. CPU eval passed: Dream/LLaDA dev 0.700/0.745,
+gate 0.710/0.735. No evaluator change or final-split read. Script and receipt:
+`results/iter2/aryan/bootstrap_arbor_task.py`, `bootstrap_receipt.txt`. This bootstrap is
+**not ready for search**. It still needs the frozen N4 seed, new features and T1/T3/T4.
+
 ## Inputs and owners
 
 | Input | Owner | Required evidence |
@@ -43,7 +49,7 @@ python3 codification/prepare_arbor_iter2.py \
 ```
 
 Exit 2 means not ready; no export occurs. The JSON lists missing inputs and source hashes.
-When ready, repeat with `--dest /home/antpc/arbor-rerank-iter2`. Existing destinations
+When ready, repeat with `--dest /home/antpc/arbor-rerank-iter2-ready`. Existing destinations
 are refused. A failed export is left for inspection and must not be launched. The exporter
 copies only the evaluator, seed, plugin, dev and gate data; applies T1's patch to the copy;
 injects curated memory and the N4 failure block in `INSTRUCTION.md`; evaluates the seed;
@@ -51,7 +57,7 @@ and commits the clean task with Aryan's verified Git identity. It never uses the
 exporter's fallback author `codify@localhost`.
 
 The instruction makes the margin a reviewer rule: at least 3 net gate questions on each
-non-floor model relative to frozen tuned majority, an ablation before merging, paired final
+non-floor model relative to frozen tuned majority plus a paired gate test, an ablation before merging, paired final
 comparison and frozen transfer before a progress claim. It does not present Arbor's
 `merge_threshold` as an automatic enforcement mechanism.
 
@@ -92,9 +98,9 @@ Only after the above checks and T1/T3/T4/N4/A2 are ready, post the exact launch 
 and GPU window on #4 and arrange a staffed review window. The launch command is:
 
 ```bash
-cd /home/antpc/arbor-rerank-iter2
+cd /home/antpc/arbor-rerank-iter2-ready
 HF_HUB_OFFLINE=1 OPENAI_API_KEY=dummy ~/venvs/arbor/bin/arbor run \
-  "$(cat INSTRUCTION.md)" --yes --yes-cwd /home/antpc/arbor-rerank-iter2 \
+  "$(cat INSTRUCTION.md)" --yes --yes-cwd /home/antpc/arbor-rerank-iter2-ready \
   --run-name iter2
 ```
 
@@ -113,3 +119,9 @@ tests go through `~/codify/iter2/cpu_queue.sh` at nice 10. Live paths and queue 
 After the run, freeze the selector and use the held-out final split once; report paired
 statistics, the ablation and extra compute. A second dataset remains a team choice.
 Do not select a transfer dataset or claim a positive result without the recorded evidence.
+
+For both gate and final paired comparisons, retain N4's frozen seed outside the editable
+task. `paired_stats.py REPO SPLIT SOLUTION --reference /path/to/frozen_tuned_majority.py`
+reports the tuned comparison separately from plain majority and first sample. The
+original invocation without `--reference` retains the original comparisons. Never
+substitute plain majority for the tuned bar when reporting the A3 gate or final result.

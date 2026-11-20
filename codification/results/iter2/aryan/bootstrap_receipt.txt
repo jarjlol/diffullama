@@ -1,0 +1,34 @@
+A3 majority bootstrap, 21 Nov 2026; private task ~/arbor-rerank-iter2.
+Source helper: iter2/aaditya 00a6cc8 make_arbor_repo.sh, copied outside live lane checkout.
+No final-split files read; no GPU launched; evaluator unchanged.
+
+split: dev
+correctness: PASS
+model dream-base: acc 0.7000  oracle(hit@N) 0.8450  n 200
+model llada-base: acc 0.7450  oracle(hit@N) 0.8750  n 200
+seconds: 0.00
+score: 0.7225
+split: test
+correctness: PASS
+model dream-base: acc 0.7100  oracle(hit@N) 0.8750  n 200
+model llada-base: acc 0.7350  oracle(hit@N) 0.9050  n 200
+seconds: 0.00
+score: 0.7225
+{
+  "stage": "majority-bootstrap-not-ready",
+  "models": [
+    "dream-base",
+    "llada-base"
+  ],
+  "seed": "ordinary majority, awaiting N4",
+  "source_ref": "iter2/aaditya",
+  "sha256": {
+    "task.py": "d4ce8d3390315fa14ed8b6d7a0aea7d37b7c06f47fcdca23b9e887c755c16c19",
+    "eval.py": "2116619f8d56719311f6d526f4d1b78f14108cbb996dd75aa37fe519cc0f1c02",
+    "eval.sh": "0240b8dd23d7468734d89b59cb8564d43cad6d986ba26ca789ef1defbb3264c1",
+    "baselines.py": "e19213b7c8ce48ae9666194721b5c8add95925165661ddb4fe045f39fb8fec8e",
+    "solution.py": "e1ea1a5eedad2eebe1896e0138b1cc8472d03ec6781a94e2f807a3bc7d7f7ba3"
+  }
+}
+selftest OK: uniform ELBO = -T log V; oracle ELBO ~ 0; mask draws stratified and reproducible; shift_right correct; mock ELBO deterministic (-39.452)
+selftest OK: planted effect found (AUC 0.634, perm p 0.0005, OR/SD 1.63); null not found (perm p 0.405, OR/SD 1.07); AUC = brute force; logistic coef recovered (0.805 vs 0.8); centred cosine removes a shared shift; BH monotone
