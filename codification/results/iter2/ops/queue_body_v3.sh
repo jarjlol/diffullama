@@ -6,13 +6,16 @@
 #   determine the device handle", the guard puts the job line BACK at the top of the queue, touches STOP_gpu<N>, writes
 #   ~/codify/iter2/GPU_FAULT_gpu<N>.txt (time, job, last error lines) and the queue exits WITHOUT consuming more lines.
 #   Also when nvidia-smi cannot see the GPU while waiting for it to be free.
-# Test hooks (never set in production): QUEUE_DIR, QUEUE_SKIP_BUSY=1, QUEUE_FAKE_HEALTH=fail|ok, QUEUE_RETRY_SLEEP.
+# Also: the line being run is written to queue_gpu<N>.running and cleared when the job ends; at start-up a leftover .running file
+# (the queue was killed mid-job, e.g. by someone's pkill) is put back at the top of the queue first.
+# Test hooks (never set in production): QUEUE_DIR, QUEUE_PIPELINE_DIR, QUEUE_SKIP_BUSY=1, QUEUE_FAKE_HEALTH=fail|ok, QUEUE_RETRY_SLEEP.
 # usage (via queue.sh): queue.sh <gpu>
 set -u
 GPU=$1
 D=${QUEUE_DIR:-/home/antpc/codify/iter2}; Q=$D/queue_gpu$GPU.txt; DONE=$D/queue_gpu$GPU.done; STOP=$D/STOP_gpu$GPU
 FAULT=$D/GPU_FAULT_gpu$GPU.txt
-P=/home/antpc/codify/diffullama/codification/pipeline
+P=${QUEUE_PIPELINE_DIR:-/home/antpc/codify/diffullama/codification/pipeline}
+RUNNING=$D/queue_gpu$GPU.running   # the line being run: kept here so a killed queue does not lose it (restart puts it back)
 RS=${QUEUE_RETRY_SLEEP:-30}
 export CUDA_DEVICE_ORDER=PCI_BUS_ID CUDA_VISIBLE_DEVICES=$GPU HF_HUB_OFFLINE=1 PYTHONUNBUFFERED=1
 UUID=$(nvidia-smi --query-gpu=index,uuid --format=csv,noheader 2>/dev/null | awk -F', ' -v g=$GPU '$1==g{print $2}')
@@ -45,6 +48,17 @@ PY
 }
 
 {
+if [ -s "$RUNNING" ]; then
+  python3 - "$Q" "$RUNNING" <<'PY'
+import sys, os
+q, run = sys.argv[1], sys.argv[2]
+line = open(run, encoding="utf-8").read().strip()
+rows = open(q, encoding="utf-8").read().splitlines(keepends=True) if os.path.exists(q) else []
+if line and line not in [r.strip() for r in rows]:
+    open(q, "w", encoding="utf-8").writelines([line + chr(10)] + rows); print("restored a line that was running when the queue was killed:", line)
+os.remove(run)
+PY
+fi
 echo "$(date '+%F %T') queue gpu$GPU (v3, fault guard) waiting for lane $GPU to end"
 while pgrep -f "lane.sh $GPU " >/dev/null; do sleep 60; done
 echo "$(date '+%F %T') lane $GPU ended; queue starts"
@@ -65,6 +79,7 @@ for i, r in enumerate(rows):
         del rows[i]; break
 open(q, "w", encoding="utf-8").writelines(rows)
 PY
+  echo "$line" > "$RUNNING"
   set -- $line
   if [ "$1" = SH ]; then shift; cmd=(bash "$@"); else v=$1; shift; cmd=(/home/antpc/venvs/$v/bin/python "$@"); fi
   rc=1; fault=0
@@ -80,11 +95,12 @@ PY
     h=$(health); hrc=$?
     if [ -n "$pat" ] || [ $hrc -ne 0 ]; then
       put_back_and_stop "$line" "job failed (exit $rc) and ${pat:+its output shows: $pat}${pat:+; }$([ $hrc -ne 0 ] && echo "health check failed: $h")" "$(printf '%s\n' "$tailtxt" | tail -n 8)"
-      fault=1; break
+      fault=1; rm -f "$RUNNING"; break
     fi
     sleep "$RS"
   done
   [ $fault = 1 ] && exit 0
+  rm -f "$RUNNING"
   echo "$(date '+%F %T') rc=$rc  $line" >> "$DONE"
 done
 } >> "$D/logs/queue_gpu$GPU.log" 2>&1
