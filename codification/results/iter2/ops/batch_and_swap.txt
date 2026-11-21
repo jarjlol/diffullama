@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# queue line: SH /home/antpc/codify/iter2/a3/batch.sh <listfile>
+# Runs the score_candidates.py argument lines of <listfile> one after another in the scorer venv (one queue line, so the
+# queue's idle-GPU wait does not sit between short jobs). Each is resumable by uid. Exit code 1 if any failed (queue retries the line).
+P=~/codify/diffullama/codification/pipeline; rc=0
+cd "$P" || exit 2
+while IFS= read -r args; do
+  case "$args" in ''|\#*) continue ;; esac
+  echo "$(date '+%F %T') batch START: score_candidates.py $args"
+  ~/venvs/scorer/bin/python score_candidates.py $args || { echo "$(date '+%F %T') batch FAIL: $args"; rc=1; }
+done < "$1"
+exit $rc
+#----swap_to_v3.sh
+#!/usr/bin/env bash
+# Hand over each running queue to the v3 body (fault guard) without interrupting its current job:
+# touch STOP_gpuN -> the queue ends after its current job -> remove STOP_gpuN -> start the new queue.sh immediately.
+cd ~/codify/iter2
+for g in 0 1; do
+  (
+    touch STOP_gpu$g
+    while pgrep -f "^bash ./queue.sh $g\$" >/dev/null; do sleep 2; done
+    rm -f STOP_gpu$g
+    setsid -f nohup ./queue.sh $g > /dev/null 2>&1 < /dev/null
+    echo "$(date '+%F %T') queue $g swapped to v3" >> logs/swap_to_v3.log
+  ) &
+done
+wait
