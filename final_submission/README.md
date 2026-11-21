@@ -4,7 +4,7 @@
 
 The folder named **Final Submission** in our group folder holds exactly three items:
 
-1. the **paper**, 4 pages + 1 reference page: `paper/` (sections in `paper/sections/`, built PDF in `paper/`);
+1. the **paper**, 4 pages of content plus reference pages (Moodle title: "Task 5 (4+ reference pages)"; references do not count toward the 4, our reading, not confirmed by the instructor): `paper/` (sections in `paper/sections/`, built PDF in `paper/`);
 2. the **report**, 2 to 4 pages, observations and efforts for each task: `report/` (issue #15);
 3. the **GitHub repo** of the pipeline and the code behind the paper: this repo (see "Pipeline code" below).
 
@@ -45,7 +45,7 @@ The label `to:<handle>` on each issue is authoritative if this table is stale. k
 - One section per branch `mesh/<issue>-<slug>`, from `main`, only that section's file in the PR.
 - Receipts for every claim; `[unverified]` for anything not checked (see `docs/verification-standards.md`).
 - Do not overwrite a submitted deliverable; additions only.
-- The paper has **one reference page in total**: keep your references few and verified; report your count in your status comment.
+- The body is **4 pages**. References go on extra pages and are not capped at one (Moodle text relayed by aaditya on #17, 21 Nov; the earlier "one reference page" rule was our own assumption). Cite what the text needs, verify every entry, and report your count in your status comment.
 
 ## Pipeline code (for deliverable 3)
 

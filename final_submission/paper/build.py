@@ -15,7 +15,7 @@ What it does, in order:
    Existing "(Surname et al., Year)" text is matched to a bib entry by first-author surname and year.
    Every cited entry goes into References; anything unmatched is listed so the writer can fix it.
 4. pandoc -> HTML (MathML), two-column A4 CSS -> Chromium PDF. The reference list starts on a new page, so
-   "body pages" and "reference pages" can be counted separately against the 4 + 1 limit.
+   "body pages" (limit 4) and "reference pages" (not capped; Moodle: "4+ reference pages") can be counted separately.
 """
 from __future__ import annotations
 
@@ -178,7 +178,7 @@ const n=await p.evaluate(()=>{const r=document.querySelector('.refs');return r?1
     print("\n".join(report))
     print(f"references: {len(refs)} cited of {len(bibs)} in the merged bib")
     print("unresolved citations: " + (", ".join(sorted(set(unresolved))) or "none"))
-    print(f"pages: {pages} total, {body_pages} body (limit 4), {pages - body_pages} references (limit 1)")
+    print(f"pages: {pages} total, {body_pages} body (limit 4), {pages - body_pages} references (not capped)")
     print(f"wrote {OUT / 'paper.pdf'}")
     return 0
 
