@@ -38,7 +38,9 @@
           "wip": 2
         }
       ],
-      "skills": [],
+      "skills": [
+        "gpu-blackwell"
+      ],
       "route_mentions_to_agent": true
     },
     {
@@ -51,7 +53,9 @@
           "wip": 2
         }
       ],
-      "skills": [],
+      "skills": [
+        "gpu-blackwell"
+      ],
       "route_mentions_to_agent": true
     },
     {
@@ -69,7 +73,9 @@
           "wip": 2
         }
       ],
-      "skills": [],
+      "skills": [
+        "gpu-blackwell"
+      ],
       "route_mentions_to_agent": true
     },
     {
