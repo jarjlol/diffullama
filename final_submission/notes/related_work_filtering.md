@@ -88,3 +88,31 @@ Left out of the paper for space: EvoScientist (arXiv:2603.08127), AutoSOTA (arXi
 Titles, authors and years of all added papers were fetched from the arXiv API on 2026-11-20. Claims were checked against abstracts only.
 
 Reference count for the paper's one reference page: **21** for this section, 17 of them in this section's bib plus the four shared with #11. Cut list if needed: `han2023ssdlm`, `ke2023continual`, `gu2017nat`, `xie2025dreamcoder`.
+
+## Full-text receipts (2026-11-21, neel's agent, after taking over #9)
+
+Each claim in `related_work.md` checked against the paper's full text (arxiv.org PDF via `pdftotext -layout`, or HTML). The phrase quoted is from the full text, not the abstract page.
+
+| Key | Claim in the section | Full-text support |
+|---|---|---|
+| li2022diffusionlm | denoises Gaussian vectors into word embeddings; gradient-based control on latents | "denoises a sequence of Gaussian vectors into word vectors"; "enables a simple gradient-based algorithm" (2205.14217) |
+| gong2022diffuseq | extends to sequence-to-sequence | "we target the sequence-to-sequence text generation tasks" (2210.08933) |
+| zheng2023reparam | more flexible formulation of discrete sampling | §3.2 "Reparameterized Sampling"; "enable more flexible decoding algorithms" (2302.05737) |
+| sahoo2024mdlm | Rao-Blackwellized objective, approaches AR perplexity | "Rao-Blackwellized objective … approaches AR perplexity" (2406.07524) |
+| he2023diffusionbert | trains BERT to reverse a discrete diffusion process | "training BERT to learn the reverse process of a discrete diffusion process with an absorbing state" (2211.15029) |
+| han2023ssdlm | block-wise generation; matches or outperforms GPT-2 | "generating blocks of text"; "matches or outperforms strong autoregressive GPT-2" (2210.17432) |
+| svete2025reasoning | MDM ≡ padded looped transformers; solves all CoT problems; **theoretical, finite precision, log width** | "MDMs and polynomially-padded PLTs are, in fact, equivalent in this setting, and that MDMs can solve all problems that CoT-augmented transformers can" — setting: "finite-precision log-width" (2510.13117) |
+| gu2017nat | order-of-magnitude lower latency at a BLEU cost | "an order of magnitude lower latency during inference"; "a cost of as little as 2.0 BLEU points" (1711.02281) |
+| ke2023continual | adapts an LM to a sequence of domains while limiting forgetting | "to a sequence of domains"; "forgetting, but also achieves knowledge transfer" (2302.03241) |
+| gong2025diffullama | converts GPT-2 and LLaMA, 127M to 7B | "convert AR models ranging from 127M to 7B parameters" (`limitations/data/anchor_fulltext.txt:31`) |
+| tae2025tess2 | adaptation and base model both crucial | "We find that adaptation training as well as the choice of the base model is crucial" (2502.13917) |
+| xie2025dreamcoder | adapts a pretrained AR checkpoint for code | "We adapt a pretrained AR checkpoint to a discrete diffusion framework"; initialised from Qwen2.5-Coder (2509.01142) |
+| lee2025hex | training-free majority vote over block schedules | read in full for N3 (`codification/SOTA.md`, 2510.05040) |
+| shao2025diffusethinking | DLM proposes thoughts, LLM evaluates | read in full for N3 (2510.27469) |
+| berrayana2025planner | text-space and learned-latent coupling | full-text §3 checked by aryan's review on PR #22 (2510.15244) |
+| lu2024aiscientist | ideas, code, experiments, paper writing | "generates novel research ideas, writes code, executes experiments … writing a full scientific paper" (2408.06292) |
+| weng2025deepscientist | Bayesian optimisation over a memory of findings | "formalizes discovery as a Bayesian Optimization"; "cumulative Findings Memory" (2509.26603) |
+| jin2026arbor | coordinator + executors over a hypothesis tree; held-out admission | "long-lived coordinator and short-lived executors"; §4.2 "Hypothesis Tree"; "Dev improvements are filtered by held-out admission" (2606.11926) |
+| wang2023selfconsistency, cobbe2021gsm8k, baek2024researchagent | as in #11 | anchor reference list / `ideation/REPORT.md` (verified from the PDF) |
+
+Result: every claim is supported; two were reworded to match the full text (Svete: theoretical setting stated; Arbor: held-out admission). The earlier line "Claims were checked against abstracts only" is superseded by this section.
