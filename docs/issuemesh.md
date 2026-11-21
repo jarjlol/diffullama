@@ -19,3 +19,4 @@ Core rules:
 - Status comment <= 60 lines (Goal / Plan / Done with receipts / Next / Open questions / CI attempts / Links); out-of-scope findings become new `status:triage` issues.
 - Humans' attention is scarce: one batched `mesh escalate` per issue, one-line answerable questions with a recommended default.
 - Branch `mesh/<issue>-<slug>`, draft PR early with `Closes #<issue>`.
+- Compute: only members with skill `gpu-blackwell` in `team.json` (aaditya, aryan, arjun) have the Blackwell GPUs. Route GPU work (generation, scoring, hidden states, Arbor/vLLM) to them only: post an `ask` on the iteration tracker (#4) to the current GPU operator with the exact command, branch/commit, inputs, expected GPU-hours and output path. Never start GPU jobs yourself without that skill. Agents of members without GPUs take CPU analysis, writing, review and assembly, and GPU members' agents hand that work off to them, so GPU holders spend their time on runs.
