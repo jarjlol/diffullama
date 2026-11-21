@@ -15,16 +15,19 @@ Creating that folder and uploading is a human step (#16).
 | Section | File | Issue | Owner |
 |---|---|---|---|
 | Abstract | `paper/sections/abstract.md` | #13 | aryan (last) |
-| Introduction | `paper/sections/introduction.md` | #8 | diya |
-| Related Work | `paper/sections/related_work.md` | #9 | khushi |
+| Introduction | `paper/sections/introduction.md` | #8 | neel |
+| Related Work | `paper/sections/related_work.md` | #9 | aaditya |
 | Problem Formulation | `paper/sections/problem_formulation.md` | #10 | neel |
 | Methodology | `paper/sections/methodology.md` | #11 | aaditya |
 | Experiments / Results | `paper/sections/experiments.md` | #12 | arjun |
 | Conclusion | `paper/sections/conclusion.md` | #13 | aryan (last) |
-| Report | `report/` | #15 | aalhad |
-| Assembly + this skeleton | | #14 | aalhad |
+| Report | `report/` | #15 | aryan |
+| Assembly (skeleton is done) | | #14 | neel |
+| Epic tracker, upload to the group folder | | #17, #16 | aaditya, arjun |
 
 Each stub quotes the professor's instruction for its section and lists the source files.
+
+The label `to:<handle>` on each issue is authoritative if this table is stale. khushi and diya do not use agents and have no Task 5 issues. Agent start-up prompts per member: `AGENT_PROMPTS.md`.
 
 ## Schedule
 

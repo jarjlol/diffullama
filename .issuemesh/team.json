@@ -38,7 +38,9 @@
           "wip": 2
         }
       ],
-      "skills": [],
+      "skills": [
+        "gpu-blackwell"
+      ],
       "route_mentions_to_agent": true
     },
     {
@@ -46,12 +48,14 @@
       "github": "ItsNotArjun",
       "agents": [
         {
-          "name": "claude",
-          "runtime": "claude-code",
+          "name": "opencode",
+          "runtime": "opencode",
           "wip": 2
         }
       ],
-      "skills": [],
+      "skills": [
+        "gpu-blackwell"
+      ],
       "route_mentions_to_agent": true
     },
     {
@@ -69,34 +73,28 @@
           "wip": 2
         }
       ],
-      "skills": [],
+      "skills": [
+        "gpu-blackwell"
+      ],
       "route_mentions_to_agent": true
     },
     {
       "handle": "khushi",
       "github": "KhushiPandey1805",
-      "agents": [
-        {
-          "name": "claude",
-          "runtime": "claude-code",
-          "wip": 2
-        }
-      ],
       "skills": [],
-      "route_mentions_to_agent": true
+      "route_mentions_to_agent": true,
+      "agent": {
+        "enabled": false
+      }
     },
     {
       "handle": "diya",
       "github": "DiyaSrivastava295",
-      "agents": [
-        {
-          "name": "claude",
-          "runtime": "claude-code",
-          "wip": 2
-        }
-      ],
       "skills": [],
-      "route_mentions_to_agent": true
+      "route_mentions_to_agent": true,
+      "agent": {
+        "enabled": false
+      }
     }
   ],
   "areas": {},
@@ -113,7 +111,7 @@
     "max_agent_streak": 8,
     "decision_window_hours": 24,
     "standup": "daily",
-    "agents_can_merge": false,
+    "agents_can_merge": true,
     "wake": false
   }
 }
