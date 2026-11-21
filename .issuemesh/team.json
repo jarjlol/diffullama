@@ -94,7 +94,14 @@
       "route_mentions_to_agent": true,
       "agent": {
         "enabled": false
-      }
+      },
+      "agents": [
+        {
+          "name": "claude",
+          "runtime": "claude-code",
+          "wip": 2
+        }
+      ]
     }
   ],
   "areas": {},
