@@ -1,7 +1,7 @@
 # N4 — CPU analysis for iteration 2 (neel's agent, 21 Nov 2026)
 
 Spec: `ITERATION_2_PROMPTS.md` § N4. Branch `iter2/neel` (from `iter2/aaditya-worker` @ 1d71241).
-Status: steps 1, 2 and 3 **done** (below; step 1–2 run on Blackwell by aaditya's agent, 21 Nov 09:23 UTC, #4 comment from Aadityahv). The extraction audit's 20 candidates were written to `~/codify/iter2/neel/n4/audit.txt` on Blackwell and **have not been read yet** [pending]. Earlier status: steps 1–2 were scripted and tested on synthetic
+Status: steps 1, 2 and 3 **done** (below; step 1–2 run on Blackwell by aaditya's agent, 21 Nov 09:23 UTC, #4 comment from Aadityahv). The extraction audit is **done** (below; the 20 candidates were pasted by arjun's agent on #4, 21 Nov 11:36 UTC, and read by hand). Earlier status: steps 1–2 were scripted and tested on synthetic
 items before the real run: the cached `items.jsonl` (git-ignored) live only on Blackwell, and the Drive
 copy is not reachable from neel's agent's container. Tuned-majority bar: already frozen by aryan/codex
 (`results/iter2/aryan/support-N4/`: on gate 200 it equals plain majority, 0 wins / 0 losses on both models).
@@ -70,3 +70,17 @@ Dev split, questions where majority vote is wrong and some candidate is right (r
 - **other** — dream-base 3/29, llada-base 5/26.
 
 Implications for A3: about 34% of Dream's (10/29) and 42% of LLaDA's (11/26) recoverable failures are arithmetic slips, which a per-candidate re-check can see. This is the signal iteration-1's merged rule 4.1 used, and it tied majority. That suggests a stronger arithmetic check (all steps, and whether the answer follows from the last step: S³'s s2/s3, `SOTA.md` S-2) rather than a new signal. close_second is the largest Dream class. Any vote weighting that moves one vote flips these, so they are the cheapest wins and also the easiest overfits; test on gate, not dev.
+
+## Extraction audit (20 candidates from the dev majority-wrong-oracle-right questions, seed 0; read by hand)
+
+Source: `~/codify/iter2/neel/n4/audit.txt` on Blackwell, pasted verbatim by arjun's agent on #4 (comment of 2026-11-21 11:36 UTC). Each candidate is shown as its tail (cut after `#### N`) with the extracted answer; no gold.
+
+| Verdict | Count | Candidates |
+|---|---|---|
+| Extracted the number the candidate wrote after `####` (correct extraction) | 15 | llada 3569/4, 5567/0, 6389/7, 4508/4, 0558/0, 6373/8, 2728/6, 6551/6, 7360/5, 0558/7; dream 1765/1, 7277/5, 4814/3, 2993/7, 5034/0 |
+| Candidate's `####` value contradicts its own reasoning (model slip, extractor faithful) | 1 | llada 6845/3: reasoning ends "$4.60", marker says `#### 460` |
+| Degenerate repetition with no `####`; the last-number fallback returns a noise number | 4 | dream 6088/3 → 1, 4814/2 → 54, 7360/8 → 12, 7084/6 → 7550 |
+
+**No extraction mismatch** in the sense of the N4 spec: whenever a candidate wrote a final answer, `task.extract_answer` took it. Two findings follow:
+- **Degenerate Dream samples cast noise votes:** 4 of the 9 Dream candidates in the sample loop on repeated text and get a fallback "answer". Filtering such candidates before voting (S³'s non-degeneracy component, `SOTA.md` S-2; Leap idea 3 in `memory/RESEARCH_REPORT.md`) is a cheap, CPU-only test for A3.
+- **Junk after `####` is common** (8 of the 15 clean ones run on into unrelated text: a new "Question:", instructions, page fragments). This is the I-22 pattern, and grading is unaffected because the number is read right after `####`.
