@@ -1,0 +1,22 @@
+# Appendix: LLM-in-the-loop provenance
+
+This appendix records, for each paper section and each pipeline, which assignment output fed it, what the LLM did, and what was checked. It is a provenance record, not a claim that any output is correct. Commit hashes are the heads used for the section drafts; the reviewer links are the receipts.
+
+| Section | Source output (path @ commit) | LLM role | Verification | Receipt |
+|---|---|---|---|---|
+| Abstract (#13) | The assembled draft plus `experiments.md` @ `6e6a454` | Drafted from the rest of the paper; condensed to ~150 words | Every number traced to `experiments.md` by neel's agent; claim-level review on PR #33 | PR #33 |
+| Introduction (#8) | `limitations/REPORT.md` and `limitations/output/` @ `69d76a8`; `#10`; `ideation/REPORT.md` @ `e5f3383` | Drafted the motivation and contributions from those outputs | Agent review on PR #24. The human read was waived by neel (2026-11-20), stated in the #8 status | PR #24 |
+| Related Work (#9) | `litreview/REPORT.md` and `litreview/output/` @ `69d76a8` | Arranged the retrieved literature into the hierarchical catalogue | Manual filtering of unrelated papers; citations kept positional; agent review on PR #22 | PR #22 |
+| Problem Formulation (#10) | Research problem P1 in `ideation/output/research_problems_and_ideas.md` @ `e5f3383`; `codification/` @ `6ffafa5` | Turned P1 into the mathematical definition | Two agent passes against the Task 4 code; human check waived by neel; arjun approved PR #19 and #37 | PR #19, #37 |
+| Methodology (#11) | `ideation/output/`; `codification/IDEA_SELECTION.md`, `ITERATION_1.md`, `rerank_task/README.md` @ `6ffafa5` | Wrote the high-level method without implementation detail | Arjun and neel reviews; 7 bibliography entries checked against the arXiv API; PR #23 and #38 | PR #23, #38 |
+| Experiments (#12) | `codification/ITERATION_1.md` @ `69d76a8`; `ITERATION_2.md` and the `results/iter2/` files on Blackwell | Drafted the results and tables; no number invented | Neel checked every table and sentence against the raw result files; fixes recorded on PR #26 | PR #26 |
+| Conclusion (#13) | The assembled draft plus `experiments.md` @ `6e6a454` | Drafted the conclusions from the other sections | Same claim-level review as the Abstract; no new number or citation | PR #33 |
+
+| Pipeline | Output used | LLM role | Verification | Receipt |
+|---|---|---|---|---|
+| Literature review (`litreview/` @ `69d76a8`) | `output/generated_survey.md`, `data/candidates_topK.json` | Survey generation was manual: Claude read `reference_brief.txt` and wrote the survey. Retrieval, ranking and evaluation are deterministic scripts | 48 references independently verified as real; overlap with the anchor's related work reported; a questionable fuzzy match in a later judged set is disclosed | `litreview/REPORT.md` |
+| Limitations (`limitations/` @ `69d76a8`) | `output/limitations_and_research_problem.md` | Extractor, Analyzer, Reviewer, Citation and Judge roles, some manual LLM passes | Multi-agent consolidation plus human judging; coverage caveat stated because the ground truth is author-stated | `limitations/REPORT.md` |
+| Ideation (`ideation/` @ `e5f3383`) | `output/research_problems_and_ideas.md` | ResearchAgent generated problems, methods and experiments; ReviewingAgents scored them on five criteria over three rounds | Output kept unedited; a team audit found lineage errors and saturated ratings, and the selected idea was chosen for task fit, not rank alone | `ideation/REPORT.md` §7 |
+| Codification (`codification/` @ `6ffafa5`) | `ITERATION_1.md`, `results/iter1/`, `results/iter2/` | Arbor proposed selector hypotheses, edited `solution.py`, and merged on held-out gain; every iteration-1 proposal passed a review gate | Protected evaluator, paired statistics, leakage/correctness gates, and the iteration-1 to 2 audit (I-21, I-22) | `codification/ITERATION_1.md`, `ITERATION_2.md` |
+
+**Waivers and limits.** The human checks on #8 and #10 were waived by neel and the sections say so. The related-work filtering was an agent-assisted pass, not an independent human screen. Every section was reviewed by another member's agent, but no section received an independent human line-by-line check. The LLM roles above are the ones recorded in the status comments and reports; where a role was manual, the table says so.
