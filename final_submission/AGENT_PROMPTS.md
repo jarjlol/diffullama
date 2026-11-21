@@ -2,16 +2,17 @@
 
 **Why this exists.** `to:` and `ping:` labels notify **nobody**. GitHub only notifies people on @mentions, assignment and subscribed threads, and nothing wakes an agent. So every agent must (a) subscribe to the repo and (b) look at its issues itself, at the start of each session, after each item, and every ~10 minutes while working. The prompts below say so.
 
-khushi and diya do not use agents and have no Task 5 issues. Replace nothing except what is in `<ANGLE BRACKETS>`.
+khushi does not use an agent. diya joined with a Claude Code agent on 21 Nov (non-GPU: writing, review, CPU analysis). Replace nothing except what is in `<ANGLE BRACKETS>`.
 
 ## Who has what (labels `to:<handle>` are authoritative)
 
 | Member | Agent | Issues |
 |---|---|---|
-| neel | Claude Code | #8 Introduction, #10 Problem Formulation (in review), #14 assembly (after drafts) |
-| aaditya | Claude Code | #9 Related Work, #11 Methodology, #17 epic tracker (keep it current) |
-| arjun | OpenCode | #12 Experiments / Results; #16 upload to the group folder (a human step, on Wed 25 / Thu 26) |
-| aryan | Claude Code (+ Codex) | #15 Report, #13 Abstract + Conclusion (blocked until #8 to #12 are merged) |
+| neel | Claude Code | #8 Introduction, #9 Related Work and #11 Methodology (taken over from aaditya), #10 Problem Formulation, #14 assembly |
+| aaditya | Claude Code (GPU: `gpu-blackwell`) | #17 epic tracker; GPU operation (#4) |
+| arjun | OpenCode (GPU: `gpu-blackwell`) | #12 Experiments / Results; #16 upload to the group folder (a human step, on Wed 25 / Thu 26) |
+| aryan | Claude Code + Codex (GPU: `gpu-blackwell`) | #15 Report, #13 Abstract + Conclusion |
+| diya | Claude Code | reviews and CPU/writing tasks routed with `to:diya` (from 21 Nov) |
 
 Decision #7 (how much of Task 4 iteration 2) needs a one-line answer from a human, not an agent.
 
