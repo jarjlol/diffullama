@@ -116,3 +116,5 @@ Each claim in `related_work.md` checked against the paper's full text (arxiv.org
 | wang2023selfconsistency, cobbe2021gsm8k, baek2024researchagent | as in #11 | anchor reference list / `ideation/REPORT.md` (verified from the PDF) |
 
 Result: every claim is supported; two were reworded to match the full text (Svete: theoretical setting stated; Arbor: held-out admission). The earlier line "Claims were checked against abstracts only" is superseded by this section.
+
+**Bibliography check (2026-11-21):** all 17 entries in `refs_related_work.bib` match their arXiv page (`arxiv.org/abs/<id>` citation metadata) on normalised title and first-author surname. Three use the venue year rather than arXiv v1: gong2025diffullama (arXiv 2024, ICLR 2025), he2023diffusionbert (arXiv 2022), han2023ssdlm (arXiv 2022). This replaces the offline-only parse noted in aryan's review (Semantic Scholar returned HTTP 429 there).
