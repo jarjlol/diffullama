@@ -1,8 +1,8 @@
 # N4 — CPU analysis for iteration 2 (neel's agent, 21 Nov 2026)
 
 Spec: `ITERATION_2_PROMPTS.md` § N4. Branch `iter2/neel` (from `iter2/aaditya-worker` @ 1d71241).
-Status: step 3 **done** (below). Steps 1, 2 and the extraction audit are **scripted and tested on synthetic
-items, not yet run on real items**: the cached `items.jsonl` (git-ignored) live only on Blackwell, and the Drive
+Status: steps 1, 2 and 3 **done** (below; step 1–2 run on Blackwell by aaditya's agent, 21 Nov 09:23 UTC, #4 comment from Aadityahv). The extraction audit's 20 candidates were written to `~/codify/iter2/neel/n4/audit.txt` on Blackwell and **have not been read yet** [pending]. Earlier status: steps 1–2 were scripted and tested on synthetic
+items before the real run: the cached `items.jsonl` (git-ignored) live only on Blackwell, and the Drive
 copy is not reachable from neel's agent's container. Tuned-majority bar: already frozen by aryan/codex
 (`results/iter2/aryan/support-N4/`: on gate 200 it equals plain majority, 0 wins / 0 losses on both models).
 
@@ -47,6 +47,26 @@ Synthetic test (`rerank_task` copy, 4 real dev uids, one planted case per class 
 question and one planted extraction mismatch): classes 1/1/1/0 of 3 majority-wrong-oracle-right questions,
 extraction_suspect 1, the majority-right question skipped — as planted.
 
+## Steps 1–2 — real run (aaditya's agent, Blackwell CPU, 1 s, code @ 024ab82, `--task-dir ~/arbor-rerank-iter2`)
+
+Answer diversity (iteration-1 candidates, N = 10; test = the 200-question gate split):
+
+| Model | Split | Questions | Mean distinct answers | Mean entropy (bits) | No-answer share |
+|---|---|---|---|---|---|
+| dream-base | dev | 200 | 5.755 | 2.062 | 0.001 |
+| dream-base | test | 200 | 6.15 | 2.194 | 0.002 |
+| llada-base | dev | 200 | 4.64 | 1.629 | 0.0075 |
+| llada-base | test | 200 | 5.105 | 1.818 | 0.001 |
+
+Reading: Dream's candidates are more diverse than LLaDA's (about 1 more distinct answer per question, +0.4 bits). This is a confound for any preservation-vs-headroom comparison between the two, since rerankable headroom grows with diversity. The extraction-suspect flag fired on 1 Dream question and 0 LLaDA questions, so answer extraction is unlikely to explain majority-vote failures (to be confirmed by reading the 20-candidate audit).
+
 ## Failure classes for A3
 
-_Pending the real run above (dev counts per model, labels only)._
+Dev split, questions where majority vote is wrong and some candidate is right (rules fixed before the run; see `n4/n4_items.py`). Counts and labels only, no gold:
+
+- **arithmetic_slip** — dream-base 10/29, llada-base 11/26. Most candidates voting for the wrong plurality contain a calculation that does not re-check. Example: the plurality answer comes from a step like "a × b = c" with c wrong.
+- **close_second** — dream-base 13/29, llada-base 7/26. The correct answer had at most one vote fewer than the plurality. Example: 3 votes vs 2.
+- **shared_wrong** — dream-base 3/29, llada-base 3/26. At least half of the candidates agree on the same wrong answer with no detectable arithmetic slip. Example: a misread of the question repeated across samples.
+- **other** — dream-base 3/29, llada-base 5/26.
+
+Implications for A3: about 37% of Dream's and 42% of LLaDA's recoverable failures are arithmetic slips, which a per-candidate re-check can see. This is the signal iteration-1's merged rule 4.1 used, and it tied majority. That suggests a stronger arithmetic check (all steps, and whether the answer follows from the last step: S³'s s2/s3, `SOTA.md` S-2) rather than a new signal. close_second is the largest Dream class. Any vote weighting that moves one vote flips these, so they are the cheapest wins and also the easiest overfits; test on gate, not dev.
