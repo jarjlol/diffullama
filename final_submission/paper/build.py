@@ -32,8 +32,8 @@ OUT = HERE / "build"
 ORDER = [("abstract", "Abstract", 13), ("introduction", "Introduction", 8), ("related_work", "Related Work", 9),
          ("problem_formulation", "Problem Formulation", 10), ("methodology", "Methodology", 11),
          ("experiments", "Experiments", 12), ("conclusion", "Conclusion", 13)]
-BRANCH = {8: "mesh/8-introduction", 9: "mesh/9-related-work", 10: "mesh/10-problem-formulation",
-          11: "mesh/11-methodology", 12: "mesh/12-experiments", 13: "mesh/13-abstract-conclusion"}
+BRANCH = {8: "mesh/8-introduction", 9: "mesh/9-related-work", 12: "mesh/12-experiments", 13: "mesh/13-abstract-conclusion"}
+# Sections already merged (#10, #11) are read from main.
 
 
 def git_show(ref: str, path: str) -> str | None:
@@ -43,7 +43,7 @@ def git_show(ref: str, path: str) -> str | None:
 
 def read(path: str, issue: int, from_branches: bool) -> tuple[str | None, str]:
     if from_branches:
-        for ref in (f"origin/{BRANCH[issue]}", "origin/main"):
+        for ref in ([f"origin/{BRANCH[issue]}"] if issue in BRANCH else []) + ["origin/main"]:
             t = git_show(ref, path)
             if t is not None:
                 return t, ref
@@ -83,13 +83,14 @@ def main() -> int:
     ap.add_argument("--from-branches", action="store_true")
     a = ap.parse_args()
     report, body = [], []
+    appendix_md = None
 
     bibs, sources = {}, []
     for p in sorted((HERE).glob("refs_*.bib")):
         sources.append((p.name, p.read_text(encoding="utf-8")))
     if a.from_branches:
         for issue, name in ((9, "refs_related_work.bib"), (11, "refs_methodology.bib")):
-            t = git_show(f"origin/{BRANCH[issue]}", f"final_submission/paper/{name}")
+            t = git_show(f"origin/{BRANCH[issue]}" if issue in BRANCH else "origin/main", f"final_submission/paper/{name}")
             if t and name not in {n for n, _ in sources}:
                 sources.append((name, t))
     seen_eprint = {}
@@ -137,6 +138,18 @@ def main() -> int:
         body.append(f"## {title}\n\n{text}\n")
         report.append(f"section {slug}: from {src}")
 
+    # Optional appendix (#36): placed after the references as a supplementary page (outside the 4 body pages).
+    app, asrc = (git_show("origin/mesh/36-provenance-appendix", "final_submission/paper/appendix_provenance.md"), "origin/mesh/36-provenance-appendix") if a.from_branches else (None, "")
+    if app is None and (HERE / "appendix_provenance.md").exists():
+        app, asrc = (HERE / "appendix_provenance.md").read_text(encoding="utf-8"), "checkout"
+    if app is None and a.from_branches:
+        app, asrc = git_show("origin/main", "final_submission/paper/appendix_provenance.md"), "origin/main"
+    if app:
+        app = re.sub(r"<!--.*?-->", "", app, flags=re.S).strip()
+        app = re.sub(r"^#\s+(.*)\n", r"## \1\n", app, count=1)
+        appendix_md = app
+        report.append(f"appendix provenance: from {asrc}")
+
     refs = sorted(set(cited), key=lambda k: (surname(bibs[k]).lower(), bibs[k].get("year", "")))
     lines = []
     for k in refs:
@@ -146,7 +159,7 @@ def main() -> int:
         ident = f" arXiv:{e['eprint']}." if e.get("eprint") else ""
         lines.append(f"- {au_s} ({e.get('year', 'n.d.')}). {e.get('title', '').strip('{}')}.{ident}")
     md = ("---\ntitle: \"Does Representation Preservation Predict AR Reranking Gains in Adapted Diffusion LMs?\"\n---\n\n"
-          + "::: {.cols}\n\n" + "\n".join(body) + "\n:::\n\n::: {.refs}\n\n## References\n\n" + "\n".join(lines) + "\n\n:::\n")
+          + "::: {.cols}\n\n" + "\n".join(body) + "\n:::\n\n::: {.refs}\n\n## References\n\n" + "\n".join(lines) + "\n\n:::\n" + (f"\n::: {{.appendix}}\n\n{appendix_md}\n\n:::\n" if appendix_md else ""))
     OUT.mkdir(exist_ok=True)
     (OUT / "paper.md").write_text(md, encoding="utf-8")
     css = OUT / "paper.css"
@@ -156,6 +169,7 @@ body { font-family: 'Times New Roman', Times, serif; font-size: 9.5pt; line-heig
 header#title-block-header { text-align: center; } h1.title { font-size: 15pt; margin: 0 0 4mm; }
 h2 { font-size: 11pt; margin: 3mm 0 1.5mm; } h3 { font-size: 10pt; margin: 2.5mm 0 1mm; } p { margin: 0 0 1.6mm; text-align: justify; }
 table { border-collapse: collapse; font-size: 7.5pt; width: 100%; margin: 1.5mm 0; } td, th { border-top: 0.4pt solid #888; padding: 0.6mm 1mm; }
+.appendix { break-before: page; font-size: 7.5pt; } .appendix table { table-layout: fixed; }
 .refs { break-before: page; columns: 2; column-gap: 7mm; font-size: 8pt; } .refs ul { padding-left: 3mm; } math { font-size: 95%; }
 """, encoding="utf-8")
     subprocess.run(["pandoc", str(OUT / "paper.md"), "-s", "--mathml", "-c", "paper.css", "-o", str(OUT / "paper.html")], check=True)
@@ -170,7 +184,7 @@ const n=await p.evaluate(()=>{const r=document.querySelector('.refs');return r?1
     # body pages: render once more without the reference list
     html = (OUT / "paper.html").read_text(encoding="utf-8")
     body_html = OUT / "_body.html"
-    body_html.write_text(re.sub(r'<(div|section)[^>]*class="refs"[^>]*>.*?</\1>', "", html, flags=re.S), encoding="utf-8")
+    body_html.write_text(re.sub(r'<(div|section)[^>]*class="(refs|appendix)"[^>]*>.*?</\1>', "", html, flags=re.S), encoding="utf-8")
     subprocess.run(["node", f.name, str(body_html), str(OUT / "_body.pdf")], check=True, cwd=str(ROOT))
     body_pages = pdf_pages((OUT / "_body.pdf").read_bytes())
     body_html.unlink(); (OUT / "_body.pdf").unlink(); Path(f.name).unlink()
@@ -178,7 +192,7 @@ const n=await p.evaluate(()=>{const r=document.querySelector('.refs');return r?1
     print("\n".join(report))
     print(f"references: {len(refs)} cited of {len(bibs)} in the merged bib")
     print("unresolved citations: " + (", ".join(sorted(set(unresolved))) or "none"))
-    print(f"pages: {pages} total, {body_pages} body (limit 4), {pages - body_pages} references (not capped)")
+    print(f"pages: {pages} total, {body_pages} body (limit 4), {pages - body_pages} references + appendix (not capped)")
     print(f"wrote {OUT / 'paper.pdf'}")
     return 0
 
