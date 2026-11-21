@@ -4,7 +4,7 @@
   "majority": 0.724,
   "oracle": 0.878,
   "acc": {
-    "dlm.selfscore": 0.004,
+    "dlm.selfscore": 0.304,
     "gpt2-cut:mean": 0.268,
     "gpt2-cut:sum": 0.298,
     "gpt2:mean": 0.346,
@@ -84,14 +84,14 @@
       "mcnemar_p": 0.00019429778641481447
     },
     "dlm.selfscore - majority": {
-      "diff": -0.72,
+      "diff": -0.42,
       "ci95": [
-        -0.758,
-        -0.682
+        -0.466,
+        -0.374
       ],
-      "wins": 0,
-      "losses": 360,
-      "mcnemar_p": 8.515919680016301e-109
+      "wins": 9,
+      "losses": 219,
+      "mcnemar_p": 1.8899513865937852e-53
     },
     "gpt2-cut:mean - majority": {
       "diff": -0.456,
