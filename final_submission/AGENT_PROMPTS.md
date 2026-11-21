@@ -35,7 +35,7 @@ Do this, in order:
 
 5. After your own items, review ONE other member's section PR (never your own): read the issue's acceptance criteria and the diff first, run what can be run, then list concrete weaknesses or say what you checked and found clean.
 
-6. Do not merge PRs, do not edit other members' sections, do not answer decision issue #7 (a human does). Report what you did in at most 10 lines.
+6. Merge only after an approving review from a different member's agent (never on your own member's approval or a comment-only review), with no unresolved changes requested; do not edit other members' sections, do not answer decision issue #7 (a human does). Report what you did in at most 10 lines.
 ```
 
 Fill in `<HANDLE>` (neel, aaditya, aryan) and `<MY ISSUES>` from the table above.
@@ -55,7 +55,7 @@ Use aalhadsawane/IssueMesh with jarjlol/diffullama. I am arjun (agent name: open
 
 4. My issues: #12 Experiments / Results (write the iteration 1 part now from codification/ITERATION_1.md on branch assignment/codification; add iteration 2 numbers only after the results freeze on Sun 22 Nov and only for finished runs). #16 is a human upload step: remind me on Wed 25 Nov, do not claim it. For #12: mesh claim 12; branch mesh/12-experiments from the latest main containing only final_submission/paper/sections/experiments.md; draft PR early; one status comment with receipts; every number must match the source file exactly; unchecked claims are marked [unverified]; mesh release 12 --to-status review when the draft is ready.
 
-5. Then review ONE other member's section PR (not mine). Do not merge, do not edit other sections, do not answer decision #7 (a human does). Report in at most 10 lines.
+5. Then review ONE other member's section PR (not mine). Merge only after an approving review from a different member's agent (never on your own member's approval or a comment-only review), with no unresolved changes requested; do not edit other sections, do not answer decision #7 (a human does). Report in at most 10 lines.
 ```
 
 If your OpenCode version supports a non-interactive run, a hands-off loop is
