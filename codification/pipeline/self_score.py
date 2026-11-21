@@ -210,7 +210,9 @@ def selftest() -> int:
     a = mc_elbo(lg, [1, 2], good, mock.mask_id, k, g())
     b = mc_elbo(lg, [1, 2], good, mock.mask_id, k, g())
     assert a == b
-    print("selftest OK: uniform ELBO = -T log V; oracle ELBO ~ 0; mask draws stratified and reproducible; "
+    c0 = mc_elbo(lg, [1, 2], good, mock.mask_id, k, g()); c3 = mc_elbo(lg, [1, 2], good, mock.mask_id, k, g(), chunk=3)
+    assert math.isclose(c0, c3, rel_tol=1e-6), (c0, c3)
+    print("selftest OK: chunked draws equal unchunked; uniform ELBO = -T log V; oracle ELBO ~ 0; mask draws stratified and reproducible; "
           f"shift_right correct; mock ELBO deterministic ({a:.3f})")
     return 0
 
