@@ -218,9 +218,15 @@ def analyze(a) -> int:
     d = Path(a.dir) if a.dir else PQ_DIR
     dre = torch.load(d / f"dream.{a.split}.pt"); qwe = torch.load(d / f"qwen7b.{a.split}.pt")
     assert dre["uids"] == qwe["uids"], "different question lists"
-    uids = dre["uids"]
-    A = {k: dre[k].numpy().astype(np.float64) for k in ("all", "nosink")}
-    B = {k: qwe[k].numpy().astype(np.float64) for k in ("all", "nosink")}
+    # the extraction covers every test question in work/data/test.jsonl (1319); outcomes exist only for those with cached
+    # candidates AND the chosen AR scorer's features (the first 500). Keep exactly those, in file order.
+    have = {r["uid"] for r in read_jsonl(WORK / "candidates" / "dream-base" / f"{a.split}.jsonl")} &            {r["uid"] for r in read_jsonl(WORK / "features" / "dream-base" / f"{a.split}.{a.scorer}.jsonl")}
+    idx = [i for i, u in enumerate(dre["uids"]) if u in have]
+    assert idx, "no question has both hidden states and candidates"
+    uids = [dre["uids"][i] for i in idx]
+    A = {k: dre[k].numpy().astype(np.float64)[idx] for k in ("all", "nosink")}
+    B = {k: qwe[k].numpy().astype(np.float64)[idx] for k in ("all", "nosink")}
+    dre["n_tokens"] = [dre["n_tokens"][i] for i in idx]; dre["ids"] = [dre["ids"][i] for i in idx]; qwe["ids"] = [qwe["ids"][i] for i in idx]
     assert A["all"].shape == B["all"].shape, (A["all"].shape, B["all"].shape)
     N, L, _ = A["all"].shape
     same_ids = sum(i == j for i, j in zip(dre["ids"], qwe["ids"]))
