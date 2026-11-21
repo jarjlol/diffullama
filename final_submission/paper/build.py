@@ -71,6 +71,13 @@ def short(e: dict) -> str:
     return f"{surname(e)}{tail}, {e.get('year', 'n.d.')}"
 
 
+def pdf_pages(data: bytes) -> int:
+    """Page count from the PDF page tree (/Type /Pages ... /Count n); outline /Count entries are ignored."""
+    counts = [int(m.group(1)) for d in re.findall(rb"<<(?:[^<>]|<<[^<>]*>>)*>>", data) if re.search(rb"/Type\s*/Pages\b", d)
+              for m in [re.search(rb"/Count\s+(\d+)", d)] if m]
+    return max(counts) if counts else 0
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--from-branches", action="store_true")
@@ -139,16 +146,17 @@ def main() -> int:
         ident = f" arXiv:{e['eprint']}." if e.get("eprint") else ""
         lines.append(f"- {au_s} ({e.get('year', 'n.d.')}). {e.get('title', '').strip('{}')}.{ident}")
     md = ("---\ntitle: \"Does Representation Preservation Predict AR Reranking Gains in Adapted Diffusion LMs?\"\n---\n\n"
-          + "\n".join(body) + "\n<div class=\"refs\">\n\n## References\n\n" + "\n".join(lines) + "\n\n</div>\n")
+          + "::: {.cols}\n\n" + "\n".join(body) + "\n:::\n\n::: {.refs}\n\n## References\n\n" + "\n".join(lines) + "\n\n:::\n")
     OUT.mkdir(exist_ok=True)
     (OUT / "paper.md").write_text(md, encoding="utf-8")
     css = OUT / "paper.css"
     css.write_text("""@page { size: A4; margin: 18mm 15mm; }
-body { font-family: 'Times New Roman', Times, serif; font-size: 9.5pt; line-height: 1.25; columns: 2; column-gap: 7mm; }
-header#title-block-header { column-span: all; text-align: center; } h1.title { font-size: 15pt; margin: 0 0 4mm; }
+body { font-family: 'Times New Roman', Times, serif; font-size: 9.5pt; line-height: 1.25; }
+.cols { columns: 2; column-gap: 7mm; }
+header#title-block-header { text-align: center; } h1.title { font-size: 15pt; margin: 0 0 4mm; }
 h2 { font-size: 11pt; margin: 3mm 0 1.5mm; } h3 { font-size: 10pt; margin: 2.5mm 0 1mm; } p { margin: 0 0 1.6mm; text-align: justify; }
 table { border-collapse: collapse; font-size: 7.5pt; width: 100%; margin: 1.5mm 0; } td, th { border-top: 0.4pt solid #888; padding: 0.6mm 1mm; }
-.refs { break-before: page; font-size: 8pt; } .refs ul { padding-left: 3mm; } math { font-size: 95%; }
+.refs { break-before: page; columns: 2; column-gap: 7mm; font-size: 8pt; } .refs ul { padding-left: 3mm; } math { font-size: 95%; }
 """, encoding="utf-8")
     subprocess.run(["pandoc", str(OUT / "paper.md"), "-s", "--mathml", "-c", "paper.css", "-o", str(OUT / "paper.html")], check=True)
     js = """const {chromium}=require('playwright');(async()=>{const b=await chromium.launch();const p=await b.newPage();
@@ -158,13 +166,13 @@ const n=await p.evaluate(()=>{const r=document.querySelector('.refs');return r?1
         f.write(js)
     subprocess.run(["node", f.name, str(OUT / "paper.html"), str(OUT / "paper.pdf")], check=True, cwd=str(ROOT))
     pdf = (OUT / "paper.pdf").read_bytes()
-    pages = max(int(x) for x in re.findall(rb"/Count (\d+)", pdf))
+    pages = pdf_pages(pdf)
     # body pages: render once more without the reference list
     html = (OUT / "paper.html").read_text(encoding="utf-8")
     body_html = OUT / "_body.html"
     body_html.write_text(re.sub(r'<(div|section)[^>]*class="refs"[^>]*>.*?</\1>', "", html, flags=re.S), encoding="utf-8")
     subprocess.run(["node", f.name, str(body_html), str(OUT / "_body.pdf")], check=True, cwd=str(ROOT))
-    body_pages = max(int(x) for x in re.findall(rb"/Count (\d+)", (OUT / "_body.pdf").read_bytes()))
+    body_pages = pdf_pages((OUT / "_body.pdf").read_bytes())
     body_html.unlink(); (OUT / "_body.pdf").unlink(); Path(f.name).unlink()
 
     print("\n".join(report))
