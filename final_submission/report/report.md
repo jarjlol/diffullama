@@ -2,7 +2,7 @@
 
 BITS F471 Group 3 | Task 5 | 21 November 2026
 
-Our work moved from finding a defensible research gap to testing answer selection for diffusion language models. The strongest completed experimental result is a limitation: the selector produced by Arbor did not improve on majority vote on the held-out questions. Iteration 2 has already improved the diagnosis of the decoding gap, while its new selection experiments remain unfinished. This report separates those completed observations from planned work. [S1, S7, S8]
+Our work moved from finding a defensible research gap to testing answer selection for diffusion language models. The strongest completed experimental result is a limitation: the selector produced by Arbor did not improve on majority vote on the held-out questions. Iteration 2 has already improved the diagnosis of the decoding gap, and its cut-text re-scoring, step-budget arm and self-score have finished; the stronger selector search remains unfinished. This report separates those completed observations from planned work. [S1, S7, S8]
 
 ## Anchor paper and understanding the method
 
@@ -64,7 +64,7 @@ Final-split accuracy (%) is shown below. Each model has 300 questions. "Best AR"
 
 Arbor merged verification-weighted voting against its weaker seed, not against majority vote. On the final split it recovered three Dream questions majority missed and lost four majority got right; for LLaDA the counts were three and three. Both exact McNemar comparisons had p = 1.000. The result supports no demonstrated gain over majority under this protocol; it does not establish equivalence. [S7, S9]
 
-The preservation analysis covered only four models with autoregressive bases, three near the task floor. Reported correlations were descriptive, with exact permutation p-values at least 0.083. Neither the sample size nor the missing step-budget comparison supports the full claim that preservation predicts reranking advantage. The original AR-loss result also needs the cut-text re-scoring described below before it can support a broader conclusion. [S7, S8, S10]
+The preservation analysis covered only four models with autoregressive bases, three near the task floor. Reported correlations were descriptive, with exact permutation p-values at least 0.083. Neither the sample size nor the missing step-budget comparison supports the full claim that preservation predicts reranking advantage. The cut-text re-scoring described below confirms the AR loss, so the descriptive correlation remains the only preservation claim. [S7, S8, S10]
 
 ## What feedback changed
 
@@ -74,26 +74,29 @@ Review replies rejected cross-model cached answers twice, corrected the claimed 
 
 ## Codification iteration 2
 
-The agreed target is the full iteration run in priority order, with the paper's results frozen on 22 November at 18:00 IST. The completed fidelity checks change our interpretation of iteration 1. On the same first 100 test questions, Dream at 256 steps and greedy decoding scored 81%, compared with 41% for the original first sample; LLaDA scored 73%, compared with 51%. A separate Dream published-prompt run had completed only 55 questions, scoring 43 correct. [S8, S11]
+The agreed target is the full iteration run in priority order, with the paper's results frozen on 22 November at 18:00 IST. The completed fidelity checks change our interpretation of iteration 1. On the same first 100 test questions, Dream at 256 steps and greedy decoding scored 81%, compared with 41% for the original first sample; LLaDA scored 73%, compared with 51%. A separate Dream published-prompt run completed 100 questions, scoring 80 correct. [S8, S11]
 
 We independently recounted the saved fidelity records on Blackwell and saved their aggregate counts and SHA-256 digests. These observations support decoding settings as an explanation of much of the earlier accuracy gap. They do not isolate temperature from step count, reproduce the full benchmark, or prove that every pipeline path is bug-free. [S8, S11]
 
-Iteration 2 also identified trailing text after the final answer as a scoring confound. Original trimming stopped at the next question marker, leaving unrelated continuation text in the AR likelihood calculation. The new cut-text path limits scoring through the answer line. Until the re-scoring finishes, we describe the earlier result specifically as AR selection on the original trimmed candidates rather than claiming that AR selection is generally ineffective. [S8]
+Iteration 2 also identified trailing text after the final answer as a scoring confound. Original trimming stopped at the next question marker, leaving unrelated continuation text in the AR likelihood calculation. The new cut-text path limits scoring through the answer line. The cut re-scoring has now finished: the best cut-text AR selector reaches 48.8% on Dream and 52.2% on LLaDA, against majority 72.4% and 73.2% (exact McNemar p < 0.001); cutting recovered 13.0 points on Dream's strongest scorer and left LLaDA unchanged. The AR-selection loss therefore survives removal of the confound. [S8, S13]
 
-The step-budget arm, diffusion self-score, per-question preservation test and stronger Arbor run are pending in the checked evidence. Code and queued commands are not completed results. The Arbor preparation uses a frozen tuned-majority seed, curated findings and failure memories, protected evaluation files, explicit red lines and an order-invariance check. These are planned validity improvements; no accuracy gain is attributed to them yet. The completed numbers above and the original final-split table remain separate because their samples and decoding settings differ. [S8, S12]
+The step-budget arm and diffusion self-score have also finished. Majority goes 3.2→23.4→72.4% on Dream and 3.2→51.0→73.2% on LLaDA for K = 16, 32 and 64; raising K from 16 to 32 adds 9.8 and 19.2 points to the first sample, while majority at K = 16 adds 0.6 and −0.4. Dream's own likelihood reaches 31.5% on the gate against 71.0% for majority. [S13] The per-question preservation test and stronger Arbor run remain pending; code and queued commands are not completed results. The Arbor preparation uses a frozen tuned-majority seed, curated findings and failure memories, protected evaluation files, explicit red lines and an order-invariance check. These are planned validity improvements; no accuracy gain is attributed to them yet. The completed numbers above and the original final-split table remain separate because their samples and decoding settings differ. [S8, S12]
 
 ## Effort, limits and remaining verification
 
 The recurring work was checking assumptions before expensive inference: matching checkpoints to their real bases, tracing erroneous statements, distinguishing lookup failures from missing papers, and keeping development, merge-gate and final evaluation roles separate. Agent-generated text and self-evaluated ratings repeatedly needed external checks. A useful negative result required as much attention to baselines and provenance as a positive result would. [S2, S3, S5, S6, S7]
 
-Before final submission we must refresh the iteration-2 section from completed freeze-time artifacts, attach the independent member review, and verify the final PDF. Pending runs, a published selector comparison and frozen transfer evaluation must remain labelled unfinished if they do not complete. No gain beyond the reported majority-vote baseline is established in the evidence checked for this report. [S8, S12]
+The CPU analyses landed as well: a curated findings memory and ranked GPU queue (T3), a verified SOTA table (N3) in which every published GSM8K test-time number uses an Instruct checkpoint and no prior work links preservation to reranking gain, and a leave-one-out check (N4) that keeps Spearman ρ ≥ +0.5 for 9 of 10 selectors when any one model is dropped. [S14, S15, S16]
+
+Before final submission we must re-pin the iteration-2 evidence at the freeze, attach the independent member review, and verify the final PDF. Pending runs, a published selector comparison and frozen transfer evaluation must remain labelled unfinished if they do not complete. No gain beyond the reported majority-vote baseline is established in the evidence checked for this report. [S8, S12]
 
 ## Evidence sources
 
 - [S1] Project brief and [S2] dated decisions and corrections.
 - [S3] Literature review report and [S4] saved overlap outputs.
 - [S5] Multi-agent limitations report; [S6] ResearchAgent report and output audit.
-- [S7] Codification iteration 1; [S8] iteration-2 draft and issue log.
+- [S7] Codification iteration 1; [S8] iteration-2 draft and issue log; [S13] copied iteration-2 result files.
+- [S14] N4 analysis; [S15] verified SOTA table; [S16] curated findings memory and queue.
 - [S9] Final-split baseline and paired-statistics artifacts; [S10] preservation analysis.
 - [S11] Independently recounted fidelity snapshot; [S12] iteration-2 design and priorities.
 
@@ -104,8 +107,12 @@ Before final submission we must refresh the iteration-2 section from completed f
 [S5]: https://github.com/jarjlol/diffullama/blob/69d76a8/limitations/REPORT.md
 [S6]: https://github.com/jarjlol/diffullama/blob/69d76a8/ideation/REPORT.md
 [S7]: https://github.com/jarjlol/diffullama/blob/69d76a8/codification/ITERATION_1.md
-[S8]: https://github.com/jarjlol/diffullama/blob/31c70fb/codification/ITERATION_2.md
+[S8]: https://github.com/jarjlol/diffullama/blob/66697fd/codification/ITERATION_2.md
 [S9]: https://github.com/jarjlol/diffullama/tree/69d76a8/codification/results/iter1/numbers
 [S10]: https://github.com/jarjlol/diffullama/blob/69d76a8/codification/results/iter1/numbers/analyze_test500.txt
 [S11]: evidence/fidelity_snapshot.json
 [S12]: https://github.com/jarjlol/diffullama/blob/258ae43/codification/ITERATION_2_PROMPTS.md
+[S13]: evidence/iter2/README.md
+[S14]: https://github.com/jarjlol/diffullama/blob/86f5c46/codification/ANALYSIS_ITER2.md
+[S15]: https://github.com/jarjlol/diffullama/blob/22a11cd/codification/SOTA.md
+[S16]: https://github.com/jarjlol/diffullama/tree/024ab82/codification/memory

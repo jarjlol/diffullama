@@ -1,12 +1,12 @@
 {
-  "captured_at": "2026-11-21T00:32:00.817928+05:30",
-  "source": "blackwell:~/codify/diffullama/codification/pipeline/work/fidelity",
+  "captured_at": "2026-11-21T02:57:21.076230+05:30",
+  "source": "blackwell:~/codify/diffullama/codification/pipeline/work/fidelity, verified against codification/results/iter2/aryan/fidelity_complete.json",
   "configs": {
     "dream-published": {
-      "n": 55,
-      "correct": 43,
-      "sha256": "d297814e42c44d452fef6d44c03c016fc5e4f0d5ee545fb93e835e145605e515",
-      "unique_uids": 55
+      "n": 100,
+      "correct": 80,
+      "sha256": "c5cc0125de7120742f7c812478ed3071950fdc04aba17701cbb7f16fe53d55c6",
+      "unique_uids": 100
     },
     "dream-sampler": {
       "n": 100,
