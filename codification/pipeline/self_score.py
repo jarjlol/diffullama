@@ -81,7 +81,7 @@ def draw_masks(target_len, k, gen):
     return is_mask, x.float() / target_len
 
 
-def mc_elbo(logits_fn, prompt_ids, answer_ids, mask_id, k, gen, device="cpu"):
+def mc_elbo(logits_fn, prompt_ids, answer_ids, mask_id, k, gen, device="cpu", chunk=0):
     """Monte-Carlo ELBO of log p(answer | prompt). `logits_fn(x: LongTensor [k, L]) -> [k, L, V]` must return
     logits ALIGNED to positions (logits[:, i] predicts token i; apply shift_right inside it for Dream)."""
     import torch
@@ -92,10 +92,15 @@ def mc_elbo(logits_fn, prompt_ids, answer_ids, mask_id, k, gen, device="cpu"):
     is_mask_ans, t = draw_masks(T, k, gen)
     is_mask = torch.cat([torch.zeros(k, P, dtype=torch.bool), is_mask_ans], dim=1)
     noisy = torch.where(is_mask, torch.tensor(mask_id), seq)
+    # chunk > 0: run the k draws in chunks of that many rows (same masks, same estimator, less GPU memory; used on the 32 GB Ada)
+    parts = []
     with torch.no_grad():
-        logits = logits_fn(noisy.to(device))[:, P:].float()          # answer positions only: [k, T, V]
-    ce = F.cross_entropy(logits.reshape(-1, logits.shape[-1]), seq[:, P:].to(logits.device).reshape(-1),
-                         reduction="none").reshape(k, T).cpu()
+        for s in range(0, k, chunk or k):
+            lg = logits_fn(noisy[s:s + (chunk or k)].to(device))[:, P:].float()      # answer positions only: [rows, T, V]
+            parts.append(F.cross_entropy(lg.reshape(-1, lg.shape[-1]), seq[s:s + (chunk or k), P:].to(lg.device).reshape(-1),
+                                         reduction="none").reshape(lg.shape[0], T).cpu())
+            del lg
+    ce = torch.cat(parts, 0)
     m = is_mask_ans
     loss = (ce * m / t.unsqueeze(1)).sum() / k
     return -float(loss)
@@ -231,6 +236,7 @@ def main() -> int:
                          "<split>.dlmself.jsonl (read by baselines.py); trim: task.trim text (iteration 1), feature "
                          "dlm.selftrim, file <split>.dlmselftrim.jsonl")
     ap.add_argument("--candidates-from", help="read candidates of this model instead (mock wiring test)")
+    ap.add_argument("--chunk", type=int, default=0, help="run the k draws in chunks of this many rows (memory); 0 = all at once")
     ap.add_argument("--out", help="output file (default work/features/<model>/<split>.dlmself.jsonl)")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
@@ -269,7 +275,7 @@ def main() -> int:
                 feats.append({KEY: None, f"{PRE}.nll_sum": None, f"{PRE}.n_tokens": 0}); continue
             assert a.model == "mock" or len(prompt_ids) + len(ans_ids) <= 2048, f"{r['uid']}: prompt+answer too long for Dream/LLaDA windows"
             gen = torch.Generator().manual_seed(seed_for(a.seed, r["uid"], j))
-            elbo = mc_elbo(sc.logits_fn, prompt_ids, ans_ids, sc.mask_id, a.k, gen, device)
+            elbo = mc_elbo(sc.logits_fn, prompt_ids, ans_ids, sc.mask_id, a.k, gen, device, a.chunk)
             feats.append({KEY: elbo / len(ans_ids), f"{PRE}.nll_sum": -elbo, f"{PRE}.n_tokens": len(ans_ids)})
         if n == 1:
             vals = [f[KEY] for f in feats]
