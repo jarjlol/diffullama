@@ -99,3 +99,21 @@ Keep the existing safe CPU export, Tier 1 lanes and queues. Use a staffed, expli
 selected/verified ready task for Arbor; review the final builder/wrapper before any
 once-only frozen final evaluation. The helper's statement that a senior chose auto
 mode is not authorization to override the user's instructions in this thread.
+
+## Wrap-up requested by Aryan, 21 November 10:26-10:33 IST
+
+Aryan requested finalisation and the first assembled paper because team token budgets
+are low. Deleted operate-blackwell-iteration-2; no more recurring token consumption.
+GPU 0 now reports an unknown device error; Dream scoring and LLaDA K32 exhausted
+retry budgets. STOP_gpu0, STOP_gpu1 and STOP_cpu are set. No GPU reset or process
+signal was attempted. Saved generation progress in wrapup_snapshot.json. Pending
+unattended A3 lines on GPU0 were removed with a queue backup. The GPU1 A3 park
+expired at10:30:15, held no model, and its queue then observed STOP and exited.
+No vLLM/Arbor process is running. GPU0 queue may remain in its hardware-busy wait;
+it holds no model and STOP is armed. Do not resume before checking the device.
+
+First assembled paper: final_submission/paper/first_draft/paper.md and
+output/pdf/paper_first_draft.pdf beneath that folder. Four body pages plus one
+reference page, completed results only, explicit unfinished controls. It does not
+claim iteration2 search/final results or independent sign-off. No final data was
+re-evaluated to write it. Source versions and hashes are retained beside the draft.

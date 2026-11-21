@@ -1,0 +1,26 @@
+{
+  "observed_at": "2026-11-21T10:27:31.895435+05:30",
+  "candidate_progress": {
+    "dream-base@k16": {
+      "n": 500,
+      "unique_uids": 500,
+      "mean_gen_seconds": 9.454113999999999
+    },
+    "dream-base@k32": {
+      "n": 500,
+      "unique_uids": 500,
+      "mean_gen_seconds": 19.339560000000002
+    },
+    "llada-base@k16": {
+      "n": 500,
+      "unique_uids": 500,
+      "mean_gen_seconds": 13.675678
+    },
+    "llada-base@k32": {
+      "n": 459,
+      "unique_uids": 459,
+      "mean_gen_seconds": 27.430692810457515
+    }
+  },
+  "state": "GPU0 device error; queues paused with STOP files; no final evaluation"
+}

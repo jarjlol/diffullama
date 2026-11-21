@@ -1,0 +1,35 @@
+{
+  "draft_date": "2026-11-21",
+  "member_section_source_commits": {
+    "mesh/8-introduction": "057e144a53828a25fb497bc2e08a33a8d9c0a4af",
+    "mesh/9-related-work": "8847afda3715cf117dad8d6f16ea18597b3455b9",
+    "mesh/10-problem-formulation": "69ef8bc2e697060ada5f84d74d8a088fb3d50408",
+    "mesh/11-methodology": "c3cbe3095c68246914c7e3a36e282aa8fce9d646",
+    "mesh/12-experiments": "a16facad388ada3c94f6108c0c2d51ec1cbfb5e9"
+  },
+  "artifact_sha256": {
+    "codification/results/iter1/numbers/baselines_final300.json": "14418cab14bda4c1f244a03b267677ab3aa7b61fd36a9489466458e74ce7c9be",
+    "codification/results/iter1/numbers/paired_final300.txt": "f0d48567843ecf7a58db1f204fc0a39a150b22cb8959fbf3ede5ced97ab948f3",
+    "codification/results/iter1/numbers/analyze_test500.txt": "d60d98eb5d974a75dfac3eea550159b5ab94e13430c182516ecb410ecae18c9d",
+    "codification/results/iter2/aryan/fidelity_complete.json": "a45661b442c6f22c3e5c8d7a331d3dbc82d70983a20141ca2f2ebd290efb52a4",
+    "codification/results/iter2/aryan/support-N4/results.json": "1817985ffa5d18eb5c0f56aa41e5cf7dd2fb3d53536ad704b0b6defe8b065179",
+    "codification/results/iter2/aryan/wrapup_snapshot.json": "bc4824b8b46380a492fbb5d51f15756f25ff4594ea84b531d84b9704c07ee7c0"
+  },
+  "pdf_sha256": "b430ade7626ab1f991d599ab9886b74292f1766248e1630200cf5815fc3e65b3",
+  "checks": {
+    "body_pages": 4,
+    "reference_pages": 1,
+    "accuracy_cells_checked": 25,
+    "visual_review": "all five rendered pages; no clipping or overlap",
+    "new_final300_evaluation": false
+  },
+  "primary_reference_ids": [
+    "2410.17891",
+    "2502.09992",
+    "2508.15487",
+    "2203.11171",
+    "2110.14168",
+    "1905.00414",
+    "2606.11926"
+  ]
+}
