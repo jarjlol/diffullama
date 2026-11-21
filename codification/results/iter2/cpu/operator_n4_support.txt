@@ -1,0 +1,9 @@
+# job operator_n4_support   started 2026-11-21 02:46:21   worker commit 3bc19b6   try 1
+# inputs: -
+$ cd ~/codify/worker/codification/pipeline && python3 /home/antpc/codify/iter2/aryan/codification/tune_majority.py --task-dir /home/antpc/arbor-rerank-iter2 --out /home/antpc/codify/iter2/aryan/support-N4
+
+Frozen dev-selected support bar: earliest True
+Gate: {"dream-base": {"n": 200, "correct": 142, "accuracy": 0.71}, "llada-base": {"n": 200, "correct": 147, "accuracy": 0.735}, "macro": 0.7224999999999999}
+Private extraction examples: 20
+
+# exit code 0, finished 2026-11-21 02:46:22

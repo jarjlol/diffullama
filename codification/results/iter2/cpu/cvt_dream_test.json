@@ -1,0 +1,257 @@
+{
+  "n": 500,
+  "first": 0.404,
+  "majority": 0.724,
+  "oracle": 0.878,
+  "acc": {
+    "dlm.selfscore": 0.004,
+    "gpt2-cut:mean": 0.268,
+    "gpt2-cut:sum": 0.298,
+    "gpt2:mean": 0.346,
+    "gpt2:sum": 0.268,
+    "llama2-7b:mean": 0.288,
+    "llama2-7b:sum": 0.304,
+    "qwen0.5b-cut:mean": 0.256,
+    "qwen0.5b-cut:sum": 0.45,
+    "qwen0.5b:mean": 0.29,
+    "qwen0.5b:sum": 0.318,
+    "qwen7b-cut:mean": 0.276,
+    "qwen7b-cut:sum": 0.488,
+    "qwen7b:mean": 0.338,
+    "qwen7b:sum": 0.358,
+    "tinyllama:mean": 0.272,
+    "tinyllama:sum": 0.276
+  },
+  "paired": {
+    "gpt2 sum: cut - trim": {
+      "diff": 0.03,
+      "ci95": [
+        -0.008,
+        0.066
+      ],
+      "wins": 54,
+      "losses": 39,
+      "mcnemar_p": 0.14617702864715287
+    },
+    "gpt2 mean: cut - trim": {
+      "diff": -0.078,
+      "ci95": [
+        -0.116,
+        -0.04
+      ],
+      "wins": 29,
+      "losses": 68,
+      "mcnemar_p": 9.340687100229205e-05
+    },
+    "qwen0.5b sum: cut - trim": {
+      "diff": 0.132,
+      "ci95": [
+        0.09,
+        0.174
+      ],
+      "wins": 94,
+      "losses": 28,
+      "mcnemar_p": 1.576805868495512e-09
+    },
+    "qwen0.5b mean: cut - trim": {
+      "diff": -0.034,
+      "ci95": [
+        -0.062,
+        -0.006
+      ],
+      "wins": 17,
+      "losses": 34,
+      "mcnemar_p": 0.024092907698449295
+    },
+    "qwen7b sum: cut - trim": {
+      "diff": 0.13,
+      "ci95": [
+        0.09,
+        0.17
+      ],
+      "wins": 90,
+      "losses": 25,
+      "mcnemar_p": 8.369029836303408e-10
+    },
+    "qwen7b mean: cut - trim": {
+      "diff": -0.062,
+      "ci95": [
+        -0.094,
+        -0.032
+      ],
+      "wins": 18,
+      "losses": 49,
+      "mcnemar_p": 0.00019429778641481447
+    },
+    "dlm.selfscore - majority": {
+      "diff": -0.72,
+      "ci95": [
+        -0.758,
+        -0.682
+      ],
+      "wins": 0,
+      "losses": 360,
+      "mcnemar_p": 8.515919680016301e-109
+    },
+    "gpt2-cut:mean - majority": {
+      "diff": -0.456,
+      "ci95": [
+        -0.502,
+        -0.412
+      ],
+      "wins": 6,
+      "losses": 234,
+      "mcnemar_p": 2.8946426611187755e-61
+    },
+    "gpt2-cut:sum - majority": {
+      "diff": -0.426,
+      "ci95": [
+        -0.472,
+        -0.38
+      ],
+      "wins": 7,
+      "losses": 220,
+      "mcnemar_p": 5.374231848579288e-56
+    },
+    "gpt2:mean - majority": {
+      "diff": -0.378,
+      "ci95": [
+        -0.424,
+        -0.334
+      ],
+      "wins": 7,
+      "losses": 196,
+      "mcnemar_p": 4.094445997918995e-49
+    },
+    "gpt2:sum - majority": {
+      "diff": -0.456,
+      "ci95": [
+        -0.502,
+        -0.41
+      ],
+      "wins": 7,
+      "losses": 235,
+      "mcnemar_p": 2.5765406882281584e-60
+    },
+    "llama2-7b:mean - majority": {
+      "diff": -0.436,
+      "ci95": [
+        -0.482,
+        -0.392
+      ],
+      "wins": 7,
+      "losses": 225,
+      "mcnemar_p": 1.958721968890148e-57
+    },
+    "llama2-7b:sum - majority": {
+      "diff": -0.42,
+      "ci95": [
+        -0.466,
+        -0.374
+      ],
+      "wins": 9,
+      "losses": 219,
+      "mcnemar_p": 1.8899513865937852e-53
+    },
+    "qwen0.5b-cut:mean - majority": {
+      "diff": -0.468,
+      "ci95": [
+        -0.514,
+        -0.422
+      ],
+      "wins": 9,
+      "losses": 243,
+      "mcnemar_p": 2.8042122662962024e-60
+    },
+    "qwen0.5b-cut:sum - majority": {
+      "diff": -0.274,
+      "ci95": [
+        -0.318,
+        -0.23
+      ],
+      "wins": 15,
+      "losses": 152,
+      "mcnemar_p": 1.0384614835804017e-29
+    },
+    "qwen0.5b:mean - majority": {
+      "diff": -0.434,
+      "ci95": [
+        -0.48,
+        -0.39
+      ],
+      "wins": 7,
+      "losses": 224,
+      "mcnemar_p": 3.7997797751885145e-57
+    },
+    "qwen0.5b:sum - majority": {
+      "diff": -0.406,
+      "ci95": [
+        -0.452,
+        -0.362
+      ],
+      "wins": 9,
+      "losses": 212,
+      "mcnemar_p": 1.8203373131646717e-51
+    },
+    "qwen7b-cut:mean - majority": {
+      "diff": -0.448,
+      "ci95": [
+        -0.494,
+        -0.402
+      ],
+      "wins": 9,
+      "losses": 233,
+      "mcnemar_p": 1.9857513861992275e-57
+    },
+    "qwen7b-cut:sum - majority": {
+      "diff": -0.236,
+      "ci95": [
+        -0.278,
+        -0.194
+      ],
+      "wins": 14,
+      "losses": 132,
+      "mcnemar_p": 3.017065441233176e-25
+    },
+    "qwen7b:mean - majority": {
+      "diff": -0.386,
+      "ci95": [
+        -0.432,
+        -0.342
+      ],
+      "wins": 8,
+      "losses": 201,
+      "mcnemar_p": 1.9951439140867646e-49
+    },
+    "qwen7b:sum - majority": {
+      "diff": -0.366,
+      "ci95": [
+        -0.412,
+        -0.322
+      ],
+      "wins": 9,
+      "losses": 192,
+      "mcnemar_p": 8.030061032932152e-46
+    },
+    "tinyllama:mean - majority": {
+      "diff": -0.452,
+      "ci95": [
+        -0.498,
+        -0.408
+      ],
+      "wins": 6,
+      "losses": 232,
+      "mcnemar_p": 1.100815092024933e-60
+    },
+    "tinyllama:sum - majority": {
+      "diff": -0.448,
+      "ci95": [
+        -0.494,
+        -0.404
+      ],
+      "wins": 9,
+      "losses": 233,
+      "mcnemar_p": 1.9857513861992275e-57
+    }
+  }
+}

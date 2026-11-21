@@ -1,0 +1,7 @@
+# job reports   started 2026-11-21 16:05:12   worker commit 66697fd   try 1
+# inputs: lane:0,lane:1
+$ cd ~/codify/worker/codification/pipeline && python3 make_iter2_reports.py
+
+wrote /home/antpc/codify/worker/codification/results/iter2/step_arm.md and /home/antpc/codify/worker/codification/results/iter2/fidelity.md
+
+# exit code 0, finished 2026-11-21 16:05:24
