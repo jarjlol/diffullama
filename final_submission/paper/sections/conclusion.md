@@ -1,8 +1,3 @@
 # Conclusion
 
-<!-- Owner: aryan (issue #13). Target length in the final paper: ~0.25 page. Delete this comment block when the section is final. -->
-<!-- Professor's instruction: We can take help of the LLM by providing it the rest of the sections and asking what conclusions can be drawn which can be manually verified. -->
-<!-- Sources: All other sections; verify each conclusion against `experiments.md`. -->
-<!-- Rules: every claim or number traces to a repo file or a paper read at full text; mark anything unchecked [unverified]. One branch per section: mesh/13-<slug>, only this file in the PR. -->
-
-_TODO: draft here._
+In the completed fixed-candidate evaluation, majority vote is a strong baseline: 73.3% for Dream and 73.0% for LLaDA on 300 held-out questions. The agent-designed arithmetic rule ties it, and AR-likelihood selection remains 23.6 and 21.0 points below majority on the 500-question cut-text test. The preservation hypothesis is not confirmed: the rank order is as predicted, but four adapted models, three near the floor, and a two-sided exact permutation $p$ of at least 0.083 make the result descriptive only. Step-budget runs show that at 16 steps more denoising adds far more accuracy than selection, while at 64 steps majority adds 32.0 and 24.6 points over the first sample. A conclusive next study needs corrected scoring at every budget, a clean compute comparison, ablations and a second dataset. We report these as requirements, not as completed results.
