@@ -212,6 +212,13 @@ of 500, and the order is set by Dream alone, the only non-floor model with an AR
 LLaDA, which has no AR base at all, also loses under most AR scorers (−25.1% vs Dream's
 −27.8% with tinyllama mean), so low preservation does not explain Dream's loss.
 
+> **Correction (2026-11-21, issue #28).** The selector counts in the paragraph above are wrong. The committed
+> output `results/iter1/numbers/analyze_test500.txt` gives Spearman ρ = +1.0 for **3** of the 10 AR selectors
+> (gpt2 sum, qwen0.5b mean, qwen7b sum), +0.8 for **6** (llama2-7b sum and mean, qwen0.5b sum, qwen7b mean,
+> tinyllama sum and mean) and +0.4 for 1 (gpt2 mean); the p-values are unchanged. Check:
+> `grep "Spearman(CKA" results/iter1/numbers/analyze_test500.txt`. No conclusion above changes. The original
+> sentence is kept as written, per `docs/verification-standards.md`.
+
 ## Still open after iteration 1
 
 - Novelty check (I-6). The defensible claim is the preservation → gain link, not reranking itself.
