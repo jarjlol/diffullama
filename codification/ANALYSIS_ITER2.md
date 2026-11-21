@@ -83,4 +83,4 @@ Source: `~/codify/iter2/neel/n4/audit.txt` on Blackwell, pasted verbatim by arju
 
 **No extraction mismatch** in the sense of the N4 spec: whenever a candidate wrote a final answer, `task.extract_answer` took it. Two findings follow:
 - **Degenerate Dream samples cast noise votes:** 4 of the 9 Dream candidates in the sample loop on repeated text and get a fallback "answer". Filtering such candidates before voting (S³'s non-degeneracy component, `SOTA.md` S-2; Leap idea 3 in `memory/RESEARCH_REPORT.md`) is a cheap, CPU-only test for A3.
-- **Junk after `####` is common** (8 of the 15 clean ones run on into unrelated text: a new "Question:", instructions, page fragments). This is the I-22 pattern, and grading is unaffected because the number is read right after `####`.
+- **Junk after `####` is common** (11 of the 15 clean ones run on into unrelated text: a new "Question:", instructions, page fragments). This is the I-22 pattern, and grading is unaffected because the number is read right after `####`.
