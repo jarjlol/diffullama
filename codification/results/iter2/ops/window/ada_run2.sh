@@ -8,7 +8,7 @@
 #      Blackwell works the same split forwards; rows are merged by uid later (candidates/dream-base@k256/test.ext.jsonl there).
 # The dev self-score jobs of the first runner are dropped (dev adds nothing to the paper tables).
 D=$HOME/codify-ada/ss; LOG=$D/logs/ada_run.log
-export HF_HOME=$HOME/codify-ada/hf HF_HUB_OFFLINE=1 CODIFY_WORK_DIR=$D/work PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True CUDA_VISIBLE_DEVICES=0 CUDA_DEVICE_ORDER=PCI_BUS_ID PYTHONUNBUFFERED=1
+export HF_HOME=$HOME/codify-ada/hf HF_HUB_OFFLINE=1 CODIFY_WORK_DIR=$D/work PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True CUDA_VISIBLE_DEVICES=0 CUDA_DEVICE_ORDER=PCI_BUS_ID PYTHONUNBUFFERED=1 CODIFY_SAMPLE_CHUNK=${ADA_CHUNK:-5}
 PY=$HOME/codify-ada/venv-dream/bin/python
 MAXK=${ADA_K256_MAX:-60}
 cd $D/codification/pipeline
@@ -41,7 +41,7 @@ run_selfscore() {   # run_selfscore <model> <split> <rows wanted>
   m=$1; s=$2; want=$3; out=$D/work/features/$m/$s.dlmself.jsonl; tries=0
   while [ "$(rows $out)" -lt "$want" ]; do
     [ -e $D/STOP ] && { log "STOP file, ending"; exit 0; }
-    tries=$((tries+1)); [ $tries -gt 30 ] && { log "too many tries for $m $s, giving up on it"; return; }
+    tries=$((tries+1)); [ $tries -gt 60 ] && { log "too many tries for $m $s, giving up on it"; return; }
     wait_room 20000 || exit 0
     log "START self_score $m $s (have $(rows $out) of $want)"
     guarded $D/logs/self_score_${m}_$s.log $PY self_score.py --model $m --split $s --chunk 2; log "job process ended rc=$?, rows now $(rows $out)"
@@ -53,8 +53,8 @@ run_k256() {   # run_k256 <model> : Dream K=256, reverse order, own work dir
   m=$1; out=$D/work/candidates/$m@k256/test.jsonl; tries=0
   while [ "$(rows $out)" -lt "$MAXK" ]; do
     [ -e $D/STOP ] && { log "STOP file, ending"; exit 0; }
-    tries=$((tries+1)); [ $tries -gt 30 ] && { log "too many tries for K256 $m, giving up on it"; return; }
-    wait_room 27000 || exit 0
+    tries=$((tries+1)); [ $tries -gt 60 ] && { log "too many tries for K256 $m, giving up on it"; return; }
+    wait_room ${ADA_K256_MIB:-22000} || exit 0
     log "START generate $m K=256 --reverse (have $(rows $out) of max $MAXK)"
     CAPFILE=$out CAPN=$MAXK guarded $D/logs/gen_${m}_k256.log $PY generate_candidates.py --model $m --split test --steps 256 --order $D/k256_order.txt --reverse; log "job process ended rc=$?, rows now $(rows $out)"
     sleep 30

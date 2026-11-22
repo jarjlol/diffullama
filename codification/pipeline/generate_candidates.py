@@ -29,6 +29,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import random
 import sys
 import time
@@ -109,15 +110,22 @@ class Dream:
         self.model = AutoModel.from_pretrained(spec["hf"], torch_dtype=torch.bfloat16, trust_remote_code=True).to("cuda").eval()
 
     def sample(self, uid, prompt, n, gold_hint=None):
-        enc = self.tok([prompt] * n, return_tensors="pt")
-        ids, att = enc.input_ids.to("cuda"), enc.attention_mask.to("cuda")
-        assert ids.shape[1] + self.gen_tokens <= 2048, f"{uid}: exceeds Dream's 2048 context"
-        with self.torch.no_grad():
-            o = self.model.diffusion_generate(ids, attention_mask=att, max_new_tokens=self.gen_tokens,
-                                              output_history=False, return_dict_in_generate=True,
-                                              steps=self.spec["steps"], temperature=self.spec["temperature"],
-                                              top_p=self.spec["top_p"], alg=self.spec["alg"], alg_temp=0.0)
-        return [self.tok.decode(g[ids.shape[1]:].tolist(), skip_special_tokens=True) for g in o.sequences]
+        # CODIFY_SAMPLE_CHUNK=k runs the n independent samples in batches of k (same distribution, less peak memory; for the
+        # shared 32 GB Ada card where the top-p sort over a 10-sample batch ran out of memory). Unset = one batch of n.
+        chunk = int(os.environ.get("CODIFY_SAMPLE_CHUNK", "0")) or n
+        outs = []
+        for i in range(0, n, chunk):
+            m = min(chunk, n - i)
+            enc = self.tok([prompt] * m, return_tensors="pt")
+            ids, att = enc.input_ids.to("cuda"), enc.attention_mask.to("cuda")
+            assert ids.shape[1] + self.gen_tokens <= 2048, f"{uid}: exceeds Dream's 2048 context"
+            with self.torch.no_grad():
+                o = self.model.diffusion_generate(ids, attention_mask=att, max_new_tokens=self.gen_tokens,
+                                                  output_history=False, return_dict_in_generate=True,
+                                                  steps=self.spec["steps"], temperature=self.spec["temperature"],
+                                                  top_p=self.spec["top_p"], alg=self.spec["alg"], alg_temp=0.0)
+            outs += [self.tok.decode(g[ids.shape[1]:].tolist(), skip_special_tokens=True) for g in o.sequences]
+        return outs
 
 
 class LLaDA:
