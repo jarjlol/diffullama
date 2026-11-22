@@ -36,11 +36,11 @@
 | LLaDA 8B | 32 | 22.8 | 51.0 | 76.0 | 28.6 (Qwen2.5-7B cut sum) | 27.4 |
 | LLaDA 8B | 64 | 48.6 | **73.2** | 89.2 | 52.2 (Qwen2.5-7B cut sum) | 55.0 |
 
-**DLM self-score.** On the Dream gate split the model's own likelihood reaches 31.5% against 71.0% for majority (2 wins, 81 losses; $p < 0.001$; $n = 200$), so it is not a substitute for an external scorer.
+**DLM self-score.** On the 200-question gate split the models' own likelihood reaches 31.5% for Dream and 45.0% for LLaDA, against 71.0% and 73.5% for majority (2/81 and 4/61 wins/losses), so it is not a substitute for an external scorer.
 
 **What worked.** Majority vote is the strong training-free selector on the two non-floor models: it recovers 61–69% of the first-sample-to-oracle gap, and no in-item signal we tried closed the remaining ~15 points on the iteration-1 scores. The recoverable gain is agreement, not likelihood, consistent with self-consistency on AR models (Wang et al., 2023).
 
-**Preservation and gain.** Table 3 reports the iteration-1 correlation, computed on trimmed-text headroom. It does not carry over to the corrected scores: Dream's Qwen2.5-7B-sum headroom flips from −9.7% to +17.7% after cutting ((48.8−40.4)/(87.8−40.4)), and the three floor models have no cut scores, so the four-model Spearman $\rho$ cannot be recomputed. On trimmed scores the order was as predicted ($\rho$ $+1.0$ for 3 selectors, $+0.8$ for 6, $+0.4$ for 1; exact $p \ge 0.083$), but Dream is the non-floor point that set it, and its corrected sign is opposite. We therefore do not claim preservation is supported; even the descriptive trend is not retained.
+**Preservation and gain.** Table 3 reports the iteration-1 correlation, computed on trimmed-text headroom. It does not carry over to the corrected scores: Dream's Qwen2.5-7B-sum headroom flips from −9.7% to +17.7% after cutting ((48.8−40.4)/(87.8−40.4)), and the three floor models have no cut scores, so the four-model Spearman $\rho$ cannot be recomputed. On trimmed scores the order was as predicted ($\rho$ $+1.0$ for 3 selectors, $+0.8$ for 6, $+0.4$ for 1; exact $p \ge 0.083$), but Dream is the non-floor point that set it, and its corrected sign is opposite. We therefore do not claim preservation is supported; even the descriptive trend is not retained. A per-question test (500 test questions, exploratory) does not support it either: the primary predictor's AUC is 0.469 (permutation $p = 0.32$; OR 0.94 per SD [0.75, 1.17]), and no layer is significant after Benjamini–Hochberg correction.
 
 **Table 3.** Layer-averaged CKA $\rho_m$ (DLM vs. its AR base) and AR-recoverable headroom $H_m(s_\psi)$ on the 500-question test set. Headroom is for the Qwen2.5-7B scorer, summed and per token. Headroom uses the iteration-1 trimmed-text AR scores; on cut scores Dream is +17.7% and LLaDA +8.9%, and the floor models have no cut scores. The CKA values do not change. LLaDA has no AR base and is a control. Descriptive only. Source: `codification/results/iter1/numbers/analyze_test500.txt`; the selector counts carry the dated correction in #28.
 
@@ -54,4 +54,4 @@
 
 ## Iteration 2
 
-Landed: the cut re-score, the step-budget arm, the Dream self-score and the fidelity check above; the N4 failure classes are in the report. Not finished: 256-step majority, per-question preservation and the iteration-2 search; no number is reported for them. Results freeze: Sun 22 Nov 18:00 IST. [pending]
+Landed: the cut re-score, the step-budget arm, the Dream self-score and the fidelity check above; the N4 failure classes are in the report. Also landed: the per-question preservation test (above, exploratory). Not finished: 256-step majority and the iteration-2 search (Arbor); the GPUs were held by another lab user from Saturday 17:02 IST, and no number is reported for them. Results freeze: Sun 22 Nov 18:00 IST. [pending]
