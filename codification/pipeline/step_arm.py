@@ -106,6 +106,16 @@ def k256_table(m: str, gold: dict, out: dict) -> None:
            "hosts": sorted({f"{r.get('host','?')}|{r.get('gpu','?')}" for u, r in rows256.items() if u in set(uids)}), "paired": {}}
     print(f"\n== {m}  K = 256 vs K = 64 on the {len(uids)} questions with a K = 256 run (test; N = 10, T 0.7, random order)")
     print(f"  K=256 rows generated on: {res['hosts']}")
+    # compute column: Blackwell rows only. Ada rows (other GPU, shared card, 5-sample batches) have a different gen_seconds and are not comparable.
+    def bw_secs(rows):
+        return [r["gen_seconds"] for u, r in rows.items() if u in set(uids) and "gen_seconds" in r
+                and ("Blackwell" in str(r.get("gpu", "")) or ("gpu" not in r and "host" not in r))]
+    s256, s64 = bw_secs(rows256), bw_secs(rows64)
+    res["gen_s_per_q_blackwell"] = {"K256": statistics.mean(s256) if s256 else None, "K64": statistics.mean(s64) if s64 else None,
+                                    "n256": len(s256), "n64": len(s64)}
+    print("  s/question (N = 10), BLACKWELL rows only (Ada gen_seconds is another GPU with 5-sample batches, not comparable): "
+          f"K=64 {statistics.mean(s64):.1f} (n={len(s64)})" if s64 else "  s/question: no Blackwell K=64 rows", end="")
+    print(f", K=256 {statistics.mean(s256):.1f} (n={len(s256)})" if s256 else ", K=256: no Blackwell rows")
     print(f"  {'':8s} " + " ".join(f"{n[:14]:>14s}" for n in names + ['oracle']))
     for K in (64, 256):
         print(f"  K={K:<5d} " + " ".join(f"{sum(cor[(K, n)]) / len(uids):14.3f}" for n in names + ["oracle"]))

@@ -27,9 +27,10 @@ Krispy said he pauses after one job completes and gave no end time. The window i
 
 1. Check it is really free (both lines must show no compute process, memory under 1500 MiB):
    `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader; nvidia-smi --query-compute-apps=gpu_uuid,pid,used_memory --format=csv,noheader`
-2. Do not start unless krispy has confirmed the pause is on (the GPUs being idle for a few minutes can also just be between his jobs).
-   If Aaditya or Main says go in chat, that is the go. If neither can be reached and krispy confirmed, Arjun or Aryan may start it.
-3. Declare the window and start the two queues (the queues wait for a GPU to be idle 5 min, so this can be done BEFORE krispy finishes):
+2. Do not start unless krispy has confirmed the pause is on (the GPUs being idle for a few minutes can also just be the gap between his jobs).
+   The go is Aaditya's go, or, if he cannot be reached, Arjun or Aryan after krispy has confirmed. The main session is not a go source.
+3. Only AFTER step 2, declare the window and start the two queues (they wait for a GPU to be idle 5 min, which is why step 2 must come first:
+   an armed queue would start by itself in a gap between krispy's jobs):
    ```
    bash ~/codify/iter2/window/start_window.sh 5
    cd ~/codify/iter2
@@ -54,7 +55,7 @@ Krispy said he pauses after one job completes and gave no end time. The window i
    `~/codify/iter2/from_ada/llada-base.test.dlmself.jsonl` (sha256 f588d09b...). Append the rows whose uid is missing in
    `work/features/llada-base/test.dlmself.jsonl`. Both come from the same model and code, only the GPU differs.
 3. Analysis exactly as pre-registered: `python3 codification/pipeline/step_arm.py` (prints the K = 256 table, primary and secondary
-   lines, hosts, realised n). Report per-row host/GPU and realised n. T = 0.7 at K = 256 is not a like-for-like comparison with the
+   lines, hosts, realised n). Report per-row host/GPU and realised n. s/question comes from Blackwell rows only (Ada's gen_seconds is not comparable). T = 0.7 at K = 256 is not a like-for-like comparison with the
    published greedy 0.81; say so in the text.
 4. Paper: one row pair in the step-budget table plus one sentence. Owners: Neel / Aryan (PR #47 is Aryan's).
 

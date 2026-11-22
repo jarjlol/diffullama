@@ -113,6 +113,7 @@ class Dream:
         # CODIFY_SAMPLE_CHUNK=k runs the n independent samples in batches of k (same distribution, less peak memory; for the
         # shared 32 GB Ada card where the top-p sort over a 10-sample batch ran out of memory). Unset = one batch of n.
         chunk = int(os.environ.get("CODIFY_SAMPLE_CHUNK", "0")) or n
+        self.last_chunk = min(chunk, n)
         outs = []
         for i in range(0, n, chunk):
             m = min(chunk, n - i)
@@ -232,6 +233,7 @@ def generate(a, spec, c, shots, todo, out, ext_uids):
         assert len(texts) == c["n_candidates"]
         append_jsonl(out, {"uid": q["uid"], "model": a.model, "question": q["question"], "prompt": prompt,
                            "host": HOST, "gpu": GPU_NAME(),                       # mixed-hardware runs (ada + blackwell) stay traceable
+                           "sample_chunk": getattr(backend, "last_chunk", c["n_candidates"]),   # samples per batch (n = one batch)
 
                            "gen_seconds": round(time.time() - tq, 3),        # idea 1.1's T_gen, all N candidates
                            "candidates": [{"text": t, "answer": task.extract_answer(t)} for t in texts]})
