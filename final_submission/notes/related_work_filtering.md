@@ -2,9 +2,9 @@
 
 Source: `litreview/data/reference_brief.txt` (48 references `[1]`-`[48]`, the numbering used by `litreview/output/generated_survey.md`). The submitted survey text and its numbering were **not** edited; the paper section re-cites by BibTeX key (`refs_related_work.bib`), so no positional marker can desync.
 
-Criteria: keep papers that support the three groups of the section (text diffusion LMs, adaptation of AR models, non-autoregressive generation as background) or the reasoning/GSM8K setting. Remove other modalities and tasks, narrow technique papers, and overlaps. Two kinds of removal are labelled: **unrelated** (other modality or task) and **space** (related, but the paper has one reference page in total).
+Criteria: keep papers that support the section's groups 1 and 2 (text diffusion LMs including non-autoregressive generation as background, and adaptation of AR models; groups 3 and 4 were added later from outside the lit review) or the reasoning/GSM8K setting. Remove other modalities and tasks, narrow technique papers, and overlaps. Two kinds of removal are labelled: **unrelated** (other modality or task) and **space** (related, but cut to keep the section short; written when the paper was believed to have one reference page in total, a cap later found not to exist, see the count note below).
 
-Result: 12 of 48 kept from the lit review, +1 added from outside it (DiffuLLaMA, the anchor paper, which a survey about the anchor does not list), +8 added for the two new groups (below). 36 removed.
+Result: 12 of 48 kept from the lit review, +1 added from outside it (DiffuLLaMA, the anchor paper, which a survey about the anchor does not list), +8 added for groups 3 and 4 on 2026-11-20 (below; 4 of them, wang2023selfconsistency, cobbe2021gsm8k, baek2024researchagent and jin2026arbor, live in `refs_methodology.bib`), and +3 on 2026-11-21 (zhan2026prm, ruan2026bmc, peng2026repralign). 36 removed. Total: 12 + 1 + 8 + 3 = **24 references**, 20 of them in `refs_related_work.bib`.
 
 ## Kept (survey number -> BibTeX key)
 
