@@ -1,0 +1,215 @@
+{
+  "n": 200,
+  "first": 0.485,
+  "majority": 0.735,
+  "oracle": 0.905,
+  "acc": {
+    "dlm.selfscore": 0.45,
+    "gpt2-cut:mean": 0.435,
+    "gpt2-cut:sum": 0.425,
+    "gpt2:mean": 0.385,
+    "gpt2:sum": 0.435,
+    "llama2-7b:mean": 0.385,
+    "llama2-7b:sum": 0.51,
+    "qwen0.5b:mean": 0.44,
+    "qwen0.5b:sum": 0.53,
+    "qwen7b-cut:mean": 0.48,
+    "qwen7b-cut:sum": 0.53,
+    "qwen7b:mean": 0.45,
+    "qwen7b:sum": 0.53,
+    "tinyllama:mean": 0.355,
+    "tinyllama:sum": 0.48
+  },
+  "paired": {
+    "gpt2 sum: cut - trim": {
+      "diff": -0.01,
+      "ci95": [
+        -0.04,
+        0.015
+      ],
+      "wins": 3,
+      "losses": 5,
+      "mcnemar_p": 0.7265625
+    },
+    "gpt2 mean: cut - trim": {
+      "diff": 0.05,
+      "ci95": [
+        -0.015,
+        0.115
+      ],
+      "wins": 27,
+      "losses": 17,
+      "mcnemar_p": 0.17417114727072658
+    },
+    "qwen7b sum: cut - trim": {
+      "diff": 0.0,
+      "ci95": [
+        -0.04,
+        0.04
+      ],
+      "wins": 9,
+      "losses": 9,
+      "mcnemar_p": 1.0
+    },
+    "qwen7b mean: cut - trim": {
+      "diff": 0.03,
+      "ci95": [
+        -0.02,
+        0.08
+      ],
+      "wins": 15,
+      "losses": 9,
+      "mcnemar_p": 0.30745625495910645
+    },
+    "dlm.selfscore - majority": {
+      "diff": -0.285,
+      "ci95": [
+        -0.355,
+        -0.215
+      ],
+      "wins": 4,
+      "losses": 61,
+      "mcnemar_p": 3.918664438079533e-14
+    },
+    "gpt2-cut:mean - majority": {
+      "diff": -0.3,
+      "ci95": [
+        -0.37,
+        -0.23
+      ],
+      "wins": 5,
+      "losses": 65,
+      "mcnemar_p": 2.215352840138473e-14
+    },
+    "gpt2-cut:sum - majority": {
+      "diff": -0.31,
+      "ci95": [
+        -0.38,
+        -0.24
+      ],
+      "wins": 3,
+      "losses": 65,
+      "mcnemar_p": 3.5550311609441887e-16
+    },
+    "gpt2:mean - majority": {
+      "diff": -0.35,
+      "ci95": [
+        -0.42,
+        -0.28
+      ],
+      "wins": 2,
+      "losses": 72,
+      "mcnemar_p": 2.939204326972422e-19
+    },
+    "gpt2:sum - majority": {
+      "diff": -0.3,
+      "ci95": [
+        -0.37,
+        -0.235
+      ],
+      "wins": 3,
+      "losses": 63,
+      "mcnemar_p": 1.3002836654618655e-15
+    },
+    "llama2-7b:mean - majority": {
+      "diff": -0.35,
+      "ci95": [
+        -0.42,
+        -0.285
+      ],
+      "wins": 1,
+      "losses": 71,
+      "mcnemar_p": 3.091670257478196e-20
+    },
+    "llama2-7b:sum - majority": {
+      "diff": -0.225,
+      "ci95": [
+        -0.295,
+        -0.16
+      ],
+      "wins": 6,
+      "losses": 51,
+      "mcnemar_p": 5.676193126635809e-10
+    },
+    "qwen0.5b:mean - majority": {
+      "diff": -0.295,
+      "ci95": [
+        -0.365,
+        -0.225
+      ],
+      "wins": 4,
+      "losses": 63,
+      "mcnemar_p": 1.1067861037383775e-14
+    },
+    "qwen0.5b:sum - majority": {
+      "diff": -0.205,
+      "ci95": [
+        -0.265,
+        -0.145
+      ],
+      "wins": 4,
+      "losses": 45,
+      "mcnemar_p": 8.225455871979648e-10
+    },
+    "qwen7b-cut:mean - majority": {
+      "diff": -0.255,
+      "ci95": [
+        -0.32,
+        -0.19
+      ],
+      "wins": 4,
+      "losses": 55,
+      "mcnemar_p": 1.6979681549678105e-12
+    },
+    "qwen7b-cut:sum - majority": {
+      "diff": -0.205,
+      "ci95": [
+        -0.265,
+        -0.145
+      ],
+      "wins": 4,
+      "losses": 45,
+      "mcnemar_p": 8.225455871979648e-10
+    },
+    "qwen7b:mean - majority": {
+      "diff": -0.285,
+      "ci95": [
+        -0.355,
+        -0.22
+      ],
+      "wins": 4,
+      "losses": 61,
+      "mcnemar_p": 3.918664438079533e-14
+    },
+    "qwen7b:sum - majority": {
+      "diff": -0.205,
+      "ci95": [
+        -0.27,
+        -0.14
+      ],
+      "wins": 5,
+      "losses": 46,
+      "mcnemar_p": 2.3280151140170346e-09
+    },
+    "tinyllama:mean - majority": {
+      "diff": -0.38,
+      "ci95": [
+        -0.45,
+        -0.315
+      ],
+      "wins": 1,
+      "losses": 77,
+      "mcnemar_p": 5.227781471335135e-22
+    },
+    "tinyllama:sum - majority": {
+      "diff": -0.255,
+      "ci95": [
+        -0.325,
+        -0.185
+      ],
+      "wins": 6,
+      "losses": 57,
+      "mcnemar_p": 1.6395687108330947e-11
+    }
+  }
+}

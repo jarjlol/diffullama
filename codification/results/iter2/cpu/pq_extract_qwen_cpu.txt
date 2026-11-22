@@ -1,0 +1,24 @@
+# job pq_extract_qwen_cpu   started 2026-11-22 03:28:03   worker commit b6375c0   try 1
+# inputs: -
+$ cd ~/codify/worker/codification/pipeline && OMP_NUM_THREADS=24 ~/venvs/scorer/bin/python per_question_preservation.py extract --model qwen7b --split test --device cpu --dtype float32
+
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:00<00:01,  2.13it/s]Loading checkpoint shards:  50%|█████     | 2/4 [00:00<00:00,  2.25it/s]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:01<00:00,  2.27it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:01<00:00,  2.65it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:01<00:00,  2.48it/s]
+qwen7b: attention check ok (causal, max change 0)
+  100/1319  0.72s/question
+  200/1319  0.71s/question
+  300/1319  0.71s/question
+  400/1319  0.71s/question
+  500/1319  0.71s/question
+  600/1319  0.71s/question
+  700/1319  0.70s/question
+  800/1319  0.70s/question
+  900/1319  0.70s/question
+  1000/1319  0.69s/question
+  1100/1319  0.69s/question
+  1200/1319  0.69s/question
+  1300/1319  0.69s/question
+  1319/1319  0.69s/question
+qwen7b: Qwen/Qwen2.5-7B  1319 questions x 28 blocks x 3584 dims -> /home/antpc/codify/diffullama/codification/pipeline/work/preservation_pq/qwen7b.test.pt
+
+# exit code 0, finished 2026-11-22 03:43:21

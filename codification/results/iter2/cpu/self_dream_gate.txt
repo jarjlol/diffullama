@@ -1,0 +1,60 @@
+# job self_dream_gate   started 2026-11-21 16:15:25   worker commit 66697fd   try 1
+# inputs: lines:features/dream-base/test.dlmself.jsonl:500
+$ cd ~/codify/worker/codification/pipeline && python3 cut_vs_trim.py --model dream-base --split test --subset gate --json $OUT.json
+
+dream-base test (gate): 200 questions, 64-step candidates (iteration 1), N = 10
+  coverage dlm.selfscore: 200/200 questions
+  first 0.395  majority 0.710  oracle 0.875
+  scorers with a cut version: ['gpt2', 'qwen0.5b', 'qwen7b'];  all scorers: ['gpt2', 'gpt2-cut', 'llama2-7b', 'qwen0.5b', 'qwen0.5b-cut', 'qwen7b', 'qwen7b-cut', 'tinyllama']
+  coverage gpt2: 200/200 questions
+  coverage gpt2-cut: 200/200 questions
+  coverage llama2-7b: 200/200 questions
+  coverage qwen0.5b: 200/200 questions
+  coverage qwen0.5b-cut: 200/200 questions
+  coverage qwen7b: 200/200 questions
+  coverage qwen7b-cut: 200/200 questions
+  coverage tinyllama: 200/200 questions
+  selector                          accuracy
+  dlm.selfscore                        0.315
+  gpt2-cut:mean                        0.275
+  gpt2-cut:sum                         0.305
+  gpt2:mean                            0.400
+  gpt2:sum                             0.305
+  llama2-7b:mean                       0.275
+  llama2-7b:sum                        0.350
+  qwen0.5b-cut:mean                    0.255
+  qwen0.5b-cut:sum                     0.465
+  qwen0.5b:mean                        0.315
+  qwen0.5b:sum                         0.360
+  qwen7b-cut:mean                      0.275
+  qwen7b-cut:sum                       0.525
+  qwen7b:mean                          0.395
+  qwen7b:sum                           0.415
+  tinyllama:mean                       0.270
+  tinyllama:sum                        0.310
+paired differences (95% bootstrap CI, exact McNemar):
+  gpt2 sum: cut minus trim                       +0.000 [-0.065,+0.065]  wins/losses 21/21  McNemar p=1.000
+  gpt2 mean: cut minus trim                      -0.125 [-0.185,-0.065]  wins/losses 8/33  McNemar p=0.000
+  qwen0.5b sum: cut minus trim                   +0.105 [+0.035,+0.175]  wins/losses 37/16  McNemar p=0.005
+  qwen0.5b mean: cut minus trim                  -0.060 [-0.105,-0.020]  wins/losses 4/16  McNemar p=0.012
+  qwen7b sum: cut minus trim                     +0.110 [+0.040,+0.180]  wins/losses 38/16  McNemar p=0.004
+  qwen7b mean: cut minus trim                    -0.120 [-0.170,-0.070]  wins/losses 3/27  McNemar p=0.000
+  dlm.selfscore minus majority                   -0.395 [-0.465,-0.325]  wins/losses 2/81  McNemar p=0.000
+  gpt2-cut:mean minus majority                   -0.435 [-0.505,-0.365]  wins/losses 1/88  McNemar p=0.000
+  gpt2-cut:sum minus majority                    -0.405 [-0.475,-0.335]  wins/losses 3/84  McNemar p=0.000
+  gpt2:mean minus majority                       -0.310 [-0.375,-0.245]  wins/losses 1/63  McNemar p=0.000
+  gpt2:sum minus majority                        -0.405 [-0.475,-0.335]  wins/losses 3/84  McNemar p=0.000
+  llama2-7b:mean minus majority                  -0.435 [-0.505,-0.365]  wins/losses 0/87  McNemar p=0.000
+  llama2-7b:sum minus majority                   -0.360 [-0.430,-0.290]  wins/losses 4/76  McNemar p=0.000
+  qwen0.5b-cut:mean minus majority               -0.455 [-0.525,-0.385]  wins/losses 2/93  McNemar p=0.000
+  qwen0.5b-cut:sum minus majority                -0.245 [-0.315,-0.175]  wins/losses 5/54  McNemar p=0.000
+  qwen0.5b:mean minus majority                   -0.395 [-0.465,-0.325]  wins/losses 2/81  McNemar p=0.000
+  qwen0.5b:sum minus majority                    -0.350 [-0.420,-0.280]  wins/losses 4/74  McNemar p=0.000
+  qwen7b-cut:mean minus majority                 -0.435 [-0.505,-0.365]  wins/losses 1/88  McNemar p=0.000
+  qwen7b-cut:sum minus majority                  -0.185 [-0.250,-0.120]  wins/losses 7/44  McNemar p=0.000
+  qwen7b:mean minus majority                     -0.315 [-0.385,-0.250]  wins/losses 2/65  McNemar p=0.000
+  qwen7b:sum minus majority                      -0.295 [-0.365,-0.230]  wins/losses 3/62  McNemar p=0.000
+  tinyllama:mean minus majority                  -0.440 [-0.510,-0.370]  wins/losses 0/88  McNemar p=0.000
+  tinyllama:sum minus majority                   -0.400 [-0.475,-0.325]  wins/losses 4/84  McNemar p=0.000
+
+# exit code 0, finished 2026-11-21 16:15:32

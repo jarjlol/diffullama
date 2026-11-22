@@ -1,0 +1,70 @@
+# job neel_n4   started 2026-11-21 14:52:10   worker commit 1d71241   try 1
+# inputs: -
+$ cd ~/codify/worker/codification/pipeline && cd ~/codify/worker && python3 codification/n4/n4_items.py --task-dir ~/arbor-rerank-iter2 --models dream-base llada-base --out ~/codify/iter2/neel/n4
+
+{
+  "diversity": {
+    "dream-base": {
+      "dev": {
+        "questions": 200,
+        "mean_distinct_answers": 5.755,
+        "mean_entropy_bits": 2.062,
+        "none_share": 0.001
+      },
+      "test": {
+        "questions": 200,
+        "mean_distinct_answers": 6.15,
+        "mean_entropy_bits": 2.194,
+        "none_share": 0.002
+      }
+    },
+    "llada-base": {
+      "dev": {
+        "questions": 200,
+        "mean_distinct_answers": 4.64,
+        "mean_entropy_bits": 1.629,
+        "none_share": 0.0075
+      },
+      "test": {
+        "questions": 200,
+        "mean_distinct_answers": 5.105,
+        "mean_entropy_bits": 1.818,
+        "none_share": 0.001
+      }
+    }
+  },
+  "failures": {
+    "dream-base": {
+      "n_questions": 200,
+      "majority_wrong_oracle_right": 29,
+      "classes": {
+        "close_second": 13,
+        "other": 3,
+        "arithmetic_slip": 10,
+        "shared_wrong": 3
+      },
+      "extraction_suspect": 1
+    },
+    "llada-base": {
+      "n_questions": 200,
+      "majority_wrong_oracle_right": 26,
+      "classes": {
+        "shared_wrong": 3,
+        "other": 5,
+        "close_second": 7,
+        "arithmetic_slip": 11
+      },
+      "extraction_suspect": 0
+    }
+  }
+}
+
+Failure classes for A3 (dev counts, labels only):
+  arithmetic_slip dream-base 10/29  llada-base 11/26
+  close_second    dream-base 13/29  llada-base 7/26
+  shared_wrong    dream-base 3/29  llada-base 3/26
+  other           dream-base 3/29  llada-base 5/26
+
+wrote /home/antpc/codify/iter2/neel/n4/n4.json and /home/antpc/codify/iter2/neel/n4/audit.txt (20 candidates)
+
+# exit code 0, finished 2026-11-21 14:52:11
