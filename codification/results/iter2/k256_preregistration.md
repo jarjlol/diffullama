@@ -1,6 +1,6 @@
 # K = 256 run: pre-declared design and analysis
 
-Written Sun 22 Nov 2026 (about 17:30 IST) and committed **before any K = 256 candidate exists**. Changing anything below after the first
+Written Sun 22 Nov 2026 (commit 23b02b5 carries the time) and committed **before any K = 256 candidate exists**. Changing anything below after the first
 K = 256 row is written must be stated as a deviation next to the result.
 
 ## Question
