@@ -13,6 +13,7 @@ set -u
 GPU=${1:?gpu}; VENV=${2:?venv}; shift 2
 WINDOW_END=${WINDOW_END:-$HOME/codify/iter2/WINDOW_END}
 WINDOW_HOURS=${WINDOW_HOURS:-$HOME/codify/iter2/WINDOW_HOURS}; WINDOW_START=${WINDOW_START:-$HOME/codify/iter2/WINDOW_START}
+NOT_BEFORE=${WINDOW_NOT_BEFORE:-$HOME/codify/iter2/WINDOW_NOT_BEFORE}   # optional epoch file: nothing starts before it (krispy: our runs from 08:00)
 STOPF=${TB_STOP:-$HOME/codify/iter2/STOP_gpu$GPU}
 IDLE_SECONDS=${IDLE_SECONDS:-300}; IDLE_MIB=${IDLE_MIB:-1500}; MIN_LEFT=${MIN_LEFT:-1200}
 NVSMI=${NVSMI:-nvidia-smi}; PYBIN=${PYBIN:-/home/antpc/venvs/$VENV/bin/python}
@@ -43,8 +44,9 @@ idle=0
 while :; do
   [ -e "$STOPF" ] && { log "STOP file $STOPF: leaving the line unrun (exit 1 so the queue keeps it)"; exit 1; }
   E=$(end_epoch); now=$(date +%s)
-  [ -n "$E" ] && [ "$now" -ge "$E" ] && { log "window is over (now >= WINDOW_END - margin): line skipped, exit 0"; exit 0; }
-  if [ -n "$E" ] && [ $((E - now)) -ge "$MIN_LEFT" ] && [ "$(used_mib)" -lt "$IDLE_MIB" ] && [ -z "$($NVSMI --query-compute-apps=pid --format=csv,noheader -i "$GPU" 2>/dev/null | tr -d ' \n')" ]; then
+  NB=$(tr -dc '0-9' < "$NOT_BEFORE" 2>/dev/null | head -c 12); [ -n "$NB" ] || NB=0
+  [ -n "$E" ] && [ "$now" -ge "$E" ] && [ "$now" -ge "$NB" ] && { log "window is over (now >= WINDOW_END - margin): line skipped, exit 0"; exit 0; }
+  if [ "$now" -ge "$NB" ] && [ -n "$E" ] && [ $((E - now)) -ge "$MIN_LEFT" ] && [ "$(used_mib)" -lt "$IDLE_MIB" ] && [ -z "$($NVSMI --query-compute-apps=pid --format=csv,noheader -i "$GPU" 2>/dev/null | tr -d ' \n')" ]; then
     idle=$((idle + 15))
   else idle=0; fi
   [ "$idle" -ge "$IDLE_SECONDS" ] && break

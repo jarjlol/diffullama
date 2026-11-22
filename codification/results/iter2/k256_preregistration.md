@@ -38,8 +38,10 @@ a gap of that size survives; a smaller gap would need a larger n and will be rep
 - AR minus majority still clearly negative: the finding holds at the published step budget (at T = 0.7).
 
 ## Clarifications (Sun 22 Nov 2026, 21:45 IST; made before any K = 256 row exists, checked on Ada and Blackwell at 21:42 IST)
-- **Window end.** krispy's pause has no fixed end, so "krispy's end time" no longer applies. Blackwell's window ends 5 hours after the first real start of a window job
-  (8 hours is the ceiling), still clock-only, and is never extended after seeing results. Generation stops 25 min before that end as before.
+- **Window (updated 22:20 IST, still before any K = 256 row).** krispy's pause has no fixed end, so "krispy's end time" no longer applies. krispy allowed our runs from 08:00 IST
+  on Mon 23 Nov (relayed by Aaditya); nothing on Blackwell starts earlier. The window ceiling is 8 hours after the first real start of a window job and is never extended
+  after seeing results. Generation (clock-only stopping) ends 5 h 30 min after that start (2 h 30 min before the ceiling); the scoring lines follow at once and the rest of
+  the 8 hours is a buffer. If krispy needs the GPUs earlier we stop and hand them back; the rows finished by then are reported with their n.
 - **Ada sampling.** Ada's Dream rows use `CODIFY_SAMPLE_CHUNK=5` (the 10 samples of a question in two batches of 5, because one batch of 10 ran out of memory on the
   shared 32 GB card). Same independent per-sample distribution, different random stream. Every row records `sample_chunk` next to `host` and `gpu`.
 - **Compute column.** s/question is computed from Blackwell rows only; Ada's `gen_seconds` (other GPU, 5-sample batches, shared card) is not comparable.
