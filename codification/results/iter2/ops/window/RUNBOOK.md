@@ -37,8 +37,10 @@ What to check and do:
    The wrapper also yields by itself if a process that is not ours appears on a GPU. Rows already written stay valid (one row per finished question).
    The scoring lines also need a GPU; if we surrendered before scoring, either ask krispy for a short scoring slot (about 20 min) or score the finished rows on Ada
    (copy the rows to Ada). Checked Sun 22 Nov 22:25 IST, CPU only: Ada's `~/codify-ada/venv-dream` (torch 2.7.1, transformers 4.46.2) runs `score_candidates.py --scorer mock` on a 2-row copy in a scratch
-   dir, so the code path works. NOT usable yet for the real scorers: Ada's model cache (`~/codify-ada/hf`) holds Dream and LLaDA only, no Qwen2.5-7B and no GPT-2, and HF is offline there. Using Ada for
-   scoring first needs a download of Qwen2.5-7B (about 15 GB; the disk has 384 GB free but is 90% full) by Arjun or whoever agrees to it.
+   dir, so the code path works. Scorer models on Ada (copied Mon 23 Nov 02:30 IST from Blackwell's cache, as Aaditya decided): `~/codify-ada/hf/hub/models--Qwen--Qwen2.5-7B` (15 GB, all 13 snapshot files) and
+   `models--openai-community--gpt2` (526 MB, the 7 files the scorer needs). Status: **files present and hash-verified (sha256 of every file equals the Blackwell copy), tokenizer and config load offline in
+   `venv-dream` on CPU; GPU load untested** (the scorer's causality self-check needs CUDA, so the first real load waits until Ada has room). Use `HF_HOME=~/codify-ada/hf HF_HUB_OFFLINE=1`.
+   **Deletion note:** remove `~/codify-ada/hf/hub/models--Qwen--Qwen2.5-7B` and `models--openai-community--gpt2` when the K = 256 scoring is done, or earlier if Ada's disk gets tight or Arjun asks (this is a backup copy).
 3. To cancel the whole thing: `touch` the two STOP files, then `pgrep -af "bash queue.sh"` and `kill <pid>` for our two queue pids only (a `pkill -f` over ssh matches the ssh shell's own command line and kills it; `cpu_queue.sh` is a different job).
 4. Do not start anything else on Blackwell during the window. Do not keep vLLM or any model loaded on a shared GPU while waiting for a human.
 5. Watch rows: `wc -l ~/codify/diffullama/codification/pipeline/work/candidates/dream-base@k256/test.jsonl` (and `llada-base@k256`).
