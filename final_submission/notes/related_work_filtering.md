@@ -67,7 +67,7 @@ Result: 12 of 48 kept from the lit review, +1 added from outside it (DiffuLLaMA,
 
 ## Verification
 
-- Title, author list and year of all 17 bib entries in `refs_related_work.bib` were fetched from the arXiv API on 2026-11-20 (script output in the issue #9 status comment); titles match the lit review's titles exactly. Venues: ICLR 2023 for `ke2023continual` is arXiv's `journal_ref`; ACL 2023 for DiffusionBERT and SSD-LM comes from their ACL Anthology DOIs in `litreview/data/candidates_topK.json`; ICLR 2025 for the anchor comes from the repo README. Other entries are cited as arXiv preprints, no venue claimed.
+- Title, author list and year of the original 17 bib entries in `refs_related_work.bib` were fetched from the arXiv API on 2026-11-20 (script output in the issue #9 status comment); titles match the lit review's titles exactly. Venues: ICLR 2023 for `ke2023continual` is arXiv's `journal_ref`; ACL 2023 for DiffusionBERT and SSD-LM comes from their ACL Anthology DOIs in `litreview/data/candidates_topK.json`; ICLR 2025 for the anchor comes from the repo README. Other entries are cited as arXiv preprints, no venue claimed.
 - Every statement about a paper in the section was checked against that paper's abstract in `litreview/data/candidates_topK.json`. Only abstracts were read, **not full texts**: the section describes what each paper proposes, not its detailed results.
 - Not used as evidence: the survey's statements that the field 'converged' on a recipe, and its Mamba architecture-transfer paragraph (it names no retrieved paper).
 
@@ -87,7 +87,7 @@ Result: 12 of 48 kept from the lit review, +1 added from outside it (DiffuLLaMA,
 Left out of the paper for space: EvoScientist (arXiv:2603.08127), AutoSOTA (arXiv:2604.05550), both in `REFERENCE_SYSTEMS.md`; Snell et al. on test-time compute (arXiv:2408.03314).
 Titles, authors and years of all added papers were fetched from the arXiv API on 2026-11-20. Claims were checked against abstracts only.
 
-Reference count for the paper's one reference page: **21** for this section, 17 of them in this section's bib plus the four shared with #11. Cut list if needed: `han2023ssdlm`, `ke2023continual`, `gu2017nat`, `xie2025dreamcoder`.
+Reference count: **24** for this section, 20 of them in this section's bib plus the four shared with #11 (updated 2026-11-22; references are no longer capped at one page, per the Moodle title relayed on #17). Cut list if needed: `han2023ssdlm`, `ke2023continual`, `gu2017nat`, `xie2025dreamcoder`.
 
 ## Full-text receipts (2026-11-21, neel's agent, after taking over #9)
 
@@ -117,6 +117,11 @@ Each claim in `related_work.md` checked against the paper's full text (arxiv.org
 
 Result: every claim is supported; two were reworded to match the full text (Svete: theoretical setting stated; Arbor: held-out admission). The earlier line "Claims were checked against abstracts only" is superseded by this section.
 
-**Bibliography check (2026-11-21):** all 17 entries in `refs_related_work.bib` match their arXiv page (`arxiv.org/abs/<id>` citation metadata) on normalised title and first-author surname. Three use the venue year rather than arXiv v1: gong2025diffullama (arXiv 2024, ICLR 2025), he2023diffusionbert (arXiv 2022), han2023ssdlm (arXiv 2022). This replaces the offline-only parse noted in aryan's review (Semantic Scholar returned HTTP 429 there).
+**Bibliography check (2026-11-21):** all 17 original entries in `refs_related_work.bib` match their arXiv page (`arxiv.org/abs/<id>` citation metadata) on normalised title and first-author surname. Three use the venue year rather than arXiv v1: gong2025diffullama (arXiv 2024, ICLR 2025), he2023diffusionbert (arXiv 2022), han2023ssdlm (arXiv 2022). This replaces the offline-only parse noted in aryan's review (Semantic Scholar returned HTTP 429 there).
 
 **Added 2026-11-21 (aaditya's #17 plan, extra credit 6): three references, all read at full text for N3 (`codification/SOTA.md` on `iter2/neel`).** zhan2026prm: Table 1, Dream-v0-Instruct-7B, N = 8, ORM Rerank 75.13 vs Majority 60.05. ruan2026bmc: Table 2, LLaDA-8B-Instruct, N = 3, Best-of-N (BMC) 77.8 vs Self-Consistency 74.3. peng2026repralign: "We identify representation preservation as a missing ingredient in AR → DLM conversion"; no test-time selection or GSM8K in the paper. Reference count for this section: **24**.
+
+**Metadata receipts for the 3 entries added on 2026-11-21** (`arxiv.org/abs/<id>` citation metadata, checked 2026-11-21 when added; the counts above now total 20 bib entries, 24 references with the four shared with #11):
+- zhan2026prm, 2609.35472: "Why Deterministic PRM Guidance Underperforms in Discrete Diffusion Reasoning"; first author Zhan, Yan; 2026.
+- ruan2026bmc, 2604.16565: "Reasoning on the Manifold: Bidirectional Consistency for Self-Verification in Diffusion Language Models"; first author Ruan, Jiaoyang; 2026.
+- peng2026repralign, 2605.06885: "Don't Retrain, Align: Adapting Autoregressive LMs to Diffusion LMs via Representation Alignment"; first author Peng, Fred Zhangzhi; 2026.
