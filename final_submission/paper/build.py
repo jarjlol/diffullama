@@ -32,8 +32,8 @@ OUT = HERE / "build"
 ORDER = [("abstract", "Abstract", 13), ("introduction", "Introduction", 8), ("related_work", "Related Work", 9),
          ("problem_formulation", "Problem Formulation", 10), ("methodology", "Methodology", 11),
          ("experiments", "Experiments", 12), ("conclusion", "Conclusion", 13)]
-BRANCH = {12: "mesh/12-experiments", 13: "mesh/13-abstract-conclusion"}
-# Sections already merged (#8, #9, #10, #11) are read from main. Remove a key here when its PR merges.
+BRANCH: dict[int, str] = {}  # all section PRs merged; add "issue: branch" here to preview an open section PR
+# Sections are read from main unless listed above.
 
 
 def git_show(ref: str, path: str) -> str | None:
