@@ -1,0 +1,10 @@
+# WINDOW queue for GPU 0 (dream), staged Sun 22 Nov 16:30 IST by aaditya-worker. NOT ACTIVE: needs Main yes + krispy end time in ~/codify/iter2/WINDOW_END. Activate with window/start_window.sh.
+# generation is stopped 25 min before WINDOW_END (tbm margin 1500); the scoring lines after it get the last 25 min.
+SH /home/antpc/codify/iter2/window/tbm.sh 1500 300 0 SH /home/antpc/codify/iter2/window/gen_k.sh dream
+SH /home/antpc/codify/iter2/window/merge_ext.sh dream-base@k256
+SH /home/antpc/codify/iter2/window/tbm.sh 0 20 0 scorer score_candidates.py --model dream-base@k256 --split test --scorer qwen7b --cut
+SH /home/antpc/codify/iter2/window/tbm.sh 0 20 0 scorer score_candidates.py --model dream-base@k256 --split test --scorer qwen7b
+SH /home/antpc/codify/iter2/window/tbm.sh 0 20 0 scorer score_candidates.py --model dream-base@k256 --split test --scorer gpt2 --cut
+SH /home/antpc/codify/iter2/window/tbm.sh 0 20 0 scorer score_candidates.py --model dream-base@k256 --split test --scorer gpt2
+SH /home/antpc/codify/iter2/window/tbm.sh 0 20 0 SH /home/antpc/codify/iter2/window/selfscore_k.sh dream cut
+SH /home/antpc/codify/iter2/window/tbm.sh 0 20 0 SH /home/antpc/codify/iter2/window/selfscore_k.sh dream trim

@@ -145,6 +145,18 @@ class LLaDA:
         return [self.tok.decode(g[ids.shape[1]:].tolist(), skip_special_tokens=True) for g in out]
 
 
+import socket
+HOST = socket.gethostname()
+
+
+def GPU_NAME() -> str:
+    try:
+        import torch
+        return torch.cuda.get_device_name(0) if torch.cuda.is_available() else "cpu"
+    except Exception:
+        return "unknown"
+
+
 BACKENDS = {"mock": Mock, "diffugpt": Anchor, "diffullama": Anchor, "dream": Dream, "llada": LLaDA}
 
 # ---------------------------------------------------------------------- main
@@ -156,6 +168,9 @@ def main() -> int:
     ap.add_argument("--limit", type=int, default=0, help="first N questions only (smoke tests)")
     ap.add_argument("--reverse", action="store_true",
                     help="work from the last question back, so a second machine can share the split")
+    ap.add_argument("--order", help="file with one test uid per line: work through the questions in THIS order (iteration 2 K=256 run: a seeded "
+                                    "random permutation, so any finished subset is a random subsample). --limit then counts questions of this list; "
+                                    "--reverse walks it from the back")
     ap.add_argument("--steps", type=int, default=0,
                     help="override the denoising-step budget (iteration 2 step arm, prompt A1); output goes to "
                          "candidates/<model>@k<steps>/ so the 64-step files are never overwritten")
@@ -171,6 +186,10 @@ def main() -> int:
     shots = json.loads((WORK / "data" / "shots.json").read_text(encoding="utf-8"))
     shots = shots[:spec.get("n_shots", c["n_shots"])]
     qs = read_jsonl(WORK / "data" / f"{a.split}.jsonl")
+    if a.order:
+        pos = {u: i for i, u in enumerate(l.strip() for l in open(a.order, encoding="utf-8") if l.strip())}
+        assert set(pos) <= {q["uid"] for q in qs}, "order file lists uids that are not in this split"
+        qs = sorted((q for q in qs if q["uid"] in pos), key=lambda q: pos[q["uid"]])
     qs = qs[:a.limit] if a.limit else qs
     out = WORK / "candidates" / a.model / f"{a.split}.jsonl"
     # Rows another machine generated for this split (same model, same settings), copied in while
@@ -204,6 +223,8 @@ def generate(a, spec, c, shots, todo, out, ext_uids):
         texts = backend.sample(q["uid"], prompt, c["n_candidates"], gold_hint=hint)
         assert len(texts) == c["n_candidates"]
         append_jsonl(out, {"uid": q["uid"], "model": a.model, "question": q["question"], "prompt": prompt,
+                           "host": HOST, "gpu": GPU_NAME(),                       # mixed-hardware runs (ada + blackwell) stay traceable
+
                            "gen_seconds": round(time.time() - tq, 3),        # idea 1.1's T_gen, all N candidates
                            "candidates": [{"text": t, "answer": task.extract_answer(t)} for t in texts]})
         if k % 10 == 0 or k == len(todo):
