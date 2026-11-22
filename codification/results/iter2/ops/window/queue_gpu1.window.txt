@@ -1,4 +1,4 @@
-# WINDOW queue for GPU 1 (llada), staged Sun 22 Nov 16:30 IST by aaditya-worker. NOT ACTIVE: needs Main yes + krispy end time in ~/codify/iter2/WINDOW_END. Activate with window/start_window.sh.
+# WINDOW queue for GPU 1 (llada), staged Sun 22 Nov 16:30 IST by aaditya-worker. ACTIVATED Sun 22 Nov 22:11 IST with start_window.sh 8 (not before Mon 08:00 IST). The go comes from Aaditya (or Arjun/Aryan after krispy confirms); main is not a go source.
 # generation stops 2 h 30 min before the 8 h ceiling (tbm margin 9000), i.e. after 5 h 30 min; scoring follows at once and has the rest of the 8 h as buffer.
 SH /home/antpc/codify/iter2/window/tbm.sh 9000 300 1 SH /home/antpc/codify/iter2/window/gen_k.sh llada
 SH /home/antpc/codify/iter2/window/merge_ext.sh llada-base@k256

@@ -36,8 +36,10 @@ What to check and do:
 2. SURRENDER at any time, e.g. krispy asks for the GPUs: `touch ~/codify/iter2/STOP_gpu0 ~/codify/iter2/STOP_gpu1` (the wrapper stops the job within 30 s and the queue ends).
    The wrapper also yields by itself if a process that is not ours appears on a GPU. Rows already written stay valid (one row per finished question).
    The scoring lines also need a GPU; if we surrendered before scoring, either ask krispy for a short scoring slot (about 20 min) or score the finished rows on Ada
-   (copy the rows to Ada; Ada can hold the 7B scorer, but the scoring venv on Ada is NOT verified).
-3. To cancel the whole thing: `touch` the two STOP files, then `pkill -f "bash queue.sh"` for our two queues only (check `pgrep -af queue.sh` first; `cpu_queue.sh` is a different job).
+   (copy the rows to Ada). Checked Sun 22 Nov 22:25 IST, CPU only: Ada's `~/codify-ada/venv-dream` (torch 2.7.1, transformers 4.46.2) runs `score_candidates.py --scorer mock` on a 2-row copy in a scratch
+   dir, so the code path works. NOT usable yet for the real scorers: Ada's model cache (`~/codify-ada/hf`) holds Dream and LLaDA only, no Qwen2.5-7B and no GPT-2, and HF is offline there. Using Ada for
+   scoring first needs a download of Qwen2.5-7B (about 15 GB; the disk has 384 GB free but is 90% full) by Arjun or whoever agrees to it.
+3. To cancel the whole thing: `touch` the two STOP files, then `pgrep -af "bash queue.sh"` and `kill <pid>` for our two queue pids only (a `pkill -f` over ssh matches the ssh shell's own command line and kills it; `cpu_queue.sh` is a different job).
 4. Do not start anything else on Blackwell during the window. Do not keep vLLM or any model loaded on a shared GPU while waiting for a human.
 5. Watch rows: `wc -l ~/codify/diffullama/codification/pipeline/work/candidates/dream-base@k256/test.jsonl` (and `llada-base@k256`).
    To change the length, use `start_window.sh` again only if no window job has started (it removes WINDOW_START). Never extend a window that has started.
