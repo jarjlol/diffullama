@@ -1,9 +1,9 @@
-# job cvt_dream_test   started 2026-11-21 15:42:26   worker commit 1d71241   try 1
-# inputs: lines:features/dream-base/test.qwen7b-cut.jsonl:500,lines:features/dream-base/test.gpt2-cut.jsonl:500,lines:features/dream-base/test.qwen0.5b-cut.jsonl:500
+# job cvt_dream_test   started 2026-11-22 02:30:19   worker commit 66697fd   try 2
+# inputs: lines:features/dream-base/test.qwen7b-cut.jsonl:500,lines:features/dream-base/test.gpt2-cut.jsonl:500,lines:features/dream-base/test.qwen0.5b-cut.jsonl:500,lines:features/dream-base/test.dlmself.jsonl:500
 $ cd ~/codify/worker/codification/pipeline && python3 cut_vs_trim.py --model dream-base --split test --json $OUT.json
 
 dream-base test (all): 500 questions, 64-step candidates (iteration 1), N = 10
-  coverage dlm.selfscore: 5/500 questions   <-- INCOMPLETE
+  coverage dlm.selfscore: 500/500 questions
   first 0.404  majority 0.724  oracle 0.878
   scorers with a cut version: ['gpt2', 'qwen0.5b', 'qwen7b'];  all scorers: ['gpt2', 'gpt2-cut', 'llama2-7b', 'qwen0.5b', 'qwen0.5b-cut', 'qwen7b', 'qwen7b-cut', 'tinyllama']
   coverage gpt2: 500/500 questions
@@ -15,7 +15,7 @@ dream-base test (all): 500 questions, 64-step candidates (iteration 1), N = 10
   coverage qwen7b-cut: 500/500 questions
   coverage tinyllama: 500/500 questions
   selector                          accuracy
-  dlm.selfscore                        0.004
+  dlm.selfscore                        0.304
   gpt2-cut:mean                        0.268
   gpt2-cut:sum                         0.298
   gpt2:mean                            0.346
@@ -39,7 +39,7 @@ paired differences (95% bootstrap CI, exact McNemar):
   qwen0.5b mean: cut minus trim                  -0.034 [-0.062,-0.006]  wins/losses 17/34  McNemar p=0.024
   qwen7b sum: cut minus trim                     +0.130 [+0.090,+0.170]  wins/losses 90/25  McNemar p=0.000
   qwen7b mean: cut minus trim                    -0.062 [-0.094,-0.032]  wins/losses 18/49  McNemar p=0.000
-  dlm.selfscore minus majority                   -0.720 [-0.758,-0.682]  wins/losses 0/360  McNemar p=0.000
+  dlm.selfscore minus majority                   -0.420 [-0.466,-0.374]  wins/losses 9/219  McNemar p=0.000
   gpt2-cut:mean minus majority                   -0.456 [-0.502,-0.412]  wins/losses 6/234  McNemar p=0.000
   gpt2-cut:sum minus majority                    -0.426 [-0.472,-0.380]  wins/losses 7/220  McNemar p=0.000
   gpt2:mean minus majority                       -0.378 [-0.424,-0.334]  wins/losses 7/196  McNemar p=0.000
@@ -57,4 +57,4 @@ paired differences (95% bootstrap CI, exact McNemar):
   tinyllama:mean minus majority                  -0.452 [-0.498,-0.408]  wins/losses 6/232  McNemar p=0.000
   tinyllama:sum minus majority                   -0.448 [-0.494,-0.404]  wins/losses 9/233  McNemar p=0.000
 
-# exit code 0, finished 2026-11-21 15:42:46
+# exit code 0, finished 2026-11-22 02:30:40
