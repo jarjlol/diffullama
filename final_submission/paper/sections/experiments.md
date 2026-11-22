@@ -36,7 +36,7 @@
 | LLaDA 8B | 32 | 22.8 | 51.0 | 76.0 | 28.6 (Qwen2.5-7B cut sum) | 27.4 |
 | LLaDA 8B | 64 | 48.6 | **73.2** | 89.2 | 52.2 (Qwen2.5-7B cut sum) | 55.0 |
 
-**DLM self-score.** On the Dream gate split the model's own likelihood reaches 31.5% against 71.0% for majority (2 wins, 81 losses; $p < 0.001$; $n = 200$), so it is not a substitute for an external scorer.
+**DLM self-score.** On the 200-question gate split the models' own likelihood reaches 31.5% for Dream and 45.0% for LLaDA, against 71.0% and 73.5% for majority (2/81 and 4/61 wins/losses), so it is not a substitute for an external scorer.
 
 **What worked.** Majority vote is the strong training-free selector on the two non-floor models: it recovers 61–69% of the first-sample-to-oracle gap, and no in-item signal we tried closed the remaining ~15 points on the iteration-1 scores. The recoverable gain is agreement, not likelihood, consistent with self-consistency on AR models (Wang et al., 2023).
 
