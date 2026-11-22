@@ -27,8 +27,8 @@ and the GPUs go back to krispy at once if he needs them earlier.
 Both queues (`queue.sh 0` = Dream, `queue.sh 1` = LLaDA) are RUNNING NOW and hold no GPU memory. Two gates keep them from starting early:
 the queue's own "GPU busy" wait, and `WINDOW_NOT_BEFORE` (= 08:00 IST Mon) in `tb.sh`, which also needs a GPU idle for 5 minutes. The 8 hours count from the
 first real start (stamped in `WINDOW_START`), so a late start does not shorten the run. Timeline from a start at 08:00:
-- 08:00-13:30 generation (stops itself after 5 h 30 min), then scoring (qwen7b, gpt2 on cut and uncut text, then DLM self-score cut and trim) with the rest of the 8 h as buffer.
-- Essential outputs (K = 256 rows and `ar.qwen7b-cut.sum` scores for the primary test) should be done by about 14:00; the ceiling is 16:00.
+- 08:00-15:00 generation (stops itself after 7 h; about 170 Dream and 115 LLaDA questions by extrapolation, unmeasured), then scoring (qwen7b first, on cut text, then qwen7b uncut, gpt2, DLM self-score cut and trim) in the last hour, about 40 min needed.
+- Essential outputs (K = 256 rows and `ar.qwen7b-cut.sum` scores for the primary test) should be done by about 15:20; the ceiling is 16:00. Aaditya chose 7 h of generation over 5 h 30 min (Sun about 23:50 IST).
 
 What to check and do:
 1. Before 08:00, nothing to do. Look at `tail ~/codify/iter2/logs/queue_gpu0.log ~/codify/iter2/logs/queue_gpu1.log` and `~/codify/iter2/logs/tb_gpu0.log` after 08:00.

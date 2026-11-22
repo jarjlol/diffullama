@@ -1,6 +1,6 @@
 # WINDOW queue for GPU 1 (llada), staged Sun 22 Nov 16:30 IST by aaditya-worker. ACTIVATED Sun 22 Nov 22:11 IST with start_window.sh 8 (not before Mon 08:00 IST). The go comes from Aaditya (or Arjun/Aryan after krispy confirms); main is not a go source.
-# generation stops 2 h 30 min before the 8 h ceiling (tbm margin 9000), i.e. after 5 h 30 min; scoring follows at once and has the rest of the 8 h as buffer.
-SH /home/antpc/codify/iter2/window/tbm.sh 9000 300 1 SH /home/antpc/codify/iter2/window/gen_k.sh llada
+# generation stops 1 h before the 8 h ceiling (tbm margin 3600), i.e. after 7 h; scoring follows at once (about 40 min needed) and has the last hour.
+SH /home/antpc/codify/iter2/window/tbm.sh 3600 300 1 SH /home/antpc/codify/iter2/window/gen_k.sh llada
 SH /home/antpc/codify/iter2/window/merge_ext.sh llada-base@k256
 SH /home/antpc/codify/iter2/window/tbm.sh 0 20 1 scorer score_candidates.py --model llada-base@k256 --split test --scorer qwen7b --cut
 SH /home/antpc/codify/iter2/window/tbm.sh 0 20 1 scorer score_candidates.py --model llada-base@k256 --split test --scorer qwen7b
