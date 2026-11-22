@@ -68,7 +68,7 @@ Result: 12 of 48 kept from the lit review, +1 added from outside it (DiffuLLaMA,
 ## Verification
 
 - Title, author list and year of the original 17 bib entries in `refs_related_work.bib` were fetched from the arXiv API on 2026-11-20 (script output in the issue #9 status comment); titles match the lit review's titles exactly. Venues: ICLR 2023 for `ke2023continual` is arXiv's `journal_ref`; ACL 2023 for DiffusionBERT and SSD-LM comes from their ACL Anthology DOIs in `litreview/data/candidates_topK.json`; ICLR 2025 for the anchor comes from the repo README. Other entries are cited as arXiv preprints, no venue claimed.
-- Every statement about a paper in the section was checked against that paper's abstract in `litreview/data/candidates_topK.json`. Only abstracts were read, **not full texts**: the section describes what each paper proposes, not its detailed results.
+- First pass (2026-11-20): every statement about a paper in the section was checked against that paper's abstract in `litreview/data/candidates_topK.json`. **Superseded on 2026-11-21:** every claim was then re-checked against the paper's full text; see "Full-text receipts" below.
 - Not used as evidence: the survey's statements that the field 'converged' on a recipe, and its Mamba architecture-transfer paragraph (it names no retrieved paper).
 
 ## Added on 2026-11-20 (groups 3 and 4, requested by the team; the lit review has none)
@@ -85,7 +85,7 @@ Result: 12 of 48 kept from the lit review, +1 added from outside it (DiffuLLaMA,
 | `jin2026arbor` | Arbor (arXiv:2606.11926) | used for codification; entry in `refs_methodology.bib` |
 
 Left out of the paper for space: EvoScientist (arXiv:2603.08127), AutoSOTA (arXiv:2604.05550), both in `REFERENCE_SYSTEMS.md`; Snell et al. on test-time compute (arXiv:2408.03314).
-Titles, authors and years of all added papers were fetched from the arXiv API on 2026-11-20. Claims were checked against abstracts only.
+Titles, authors and years of all added papers were fetched from the arXiv API on 2026-11-20. Claims were first checked against abstracts, then against full texts on 2026-11-21 ("Full-text receipts" below).
 
 Reference count: **24** for this section, 20 of them in this section's bib plus the four shared with #11 (updated 2026-11-22; references are no longer capped at one page, per the Moodle title relayed on #17). Cut list if needed: `han2023ssdlm`, `ke2023continual`, `gu2017nat`, `xie2025dreamcoder`.
 
