@@ -1,6 +1,8 @@
-# Iteration-2 evidence copied from Blackwell (21 Nov 2026, 18:20 IST)
+# Iteration-2 evidence (Blackwell copies 21 Nov 2026, 18:20 IST; git copies 23 Nov)
 
-Raw outputs, copied without edits from the `antpc` workstation:
+Raw outputs, copied without edits: the first four rows from the `antpc` workstation, the last two from `iter2/aaditya` in git.
+
+Note: the `dlm.selfscore` row in `cvt_llada_test.txt` (0.012) covers only 16/500 questions, and the file marks it INCOMPLETE. The report does not use it. LLaDA's self-score numbers in the report come from `self_llada_gate.txt` (200/200).
 
 | File | Source on Blackwell |
 |---|---|
