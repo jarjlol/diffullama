@@ -56,3 +56,6 @@ a gap of that size survives; a smaller gap would need a larger n and will be rep
   continue the same random order from the front (GPU 0 Dream, GPU 1 LLaDA; Ada works from the back; a Blackwell row wins a uid clash), stop by the clock 30 min before the ceiling, and the ceiling is 19:55 IST at the latest
   (five minutes before krispy's 20:00); scoring runs only on rows not yet scored. The stop is by clock only, never by results; if krispy needs the GPUs earlier we hand them back and report the realised n.
   The analysis stays one single run on all rows (Blackwell + Ada) after Ada's cutoff (Tue 24 Nov 06:00 IST), exactly as declared above; nothing is analysed before that.
+- **Wording correction (Mon 23 Nov 2026, about 17:10 IST; no K = 256 result exists).** The Question section calls 0.81 (Dream) and 0.73 (LLaDA) "published 256-step greedy numbers". Per `fidelity.md` those are OUR greedy measurements at 256 steps on 100 test questions
+  (dream-sampler 0.810, dream-published 0.800, llada-published 0.730); the papers' own numbers are 77.2 (Dream, 8-shot gsm8k_cot) and 70.3 (LLaDA, 4-shot). The design and analysis above are unchanged; read "published greedy numbers" there as "our greedy reproduction at 256 steps".
+  The same file measured greedy single-sample cost at about 17 s/question on Blackwell for both models.
