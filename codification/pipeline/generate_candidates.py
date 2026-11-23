@@ -146,12 +146,19 @@ class LLaDA:
         self.model = AutoModel.from_pretrained(spec["hf"], torch_dtype=torch.bfloat16, trust_remote_code=True).to("cuda").eval()
 
     def sample(self, uid, prompt, n, gold_hint=None):
-        ids = self.tok([prompt] * n, return_tensors="pt").input_ids.to("cuda")
-        with self.torch.no_grad():
-            out = self.generate(self.model, ids, steps=self.spec["steps"], gen_length=self.gen_tokens,
-                                block_length=self.gen_tokens,             # F-11: no semi-AR blocks
-                                temperature=self.spec["temperature"], cfg_scale=0.0, remasking=self.spec["remasking"])
-        return [self.tok.decode(g[ids.shape[1]:].tolist(), skip_special_tokens=True) for g in out]
+        # CODIFY_SAMPLE_CHUNK=k runs the n independent samples in batches of k (same per-sample distribution, less peak memory,
+        # for the shared 32 GB Ada card). Unset = one batch of n, as on Blackwell.
+        chunk = int(os.environ.get("CODIFY_SAMPLE_CHUNK", "0")) or n
+        self.last_chunk = min(chunk, n)
+        texts = []
+        for i in range(0, n, chunk):
+            ids = self.tok([prompt] * min(chunk, n - i), return_tensors="pt").input_ids.to("cuda")
+            with self.torch.no_grad():
+                out = self.generate(self.model, ids, steps=self.spec["steps"], gen_length=self.gen_tokens,
+                                    block_length=self.gen_tokens,             # F-11: no semi-AR blocks
+                                    temperature=self.spec["temperature"], cfg_scale=0.0, remasking=self.spec["remasking"])
+            texts += [self.tok.decode(g[ids.shape[1]:].tolist(), skip_special_tokens=True) for g in out]
+        return texts
 
 
 import socket
