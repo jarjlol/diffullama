@@ -1,0 +1,24 @@
+{
+  "captured_at": "2026-11-21T02:57:21.076230+05:30",
+  "source": "blackwell:~/codify/diffullama/codification/pipeline/work/fidelity, verified against codification/results/iter2/aryan/fidelity_complete.json",
+  "configs": {
+    "dream-published": {
+      "n": 100,
+      "correct": 80,
+      "sha256": "c5cc0125de7120742f7c812478ed3071950fdc04aba17701cbb7f16fe53d55c6",
+      "unique_uids": 100
+    },
+    "dream-sampler": {
+      "n": 100,
+      "correct": 81,
+      "sha256": "0c25b2d3950ff952ab5b269af2d79c27cd28c5b2ef13217ed26077a2eb15daa4",
+      "unique_uids": 100
+    },
+    "llada-published": {
+      "n": 100,
+      "correct": 73,
+      "sha256": "75838990f5b9d01a3fc1cedc498f8b45e408d904d6e3a3ba9e413ff185e8a11a",
+      "unique_uids": 100
+    }
+  }
+}

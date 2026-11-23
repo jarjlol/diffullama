@@ -1,0 +1,2 @@
+# ReportLab's ASCII-encoded PDF streams are binary artifacts, not source text.
+report.pdf binary
