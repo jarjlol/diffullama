@@ -110,11 +110,28 @@ class LLaDAGreedy:
         return self.tok.decode(out[0][ids.shape[1]:].tolist(), skip_special_tokens=True)
 
 
-def run(name: str, limit: int) -> None:
+def k256_uids(paths: str) -> list:
+    """uids of the K = 256 candidate files (comma separated paths; missing files skipped), in file order, de-duplicated."""
+    import pathlib
+    seen, out = set(), []
+    for p in [x for x in paths.split(",") if x.strip()]:
+        p = pathlib.Path(p.strip())
+        if p.exists():
+            for r in read_jsonl(p):
+                if r["uid"] not in seen:
+                    seen.add(r["uid"]); out.append(r["uid"])
+    return out
+
+
+def run(name: str, limit: int, from_candidates: str = "") -> None:
     c, conf = cfg(), CONFIGS[name]
     spec = c["models"][conf["model"]]
     shots = json.loads((WORK / "data" / "shots.json").read_text(encoding="utf-8"))[:spec.get("n_shots", c["n_shots"])]
-    qs = read_jsonl(WORK / "data" / "test.jsonl")[:limit]
+    qs = read_jsonl(WORK / "data" / "test.jsonl")
+    if from_candidates:   # greedy on exactly the questions that have K = 256 rows (paired comparison); the first-100 rows of the earlier check are reused
+        want = set(k256_uids(from_candidates)); qs = [q for q in qs if q["uid"] in want]
+    else:
+        qs = qs[:limit]
     out = WORK / "fidelity" / f"{name}.jsonl"
     done = {r["uid"] for r in read_jsonl(out)} if out.exists() else set()
     todo = [q for q in qs if q["uid"] not in done]
@@ -122,6 +139,8 @@ def run(name: str, limit: int) -> None:
     if not todo:
         return
     gen = DreamGreedy(spec, conf) if conf["model"] == "dream-base" else LLaDAGreedy(spec, conf, c)
+    import socket
+    host, gpu = socket.gethostname(), gen.torch.cuda.get_device_name(0)
     t0 = time.time()
     for k, q in enumerate(todo, 1):
         prompt = cot_prompt(q["question"]) if conf["prompt"] == "cot8" else build_prompt(q["question"], shots)
@@ -129,7 +148,7 @@ def run(name: str, limit: int) -> None:
         text = gen.answer(prompt)
         pred = task.extract_answer(text)
         append_jsonl(out, {"uid": q["uid"], "config": name, "gen_seconds": round(time.time() - tq, 3),
-                           "text": text, "answer": pred, "correct": task.is_correct(pred, q["answer"])})
+                           "text": text, "answer": pred, "correct": task.is_correct(pred, q["answer"]), "host": host, "gpu": gpu})
         if k % 10 == 0 or k == len(todo):
             el = time.time() - t0
             print(f"  {k}/{len(todo)}  {el / k:.1f}s/question", flush=True)
@@ -158,12 +177,13 @@ def main() -> int:
     ap.add_argument("--config", choices=sorted(CONFIGS))
     ap.add_argument("--limit", type=int, default=100)
     ap.add_argument("--report", action="store_true")
+    ap.add_argument("--from-candidates", default="", help="comma separated K=256 candidate files; run greedy on exactly their uids (overrides --limit)")
     a = ap.parse_args()
     if a.report:
         report(); return 0
     if not a.config:
         ap.error("--config or --report")
-    run(a.config, a.limit)
+    run(a.config, a.limit, a.from_candidates)
     return 0
 
 
