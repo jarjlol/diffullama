@@ -193,7 +193,10 @@ const n=await p.evaluate(()=>{const r=document.querySelector('.refs');return r?1
     print(f"references: {len(refs)} cited of {len(bibs)} in the merged bib")
     print("unresolved citations: " + (", ".join(sorted(set(unresolved))) or "none"))
     print(f"pages: {pages} total, {body_pages} body (limit 4), {pages - body_pages} references + appendix (not capped)")
-    font = subprocess.run(["fc-match", "-f", "%{family}", "Times New Roman"], capture_output=True, text=True).stdout
+    try:
+        font = subprocess.run(["fc-match", "-f", "%{family}", "Times New Roman"], capture_output=True, text=True).stdout
+    except FileNotFoundError:
+        font = ""  # no fontconfig: cannot tell which font Chromium used
     if not re.search(r"Times|Liberation Serif|Tinos|Nimbus Roman", font):
         print(f"WARNING: 'Times New Roman' resolves to '{font or 'unknown'}' here, which is not metric-compatible; the page count "
               "is not the submission count (DejaVu Serif gives one extra body page). Build the final PDF where Times New Roman "
