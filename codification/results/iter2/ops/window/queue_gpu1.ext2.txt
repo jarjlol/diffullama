@@ -1,0 +1,8 @@
+# EXT2 window queue for GPU 1, staged Mon 23 Nov ~17:05 IST by aaditya-worker (krispy allows Blackwell until 20:00 IST; see issue #51 and the preregistration clause 'Second Blackwell window'). Generation stops by the clock 30 min before the ceiling (tbm margin 1800), scoring lines follow, only rows not yet scored are scored. No merge line: Ada's rows are merged after Ada's cutoff (Tue 24 Nov 06:00 IST).
+SH /home/antpc/codify/iter2/window/tbm.sh 1800 30 1 SH /home/antpc/codify/iter2/window/gen_k.sh llada
+SH /home/antpc/codify/iter2/window/tbm.sh 0 20 1 scorer score_candidates.py --model llada-base@k256 --split test --scorer qwen7b --cut
+SH /home/antpc/codify/iter2/window/tbm.sh 0 20 1 scorer score_candidates.py --model llada-base@k256 --split test --scorer qwen7b
+SH /home/antpc/codify/iter2/window/tbm.sh 0 20 1 scorer score_candidates.py --model llada-base@k256 --split test --scorer gpt2 --cut
+SH /home/antpc/codify/iter2/window/tbm.sh 0 20 1 scorer score_candidates.py --model llada-base@k256 --split test --scorer gpt2
+SH /home/antpc/codify/iter2/window/tbm.sh 0 20 1 SH /home/antpc/codify/iter2/window/selfscore_k.sh llada cut
+SH /home/antpc/codify/iter2/window/tbm.sh 0 20 1 SH /home/antpc/codify/iter2/window/selfscore_k.sh llada trim
