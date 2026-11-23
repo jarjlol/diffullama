@@ -38,6 +38,16 @@ import urllib.request
 
 from common import HERE, ROOT, WORK, append_jsonl, build_prompt, cfg, read_jsonl, task
 
+
+def _cap_gpu_memory():
+    """CODIFY_GPU_CAP_GB=g (optional): this process may use at most g GB of the card. The caching allocator then frees its cached blocks before it grows,
+    so a shared card (Ada, 32 GB) keeps headroom for other users. Unset = no cap (Blackwell)."""
+    g = float(os.environ.get("CODIFY_GPU_CAP_GB", "0") or 0)
+    if g > 0:
+        import torch
+        torch.cuda.set_per_process_memory_fraction(min(1.0, g * 2**30 / torch.cuda.get_device_properties(0).total_memory), 0)
+
+
 # ------------------------------------------------------------------ backends
 
 class Mock:
@@ -107,6 +117,7 @@ class Dream:
         assert spec["temperature"] > 0, "temperature 0 makes all N candidates identical"
         self.torch, self.spec, self.gen_tokens = torch, spec, c["gen_tokens"]
         self.tok = AutoTokenizer.from_pretrained(spec["hf"], trust_remote_code=True)
+        _cap_gpu_memory()
         self.model = AutoModel.from_pretrained(spec["hf"], torch_dtype=torch.bfloat16, trust_remote_code=True).to("cuda").eval()
 
     def sample(self, uid, prompt, n, gold_hint=None):
@@ -143,6 +154,7 @@ class LLaDA:
         mod = importlib.util.module_from_spec(s := importlib.util.spec_from_file_location("llada_generate", path)); s.loader.exec_module(mod)
         self.generate, self.torch, self.spec, self.gen_tokens = mod.generate, torch, spec, c["gen_tokens"]
         self.tok = AutoTokenizer.from_pretrained(spec["hf"], trust_remote_code=True)
+        _cap_gpu_memory()
         self.model = AutoModel.from_pretrained(spec["hf"], torch_dtype=torch.bfloat16, trust_remote_code=True).to("cuda").eval()
 
     def sample(self, uid, prompt, n, gold_hint=None):

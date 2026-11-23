@@ -5,7 +5,7 @@
 # holds no GPU memory while waiting, resumable by uid, touches nothing outside ~/codify-ada. Stop with: touch ~/codify-ada/ss/STOP
 D=$HOME/codify-ada/ss; LOG=$D/logs/ada_run3.log
 UNTIL=$(TZ=Asia/Kolkata date -d "${ADA_UNTIL:-2026-11-24 06:00}" +%s)
-export HF_HOME=$HOME/codify-ada/hf HF_HUB_OFFLINE=1 CODIFY_WORK_DIR=$D/work PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True CUDA_VISIBLE_DEVICES=0 CUDA_DEVICE_ORDER=PCI_BUS_ID PYTHONUNBUFFERED=1 CODIFY_SAMPLE_CHUNK=${ADA_CHUNK:-2}
+export HF_HOME=$HOME/codify-ada/hf HF_HUB_OFFLINE=1 CODIFY_WORK_DIR=$D/work PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True CUDA_VISIBLE_DEVICES=0 CUDA_DEVICE_ORDER=PCI_BUS_ID PYTHONUNBUFFERED=1 CODIFY_SAMPLE_CHUNK=${ADA_CHUNK:-1} CODIFY_GPU_CAP_GB=${ADA_CAP_GB:-26}
 PY=$HOME/codify-ada/venv-llada/bin/python
 M=llada-base; out=$D/work/candidates/$M@k256/test.jsonl
 cd $D/codification/pipeline

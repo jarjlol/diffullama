@@ -48,6 +48,6 @@ a gap of that size survives; a smaller gap would need a larger n and will be rep
 - **Ada extension (Mon 23 Nov 2026, about 16:05 IST; written after the Blackwell window's generation ended, before any K = 256 result was computed or looked at).**
   Blackwell generation ended at its clock stop with 161 Dream rows (+ 23 Dream rows from Ada, merged by uid) and 116 LLaDA rows. `step_arm.py` has not been run on any K = 256 row, and no
   per-question or aggregate K = 256 accuracy has been looked at. Ada is free, so we add LLaDA K = 256 rows on Ada (`ada_run3.sh`: from the back of the same random order,
-  `CODIFY_SAMPLE_CHUNK=2`, recorded in `sample_chunk`) until a fixed clock time, **Tue 24 Nov 2026 06:00 IST**, then stop whatever the rows show. The two Ada Dream runs were stopped by a STOP file at 15:55 IST
+  `CODIFY_SAMPLE_CHUNK=1` (2 ran out of memory in the float64 Gumbel-noise step on the shared 32 GB card; same per-sample distribution), recorded in `sample_chunk`) until a fixed clock time, **Tue 24 Nov 2026 06:00 IST**, then stop whatever the rows show. The two Ada Dream runs were stopped by a STOP file at 15:55 IST
   (24 rows on Ada, 23 of them merged; the last row is not used) and are not resumed. The primary and secondary analyses are run ONCE, on all rows (Blackwell + Ada, Blackwell kept on a uid clash) after the
   extra rows are scored, and report n per model and per host. No interim analysis is run before the cutoff. If Ada's job is yielded or killed by another user, we report what was finished by the cutoff.
