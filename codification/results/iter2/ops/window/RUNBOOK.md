@@ -66,3 +66,13 @@ What to check and do:
 - Shared machines: never hold GPU memory while idle, yield to other users, ask before anything longer than the declared window.
 - The window ends at its declared length even if the results look unfinished; an unfinished subsample is reported with its n.
 - Post status on issue #49 (`mesh post 49 --type note --body-file f`), not on #2/#4/#15/#17/#41 (referee loop guard).
+
+## Window 2 (Mon 23 Nov 2026, krispy allows Blackwell until 20:00 IST; started 17:08 IST)
+
+- Window declared with `WINDOW_HOURS=2.65`, first real start 17:08:38 (`WINDOW_START`): generation stops by the clock at 19:17:38, scoring follows, hard ceiling 19:47:38. Surrender: `touch ~/codify/iter2/STOP_gpu0 ~/codify/iter2/STOP_gpu1`.
+- GPU 1: LLaDA K = 256 from the front of the order (`gen_k.sh llada`), then the scoring lines. GPU 0 (`queue_gpu0.txt`): greedy Dream (`greedy_k.sh dream`), greedy LLaDA, Dream K = 256 until about 18:55 (`tbm.sh 3160`), a second LLaDA greedy pass, then scoring.
+  Greedy = T = 0, N = 1, 256 steps, same prompt and sampler as the K = 256 rows (`fidelity_check.py --from-candidates`); secondary analysis, see the preregistration.
+- Crash rule (changed 17:25): Xid 8 (launch timeout) on GPU 0 does NOT stop anything; the queue restarts the job (up to its 8 tries per line), `prestart.sh` first cools the GPU (under 80 C, at most 120 s, 300 s in a crash loop) and repairs a torn last row.
+  Xid 79 stops GPU 0 (`XID79_gpu0.txt`, `STOP_gpu0`), GPU 1 keeps running: tell Aaditya at once, do not try to reset the GPU, a reboot also hits krispy. Logs: `logs/xid_watch.log`, `logs/xid_crashes.log`, `logs/prestart.log`.
+- Restart safety: a row is appended only after its question finished (`append_jsonl`: one write plus fsync), a restart reads the file and skips finished uids, so a crash loses at most the question in flight.
+- After 19:47 nothing of ours may be left on Blackwell: `nvidia-smi --query-compute-apps=pid --format=csv,noheader` must be empty; end the idle `queue.sh` shells (`ps -eo pid,cmd | grep "[q]ueue.sh"`, `kill <pid>`) and `xid_watch.sh`.

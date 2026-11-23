@@ -9,4 +9,5 @@ case $B in dream) CONF=dream-sampler;; llada) CONF=llada-published;; *) echo "dr
 cd /home/antpc/codify/worker/codification/pipeline
 export CODIFY_WORK_DIR=$W PYTHONUNBUFFERED=1 HF_HUB_OFFLINE=1
 C=$W/candidates/$B-base@k256
+bash /home/antpc/codify/iter2/window/prestart.sh $W/fidelity/$CONF.jsonl
 exec /home/antpc/venvs/$B/bin/python fidelity_check.py --config $CONF --from-candidates "$C/test.jsonl,$C/test.ext.jsonl"
