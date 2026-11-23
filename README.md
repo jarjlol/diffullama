@@ -8,6 +8,8 @@
 [![Paper](https://img.shields.io/badge/Paper-Arvix%20Link-green)](https://arxiv.org/abs/2410.17891)
 
 
+> **BITS F471 group project (this fork).** The research paper, report and pipeline code for the Final Submission (Task 5) are indexed in [`final_submission/README.md`](final_submission/README.md): where each pipeline's code lives (`litreview/`, `limitations/`, and the `assignment/research-ideation` and `assignment/codification` branches), how to rerun it, and what needs a GPU. Everything below is the upstream DiffuLLaMA README.
+
 ## Overview
 Current Diffusion Language Models (DLMs) have been studied at a smaller scale compared to their autoregressive (AR) counterparts and lack fair comparison on language modeling benchmarks. Additionally, training diffusion models from scratch at scale remains challenging. We propose adapting existing AR models to build text diffusion models. We demonstrate connections between AR and diffusion modeling objectives and introduce a simple continual pre-training approach for training diffusion models.
 
