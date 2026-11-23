@@ -1,5 +1,7 @@
 # Report evidence and remaining review
 
+> **Superseded (23 Nov 2026):** this is the 21 Nov review snapshot. The current report is `report.md` (merged in PR #53), and its numbers take precedence. For example, the Dream published-prompt run is n = 100 with 80 correct (`evidence/fidelity_snapshot.json`), not the n = 55 / 0.782 given below. Do not upload this file as part of the report.
+
 Snapshot: 21 Nov 2026, before the 22 Nov 18:00 IST paper-results freeze.
 The four-page report is a reviewable draft, not the final post-freeze submission.
 Authored with Aryan's Codex session on 21 Nov 2026. The underlying model identifier
