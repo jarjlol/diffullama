@@ -11,9 +11,7 @@ rd = lambda p: [json.loads(l) for l in p.read_text(encoding="utf-8").splitlines(
 want = {l.strip() for l in open("/home/antpc/codify/iter2/window/k256_order.txt", encoding="utf-8") if l.strip()}
 have = {r["uid"] for r in rd(out)}
 extra = [r for r in rd(ext) if r["uid"] in want and r["uid"] not in have]
-with open(out, "a", encoding="utf-8", newline="
-") as f:
-    for r in extra: f.write(json.dumps(r, ensure_ascii=False) + "
-")
+with open(out, "a", encoding="utf-8", newline="\n") as f:
+    for r in extra: f.write(json.dumps(r, ensure_ascii=False) + "\n")
 print(f"{m}: merged {len(extra)} rows from {ext.name}; test.jsonl now {len(rd(out))} rows")
 PY
