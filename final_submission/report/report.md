@@ -1,8 +1,8 @@
 # Observations and efforts across the research cycle
 
-BITS F471 Group 3 | Task 5 | 21 November 2026
+BITS F471 Group 3 | Task 5 | 23 November 2026
 
-Our work moved from finding a defensible research gap to testing answer selection for diffusion language models. The strongest completed experimental result is a limitation: the selector produced by Arbor did not improve on majority vote on the held-out questions. Iteration 2 has already improved the diagnosis of the decoding gap, and its cut-text re-scoring, step-budget arm and self-score have finished; the stronger selector search remains unfinished. This report separates those completed observations from planned work. [S1, S7, S8]
+Our work moved from finding a defensible research gap to testing answer selection for diffusion language models. The strongest completed experimental result is a limitation: the selector produced by Arbor did not improve on majority vote on the held-out questions. Iteration 2 improved the diagnosis of the decoding gap, and its cut-text re-scoring, step-budget arm, self-score and per-question preservation test have finished; the 256-step check has also finished and the stronger selector search was not run. This report separates those completed observations from planned work. [S1, S7, S8]
 
 ## Anchor paper and understanding the method
 
@@ -74,19 +74,19 @@ Review replies rejected cross-model cached answers twice, corrected the claimed 
 
 ## Codification iteration 2
 
-The agreed target is the full iteration run in priority order, with the paper's results frozen on 22 November at 18:00 IST. The completed fidelity checks change our interpretation of iteration 1. On the same first 100 test questions, Dream at 256 steps and greedy decoding scored 81%, compared with 41% for the original first sample; LLaDA scored 73%, compared with 51%. A separate Dream published-prompt run completed 100 questions, scoring 80 correct. [S8, S11]
+The completed fidelity checks change our interpretation of iteration 1. On the same first 100 test questions, Dream at 256 steps and greedy decoding scored 81%, compared with 41% for the original first sample; LLaDA scored 73%, compared with 51%. A separate Dream published-prompt run completed 100 questions, scoring 80 correct. [S8, S11]
 
 We independently recounted the saved fidelity records on Blackwell and saved their aggregate counts and SHA-256 digests. These observations support decoding settings as an explanation of much of the earlier accuracy gap. They do not isolate temperature from step count, reproduce the full benchmark, or prove that every pipeline path is bug-free. [S8, S11]
 
 Iteration 2 also identified trailing text after the final answer as a scoring confound. Original trimming stopped at the next question marker, leaving unrelated continuation text in the AR likelihood calculation. The new cut-text path limits scoring through the answer line. The cut re-scoring has now finished: the best cut-text AR selector reaches 48.8% on Dream and 52.2% on LLaDA, against majority 72.4% and 73.2% (exact McNemar p < 0.001); cutting recovered 13.0 points on Dream's strongest scorer and left LLaDA unchanged. The AR-selection loss therefore survives removal of the confound. [S8, S13]
 
-The step-budget arm and diffusion self-score have also finished. Majority goes 3.2→23.4→72.4% on Dream and 3.2→51.0→73.2% on LLaDA for K = 16, 32 and 64; raising K from 16 to 32 adds 9.8 and 19.2 points to the first sample, while majority at K = 16 adds 0.6 and −0.4. Dream's own likelihood reaches 31.5% on the gate against 71.0% for majority and 39.5% for the first sample. [S13] The per-question preservation test and stronger Arbor run remain pending; code and queued commands are not completed results. The Arbor preparation uses a frozen tuned-majority seed, curated findings and failure memories, protected evaluation files, explicit red lines and an order-invariance check. These are planned validity improvements; no accuracy gain is attributed to them yet. The completed numbers above and the original final-split table remain separate because their samples and decoding settings differ. [S8, S12]
+The step-budget arm and diffusion self-score have also finished. Majority goes 3.2→23.4→72.4% on Dream and 3.2→51.0→73.2% on LLaDA for K = 16, 32 and 64; raising K from 16 to 32 adds 9.8 and 19.2 points to the first sample, while majority at K = 16 adds 0.6 and −0.4. On the 200-question gate the models' own likelihood reaches 31.5% on Dream and 45.0% on LLaDA, against 71.0% and 73.5% for majority and 39.5% and 48.5% for the first sample. A per-question preservation test on Dream (exploratory, 500 test questions) also finds no support: AUC 0.469, permutation p = 0.32, OR 0.94 [0.75, 1.17], and no layer significant after Benjamini–Hochberg correction. [S13] Another lab user held both Blackwell GPUs from Saturday 17:02 IST, so the prepared Arbor run (frozen tuned-majority seed, curated memories, protected evaluation files) did not happen and no gain is attributed to it. At 256 steps (Dream n = 185, LLaDA n = 192), majority reaches 84.3%/79.2% versus 75.7%/76.6% for the best AR selector: −8.6 points on Dream (95% CI [−14.1, −3.2], p = 0.002) and −2.6 on LLaDA (p = 0.33). Greedy is no better than majority (+3.2 Dream, +8.0 LLaDA). [S13] The completed numbers above and the original final-split table remain separate because their samples and decoding settings differ. [S8, S12]
 
 ## Effort, limits and remaining verification
 
 The recurring work was checking assumptions before expensive inference: matching checkpoints to their real bases, tracing erroneous statements, distinguishing lookup failures from missing papers, and keeping development, merge-gate and final evaluation roles separate. Agent-generated text and self-evaluated ratings repeatedly needed external checks. A useful negative result required as much attention to baselines and provenance as a positive result would. [S2, S3, S5, S6, S7]
 
-The CPU analyses landed as well: a curated findings memory and ranked GPU queue (T3), a verified SOTA table (N3) in which every published GSM8K test-time number uses an Instruct checkpoint and no prior work links preservation to reranking gain, and a leave-one-out check (N4) that keeps Spearman ρ ≥ +0.5 for 9 of 10 selectors when any one model is dropped. [S14, S15, S16]
+The CPU analyses landed as well: a curated findings memory and ranked GPU queue (T3), a verified SOTA table (N3) in which every published GSM8K test-time number uses an Instruct checkpoint and no prior work links preservation to reranking gain, and a leave-one-out check (N4) on the original trimmed-text scores, which the cut re-score has since superseded. [S14, S15, S16]
 
 Before final submission we must re-pin the iteration-2 evidence at the freeze, attach the independent member review, and verify the final PDF. Pending runs, a published selector comparison and frozen transfer evaluation must remain labelled unfinished if they do not complete. No gain beyond the reported majority-vote baseline is established in the evidence checked for this report. [S8, S12]
 
@@ -95,10 +95,8 @@ Before final submission we must re-pin the iteration-2 evidence at the freeze, a
 - [S1] Project brief and [S2] dated decisions and corrections.
 - [S3] Literature review report and [S4] saved overlap outputs.
 - [S5] Multi-agent limitations report; [S6] ResearchAgent report and output audit.
-- [S7] Codification iteration 1; [S8] iteration-2 draft and issue log; [S13] copied iteration-2 result files.
-- [S14] N4 analysis; [S15] verified SOTA table; [S16] curated findings memory and queue.
-- [S9] Final-split baseline and paired-statistics artifacts; [S10] preservation analysis.
-- [S11] Independently recounted fidelity snapshot; [S12] iteration-2 design and priorities.
+- [S7] Codification iteration 1; [S8] iteration 2 and issue log; [S9] final-split baselines and paired statistics; [S10] preservation analysis.
+- [S11] Recounted fidelity snapshot; [S12] iteration-2 design; [S13] copied iteration-2 results; [S14] N4; [S15] SOTA table; [S16] findings memory.
 
 [S1]: https://github.com/jarjlol/diffullama/blob/69d76a8/project-docs/01-project-brief.md
 [S2]: https://github.com/jarjlol/diffullama/blob/69d76a8/project-docs/02-decision-log.md
@@ -107,7 +105,7 @@ Before final submission we must re-pin the iteration-2 evidence at the freeze, a
 [S5]: https://github.com/jarjlol/diffullama/blob/69d76a8/limitations/REPORT.md
 [S6]: https://github.com/jarjlol/diffullama/blob/69d76a8/ideation/REPORT.md
 [S7]: https://github.com/jarjlol/diffullama/blob/69d76a8/codification/ITERATION_1.md
-[S8]: https://github.com/jarjlol/diffullama/blob/66697fd/codification/ITERATION_2.md
+[S8]: https://github.com/jarjlol/diffullama/blob/4f7c81a/codification/ITERATION_2.md
 [S9]: https://github.com/jarjlol/diffullama/tree/69d76a8/codification/results/iter1/numbers
 [S10]: https://github.com/jarjlol/diffullama/blob/69d76a8/codification/results/iter1/numbers/analyze_test500.txt
 [S11]: evidence/fidelity_snapshot.json

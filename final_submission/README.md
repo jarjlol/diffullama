@@ -27,7 +27,7 @@ Creating that folder and uploading is a human step (#16).
 
 Each stub quotes the professor's instruction for its section and lists the source files.
 
-The label `to:<handle>` on each issue is authoritative if this table is stale. khushi and diya do not use agents and have no Task 5 issues. Agent start-up prompts per member: `AGENT_PROMPTS.md`.
+The label `to:<handle>` on each issue is authoritative if this table is stale. khushi does not use an agent; diya's Claude Code agent joined on 21 Nov for reviews and non-GPU tasks. Agent start-up prompts per member: `AGENT_PROMPTS.md`.
 
 ## Schedule
 
