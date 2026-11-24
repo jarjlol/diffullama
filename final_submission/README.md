@@ -77,7 +77,18 @@ SHA-256 of the committed result files the paper's tables are drawn from (compute
 | `codification/results/iter1/numbers/paired_final300.txt` | same | `f0d48567843ecf7a58db1f204fc0a39a150b22cb8959fbf3ede5ced97ab948f3` |
 | `codification/results/iter1/numbers/analyze_test500.txt` | same | `d60d98eb5d974a75dfac3eea550159b5ab94e13430c182516ecb410ecae18c9d` |
 | `codification/results/iter2/aryan/fidelity_complete.json` | `iter2/aryan` | `a45661b442c6f22c3e5c8d7a331d3dbc82d70983a20141ca2f2ebd290efb52a4` |
+| `codification/ITERATION_2.md` | `iter2/aaditya-worker` @ d1a8c15 (PR #58) | `516fb3c37cb598a083af98492a1d365a0cf5f6cf905e83e40e125f425093f58a` (iteration-2 write-up (§5 = 256 steps)) |
+| `codification/results/iter2/k256_preregistration.md` | same | `f91bd7d547e7c605f70fc9a072dbd39fcdaa60603d24abef55b976ed5e01329e` (design and stopping rule, written before any 256-step row) |
+| `codification/results/iter2/k256_step_arm_output.txt` | same | `b6c80046d703643750b2f9c4e9efe27fac52dac70bfc1f29c1e38ef8ce837fa4` (the single analysis run behind Table 2's K = 256 rows) |
+| `codification/results/iter2/k256_results.md` | same | `8e3934a14e2cf32d85bb90dcec004c1fd9075b5e538f1e044cdc6f37f355d9a3` (256-step write-up) |
+| `codification/results/iter2/step_arm.md` | same | `19f5725ed5237810f625d38bc0b01a071d136d0923ff525f3813c9653ae99714` (Table 2, K = 16/32/64) |
+| `codification/results/iter2/cpu/cvt_dream_test.txt` | same | `97ec796a3b0ebc1fe179bd8f83423ed2f18656f3cb71c1b963849e11a037b294` (cut re-score, Dream (try 2)) |
+| `codification/results/iter2/cpu/cvt_llada_test.txt` | same | `703de3dbc91c541bb8220ebf1c09fc0753a4a0968b889158e28ed0fecaa2df02` (cut re-score, LLaDA (its self-score row is 16/500, unused)) |
+| `codification/results/iter2/cvt_llada_test_full500.txt` | same | `efb1f85b2a7d5fd61504669064d9b3b81c94091c2b03a5ac8d32396099e037f5` (LLaDA self-score, 500/500) |
+| `codification/results/iter2/cpu/self_dream_gate.txt` | same | `2bc62e9cf4a5f54dec3d045c24620104e25bb9a8c0571df81b8b8d66d0811ed5` (self-score, Dream gate) |
+| `codification/results/iter2/cpu/self_llada_gate.txt` | same | `a3d5d530c85c4352661afd16dc930e523b4e186edcca6305528b88b0374dea79` (self-score, LLaDA gate) |
+| `codification/results/iter2/cpu/pq_analyze.txt` | same | `c8a9b25b2a7a2bb05688b8304d08b18708c91bbf46794a0b11d3c122f654e57c` (per-question preservation test) |
 
-GPU-hours per run: to be filled from the job logs at the results freeze (Sun 22 Nov) [pending].
+Iteration-2 rows added 24 Nov (same `git show … | sha256sum` method; `cpu/*` digests are byte-identical to the report's `report/evidence/iter2/` copies). GPU-hours per run: to be filled from the job logs and `codification/results/iter2/ops/window/` at the Wed 25 Nov hard stop [pending].
 
-Iteration 1's numbers are committed under `codification/results/iter1/numbers/`; reproducing them on CPU needs the cached `items.jsonl` files (git-ignored, shared on the team Drive). Iteration 2: `codification/ITERATION_2.md` on branch `iter2/aaditya-worker` until merged.
+Iteration 1's numbers are committed under `codification/results/iter1/numbers/`; reproducing them on CPU needs the cached `items.jsonl` files (git-ignored, shared on the team Drive). Iteration 2: `codification/ITERATION_2.md` on branch `iter2/aaditya-worker` (into `iter2/aaditya` via PR #58).
