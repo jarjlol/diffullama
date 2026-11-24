@@ -127,21 +127,26 @@ Best AR = highest AR selector in the same file.
 | dream-base | test, all | 0.404 | 0.724 | 0.304 | 0.488 (qwen7b-cut:sum) | 500 | -0.420 [-0.466, -0.374], 9/219, p < 0.001 |
 | llada-base | dev | not run | | | | | |
 | llada-base | test, gate | 0.485 | 0.735 | 0.450 | 0.530 (qwen7b-cut:sum, qwen7b:sum, qwen0.5b:sum tie) | 200 | -0.285 [-0.355, -0.215], 4/61, p < 0.001 |
-| llada-base | test, all | [pending] | | | | 16/500 covered | `cvt_llada_test.txt` (run of 21 Nov 16:04) shows coverage 16/500, so its 0.012 is not a result |
+| llada-base | test, all | 0.486 | 0.732 | 0.468 | 0.522 (qwen7b-cut:sum) | 500 | -0.264 [-0.306, -0.222], 10/142, p < 0.001 |
+
+The LLaDA "test, all" row is from `results/iter2/cvt_llada_test_full500.txt` (Tue 24 Nov, CPU): the 273 self-score rows from Blackwell plus the 227 missing ones from Ada's finished 500/500 run (same model and code, different GPU), coverage 500/500. It replaces the 16/500 run of 21 Nov 16:04 (0.012), which was never a result.
 
 No dev-split self-score file exists in `results/iter2/cpu/` at `aa5d3d2`. The "test, all" row for Dream includes the final 300,
 which the protocol line above reserves (dev and gate only); it is reported because the paper drafts already quote 30.4%.
 
-### 5. 256-step runs on the 100 fidelity questions: not run
+### 5. K = 256 step-budget check: done (random subsample, stopped by the clock)
 
-`step_arm.md` (commit `aa5d3d2`) prints "dream-base K = 256: no candidates yet" and the same for LLaDA. All cells [pending].
+Design, stopping rule and analysis were pre-registered in `results/iter2/k256_preregistration.md` (clauses added later are dated and were written before the rows they cover). `step_arm.py` was run once, on all rows, Tue 24 Nov 2026 01:43 IST. Write-up: `results/iter2/k256_results.md`; raw output `k256_step_arm_output.txt`; JSON `k256_step_arm.json` (commit f01ead1 on `iter2/aaditya-worker`).
+N = 10, T = 0.7, 256 steps, same prompts and sampler as K = 64; questions in the seeded random order `k256_order.txt`. Rows: Dream 185 (162 Blackwell RTX PRO 6000 + 23 Ada RTX 5000 Ada), LLaDA 192 (151 + 41); n is whatever finished by the clock, and Ada's rows used smaller sampling batches (same per-sample distribution).
 
-| Model | K | first | majority | oracle | greedy (I-21) | n |
+| Model | n | first | majority | oracle | AR (qwen7b-cut:sum) | AR minus majority (PRIMARY) |
 |---|---|---|---|---|---|---|
-| dream-base | 64 | [pending] | [pending] | [pending] | | 100 |
-| dream-base | 256 | [pending] | [pending] | [pending] | 0.810 | 100 |
-| llada-base | 64 | [pending] | [pending] | [pending] | | 100 |
-| llada-base | 256 | [pending] | [pending] | [pending] | 0.730 | 100 |
+| dream-base | 185 | 0.741 | 0.843 | 0.935 | 0.757 | -0.086 [-0.141, -0.032], 5/21, p = 0.002 |
+| llada-base | 192 | 0.724 | 0.792 | 0.896 | 0.766 | -0.026 [-0.068, +0.016], 6/11, p = 0.332 |
+
+- Secondary, first sample K = 256 minus K = 64 (same questions): Dream +0.319 [+0.232, +0.400] (69/10), LLaDA +0.260 [+0.182, +0.339] (60/10), both p < 0.001. Majority: Dream +0.103 [+0.049, +0.157] (p = 0.001), LLaDA +0.047 [0.000, +0.099] (p = 0.108). Majority minus first sample at K = 256: Dream +0.103 (22/3), LLaDA +0.068 (16/3).
+- Greedy context (T = 0, N = 1, our prompt; secondary, not the test of record): Dream n = 185 majority minus greedy +0.032 [-0.011, +0.081] (p = 0.238), AR minus greedy -0.054 [-0.108, 0.000] (p = 0.087), first minus greedy -0.070 [-0.135, -0.005] (p = 0.053); LLaDA n = 137 (19 Blackwell rows and 36 of the 41 Ada rows have no greedy row) majority minus greedy +0.080 [+0.029, +0.139] (p = 0.007), AR minus greedy +0.073 [+0.007, +0.139] (p = 0.041), first minus greedy +0.029 [-0.022, +0.080] (p = 0.424).
+- Seconds per question (Blackwell rows only): Dream 36.5 (K = 64) and 151.1 (K = 256); LLaDA 54.9 and 216.6.
 
 ### 6. Per-question preservation (exploratory): done, 500 test questions
 
@@ -173,15 +178,15 @@ Only what the tables above show:
   compute on more steps beats spending it on reranking at K = 16.
 - **Self-score (4):** the DLM's own 8-draw ELBO estimate is below majority vote on every row run (gate: Dream -0.395, LLaDA
   -0.285) and below first sample on Dream (0.315 vs 0.395 gate); on LLaDA's gate it is 0.450 vs first 0.485 (not tested).
-- **K = 256 (5):** not run; nothing can be said.
+- **K = 256 (5):** on a random subsample the AR-minus-majority gap shrinks from about -0.24 / -0.21 at K = 64 to -0.086 on Dream (CI excludes 0) and -0.026 on LLaDA (CI includes 0). Majority still beats the first sample (+0.103, +0.068) but by far less than at K = 64 (+0.320, +0.246 on the 500). Against one greedy sample majority is +0.032 on Dream (not significant) and +0.080 on LLaDA (p = 0.007). T = 0.7 at 256 steps is not like-for-like with the published greedy numbers.
 - **Preservation (6):** the primary predictor does not predict O1 (AUC 0.469, p = 0.32). O2 and O3 have AUC below 0.5 with
   permutation p < 0.05 but odds-ratio CIs that include 1, uncorrected across 4 outcomes; exploratory, not a finding.
 
 ## Not verified / limits
 
-- Everything marked [pending] or "not run" above has no number yet. Tables 2 to 6 were filled by diya's agent (#34) from the files at commit `aa5d3d2`; runs that finished on Blackwell after that commit are not included [unverified].
+- Everything still marked [pending] or "not run" above has no number yet (the K = 256 and LLaDA self-score cells were filled on 24 Nov). Tables 2 to 6 were filled by diya's agent (#34) from the files at commit `aa5d3d2`; runs that finished on Blackwell after that commit are not included [unverified].
 - Fidelity numbers are 100 questions each; standard error about 4 points.
-- The cause of the gap in I-21 (temperature versus step count) is not separated yet.
+- The K = 256 sample sizes were set by the clock (two Blackwell windows and an Ada extension stopped on instruction), not by a result; rows come from two GPU types; Dream crashed twice with a CUDA launch timeout (Xid 8) and was restarted without losing rows; one planned Dream slot (Mon 23 Nov 18:23-18:55) did not start because of a scheduling-gate mistake, so Dream n is 185, not about 197. At 256 steps the T = 0.7 first sample is 7.0 points below greedy on Dream and 2.9 above on LLaDA (paired, n = 185 and 137), so most of the I-21 gap is the step budget; this is a 185/137-question comparison, not the 100 fidelity questions.
 - The self-score uses 8 Monte-Carlo draws per candidate (LLaDA's own evaluation default is 128) and a separate random seed per candidate, so the 10 candidates of a question are ranked on independent noisy estimates; it is a deliberately cheap, high-variance selector. How much of the 30.4% (Dream, 500 questions) or 45.0% (LLaDA, gate) is estimator noise is [unverified]; scoring a subset with the same masks for all candidates (common random numbers) was not tried [review of PR #41, neel's agent].
 - The per-question preservation analysis used hidden states extracted in fp32 on the CPU, not bf16 on a GPU; whether the cosines would differ is [unverified].
 - The senior session's description of the interruption is quoted from its reading of `journalctl`.
