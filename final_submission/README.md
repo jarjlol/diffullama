@@ -77,7 +77,7 @@ SHA-256 of the committed result files the paper's tables are drawn from (compute
 | `codification/results/iter1/numbers/paired_final300.txt` | same | `f0d48567843ecf7a58db1f204fc0a39a150b22cb8959fbf3ede5ced97ab948f3` |
 | `codification/results/iter1/numbers/analyze_test500.txt` | same | `d60d98eb5d974a75dfac3eea550159b5ab94e13430c182516ecb410ecae18c9d` |
 | `codification/results/iter2/aryan/fidelity_complete.json` | `iter2/aryan` | `a45661b442c6f22c3e5c8d7a331d3dbc82d70983a20141ca2f2ebd290efb52a4` |
-| `codification/ITERATION_2.md` | `iter2/aaditya-worker` @ d1a8c15 (PR #58) | `516fb3c37cb598a083af98492a1d365a0cf5f6cf905e83e40e125f425093f58a` (iteration-2 write-up (§5 = 256 steps)) |
+| `codification/ITERATION_2.md` | `iter2/aaditya-worker` @ d1a8c15 (PR #58) | `516fb3c37cb598a083af98492a1d365a0cf5f6cf905e83e40e125f425093f58a` (iteration-2 write-up; §5 is the 256-step check) |
 | `codification/results/iter2/k256_preregistration.md` | same | `f91bd7d547e7c605f70fc9a072dbd39fcdaa60603d24abef55b976ed5e01329e` (design and stopping rule, written before any 256-step row) |
 | `codification/results/iter2/k256_step_arm_output.txt` | same | `b6c80046d703643750b2f9c4e9efe27fac52dac70bfc1f29c1e38ef8ce837fa4` (the single analysis run behind Table 2's K = 256 rows) |
 | `codification/results/iter2/k256_results.md` | same | `8e3934a14e2cf32d85bb90dcec004c1fd9075b5e538f1e044cdc6f37f355d9a3` (256-step write-up) |
