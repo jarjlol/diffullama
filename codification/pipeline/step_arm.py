@@ -142,6 +142,7 @@ def k256_table(m: str, gold: dict, out: dict) -> None:
         if len(ov) < 10:
             print(f"  greedy {k}: only {len(ov)} overlapping questions, not compared"); continue
         res.setdefault("greedy", {})[k] = sum(bool(v[uids[i]]) for i in ov) / len(ov)
+        res.setdefault("greedy_n", {})[k] = len(ov)
         r = paired([cor[(256, "majority")][i] for i in ov], [bool(v[uids[i]]) for i in ov]); res["paired"][f"K256 majority - greedy {k}"] = r
         print(fmt_pair(f"K=256 majority minus greedy ({k}), n={len(ov)}", r))
         # pre-registered secondary comparisons (clause of 23 Nov 17:15 IST): greedy vs AR rerank and vs first sample, same questions

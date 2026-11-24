@@ -1,0 +1,27 @@
+# item 2: ar_vs_first
+# command: python3 cpu_extra.py --item 2 --out /home/antpc/codify/extra_run/out
+# run: 2026-11-25T00:33:19+05:30
+# plan: results/iter2/cpu_extra_plan.md (EXPLORATORY, post-hoc; rules fixed before any result)
+# work dir: /home/antpc/codify/diffullama/codification/pipeline/work
+
+# ITEM 2. ar.qwen7b-cut.sum (lowest summed NLL on cut text) minus first sample, paired
+
+== dream-base
+  K=16  n=500 AR 0.018 first 0.026
+  K=16: AR(qwen7b-cut sum) minus first         -0.008 [-0.024,+0.008]  wins/losses 6/10  McNemar p=0.454
+  K=32  n=500 AR 0.138 first 0.124
+  K=32: AR(qwen7b-cut sum) minus first         +0.014 [-0.022,+0.050]  wins/losses 47/40  McNemar p=0.520
+  K=64  n=500 AR 0.488 first 0.404
+  K=64: AR(qwen7b-cut sum) minus first         +0.084 [+0.032,+0.134]  wins/losses 108/66  McNemar p=0.002
+  K=256 n=185 AR 0.757 first 0.741
+  K=256: AR(qwen7b-cut sum) minus first        +0.016 [-0.043,+0.076]  wins/losses 18/15  McNemar p=0.728
+
+== llada-base
+  K=16  n=500 AR 0.034 first 0.036
+  K=16: AR(qwen7b-cut sum) minus first         -0.002 [-0.024,+0.020]  wins/losses 15/16  McNemar p=1.000
+  K=32  n=500 AR 0.286 first 0.228
+  K=32: AR(qwen7b-cut sum) minus first         +0.058 [+0.012,+0.106]  wins/losses 86/57  McNemar p=0.019
+  K=64  n=500 AR 0.522 first 0.486
+  K=64: AR(qwen7b-cut sum) minus first         +0.036 [-0.014,+0.084]  wins/losses 88/70  McNemar p=0.176
+  K=256 n=192 AR 0.766 first 0.724
+  K=256: AR(qwen7b-cut sum) minus first        +0.042 [-0.016,+0.099]  wins/losses 19/11  McNemar p=0.200

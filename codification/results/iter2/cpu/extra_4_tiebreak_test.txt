@@ -1,0 +1,13 @@
+# item 4: tiebreak_test
+# command: python3 cpu_extra.py --item 4 --split test --out /home/antpc/codify/extra_run/out
+# run: 2026-11-25T00:32:59+05:30
+# plan: results/iter2/cpu_extra_plan.md (EXPLORATORY, post-hoc; rules fixed before any result)
+# work dir: /home/antpc/codify/diffullama/codification/pipeline/work
+
+# ITEM 4. Majority with cut-text AR tie-break (K=64, test); rule in the plan, fixed before any result
+
+== dream-base test: n=500  majority 0.724  majority+AR tie-break 0.718  questions with a top-vote tie 67; choice differs from plain majority on 47; candidates missing a score 0
+  tie-break minus plain majority               -0.006 [-0.022,+0.008]  wins/losses 6/9  McNemar p=0.607
+
+== llada-base test: n=500  majority 0.732  majority+AR tie-break 0.730  questions with a top-vote tie 57; choice differs from plain majority on 31; candidates missing a score 0
+  tie-break minus plain majority               -0.002 [-0.018,+0.014]  wins/losses 7/8  McNemar p=1.000

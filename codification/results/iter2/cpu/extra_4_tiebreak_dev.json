@@ -1,0 +1,34 @@
+{
+  "dream-base": {
+    "diff": -0.035,
+    "ci95": [
+      -0.065,
+      -0.01
+    ],
+    "wins": 1,
+    "losses": 8,
+    "mcnemar_p": 0.0390625,
+    "n": 200,
+    "tie_questions": 39,
+    "choice_differs": 30,
+    "acc_tiebreak": 0.665,
+    "acc_majority": 0.7,
+    "candidates_without_qwen7b_cut_score": 0
+  },
+  "llada-base": {
+    "diff": 0.0,
+    "ci95": [
+      -0.025,
+      0.025
+    ],
+    "wins": 3,
+    "losses": 3,
+    "mcnemar_p": 1.0,
+    "n": 200,
+    "tie_questions": 23,
+    "choice_differs": 15,
+    "acc_tiebreak": 0.745,
+    "acc_majority": 0.745,
+    "candidates_without_qwen7b_cut_score": 0
+  }
+}

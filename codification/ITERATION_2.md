@@ -1,12 +1,14 @@
-# Codification — iteration 2 (DRAFT, started 2026-11-21; numbers drop in when the runs finish)
+# Codification — iteration 2 (started 2026-11-21; tables refreshed from the current data on 2026-11-25)
 
 Structure follows `ITERATION_1.md`. Everything marked **TODO** or **not run** is empty on purpose: no number appears here
 without the command that produced it. Paper results freeze: **Sun 22 Nov 2026, 18:00 IST**. Later extra-credit results go
 into the report (#15), not the paper.
 
-Status of this file at drafting time (Fri 20 Nov 2026, about 23:15 IST on the Blackwell clock): **no iteration-2 GPU run has
-finished.** Both lanes were killed at 22:56 (see "Operations note"). The only iteration-2 results so far are the fidelity
-checks in I-21.
+Status (refreshed Wed 25 Nov 2026, about 01:00 IST): the iteration-2 GPU runs are finished (K = 16/32/64 on 500 test questions;
+K = 256 on random subsamples of 185 and 192; the greedy fidelity runs; the LLaDA self-score on all 500). The Arbor search was not
+run. Tables 1 to 6 were regenerated from the current data on 25 Nov (see "Not verified / limits" for what changed). At drafting time
+(Fri 20 Nov, about 23:15 IST) no iteration-2 GPU run had finished: both lanes were killed at 22:56 (see "Operations note").
+Exploratory CPU analyses added on 25 Nov: section 7.
 
 ## What iteration 2 changed, and why
 
@@ -21,13 +23,13 @@ still pending when this was written [unverified].
 
 | Tier | Item | Prompt | Why | Status |
 |---|---|---|---|---|
-| 1 | Fidelity check: greedy, published settings, 100 test questions, Dream and LLaDA | A2 step 3 | Our first-sample accuracy is 36 points (Dream, 41.0 vs 77.2) and 22 points (LLaDA, 48.7 vs 70.3) below published; rule out a pipeline bug | **done for dream-sampler and llada-published; dream-published stopped at 55 of 100** (I-21) |
-| 1 | Step-budget arm: K = 16 and 32 on 500 test questions, Dream and LLaDA | A1 | Part (b) of problem P1 (rerank vs more steps) was unanswered | **not finished**: LLaDA K = 16 had 65 of 500 questions at 22:56; Dream K = 16 not started |
-| 1 | Re-score the iteration-1 64-step candidates on the text cut after `#### N` | `score_candidates.py --cut` | Junk after the answer line confounds the AR scores (I-22) | **not run** (queued) |
+| 1 | Fidelity check: greedy, published settings, 100 test questions, Dream and LLaDA | A2 step 3 | Our first-sample accuracy is 36 points (Dream, 41.0 vs 77.2) and 22 points (LLaDA, 48.7 vs 70.3) below published; rule out a pipeline bug | **done** (I-21; Table 1): `dream-sampler` and `llada-published` were extended on 23-24 Nov to every question with a K = 256 row (n = 244 and 199; the first 100 are unchanged), `dream-published` finished at 100 |
+| 1 | Step-budget arm: K = 16 and 32 on 500 test questions, Dream and LLaDA | A1 | Part (b) of problem P1 (rerank vs more steps) was unanswered | **done** for K = 16/32/64 on 500 test questions (§3) and for K = 256 on random subsamples (§5) |
+| 1 | Re-score the iteration-1 64-step candidates on the text cut after `#### N` | `score_candidates.py --cut` | Junk after the answer line confounds the AR scores (I-22) | **done**, 500 test questions (§2) |
 | 1 | Share cached items with Neel; failure classes of majority vote (N4); SOTA table (N3) | A2 step 1, N4, N3 | The paper must place us against published methods | not in this file's scope |
-| 2 | DLM self-score (the model's own likelihood) as a selector | A2 step 2, `self_score.py` | Obvious competitor to an external AR scorer; gap `dlm.selfscore` in iteration 1 | **not run** (queued) |
-| 2 | Per-question preservation test on Dream | `per_question_preservation.py` | Tests the "preservation predicts rerank success" claim at n = 500 instead of n = 4 | **not run** (queued) |
-| 2 | 256-step majority vote on the 100 fidelity questions | `generate_candidates.py --steps 256 --limit 100` | Separates the sampler effect from the selector effect | **not run** (queued) |
+| 2 | DLM self-score (the model's own likelihood) as a selector | A2 step 2, `self_score.py` | Obvious competitor to an external AR scorer; gap `dlm.selfscore` in iteration 1 | **done**: gate (both models), all 500 test questions (both models, §4), K = 256 subsets (§7); the dev split is not done (Dream dev has a partial 125 of 200 file, not a result) |
+| 2 | Per-question preservation test on Dream | `per_question_preservation.py` | Tests the "preservation predicts rerank success" claim at n = 500 instead of n = 4 | **done**, 500 test questions (§6) |
+| 2 | 256-step majority vote on the 100 fidelity questions | `generate_candidates.py --steps 256 --limit 100` | Separates the sampler effect from the selector effect | **replaced** by the K = 256 check on a random subsample of the 500 test questions (§5), not the first 100 |
 | 2/3 | Arbor rerun with majority vote as the seed, more models, second dataset | A3, A4 | Only if Tier 1 and 2 are done and clean | **not started** |
 
 Code added for iteration 2 (all on `iter2/aaditya` and `iter2/aaditya-worker`):
@@ -62,15 +64,17 @@ id, so the 65 LLaDA rows are kept.
 Fill from the commands shown; do not interpret in the tables. All on GSM8K test, N = 10, temperature 0.7, 64 steps unless
 the budget says otherwise.
 
-### 1. Fidelity (done for two configs)
+### 1. Fidelity (done)
 
-Command: `python3 fidelity_check.py --report` (in `codification/pipeline/`, Blackwell).
+Command: `python3 fidelity_check.py --report` (in `codification/pipeline/`, Blackwell); regenerated 25 Nov, `results/iter2/fidelity.md`. The first-100 rows are the numbers the paper quotes; the extension rows cover the questions that had a K = 256 row when the greedy runs started (not the first 100). The Iter-1 columns of the extension rows were recomputed on those same questions (`results/iter2/cpu/extra_3_fidelity_majority.txt`).
 
 | Config | n | Greedy (published settings) | Iter-1 first sample, same Qs | Iter-1 majority, same Qs | Published |
 |---|---|---|---|---|---|
-| Dream, our 4-shot prompt, 256 steps (`dream-sampler`) | 100 | 0.810 | 0.410 | 0.700 | 77.2 (8-shot) |
+| Dream, our 4-shot prompt, 256 steps (`dream-sampler`), first 100 | 100 | 0.810 | 0.410 | 0.700 | 77.2 (8-shot) |
+| same, all rows after the 24 Nov extension | 244 | 0.824 | 0.422 | 0.734 | 77.2 (8-shot) |
 | Dream, published 8-shot CoT prompt (`dream-published`) | 100 | 0.800 | 0.410 | 0.700 | 77.2 (8-shot) |
-| LLaDA, our 4-shot prompt, 256 steps (`llada-published`) | 100 | 0.730 | 0.510 | 0.750 | 70.3 (4-shot) |
+| LLaDA, our 4-shot prompt, 256 steps (`llada-published`), first 100 | 100 | 0.730 | 0.510 | 0.750 | 70.3 (4-shot) |
+| same, all rows after the 24 Nov extension | 199 | 0.729 | 0.497 | 0.764 | 70.3 (4-shot) |
 
 ### 2. Cut-text re-scoring of iteration 1 (does AR reranking still lose?): done, 500 test questions
 
@@ -113,7 +117,7 @@ dQ_steps(16 to 32), dQ_rerank(K) and A_rerank = dQ_rerank(16) - dQ_steps(16 to 3
 Brackets: paired 95% bootstrap CI; then wins/losses and exact McNemar p (p < 0.001 where not given). The best AR selector's
 A_rerank is printed too: Dream -0.100 (ar.gpt2-cut.mean / ar.gpt2.mean), LLaDA -0.194 (ar.qwen7b-cut.sum).
 
-### 4. DLM self-score: done on the gate (both models) and on all 500 test questions (Dream only)
+### 4. DLM self-score: done on the gate (both models) and on all 500 test questions (both models)
 
 Commands: `python3 self_score.py --model <m> --split <dev|test>` (feature `dlm.selfscore`, cut text), then
 `cut_vs_trim.py` (`--subset gate` for the gate rows). Sources (commit `aa5d3d2`): `self_dream_gate.txt` (sha256 `2bc62e9c…`),
@@ -122,7 +126,7 @@ Best AR = highest AR selector in the same file.
 
 | Model | split | first | majority | dlm.selfscore | best AR | n | paired vs majority |
 |---|---|---|---|---|---|---|---|
-| dream-base | dev | not run | | | | | |
+| dream-base | dev | incomplete: a partial `dev.dlmself.jsonl` of 21 Nov covers 125 of 200 questions (`cvt_dream_dev.txt`, flagged INCOMPLETE); not a result | | | | | |
 | dream-base | test, gate | 0.395 | 0.710 | 0.315 | 0.525 (qwen7b-cut:sum) | 200 | -0.395 [-0.465, -0.325], 2/81, p < 0.001 |
 | dream-base | test, all | 0.404 | 0.724 | 0.304 | 0.488 (qwen7b-cut:sum) | 500 | -0.420 [-0.466, -0.374], 9/219, p < 0.001 |
 | llada-base | dev | not run | | | | | |
@@ -131,7 +135,7 @@ Best AR = highest AR selector in the same file.
 
 The LLaDA "test, all" row is from `results/iter2/cvt_llada_test_full500.txt` (Tue 24 Nov, CPU): the 273 self-score rows from Blackwell plus the 227 missing ones from Ada's finished 500/500 run (same model and code, different GPU), coverage 500/500. It replaces the 16/500 run of 21 Nov 16:04 (0.012), which was never a result.
 
-No dev-split self-score file exists in `results/iter2/cpu/` at `aa5d3d2`. The "test, all" row for Dream includes the final 300,
+No complete dev-split self-score exists (see the Dream dev row). The "test, all" row for Dream includes the final 300,
 which the protocol line above reserves (dev and gate only); it is reported because the paper drafts already quote 30.4%.
 
 ### 5. K = 256 step-budget check: done (random subsample, stopped by the clock)
@@ -164,28 +168,35 @@ script docstring and the header of its output. AR pick: `qwen7b-cut`. Source: `r
 Also printed: O1m (500, 51 events) AUC 0.406, perm p 0.0266, OR 0.82 [0.61, 1.09]. Per-layer O1 AUCs range 0.445 to 0.500,
 smallest BH q 0.707. Predictor correlates with log prompt length (0.305).
 
+### 7. Exploratory CPU analyses (25 Nov, post-hoc)
+
+Plan with every rule fixed before any result: `results/iter2/cpu_extra_plan.md` (commit `2a2caca`). Results, one table per item, with the commit and command for each: `results/iter2/cpu_extra_results.md`; raw outputs `results/iter2/cpu/extra_*.txt` and `.json`. All seven are exploratory and are reported with their nulls.
+
 ## What this says
 
 Only what the tables above show:
 
 - **Cut text (2):** cutting after `#### N` raised Dream's best AR selector from 0.358 to 0.488 but left LLaDA's unchanged
   (0.524 vs 0.522). On both models the best AR selector on cut text is still below majority vote (Dream -0.236, LLaDA -0.210,
-  both CIs exclude 0). It is above first sample on both (0.488 vs 0.404; 0.522 vs 0.486); that difference is not tested in
-  these files [unverified as a paired result].
+  both CIs exclude 0). It is above first sample on both (0.488 vs 0.404; 0.522 vs 0.486). Paired (exploratory, 25 Nov,
+  `results/iter2/cpu/extra_2_ar_vs_first.txt`; cut `qwen7b` summed score minus first sample, K = 64, n = 500): Dream +0.084
+  [+0.032, +0.134], 108/66, p = 0.002; LLaDA +0.036 [-0.014, +0.084], 88/70, p = 0.176. So the gain over the first sample is
+  significant on Dream only.
 - **Step budget (3):** at K = 16 both models are near zero (first 0.026 / 0.036) and majority vote adds nothing (CIs include 0).
   Going from 16 to 32 steps raises first-sample accuracy (+0.098 Dream, +0.192 LLaDA); reranking at K = 16 gains far less than
   that, so A_rerank is negative for every selector printed (majority -0.092 Dream, -0.196 LLaDA). On these numbers, spending
   compute on more steps beats spending it on reranking at K = 16.
 - **Self-score (4):** the DLM's own 8-draw ELBO estimate is below majority vote on every row run (gate: Dream -0.395, LLaDA
-  -0.285) and below first sample on Dream (0.315 vs 0.395 gate); on LLaDA's gate it is 0.450 vs first 0.485 (not tested).
+  -0.285; all 500: Dream -0.420, LLaDA -0.264) and below first sample on Dream (0.315 vs 0.395 gate); on LLaDA's gate it is
+  0.450 vs first 0.485 (not tested).
 - **K = 256 (5):** on a random subsample the AR-minus-majority gap shrinks from about -0.24 / -0.21 at K = 64 to -0.086 on Dream (CI excludes 0) and -0.026 on LLaDA (CI includes 0). Majority still beats the first sample (+0.103, +0.068) but by far less than at K = 64 (+0.320, +0.246 on the 500). Against one greedy sample majority is +0.032 on Dream (not significant) and +0.080 on LLaDA (p = 0.007). T = 0.7 at 256 steps is not like-for-like with the published greedy numbers.
 - **Preservation (6):** the primary predictor does not predict O1 (AUC 0.469, p = 0.32). O2 and O3 have AUC below 0.5 with
   permutation p < 0.05 but odds-ratio CIs that include 1, uncorrected across 4 outcomes; exploratory, not a finding.
 
 ## Not verified / limits
 
-- Everything still marked [pending] or "not run" above has no number yet (the K = 256 and LLaDA self-score cells were filled on 24 Nov). Tables 2 to 6 were filled by diya's agent (#34) from the files at commit `aa5d3d2`; runs that finished on Blackwell after that commit are not included [unverified].
-- Fidelity numbers are 100 questions each; standard error about 4 points.
+- Everything still marked "not run" above has no number (the Arbor search, the dev-split self-score). Tables 2 to 6 were first filled by diya's agent (#34) from the files at commit `aa5d3d2`. On 25 Nov they were regenerated on Blackwell from the current data (`make_iter2_reports.py`, `cut_vs_trim.py` for test, dev and the gate subset, `per_question_preservation.py analyze`; outputs in `results/iter2/cpu/`, `step_arm.md`, `fidelity.md`). Tables 2, 3 and 6 and the gate rows of Table 4 came out unchanged; the changes are listed number by number in `results/iter2/cpu_extra_results.md` (item 3).
+- Fidelity numbers are 100 questions each in the first-100 rows (standard error about 4 points) and 244 / 199 in the extension rows, which are not the first 100 questions.
 - The K = 256 sample sizes were set by the clock (two Blackwell windows and an Ada extension stopped on instruction), not by a result; rows come from two GPU types; Dream crashed twice with a CUDA launch timeout (Xid 8) and was restarted without losing rows; one planned Dream slot (Mon 23 Nov 18:23-18:55) did not start because of a scheduling-gate mistake, so Dream n is 185, not about 197. At 256 steps the T = 0.7 first sample is 7.0 points below greedy on Dream and 2.9 above on LLaDA (paired, n = 185 and 137), so most of the I-21 gap is the step budget; this is a 185/137-question comparison, not the 100 fidelity questions.
 - The self-score uses 8 Monte-Carlo draws per candidate (LLaDA's own evaluation default is 128) and a separate random seed per candidate, so the 10 candidates of a question are ranked on independent noisy estimates; it is a deliberately cheap, high-variance selector. How much of the 30.4% (Dream, 500 questions) or 45.0% (LLaDA, gate) is estimator noise is [unverified]; scoring a subset with the same masks for all candidates (common random numbers) was not tried [review of PR #41, neel's agent].
 - The per-question preservation analysis used hidden states extracted in fp32 on the CPU, not bf16 on a GPU; whether the cosines would differ is [unverified].

@@ -1,0 +1,14 @@
+# item 7: degenerate_filter_dev
+# command: python3 cpu_extra.py --item 7 --split dev --out /home/antpc/codify/extra_run/out
+# run: 2026-11-25T00:32:50+05:30
+# plan: results/iter2/cpu_extra_plan.md (EXPLORATORY, post-hoc; rules fixed before any result)
+# work dir: /home/antpc/codify/diffullama/codification/pipeline/work
+
+# ITEM 7. Drop degenerate candidates before voting (answer None, or no '####' in the trimmed text); K=64, dev
+# codification/n4 has no degeneracy definition (it measures diversity and failure classes), so the plan's own rule is used.
+
+== dream-base dev: n=200  majority 0.700  filtered majority 0.720; dropped 348 of 2000 candidates; questions with all ten dropped 0; choice differs from plain majority on 16
+  filtered majority minus plain majority       +0.020 [+0.005,+0.040]  wins/losses 4/0  McNemar p=0.125
+
+== llada-base dev: n=200  majority 0.745  filtered majority 0.740; dropped 110 of 2000 candidates; questions with all ten dropped 0; choice differs from plain majority on 4
+  filtered majority minus plain majority       -0.005 [-0.015,+0.000]  wins/losses 0/1  McNemar p=1.000

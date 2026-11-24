@@ -50,7 +50,7 @@ def main() -> int:
                 if key.endswith(":first") or key.endswith(":majority") or key.endswith(":oracle"):
                     rows.append([m, key.split(":")[0], key.split(":")[1], f"{v:.3f}", str(d["n"])])
             for k, v in d["greedy"].items():
-                rows.append([m, "greedy", k, f"{v:.3f}", str(d["n"])])
+                rows.append([m, "greedy", k, f"{v:.3f}", str(d.get("greedy_n", {}).get(k, d["n"]))])
             continue
         for K, b in sorted(d["budgets"].items(), key=lambda kv: int(kv[0])):
             for sel in ("first", "majority", "oracle"):
@@ -61,8 +61,10 @@ def main() -> int:
 
     unverified = """- Nothing here is interpreted; every number is copied from the commands above.
 - All accuracies are on GSM8K test questions, N = 10 candidates, temperature 0.7 (K = 16/32/64/256); the greedy rows
-  are one sample per question at the published settings of `fidelity_check.py`.
-- K = 256 covers only the first 100 test questions (so its CIs are wide); K = 16/32/64 are compared on their common questions.
+  are one T = 0 sample per question, configs as in `fidelity_check.py` (`dream-sampler` and `llada-published` use our 4-shot prompt).
+- K = 256 covers a seeded random subsample of the 500 test questions (n = 185 Dream, 192 LLaDA; stopped by the clock, see
+  `k256_results.md`), so its CIs are wider; K = 16/32/64 are compared on their common 500 questions. The greedy comparisons use
+  the questions that had a greedy row (n differs by config).
 - Generation seconds were measured on shared GPUs (the `antpc` account is shared, lanes were interrupted on 2026-11-20), so
   they are not clean compute measurements [unverified as a cost comparison].
 - Paired differences use paired_stats.py's bootstrap (10 000 resamples, seed 0) and exact McNemar; no multiple-comparison

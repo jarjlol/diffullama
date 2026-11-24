@@ -1,0 +1,23 @@
+# item 5: selfscore_k256
+# command: python3 cpu_extra.py --item 5 --out /home/antpc/codify/extra_run/out
+# run: 2026-11-25T00:33:25+05:30
+# plan: results/iter2/cpu_extra_plan.md (EXPLORATORY, post-hoc; rules fixed before any result)
+# work dir: /home/antpc/codify/diffullama/codification/pipeline/work
+
+# ITEM 5. DLM self-score at K=256 (highest wins): dlm.selfscore (cut text) and dlm.selftrim (trimmed text), paired vs majority and vs first
+
+== dream-base: n = 185
+  dlm.selfscore: accuracy 0.714 (majority 0.843, first 0.741); questions with no score 0
+  dlm.selfscore minus majority                 -0.130 [-0.184,-0.081]  wins/losses 1/25  McNemar p=0.000
+  dlm.selfscore minus first                    -0.027 [-0.092,+0.038]  wins/losses 16/21  McNemar p=0.511
+  dlm.selftrim: accuracy 0.708 (majority 0.843, first 0.741); questions with no score 0
+  dlm.selftrim minus majority                  -0.135 [-0.189,-0.081]  wins/losses 3/28  McNemar p=0.000
+  dlm.selftrim minus first                     -0.032 [-0.097,+0.032]  wins/losses 16/22  McNemar p=0.418
+
+== llada-base: n = 192
+  dlm.selfscore: accuracy 0.724 (majority 0.792, first 0.724); questions with no score 0
+  dlm.selfscore minus majority                 -0.068 [-0.115,-0.021]  wins/losses 5/18  McNemar p=0.011
+  dlm.selfscore minus first                    +0.000 [-0.057,+0.057]  wins/losses 15/15  McNemar p=1.000
+  dlm.selftrim: accuracy 0.729 (majority 0.792, first 0.724); questions with no score 0
+  dlm.selftrim minus majority                  -0.062 [-0.109,-0.016]  wins/losses 5/17  McNemar p=0.017
+  dlm.selftrim minus first                     +0.005 [-0.052,+0.062]  wins/losses 16/15  McNemar p=1.000

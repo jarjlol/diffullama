@@ -1,0 +1,7 @@
+# command: python3 fidelity_majority.py (CODIFY_WORK_DIR=work dir on Blackwell), run 2026-11-25; majority/first/oracle from the K=64 candidates on the same questions as each fidelity run
+dream-sampler    all       n=244 greedy 0.824 first 0.422 majority 0.734 oracle 0.885
+dream-sampler    first100  n=100 greedy 0.810 first 0.410 majority 0.700 oracle 0.860
+dream-published  all       n=100 greedy 0.800 first 0.410 majority 0.700 oracle 0.860
+dream-published  first100  n=100 greedy 0.800 first 0.410 majority 0.700 oracle 0.860
+llada-published  all       n=199 greedy 0.729 first 0.497 majority 0.764 oracle 0.905
+llada-published  first100  n=100 greedy 0.730 first 0.510 majority 0.750 oracle 0.930
