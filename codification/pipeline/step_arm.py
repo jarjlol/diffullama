@@ -144,6 +144,11 @@ def k256_table(m: str, gold: dict, out: dict) -> None:
         res.setdefault("greedy", {})[k] = sum(bool(v[uids[i]]) for i in ov) / len(ov)
         r = paired([cor[(256, "majority")][i] for i in ov], [bool(v[uids[i]]) for i in ov]); res["paired"][f"K256 majority - greedy {k}"] = r
         print(fmt_pair(f"K=256 majority minus greedy ({k}), n={len(ov)}", r))
+        # pre-registered secondary comparisons (clause of 23 Nov 17:15 IST): greedy vs AR rerank and vs first sample, same questions
+        for n2 in (prim, "first"):
+            if (256, n2) in cor:
+                r = paired([cor[(256, n2)][i] for i in ov], [bool(v[uids[i]]) for i in ov]); res["paired"][f"K256 {n2} - greedy {k}"] = r
+                print(fmt_pair(f"K=256 {n2} minus greedy ({k}), n={len(ov)}", r))
     out[f"{m}@k256"] = res
 
 
