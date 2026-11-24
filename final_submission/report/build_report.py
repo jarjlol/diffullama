@@ -59,7 +59,7 @@ def footer(canvas, doc):
     canvas.saveState()
     canvas.setFont("Helvetica", 8)
     canvas.setFillColor(colors.HexColor("#53616d"))
-    canvas.drawString(43, 27, "BITS F471 Group 3 | Task 5 report | 23 Nov 2026")
+    canvas.drawString(43, 27, "BITS F471 Group 3 | Task 5 report | 24 Nov 2026")
     canvas.drawRightString(A4[0] - 43, 27, str(doc.page))
     canvas.restoreState()
 
