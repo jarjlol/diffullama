@@ -192,7 +192,19 @@ const n=await p.evaluate(()=>{const r=document.querySelector('.refs');return r?1
     print("\n".join(report))
     print(f"references: {len(refs)} cited of {len(bibs)} in the merged bib")
     print("unresolved citations: " + (", ".join(sorted(set(unresolved))) or "none"))
-    print(f"pages: {pages} total, {body_pages} body (limit 4), {pages - body_pages} references + appendix (not capped)")
+    full_body = None  # pages before the References page in the real PDF (the re-render above can paginate differently)
+    try:
+        txt = subprocess.run(["pdftotext", "-layout", str(OUT / "paper.pdf"), "-"], capture_output=True, text=True).stdout
+        for i, pg in enumerate(txt.split("\f")):
+            if any(re.match(r"\s*References(\s{2,}|$)", line) for line in pg.splitlines()):  # -layout puts the next column on the same line
+                full_body = i
+                break
+    except FileNotFoundError:
+        pass
+    if full_body is not None:
+        body_pages = full_body
+    print(f"pages: {pages} total, {body_pages} body (limit 4), {pages - body_pages} references + appendix (not capped)"
+          + ("" if full_body is not None else "  [body counted from a re-render without references: pdftotext missing or no References page found]"))
     try:
         font = subprocess.run(["fc-match", "-f", "%{family}", "Times New Roman"], capture_output=True, text=True).stdout
     except FileNotFoundError:
