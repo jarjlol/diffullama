@@ -29,6 +29,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import random
 import sys
 import time
@@ -36,6 +37,16 @@ import types
 import urllib.request
 
 from common import HERE, ROOT, WORK, append_jsonl, build_prompt, cfg, read_jsonl, task
+
+
+def _cap_gpu_memory():
+    """CODIFY_GPU_CAP_GB=g (optional): this process may use at most g GB of the card. The caching allocator then frees its cached blocks before it grows,
+    so a shared card (Ada, 32 GB) keeps headroom for other users. Unset = no cap (Blackwell)."""
+    g = float(os.environ.get("CODIFY_GPU_CAP_GB", "0") or 0)
+    if g > 0:
+        import torch
+        torch.cuda.set_per_process_memory_fraction(min(1.0, g * 2**30 / torch.cuda.get_device_properties(0).total_memory), 0)
+
 
 # ------------------------------------------------------------------ backends
 
@@ -106,18 +117,27 @@ class Dream:
         assert spec["temperature"] > 0, "temperature 0 makes all N candidates identical"
         self.torch, self.spec, self.gen_tokens = torch, spec, c["gen_tokens"]
         self.tok = AutoTokenizer.from_pretrained(spec["hf"], trust_remote_code=True)
+        _cap_gpu_memory()
         self.model = AutoModel.from_pretrained(spec["hf"], torch_dtype=torch.bfloat16, trust_remote_code=True).to("cuda").eval()
 
     def sample(self, uid, prompt, n, gold_hint=None):
-        enc = self.tok([prompt] * n, return_tensors="pt")
-        ids, att = enc.input_ids.to("cuda"), enc.attention_mask.to("cuda")
-        assert ids.shape[1] + self.gen_tokens <= 2048, f"{uid}: exceeds Dream's 2048 context"
-        with self.torch.no_grad():
-            o = self.model.diffusion_generate(ids, attention_mask=att, max_new_tokens=self.gen_tokens,
-                                              output_history=False, return_dict_in_generate=True,
-                                              steps=self.spec["steps"], temperature=self.spec["temperature"],
-                                              top_p=self.spec["top_p"], alg=self.spec["alg"], alg_temp=0.0)
-        return [self.tok.decode(g[ids.shape[1]:].tolist(), skip_special_tokens=True) for g in o.sequences]
+        # CODIFY_SAMPLE_CHUNK=k runs the n independent samples in batches of k (same distribution, less peak memory; for the
+        # shared 32 GB Ada card where the top-p sort over a 10-sample batch ran out of memory). Unset = one batch of n.
+        chunk = int(os.environ.get("CODIFY_SAMPLE_CHUNK", "0")) or n
+        self.last_chunk = min(chunk, n)
+        outs = []
+        for i in range(0, n, chunk):
+            m = min(chunk, n - i)
+            enc = self.tok([prompt] * m, return_tensors="pt")
+            ids, att = enc.input_ids.to("cuda"), enc.attention_mask.to("cuda")
+            assert ids.shape[1] + self.gen_tokens <= 2048, f"{uid}: exceeds Dream's 2048 context"
+            with self.torch.no_grad():
+                o = self.model.diffusion_generate(ids, attention_mask=att, max_new_tokens=self.gen_tokens,
+                                                  output_history=False, return_dict_in_generate=True,
+                                                  steps=self.spec["steps"], temperature=self.spec["temperature"],
+                                                  top_p=self.spec["top_p"], alg=self.spec["alg"], alg_temp=0.0)
+            outs += [self.tok.decode(g[ids.shape[1]:].tolist(), skip_special_tokens=True) for g in o.sequences]
+        return outs
 
 
 class LLaDA:
@@ -134,15 +154,35 @@ class LLaDA:
         mod = importlib.util.module_from_spec(s := importlib.util.spec_from_file_location("llada_generate", path)); s.loader.exec_module(mod)
         self.generate, self.torch, self.spec, self.gen_tokens = mod.generate, torch, spec, c["gen_tokens"]
         self.tok = AutoTokenizer.from_pretrained(spec["hf"], trust_remote_code=True)
+        _cap_gpu_memory()
         self.model = AutoModel.from_pretrained(spec["hf"], torch_dtype=torch.bfloat16, trust_remote_code=True).to("cuda").eval()
 
     def sample(self, uid, prompt, n, gold_hint=None):
-        ids = self.tok([prompt] * n, return_tensors="pt").input_ids.to("cuda")
-        with self.torch.no_grad():
-            out = self.generate(self.model, ids, steps=self.spec["steps"], gen_length=self.gen_tokens,
-                                block_length=self.gen_tokens,             # F-11: no semi-AR blocks
-                                temperature=self.spec["temperature"], cfg_scale=0.0, remasking=self.spec["remasking"])
-        return [self.tok.decode(g[ids.shape[1]:].tolist(), skip_special_tokens=True) for g in out]
+        # CODIFY_SAMPLE_CHUNK=k runs the n independent samples in batches of k (same per-sample distribution, less peak memory,
+        # for the shared 32 GB Ada card). Unset = one batch of n, as on Blackwell.
+        chunk = int(os.environ.get("CODIFY_SAMPLE_CHUNK", "0")) or n
+        self.last_chunk = min(chunk, n)
+        texts = []
+        for i in range(0, n, chunk):
+            ids = self.tok([prompt] * min(chunk, n - i), return_tensors="pt").input_ids.to("cuda")
+            with self.torch.no_grad():
+                out = self.generate(self.model, ids, steps=self.spec["steps"], gen_length=self.gen_tokens,
+                                    block_length=self.gen_tokens,             # F-11: no semi-AR blocks
+                                    temperature=self.spec["temperature"], cfg_scale=0.0, remasking=self.spec["remasking"])
+            texts += [self.tok.decode(g[ids.shape[1]:].tolist(), skip_special_tokens=True) for g in out]
+        return texts
+
+
+import socket
+HOST = socket.gethostname()
+
+
+def GPU_NAME() -> str:
+    try:
+        import torch
+        return torch.cuda.get_device_name(0) if torch.cuda.is_available() else "cpu"
+    except Exception:
+        return "unknown"
 
 
 BACKENDS = {"mock": Mock, "diffugpt": Anchor, "diffullama": Anchor, "dream": Dream, "llada": LLaDA}
@@ -156,6 +196,9 @@ def main() -> int:
     ap.add_argument("--limit", type=int, default=0, help="first N questions only (smoke tests)")
     ap.add_argument("--reverse", action="store_true",
                     help="work from the last question back, so a second machine can share the split")
+    ap.add_argument("--order", help="file with one test uid per line: work through the questions in THIS order (iteration 2 K=256 run: a seeded "
+                                    "random permutation, so any finished subset is a random subsample). --limit then counts questions of this list; "
+                                    "--reverse walks it from the back")
     ap.add_argument("--steps", type=int, default=0,
                     help="override the denoising-step budget (iteration 2 step arm, prompt A1); output goes to "
                          "candidates/<model>@k<steps>/ so the 64-step files are never overwritten")
@@ -171,6 +214,10 @@ def main() -> int:
     shots = json.loads((WORK / "data" / "shots.json").read_text(encoding="utf-8"))
     shots = shots[:spec.get("n_shots", c["n_shots"])]
     qs = read_jsonl(WORK / "data" / f"{a.split}.jsonl")
+    if a.order:
+        pos = {u: i for i, u in enumerate(l.strip() for l in open(a.order, encoding="utf-8") if l.strip())}
+        assert set(pos) <= {q["uid"] for q in qs}, "order file lists uids that are not in this split"
+        qs = sorted((q for q in qs if q["uid"] in pos), key=lambda q: pos[q["uid"]])
     qs = qs[:a.limit] if a.limit else qs
     out = WORK / "candidates" / a.model / f"{a.split}.jsonl"
     # Rows another machine generated for this split (same model, same settings), copied in while
@@ -204,6 +251,9 @@ def generate(a, spec, c, shots, todo, out, ext_uids):
         texts = backend.sample(q["uid"], prompt, c["n_candidates"], gold_hint=hint)
         assert len(texts) == c["n_candidates"]
         append_jsonl(out, {"uid": q["uid"], "model": a.model, "question": q["question"], "prompt": prompt,
+                           "host": HOST, "gpu": GPU_NAME(),                       # mixed-hardware runs (ada + blackwell) stay traceable
+                           "sample_chunk": getattr(backend, "last_chunk", c["n_candidates"]),   # samples per batch (n = one batch)
+
                            "gen_seconds": round(time.time() - tq, 3),        # idea 1.1's T_gen, all N candidates
                            "candidates": [{"text": t, "answer": task.extract_answer(t)} for t in texts]})
         if k % 10 == 0 or k == len(todo):

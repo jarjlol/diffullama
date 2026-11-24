@@ -1,0 +1,749 @@
+{
+  "dream-base": {
+    "n": 500,
+    "budgets": {
+      "16": {
+        "acc": {
+          "first": 0.026,
+          "majority": 0.032,
+          "ar.gpt2.sum": 0.016,
+          "ar.gpt2.mean": 0.024,
+          "ar.gpt2-cut.sum": 0.022,
+          "ar.gpt2-cut.mean": 0.024,
+          "ar.qwen0.5b.sum": 0.012,
+          "ar.qwen0.5b.mean": 0.006,
+          "ar.qwen0.5b-cut.sum": 0.022,
+          "ar.qwen0.5b-cut.mean": 0.008,
+          "ar.qwen7b.sum": 0.012,
+          "ar.qwen7b.mean": 0.008,
+          "ar.qwen7b-cut.sum": 0.018,
+          "ar.qwen7b-cut.mean": 0.008,
+          "oracle": 0.174
+        },
+        "gen_s_per_q": 9.454114
+      },
+      "32": {
+        "acc": {
+          "first": 0.124,
+          "majority": 0.234,
+          "ar.gpt2.sum": 0.06,
+          "ar.gpt2.mean": 0.07,
+          "ar.gpt2-cut.sum": 0.09,
+          "ar.gpt2-cut.mean": 0.04,
+          "ar.qwen0.5b.sum": 0.078,
+          "ar.qwen0.5b.mean": 0.042,
+          "ar.qwen0.5b-cut.sum": 0.124,
+          "ar.qwen0.5b-cut.mean": 0.034,
+          "ar.qwen7b.sum": 0.074,
+          "ar.qwen7b.mean": 0.044,
+          "ar.qwen7b-cut.sum": 0.138,
+          "ar.qwen7b-cut.mean": 0.038,
+          "oracle": 0.54
+        },
+        "gen_s_per_q": 19.33956
+      },
+      "64": {
+        "acc": {
+          "first": 0.404,
+          "majority": 0.724,
+          "ar.gpt2.sum": 0.268,
+          "ar.gpt2.mean": 0.346,
+          "ar.gpt2-cut.sum": 0.298,
+          "ar.gpt2-cut.mean": 0.268,
+          "ar.llama2-7b.sum": 0.304,
+          "ar.llama2-7b.mean": 0.288,
+          "ar.qwen0.5b.sum": 0.318,
+          "ar.qwen0.5b.mean": 0.29,
+          "ar.qwen0.5b-cut.sum": 0.45,
+          "ar.qwen0.5b-cut.mean": 0.256,
+          "ar.qwen7b.sum": 0.358,
+          "ar.qwen7b.mean": 0.338,
+          "ar.qwen7b-cut.sum": 0.488,
+          "ar.qwen7b-cut.mean": 0.276,
+          "ar.tinyllama.sum": 0.276,
+          "ar.tinyllama.mean": 0.272,
+          "oracle": 0.878
+        },
+        "gen_s_per_q": 36.768984
+      }
+    },
+    "dQ_steps": {
+      "16->32": 0.098,
+      "32->64": 0.28
+    },
+    "dQ_rerank": {
+      "16": {
+        "ar.gpt2-cut.mean": -0.0019999999999999983,
+        "ar.gpt2-cut.sum": -0.004,
+        "ar.gpt2.mean": -0.0019999999999999983,
+        "ar.gpt2.sum": -0.009999999999999998,
+        "ar.qwen0.5b-cut.mean": -0.018,
+        "ar.qwen0.5b-cut.sum": -0.004,
+        "ar.qwen0.5b.mean": -0.019999999999999997,
+        "ar.qwen0.5b.sum": -0.013999999999999999,
+        "ar.qwen7b-cut.mean": -0.018,
+        "ar.qwen7b-cut.sum": -0.008,
+        "ar.qwen7b.mean": -0.018,
+        "ar.qwen7b.sum": -0.013999999999999999,
+        "majority": 0.006000000000000002
+      },
+      "32": {
+        "ar.gpt2-cut.mean": -0.08399999999999999,
+        "ar.gpt2-cut.sum": -0.034,
+        "ar.gpt2.mean": -0.05399999999999999,
+        "ar.gpt2.sum": -0.064,
+        "ar.qwen0.5b-cut.mean": -0.09,
+        "ar.qwen0.5b-cut.sum": 0.0,
+        "ar.qwen0.5b.mean": -0.08199999999999999,
+        "ar.qwen0.5b.sum": -0.046,
+        "ar.qwen7b-cut.mean": -0.086,
+        "ar.qwen7b-cut.sum": 0.014000000000000012,
+        "ar.qwen7b.mean": -0.08,
+        "ar.qwen7b.sum": -0.05,
+        "majority": 0.11000000000000001
+      },
+      "64": {
+        "ar.gpt2-cut.mean": -0.136,
+        "ar.gpt2-cut.sum": -0.10600000000000004,
+        "ar.gpt2.mean": -0.05800000000000005,
+        "ar.gpt2.sum": -0.136,
+        "ar.qwen0.5b-cut.mean": -0.14800000000000002,
+        "ar.qwen0.5b-cut.sum": 0.045999999999999985,
+        "ar.qwen0.5b.mean": -0.11400000000000005,
+        "ar.qwen0.5b.sum": -0.08600000000000002,
+        "ar.qwen7b-cut.mean": -0.128,
+        "ar.qwen7b-cut.sum": 0.08399999999999996,
+        "ar.qwen7b.mean": -0.066,
+        "ar.qwen7b.sum": -0.04600000000000004,
+        "majority": 0.31999999999999995
+      }
+    },
+    "A_rerank": {
+      "ar.gpt2-cut.mean": -0.1,
+      "ar.gpt2-cut.sum": -0.10200000000000001,
+      "ar.gpt2.mean": -0.1,
+      "ar.gpt2.sum": -0.108,
+      "ar.qwen0.5b-cut.mean": -0.116,
+      "ar.qwen0.5b-cut.sum": -0.10200000000000001,
+      "ar.qwen0.5b.mean": -0.118,
+      "ar.qwen0.5b.sum": -0.112,
+      "ar.qwen7b-cut.mean": -0.116,
+      "ar.qwen7b-cut.sum": -0.10600000000000001,
+      "ar.qwen7b.mean": -0.116,
+      "ar.qwen7b.sum": -0.112,
+      "majority": -0.092
+    },
+    "paired": {
+      "first: K=32 minus K=16": {
+        "diff": 0.098,
+        "ci95": [
+          0.066,
+          0.13
+        ],
+        "wins": 60,
+        "losses": 11,
+        "mcnemar_p": 2.633328534504438e-09
+      },
+      "majority: K=32 minus K=16": {
+        "diff": 0.202,
+        "ci95": [
+          0.166,
+          0.24
+        ],
+        "wins": 106,
+        "losses": 5,
+        "mcnemar_p": 1.035239298994319e-25
+      },
+      "first: K=64 minus K=32": {
+        "diff": 0.28,
+        "ci95": [
+          0.232,
+          0.328
+        ],
+        "wins": 165,
+        "losses": 25,
+        "mcnemar_p": 1.7240107806770726e-26
+      },
+      "majority: K=64 minus K=32": {
+        "diff": 0.49,
+        "ci95": [
+          0.442,
+          0.536
+        ],
+        "wins": 254,
+        "losses": 9,
+        "mcnemar_p": 2.020322944508503e-63
+      },
+      "K=16: majority minus first": {
+        "diff": 0.006,
+        "ci95": [
+          -0.01,
+          0.024
+        ],
+        "wins": 11,
+        "losses": 8,
+        "mcnemar_p": 0.6476058959960938
+      },
+      "K=32: majority minus first": {
+        "diff": 0.11,
+        "ci95": [
+          0.078,
+          0.142
+        ],
+        "wins": 65,
+        "losses": 10,
+        "mcnemar_p": 5.154208808246549e-11
+      },
+      "K=64: majority minus first": {
+        "diff": 0.32,
+        "ci95": [
+          0.278,
+          0.362
+        ],
+        "wins": 164,
+        "losses": 4,
+        "mcnemar_p": 1.7538320135283241e-43
+      }
+    }
+  },
+  "llada-base": {
+    "n": 500,
+    "budgets": {
+      "16": {
+        "acc": {
+          "first": 0.036,
+          "majority": 0.032,
+          "ar.gpt2.sum": 0.024,
+          "ar.gpt2.mean": 0.026,
+          "ar.gpt2-cut.sum": 0.03,
+          "ar.gpt2-cut.mean": 0.024,
+          "ar.qwen0.5b.sum": 0.028,
+          "ar.qwen0.5b.mean": 0.016,
+          "ar.qwen0.5b-cut.sum": 0.036,
+          "ar.qwen0.5b-cut.mean": 0.014,
+          "ar.qwen7b.sum": 0.024,
+          "ar.qwen7b.mean": 0.014,
+          "ar.qwen7b-cut.sum": 0.034,
+          "ar.qwen7b-cut.mean": 0.012,
+          "oracle": 0.246
+        },
+        "gen_s_per_q": 13.675678
+      },
+      "32": {
+        "acc": {
+          "first": 0.228,
+          "majority": 0.51,
+          "ar.gpt2.sum": 0.158,
+          "ar.gpt2.mean": 0.132,
+          "ar.gpt2-cut.sum": 0.166,
+          "ar.gpt2-cut.mean": 0.106,
+          "ar.qwen0.5b.sum": 0.238,
+          "ar.qwen0.5b.mean": 0.114,
+          "ar.qwen0.5b-cut.sum": 0.26,
+          "ar.qwen0.5b-cut.mean": 0.112,
+          "ar.qwen7b.sum": 0.26,
+          "ar.qwen7b.mean": 0.116,
+          "ar.qwen7b-cut.sum": 0.286,
+          "ar.qwen7b-cut.mean": 0.118,
+          "oracle": 0.76
+        },
+        "gen_s_per_q": 27.382686
+      },
+      "64": {
+        "acc": {
+          "first": 0.486,
+          "majority": 0.732,
+          "ar.gpt2.sum": 0.414,
+          "ar.gpt2.mean": 0.428,
+          "ar.gpt2-cut.sum": 0.394,
+          "ar.gpt2-cut.mean": 0.422,
+          "ar.llama2-7b.sum": 0.49,
+          "ar.llama2-7b.mean": 0.406,
+          "ar.qwen0.5b.sum": 0.51,
+          "ar.qwen0.5b.mean": 0.446,
+          "ar.qwen7b.sum": 0.524,
+          "ar.qwen7b.mean": 0.452,
+          "ar.qwen7b-cut.sum": 0.522,
+          "ar.qwen7b-cut.mean": 0.482,
+          "ar.tinyllama.sum": 0.454,
+          "ar.tinyllama.mean": 0.384,
+          "oracle": 0.892
+        },
+        "gen_s_per_q": 54.978038
+      }
+    },
+    "dQ_steps": {
+      "16->32": 0.192,
+      "32->64": 0.258
+    },
+    "dQ_rerank": {
+      "16": {
+        "ar.gpt2-cut.mean": -0.011999999999999997,
+        "ar.gpt2-cut.sum": -0.005999999999999998,
+        "ar.gpt2.mean": -0.009999999999999998,
+        "ar.gpt2.sum": -0.011999999999999997,
+        "ar.qwen0.5b.mean": -0.019999999999999997,
+        "ar.qwen0.5b.sum": -0.007999999999999997,
+        "ar.qwen7b-cut.mean": -0.023999999999999997,
+        "ar.qwen7b-cut.sum": -0.001999999999999995,
+        "ar.qwen7b.mean": -0.022,
+        "ar.qwen7b.sum": -0.011999999999999997,
+        "majority": -0.003999999999999997
+      },
+      "32": {
+        "ar.gpt2-cut.mean": -0.12200000000000001,
+        "ar.gpt2-cut.sum": -0.062,
+        "ar.gpt2.mean": -0.096,
+        "ar.gpt2.sum": -0.07,
+        "ar.qwen0.5b.mean": -0.114,
+        "ar.qwen0.5b.sum": 0.009999999999999981,
+        "ar.qwen7b-cut.mean": -0.11000000000000001,
+        "ar.qwen7b-cut.sum": 0.05799999999999997,
+        "ar.qwen7b.mean": -0.112,
+        "ar.qwen7b.sum": 0.032,
+        "majority": 0.28200000000000003
+      },
+      "64": {
+        "ar.gpt2-cut.mean": -0.064,
+        "ar.gpt2-cut.sum": -0.09199999999999997,
+        "ar.gpt2.mean": -0.057999999999999996,
+        "ar.gpt2.sum": -0.07200000000000001,
+        "ar.qwen0.5b.mean": -0.03999999999999998,
+        "ar.qwen0.5b.sum": 0.02400000000000002,
+        "ar.qwen7b-cut.mean": -0.0040000000000000036,
+        "ar.qwen7b-cut.sum": 0.03600000000000003,
+        "ar.qwen7b.mean": -0.033999999999999975,
+        "ar.qwen7b.sum": 0.038000000000000034,
+        "majority": 0.246
+      }
+    },
+    "A_rerank": {
+      "ar.gpt2-cut.mean": -0.20400000000000001,
+      "ar.gpt2-cut.sum": -0.198,
+      "ar.gpt2.mean": -0.202,
+      "ar.gpt2.sum": -0.20400000000000001,
+      "ar.qwen0.5b.mean": -0.212,
+      "ar.qwen0.5b.sum": -0.2,
+      "ar.qwen7b-cut.mean": -0.216,
+      "ar.qwen7b-cut.sum": -0.194,
+      "ar.qwen7b.mean": -0.214,
+      "ar.qwen7b.sum": -0.20400000000000001,
+      "majority": -0.196
+    },
+    "paired": {
+      "first: K=32 minus K=16": {
+        "diff": 0.192,
+        "ci95": [
+          0.154,
+          0.23
+        ],
+        "wins": 107,
+        "losses": 11,
+        "mcnemar_p": 6.4038043612370234e-21
+      },
+      "majority: K=32 minus K=16": {
+        "diff": 0.478,
+        "ci95": [
+          0.434,
+          0.522
+        ],
+        "wins": 241,
+        "losses": 2,
+        "mcnemar_p": 4.194901838280868e-69
+      },
+      "first: K=64 minus K=32": {
+        "diff": 0.258,
+        "ci95": [
+          0.208,
+          0.308
+        ],
+        "wins": 162,
+        "losses": 33,
+        "mcnemar_p": 1.2094089884805527e-21
+      },
+      "majority: K=64 minus K=32": {
+        "diff": 0.222,
+        "ci95": [
+          0.178,
+          0.266
+        ],
+        "wins": 130,
+        "losses": 19,
+        "mcnemar_p": 1.5845286212458737e-21
+      },
+      "K=16: majority minus first": {
+        "diff": -0.004,
+        "ci95": [
+          -0.024,
+          0.016
+        ],
+        "wins": 12,
+        "losses": 14,
+        "mcnemar_p": 0.8450189828872681
+      },
+      "K=32: majority minus first": {
+        "diff": 0.282,
+        "ci95": [
+          0.238,
+          0.326
+        ],
+        "wins": 153,
+        "losses": 12,
+        "mcnemar_p": 2.615840319617057e-32
+      },
+      "K=64: majority minus first": {
+        "diff": 0.246,
+        "ci95": [
+          0.206,
+          0.286
+        ],
+        "wins": 130,
+        "losses": 7,
+        "mcnemar_p": 1.8643680069333046e-30
+      }
+    }
+  },
+  "dream-base@k256": {
+    "n": 185,
+    "acc": {
+      "K64:ar.gpt2-cut.mean": 0.2864864864864865,
+      "K64:ar.gpt2-cut.sum": 0.31891891891891894,
+      "K64:ar.gpt2.mean": 0.40540540540540543,
+      "K64:ar.gpt2.sum": 0.2810810810810811,
+      "K64:ar.qwen7b-cut.mean": 0.2648648648648649,
+      "K64:ar.qwen7b-cut.sum": 0.5405405405405406,
+      "K64:ar.qwen7b.mean": 0.372972972972973,
+      "K64:ar.qwen7b.sum": 0.3567567567567568,
+      "K64:first": 0.42162162162162165,
+      "K64:majority": 0.7405405405405405,
+      "K256:ar.gpt2-cut.mean": 0.7135135135135136,
+      "K256:ar.gpt2-cut.sum": 0.654054054054054,
+      "K256:ar.gpt2.mean": 0.7081081081081081,
+      "K256:ar.gpt2.sum": 0.654054054054054,
+      "K256:ar.qwen7b-cut.mean": 0.7351351351351352,
+      "K256:ar.qwen7b-cut.sum": 0.7567567567567568,
+      "K256:ar.qwen7b.mean": 0.7243243243243244,
+      "K256:ar.qwen7b.sum": 0.6918918918918919,
+      "K256:first": 0.7405405405405405,
+      "K256:majority": 0.8432432432432433,
+      "K256:oracle": 0.9351351351351351,
+      "K64:oracle": 0.8864864864864865
+    },
+    "k64_full500": {
+      "first": 0.404,
+      "majority": 0.724
+    },
+    "hosts": [
+      "antpc|NVIDIA RTX 5000 Ada Generation",
+      "antpc|NVIDIA RTX PRO 6000 Blackwell Workstation Edition"
+    ],
+    "paired": {
+      "PRIMARY K256 ar.qwen7b-cut.sum - majority": {
+        "diff": -0.08648648648648649,
+        "ci95": [
+          -0.14054054054054055,
+          -0.032432432432432434
+        ],
+        "wins": 5,
+        "losses": 21,
+        "mcnemar_p": 0.002493917942047119
+      },
+      "K256-K64:first": {
+        "diff": 0.31891891891891894,
+        "ci95": [
+          0.23243243243243245,
+          0.4
+        ],
+        "wins": 69,
+        "losses": 10,
+        "mcnemar_p": 5.544696639021875e-12
+      },
+      "K256-K64:majority": {
+        "diff": 0.10270270270270271,
+        "ci95": [
+          0.04864864864864865,
+          0.15675675675675677
+        ],
+        "wins": 24,
+        "losses": 5,
+        "mcnemar_p": 0.0005461126565933228
+      },
+      "K256-K64:ar.gpt2-cut.sum": {
+        "diff": 0.33513513513513515,
+        "ci95": [
+          0.24864864864864866,
+          0.42162162162162165
+        ],
+        "wins": 74,
+        "losses": 12,
+        "mcnemar_p": 4.6897604919147226e-12
+      },
+      "K256-K64:ar.gpt2.sum": {
+        "diff": 0.372972972972973,
+        "ci95": [
+          0.2918918918918919,
+          0.4540540540540541
+        ],
+        "wins": 77,
+        "losses": 8,
+        "mcnemar_p": 2.7675726722352094e-15
+      },
+      "K256-K64:ar.qwen7b-cut.sum": {
+        "diff": 0.21621621621621623,
+        "ci95": [
+          0.14054054054054055,
+          0.2918918918918919
+        ],
+        "wins": 51,
+        "losses": 11,
+        "mcnemar_p": 2.775636864143019e-07
+      },
+      "K256-K64:ar.qwen7b.sum": {
+        "diff": 0.33513513513513515,
+        "ci95": [
+          0.25405405405405407,
+          0.41621621621621624
+        ],
+        "wins": 71,
+        "losses": 9,
+        "mcnemar_p": 4.3739781822391746e-13
+      },
+      "K256:majority-first": {
+        "diff": 0.10270270270270271,
+        "ci95": [
+          0.05405405405405406,
+          0.15675675675675677
+        ],
+        "wins": 22,
+        "losses": 3,
+        "mcnemar_p": 0.00015652179718017578
+      },
+      "K256 majority - greedy dream-sampler": {
+        "diff": 0.032432432432432434,
+        "ci95": [
+          -0.010810810810810811,
+          0.08108108108108109
+        ],
+        "wins": 12,
+        "losses": 6,
+        "mcnemar_p": 0.237884521484375
+      },
+      "K256 ar.qwen7b-cut.sum - greedy dream-sampler": {
+        "diff": -0.05405405405405406,
+        "ci95": [
+          -0.10810810810810811,
+          0.0
+        ],
+        "wins": 9,
+        "losses": 19,
+        "mcnemar_p": 0.08715855330228806
+      },
+      "K256 first - greedy dream-sampler": {
+        "diff": -0.07027027027027027,
+        "ci95": [
+          -0.13513513513513514,
+          -0.005405405405405406
+        ],
+        "wins": 13,
+        "losses": 26,
+        "mcnemar_p": 0.05325191409792751
+      },
+      "K256 majority - greedy dream-published": {
+        "diff": -0.024390243902439025,
+        "ci95": [
+          -0.12195121951219512,
+          0.07317073170731707
+        ],
+        "wins": 2,
+        "losses": 3,
+        "mcnemar_p": 1.0
+      },
+      "K256 ar.qwen7b-cut.sum - greedy dream-published": {
+        "diff": -0.14634146341463414,
+        "ci95": [
+          -0.2682926829268293,
+          -0.04878048780487805
+        ],
+        "wins": 0,
+        "losses": 6,
+        "mcnemar_p": 0.03125
+      },
+      "K256 first - greedy dream-published": {
+        "diff": -0.12195121951219512,
+        "ci95": [
+          -0.24390243902439024,
+          0.0
+        ],
+        "wins": 1,
+        "losses": 6,
+        "mcnemar_p": 0.125
+      }
+    },
+    "gen_s_per_q_blackwell": {
+      "K256": 151.08658024691357,
+      "K64": 36.477513513513514,
+      "n256": 162,
+      "n64": 185
+    },
+    "greedy": {
+      "dream-sampler": 0.8108108108108109,
+      "dream-published": 0.7804878048780488
+    }
+  },
+  "llada-base@k256": {
+    "n": 192,
+    "acc": {
+      "K64:ar.gpt2-cut.mean": 0.4114583333333333,
+      "K64:ar.gpt2-cut.sum": 0.3802083333333333,
+      "K64:ar.gpt2.mean": 0.3958333333333333,
+      "K64:ar.gpt2.sum": 0.40625,
+      "K64:ar.qwen7b-cut.mean": 0.4895833333333333,
+      "K64:ar.qwen7b-cut.sum": 0.4895833333333333,
+      "K64:ar.qwen7b.mean": 0.4322916666666667,
+      "K64:ar.qwen7b.sum": 0.515625,
+      "K64:first": 0.4635416666666667,
+      "K64:majority": 0.7447916666666666,
+      "K256:ar.gpt2-cut.mean": 0.6979166666666666,
+      "K256:ar.gpt2-cut.sum": 0.6979166666666666,
+      "K256:ar.gpt2.mean": 0.7083333333333334,
+      "K256:ar.gpt2.sum": 0.6770833333333334,
+      "K256:ar.qwen7b-cut.mean": 0.75,
+      "K256:ar.qwen7b-cut.sum": 0.765625,
+      "K256:ar.qwen7b.mean": 0.7552083333333334,
+      "K256:ar.qwen7b.sum": 0.7395833333333334,
+      "K256:first": 0.7239583333333334,
+      "K256:majority": 0.7916666666666666,
+      "K256:oracle": 0.8958333333333334,
+      "K64:oracle": 0.8802083333333334
+    },
+    "k64_full500": {
+      "first": 0.486,
+      "majority": 0.732
+    },
+    "hosts": [
+      "antpc|NVIDIA RTX 5000 Ada Generation",
+      "antpc|NVIDIA RTX PRO 6000 Blackwell Workstation Edition"
+    ],
+    "paired": {
+      "PRIMARY K256 ar.qwen7b-cut.sum - majority": {
+        "diff": -0.026041666666666668,
+        "ci95": [
+          -0.06770833333333333,
+          0.015625
+        ],
+        "wins": 6,
+        "losses": 11,
+        "mcnemar_p": 0.332305908203125
+      },
+      "K256-K64:first": {
+        "diff": 0.2604166666666667,
+        "ci95": [
+          0.18229166666666666,
+          0.3385416666666667
+        ],
+        "wins": 60,
+        "losses": 10,
+        "mcnemar_p": 8.004823399455647e-10
+      },
+      "K256-K64:majority": {
+        "diff": 0.046875,
+        "ci95": [
+          0.0,
+          0.09895833333333333
+        ],
+        "wins": 17,
+        "losses": 8,
+        "mcnemar_p": 0.10775214433670044
+      },
+      "K256-K64:ar.gpt2-cut.sum": {
+        "diff": 0.3177083333333333,
+        "ci95": [
+          0.24479166666666666,
+          0.390625
+        ],
+        "wins": 67,
+        "losses": 6,
+        "mcnemar_p": 3.947260651543665e-14
+      },
+      "K256-K64:ar.gpt2.sum": {
+        "diff": 0.2708333333333333,
+        "ci95": [
+          0.19270833333333334,
+          0.3489583333333333
+        ],
+        "wins": 62,
+        "losses": 10,
+        "mcnemar_p": 2.6890686575861277e-10
+      },
+      "K256-K64:ar.qwen7b-cut.sum": {
+        "diff": 0.2760416666666667,
+        "ci95": [
+          0.20833333333333334,
+          0.34375
+        ],
+        "wins": 56,
+        "losses": 3,
+        "mcnemar_p": 1.189326415129699e-13
+      },
+      "K256-K64:ar.qwen7b.sum": {
+        "diff": 0.22395833333333334,
+        "ci95": [
+          0.15104166666666666,
+          0.296875
+        ],
+        "wins": 51,
+        "losses": 8,
+        "mcnemar_p": 9.052391166525231e-09
+      },
+      "K256:majority-first": {
+        "diff": 0.06770833333333333,
+        "ci95": [
+          0.026041666666666668,
+          0.11458333333333333
+        ],
+        "wins": 16,
+        "losses": 3,
+        "mcnemar_p": 0.004425048828125
+      },
+      "K256 majority - greedy llada-published": {
+        "diff": 0.08029197080291971,
+        "ci95": [
+          0.029197080291970802,
+          0.1386861313868613
+        ],
+        "wins": 13,
+        "losses": 2,
+        "mcnemar_p": 0.00738525390625
+      },
+      "K256 ar.qwen7b-cut.sum - greedy llada-published": {
+        "diff": 0.072992700729927,
+        "ci95": [
+          0.0072992700729927005,
+          0.1386861313868613
+        ],
+        "wins": 15,
+        "losses": 5,
+        "mcnemar_p": 0.04138946533203125
+      },
+      "K256 first - greedy llada-published": {
+        "diff": 0.029197080291970802,
+        "ci95": [
+          -0.021897810218978103,
+          0.08029197080291971
+        ],
+        "wins": 9,
+        "losses": 5,
+        "mcnemar_p": 0.4239501953125
+      }
+    },
+    "gen_s_per_q_blackwell": {
+      "K256": 216.58986092715233,
+      "K64": 54.92935416666667,
+      "n256": 151,
+      "n64": 192
+    },
+    "greedy": {
+      "llada-published": 0.6934306569343066
+    }
+  }
+}

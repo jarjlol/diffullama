@@ -1,0 +1,47 @@
+llada-base test (gate): 200 questions, 64-step candidates (iteration 1), N = 10
+  coverage dlm.selfscore: 200/200 questions
+  first 0.485  majority 0.735  oracle 0.905
+  scorers with a cut version: ['gpt2', 'qwen7b'];  all scorers: ['gpt2', 'gpt2-cut', 'llama2-7b', 'qwen0.5b', 'qwen7b', 'qwen7b-cut', 'tinyllama']
+  coverage gpt2: 200/200 questions
+  coverage gpt2-cut: 200/200 questions
+  coverage llama2-7b: 200/200 questions
+  coverage qwen0.5b: 200/200 questions
+  coverage qwen7b: 200/200 questions
+  coverage qwen7b-cut: 200/200 questions
+  coverage tinyllama: 200/200 questions
+  selector                          accuracy
+  dlm.selfscore                        0.450
+  gpt2-cut:mean                        0.435
+  gpt2-cut:sum                         0.425
+  gpt2:mean                            0.385
+  gpt2:sum                             0.435
+  llama2-7b:mean                       0.385
+  llama2-7b:sum                        0.510
+  qwen0.5b:mean                        0.440
+  qwen0.5b:sum                         0.530
+  qwen7b-cut:mean                      0.480
+  qwen7b-cut:sum                       0.530
+  qwen7b:mean                          0.450
+  qwen7b:sum                           0.530
+  tinyllama:mean                       0.355
+  tinyllama:sum                        0.480
+paired differences (95% bootstrap CI, exact McNemar):
+  gpt2 sum: cut minus trim                       -0.010 [-0.040,+0.015]  wins/losses 3/5  McNemar p=0.727
+  gpt2 mean: cut minus trim                      +0.050 [-0.015,+0.115]  wins/losses 27/17  McNemar p=0.174
+  qwen7b sum: cut minus trim                     +0.000 [-0.040,+0.040]  wins/losses 9/9  McNemar p=1.000
+  qwen7b mean: cut minus trim                    +0.030 [-0.020,+0.080]  wins/losses 15/9  McNemar p=0.307
+  dlm.selfscore minus majority                   -0.285 [-0.355,-0.215]  wins/losses 4/61  McNemar p=0.000
+  gpt2-cut:mean minus majority                   -0.300 [-0.370,-0.230]  wins/losses 5/65  McNemar p=0.000
+  gpt2-cut:sum minus majority                    -0.310 [-0.380,-0.240]  wins/losses 3/65  McNemar p=0.000
+  gpt2:mean minus majority                       -0.350 [-0.420,-0.280]  wins/losses 2/72  McNemar p=0.000
+  gpt2:sum minus majority                        -0.300 [-0.370,-0.235]  wins/losses 3/63  McNemar p=0.000
+  llama2-7b:mean minus majority                  -0.350 [-0.420,-0.285]  wins/losses 1/71  McNemar p=0.000
+  llama2-7b:sum minus majority                   -0.225 [-0.295,-0.160]  wins/losses 6/51  McNemar p=0.000
+  qwen0.5b:mean minus majority                   -0.295 [-0.365,-0.225]  wins/losses 4/63  McNemar p=0.000
+  qwen0.5b:sum minus majority                    -0.205 [-0.265,-0.145]  wins/losses 4/45  McNemar p=0.000
+  qwen7b-cut:mean minus majority                 -0.255 [-0.320,-0.190]  wins/losses 4/55  McNemar p=0.000
+  qwen7b-cut:sum minus majority                  -0.205 [-0.265,-0.145]  wins/losses 4/45  McNemar p=0.000
+  qwen7b:mean minus majority                     -0.285 [-0.355,-0.220]  wins/losses 4/61  McNemar p=0.000
+  qwen7b:sum minus majority                      -0.205 [-0.270,-0.140]  wins/losses 5/46  McNemar p=0.000
+  tinyllama:mean minus majority                  -0.380 [-0.450,-0.315]  wins/losses 1/77  McNemar p=0.000
+  tinyllama:sum minus majority                   -0.255 [-0.325,-0.185]  wins/losses 6/57  McNemar p=0.000

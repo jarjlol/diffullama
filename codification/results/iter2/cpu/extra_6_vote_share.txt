@@ -1,0 +1,39 @@
+# item 6: vote_share
+# command: python3 cpu_extra.py --item 6 --out /home/antpc/codify/extra_run/out
+# run: 2026-11-25T00:33:28+05:30
+# plan: results/iter2/cpu_extra_plan.md (EXPLORATORY, post-hoc; rules fixed before any result)
+# work dir: /home/antpc/codify/diffullama/codification/pipeline/work
+
+# ITEM 6. Vote share as confidence (descriptive, no test). top-vote count = size of the largest group of equal extracted answers, None ignored
+
+== dream-base K64: n=500 majority acc 0.724; AUROC(top-vote count -> majority correct) = 0.857  (correct 362, incorrect 138)
+  top-vote        0      1      2      3      4      5      6      7      8      9     10
+  n               0     23     82     92     69     63     50     53     34     26      8
+  maj. acc      nan  0.043  0.317  0.674  0.739  0.921  0.920  0.943  1.000  1.000  1.000
+  threshold t (top-vote >= t)        1      2      3      4      5      6      7      8      9     10
+  coverage                       1.000  0.954  0.790  0.606  0.468  0.342  0.242  0.136  0.068  0.016
+  accuracy                       0.724  0.757  0.848  0.901  0.949  0.959  0.975  1.000  1.000  1.000
+
+== dream-base K256: n=185 majority acc 0.843; AUROC(top-vote count -> majority correct) = 0.842  (correct 156, incorrect 29)
+  top-vote        0      1      2      3      4      5      6      7      8      9     10
+  n               0      2      2      7      9      9     10     14     36     40     56
+  maj. acc      nan  0.000  0.000  0.429  0.444  0.667  0.900  0.714  0.861  0.950  0.982
+  threshold t (top-vote >= t)        1      2      3      4      5      6      7      8      9     10
+  coverage                       1.000  0.989  0.978  0.941  0.892  0.843  0.789  0.714  0.519  0.303
+  accuracy                       0.843  0.852  0.862  0.879  0.903  0.917  0.918  0.939  0.969  0.982
+
+== llada-base K64: n=500 majority acc 0.732; AUROC(top-vote count -> majority correct) = 0.884  (correct 366, incorrect 134)
+  top-vote        0      1      2      3      4      5      6      7      8      9     10
+  n               0     15     60     67     70     53     56     43     57     44     35
+  maj. acc      nan  0.067  0.167  0.478  0.757  0.887  0.893  0.930  0.965  1.000  0.971
+  threshold t (top-vote >= t)        1      2      3      4      5      6      7      8      9     10
+  coverage                       1.000  0.970  0.850  0.716  0.576  0.470  0.358  0.272  0.158  0.070
+  accuracy                       0.732  0.753  0.835  0.902  0.938  0.949  0.966  0.978  0.987  0.971
+
+== llada-base K256: n=192 majority acc 0.792; AUROC(top-vote count -> majority correct) = 0.792  (correct 152, incorrect 40)
+  top-vote        0      1      2      3      4      5      6      7      8      9     10
+  n               0      0      4      7      6     11     19     14     11     19    101
+  maj. acc      nan    nan  0.250  0.286  0.500  0.636  0.526  0.786  0.818  0.737  0.941
+  threshold t (top-vote >= t)        1      2      3      4      5      6      7      8      9     10
+  coverage                       1.000  1.000  0.979  0.943  0.911  0.854  0.755  0.682  0.625  0.526
+  accuracy                       0.792  0.792  0.803  0.823  0.834  0.848  0.890  0.901  0.908  0.941

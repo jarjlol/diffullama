@@ -84,41 +84,72 @@ def fmt_pair(label: str, r: dict) -> str:
 
 
 def k256_table(m: str, gold: dict, out: dict) -> None:
-    """K = 256 majority runs (the first 100 test questions) next to K = 64 and the greedy fidelity runs,
-    all on the SAME 100 questions. Written by the queue jobs generate_candidates.py --steps 256 --limit 100."""
+    """K = 256 run (iteration 2, pre-declared in results/iter2/k256_preregistration.md) next to K = 64 on the SAME questions.
+    The K = 256 questions are a seeded random permutation of the 500 test questions (results/iter2/k256_order.txt), worked through
+    from both ends by two machines and stopped by the clock, so any finished set is a random subsample; n is whatever finished.
+    PRIMARY: majority vs ar.qwen7b-cut.sum at K = 256 (paired exact McNemar + bootstrap CI). SECONDARY: first sample, K = 64 vs 256."""
     rows256 = load(m, "@k256")
     if not rows256:
         print(f"\n== {m} K = 256: no candidates yet"); return
     rows64 = load(m, "")
     uids = sorted(set(rows256) & set(rows64))
-    fid = {}
-    for name in ("dream-sampler", "dream-published", "llada-published"):
-        p = WORK / "fidelity" / f"{name}.jsonl"
-        if p.exists() and name.startswith(m.split("-")[0]):
-            fid[name] = {r["uid"]: r["correct"] for r in read_jsonl(p)}
-    uids = [u for u in uids if all(u in v for v in fid.values())]
     sel256, sel64 = selectors({u: rows256[u] for u in uids}), selectors({u: rows64[u] for u in uids})
     names = sorted((set(sel256) & set(sel64)))
     cor = {(K, n): correct(rows, uids, (sel256 if K == 256 else sel64)[n], gold)
            for K, rows in ((64, rows64), (256, rows256)) for n in names}
     cor[(256, "oracle")] = [any(task.is_correct(c.get("answer"), gold[u]) for c in rows256[u]["candidates"]) for u in uids]
     cor[(64, "oracle")] = [any(task.is_correct(c.get("answer"), gold[u]) for c in rows64[u]["candidates"]) for u in uids]
-    res = {"n": len(uids), "acc": {f"K{K}:{n}": sum(v) / len(uids) for (K, n), v in cor.items()},
-           "greedy": {k: sum(v[u] for u in uids) / len(uids) for k, v in fid.items()}, "paired": {}}
-    print(f"\n== {m}  K = 256 vs K = 64 on the {len(uids)} questions with a K = 256 run (test; N = 10, T 0.7)")
+    # representativeness: K = 64 on the finished subset next to K = 64 on all 500 (a random subsample should be close)
+    full64 = selectors(rows64)
+    fullacc = {n: sum(correct(rows64, sorted(rows64), full64[n], gold)) / len(rows64) for n in ("first", "majority") if n in full64}
+    res = {"n": len(uids), "acc": {f"K{K}:{n}": sum(v) / len(uids) for (K, n), v in cor.items()}, "k64_full500": fullacc,
+           "hosts": sorted({f"{r.get('host','?')}|{r.get('gpu','?')}" for u, r in rows256.items() if u in set(uids)}), "paired": {}}
+    print(f"\n== {m}  K = 256 vs K = 64 on the {len(uids)} questions with a K = 256 run (test; N = 10, T 0.7, random order)")
+    print(f"  K=256 rows generated on: {res['hosts']}")
+    # compute column: Blackwell rows only. Ada rows (other GPU, shared card, 5-sample batches) have a different gen_seconds and are not comparable.
+    def bw_secs(rows):
+        return [r["gen_seconds"] for u, r in rows.items() if u in set(uids) and "gen_seconds" in r
+                and ("Blackwell" in str(r.get("gpu", "")) or ("gpu" not in r and "host" not in r))]
+    s256, s64 = bw_secs(rows256), bw_secs(rows64)
+    res["gen_s_per_q_blackwell"] = {"K256": statistics.mean(s256) if s256 else None, "K64": statistics.mean(s64) if s64 else None,
+                                    "n256": len(s256), "n64": len(s64)}
+    print("  s/question (N = 10), BLACKWELL rows only (Ada gen_seconds is another GPU with 5-sample batches, not comparable): "
+          f"K=64 {statistics.mean(s64):.1f} (n={len(s64)})" if s64 else "  s/question: no Blackwell K=64 rows", end="")
+    print(f", K=256 {statistics.mean(s256):.1f} (n={len(s256)})" if s256 else ", K=256: no Blackwell rows")
     print(f"  {'':8s} " + " ".join(f"{n[:14]:>14s}" for n in names + ['oracle']))
     for K in (64, 256):
         print(f"  K={K:<5d} " + " ".join(f"{sum(cor[(K, n)]) / len(uids):14.3f}" for n in names + ["oracle"]))
-    for k, v in res["greedy"].items():
-        print(f"  greedy single sample, {k}: {v:.3f}  (config {k}, greedy, 256 steps)")
+    print(f"  representativeness, K = 64 on all {len(rows64)} questions: " + ", ".join(f"{n} {v:.3f}" for n, v in fullacc.items()) +
+          f"   (same selectors on the {len(uids)}-question subset: " + ", ".join(f"{n} {sum(cor[(64, n)]) / len(uids):.3f}" for n in fullacc) + ")")
+    prim = "ar.qwen7b-cut.sum"
+    if (256, prim) in cor:
+        r = paired(cor[(256, prim)], cor[(256, "majority")]); res["paired"]["PRIMARY K256 " + prim + " - majority"] = r
+        print(fmt_pair("PRIMARY K=256: " + prim + " minus majority", r))
+    else:
+        print(f"  PRIMARY not computable yet: no {prim} scores on the K = 256 rows")
     for n in ("first", "majority") + tuple(x for x in names if x.startswith("ar.") and x.endswith(".sum")):
         r = paired(cor[(256, n)], cor[(64, n)]); res["paired"][f"K256-K64:{n}"] = r
-        print(fmt_pair(f"{n}: K=256 minus K=64", r))
+        print(fmt_pair(("SECONDARY " if n == "first" else "") + f"{n}: K=256 minus K=64", r))
     r = paired(cor[(256, "majority")], cor[(256, "first")]); res["paired"]["K256:majority-first"] = r
     print(fmt_pair("K=256: majority minus first sample", r))
+    fid = {}   # greedy fidelity runs cover only the first 100 test questions: compared on the overlap only
+    for name in ("dream-sampler", "dream-published", "llada-published"):
+        pth = WORK / "fidelity" / f"{name}.jsonl"
+        if pth.exists() and name.startswith(m.split("-")[0]):
+            fid[name] = {r["uid"]: r["correct"] for r in read_jsonl(pth)}
     for k, v in fid.items():
-        r = paired(cor[(256, "majority")], [bool(v[u]) for u in uids]); res["paired"][f"K256 majority - greedy {k}"] = r
-        print(fmt_pair(f"K=256 majority minus greedy ({k})", r))
+        ov = [i for i, u in enumerate(uids) if u in v]
+        if len(ov) < 10:
+            print(f"  greedy {k}: only {len(ov)} overlapping questions, not compared"); continue
+        res.setdefault("greedy", {})[k] = sum(bool(v[uids[i]]) for i in ov) / len(ov)
+        res.setdefault("greedy_n", {})[k] = len(ov)
+        r = paired([cor[(256, "majority")][i] for i in ov], [bool(v[uids[i]]) for i in ov]); res["paired"][f"K256 majority - greedy {k}"] = r
+        print(fmt_pair(f"K=256 majority minus greedy ({k}), n={len(ov)}", r))
+        # pre-registered secondary comparisons (clause of 23 Nov 17:15 IST): greedy vs AR rerank and vs first sample, same questions
+        for n2 in (prim, "first"):
+            if (256, n2) in cor:
+                r = paired([cor[(256, n2)][i] for i in ov], [bool(v[uids[i]]) for i in ov]); res["paired"][f"K256 {n2} - greedy {k}"] = r
+                print(fmt_pair(f"K=256 {n2} minus greedy ({k}), n={len(ov)}", r))
     out[f"{m}@k256"] = res
 
 

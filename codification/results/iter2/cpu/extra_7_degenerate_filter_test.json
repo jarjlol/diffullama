@@ -1,0 +1,36 @@
+{
+  "dream-base": {
+    "diff": 0.01,
+    "ci95": [
+      -0.004,
+      0.024
+    ],
+    "wins": 9,
+    "losses": 4,
+    "mcnemar_p": 0.266845703125,
+    "n": 500,
+    "candidates_dropped": 974,
+    "candidates_total": 5000,
+    "questions_all_dropped": 1,
+    "choice_differs": 37,
+    "acc_filtered": 0.734,
+    "acc_majority": 0.724
+  },
+  "llada-base": {
+    "diff": 0.01,
+    "ci95": [
+      0.002,
+      0.02
+    ],
+    "wins": 5,
+    "losses": 0,
+    "mcnemar_p": 0.0625,
+    "n": 500,
+    "candidates_dropped": 320,
+    "candidates_total": 5000,
+    "questions_all_dropped": 0,
+    "choice_differs": 13,
+    "acc_filtered": 0.742,
+    "acc_majority": 0.732
+  }
+}
