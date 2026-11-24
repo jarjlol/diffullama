@@ -1,6 +1,7 @@
 # Seven exploratory CPU analyses: plan, rules fixed before any result
 
-Written Wed 25 Nov 2026, about 00:50 IST, before any of the analyses below was run. Requested by Main, approved by Aaditya.
+Written Wed 25 Nov 2026, first committed 00:29 IST (`2a2caca`; the first version said "about 00:50" in error), before any of the analyses below was run on the real data.
+Before the first real run, the script was smoke-tested only on a scratch copy built from the dev split relabelled as test (nothing from the real test split was read). Requested by Main, approved by Aaditya.
 Every analysis here is EXPLORATORY (post-hoc): the K = 256 and K = 64 results are already known, so none of this is
 preregistered in the sense of `k256_preregistration.md`. All seven are reported, including nulls. No multiple-comparison
 correction is applied; read each p-value as one of seven families of exploratory tests.
