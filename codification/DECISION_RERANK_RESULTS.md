@@ -71,6 +71,9 @@ failure.
 scored 30/50 with the original order and 30/50 with the candidates permuted —
 the same accuracy. Position is not driving the result.
 
+**Candidate-order shuffle (GSM8K dev, 200 items, seed 1).** 74.5% with the
+original order and 74.5% with the candidates permuted.
+
 **Closed-book memorisation probe (GSM8K, 40 test items).** The model was shown
 the question and two numbers, the gold answer and a random wrong answer from
 another question, order randomised. It picked the gold number **37/40 = 92.5%**
@@ -101,5 +104,7 @@ pass@1, equal to the pass@10 oracle, beating the execution-based example filter
 (26.4%) and the first sample (10.4%). The candidate-order control is flat, but a
 closed-book probe scores 92.5%, so the model knows much of the underlying math;
 the defensible claim is that a decision model can pick the correct candidate, not
-that it verifies reasoning. LLaDA code generation at 64 steps is unusable. MBPP
-is queued as a separate, exploratory replication.
+that it verifies reasoning. LLaDA code generation at 64 steps is unusable. MBPP was
+queued, but Dream at 64 steps produces malformed code even with a 3-shot prompt
+(0 passing candidates in the first 20), so it was stopped; the harness is
+committed (`mbpp_*.py`) and no MBPP numbers are claimed.
