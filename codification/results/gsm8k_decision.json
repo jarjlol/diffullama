@@ -1,0 +1,306 @@
+{
+  "split": "test",
+  "models": [
+    "dream-base",
+    "llada-base"
+  ],
+  "table": {
+    "dream-base": {
+      "ar.gpt2-cut.mean": 0.268,
+      "ar.gpt2-cut.sum": 0.298,
+      "ar.gpt2.mean": 0.346,
+      "ar.gpt2.sum": 0.268,
+      "ar.llama2-7b.mean": 0.288,
+      "ar.llama2-7b.sum": 0.304,
+      "ar.qwen0.5b-cut.mean": 0.256,
+      "ar.qwen0.5b-cut.sum": 0.45,
+      "ar.qwen0.5b.mean": 0.29,
+      "ar.qwen0.5b.sum": 0.318,
+      "ar.qwen7b-cut.mean": 0.276,
+      "ar.qwen7b-cut.sum": 0.488,
+      "ar.qwen7b.mean": 0.338,
+      "ar.qwen7b.sum": 0.358,
+      "ar.tinyllama.mean": 0.272,
+      "ar.tinyllama.sum": 0.276,
+      "decision.listwise": 0.77,
+      "decision.pointwise": 0.742,
+      "first": 0.404,
+      "majority": 0.724,
+      "qwen.choice": 0.524,
+      "coverage": {
+        "ar.gpt2-cut.mean": 1.0,
+        "ar.gpt2-cut.sum": 1.0,
+        "ar.gpt2.mean": 1.0,
+        "ar.gpt2.sum": 1.0,
+        "ar.llama2-7b.mean": 1.0,
+        "ar.llama2-7b.sum": 1.0,
+        "ar.qwen0.5b-cut.mean": 1.0,
+        "ar.qwen0.5b-cut.sum": 1.0,
+        "ar.qwen0.5b.mean": 1.0,
+        "ar.qwen0.5b.sum": 1.0,
+        "ar.qwen7b-cut.mean": 1.0,
+        "ar.qwen7b-cut.sum": 1.0,
+        "ar.qwen7b.mean": 1.0,
+        "ar.qwen7b.sum": 1.0,
+        "ar.tinyllama.mean": 1.0,
+        "ar.tinyllama.sum": 1.0,
+        "decision.listwise": 1.0,
+        "decision.pointwise": 1.0,
+        "first": 1.0,
+        "majority": 1.0,
+        "qwen.choice": 1.0
+      },
+      "random(exp.)": 0.412,
+      "oracle": 0.878,
+      "n": 500
+    },
+    "llada-base": {
+      "ar.gpt2-cut.mean": 0.422,
+      "ar.gpt2-cut.sum": 0.394,
+      "ar.gpt2.mean": 0.428,
+      "ar.gpt2.sum": 0.414,
+      "ar.llama2-7b.mean": 0.406,
+      "ar.llama2-7b.sum": 0.49,
+      "ar.qwen0.5b-cut.mean": null,
+      "ar.qwen0.5b-cut.sum": null,
+      "ar.qwen0.5b.mean": 0.446,
+      "ar.qwen0.5b.sum": 0.51,
+      "ar.qwen7b-cut.mean": 0.482,
+      "ar.qwen7b-cut.sum": 0.522,
+      "ar.qwen7b.mean": 0.452,
+      "ar.qwen7b.sum": 0.524,
+      "ar.tinyllama.mean": 0.384,
+      "ar.tinyllama.sum": 0.454,
+      "decision.listwise": 0.79,
+      "decision.pointwise": 0.808,
+      "first": 0.486,
+      "majority": 0.732,
+      "qwen.choice": 0.604,
+      "coverage": {
+        "ar.gpt2-cut.mean": 1.0,
+        "ar.gpt2-cut.sum": 1.0,
+        "ar.gpt2.mean": 1.0,
+        "ar.gpt2.sum": 1.0,
+        "ar.llama2-7b.mean": 1.0,
+        "ar.llama2-7b.sum": 1.0,
+        "ar.qwen0.5b-cut.mean": 0.0,
+        "ar.qwen0.5b-cut.sum": 0.0,
+        "ar.qwen0.5b.mean": 1.0,
+        "ar.qwen0.5b.sum": 1.0,
+        "ar.qwen7b-cut.mean": 1.0,
+        "ar.qwen7b-cut.sum": 1.0,
+        "ar.qwen7b.mean": 1.0,
+        "ar.qwen7b.sum": 1.0,
+        "ar.tinyllama.mean": 1.0,
+        "ar.tinyllama.sum": 1.0,
+        "decision.listwise": 1.0,
+        "decision.pointwise": 1.0,
+        "first": 1.0,
+        "majority": 1.0,
+        "qwen.choice": 1.0
+      },
+      "random(exp.)": 0.48819999999999997,
+      "oracle": 0.892,
+      "n": 500
+    }
+  },
+  "macro": {
+    "ar.gpt2-cut.mean": 0.345,
+    "ar.gpt2-cut.sum": 0.346,
+    "ar.gpt2.mean": 0.387,
+    "ar.gpt2.sum": 0.34099999999999997,
+    "ar.llama2-7b.mean": 0.347,
+    "ar.llama2-7b.sum": 0.397,
+    "ar.qwen0.5b-cut.mean": 0.256,
+    "ar.qwen0.5b-cut.sum": 0.45,
+    "ar.qwen0.5b.mean": 0.368,
+    "ar.qwen0.5b.sum": 0.41400000000000003,
+    "ar.qwen7b-cut.mean": 0.379,
+    "ar.qwen7b-cut.sum": 0.505,
+    "ar.qwen7b.mean": 0.395,
+    "ar.qwen7b.sum": 0.441,
+    "ar.tinyllama.mean": 0.328,
+    "ar.tinyllama.sum": 0.365,
+    "decision.listwise": 0.78,
+    "decision.pointwise": 0.775,
+    "first": 0.445,
+    "majority": 0.728,
+    "qwen.choice": 0.5640000000000001,
+    "random(exp.)": 0.45009999999999994,
+    "oracle": 0.885
+  },
+  "tests": {
+    "ar.qwen0.5b-cut.sum vs majority": {
+      "delta": -0.27399999999999997,
+      "p": 1.0384614835804017e-29,
+      "n01": 152,
+      "n10": 15,
+      "ci95": [
+        -0.318,
+        -0.23
+      ]
+    },
+    "ar.qwen0.5b-cut.sum vs majority [dream-base]": {
+      "delta": -0.27399999999999997,
+      "p": 1.0384614835804017e-29,
+      "n": 500
+    },
+    "ar.qwen0.5b-cut.sum vs ar.qwen7b-cut.sum": {
+      "delta": -0.03799999999999998,
+      "p": 0.010973562899720513,
+      "n01": 35,
+      "n10": 16,
+      "ci95": [
+        -0.066,
+        -0.01
+      ]
+    },
+    "ar.qwen0.5b-cut.sum vs ar.qwen7b-cut.sum [dream-base]": {
+      "delta": -0.03799999999999998,
+      "p": 0.010973562899720513,
+      "n": 500
+    },
+    "ar.qwen7b-cut.sum vs majority": {
+      "delta": -0.22299999999999998,
+      "p": 2.4365668488368643e-47,
+      "n01": 248,
+      "n10": 25,
+      "ci95": [
+        -0.252,
+        -0.193
+      ]
+    },
+    "ar.qwen7b-cut.sum vs majority [dream-base]": {
+      "delta": -0.236,
+      "p": 3.017065441233176e-25,
+      "n": 500
+    },
+    "ar.qwen7b-cut.sum vs majority [llada-base]": {
+      "delta": -0.20999999999999996,
+      "p": 2.8830151593900756e-23,
+      "n": 500
+    },
+    "decision.listwise vs majority": {
+      "delta": 0.052000000000000046,
+      "p": 4.922847559437514e-06,
+      "n01": 38,
+      "n10": 90,
+      "ci95": [
+        0.03,
+        0.074
+      ],
+      "p_holm": 4.922847559437514e-06
+    },
+    "decision.listwise vs majority [dream-base]": {
+      "delta": 0.04600000000000004,
+      "p": 0.009542211425865475,
+      "n": 500
+    },
+    "decision.listwise vs majority [llada-base]": {
+      "delta": 0.05800000000000005,
+      "p": 0.00011361060320691507,
+      "n": 500
+    },
+    "decision.listwise vs ar.qwen7b-cut.sum": {
+      "delta": 0.275,
+      "p": 2.667039195552352e-63,
+      "n01": 21,
+      "n10": 296,
+      "ci95": [
+        0.245,
+        0.306
+      ],
+      "p_holm": 5.334078391104704e-63
+    },
+    "decision.listwise vs ar.qwen7b-cut.sum [dream-base]": {
+      "delta": 0.28200000000000003,
+      "p": 9.37697574848084e-31,
+      "n": 500
+    },
+    "decision.listwise vs ar.qwen7b-cut.sum [llada-base]": {
+      "delta": 0.268,
+      "p": 2.8378191731534526e-34,
+      "n": 500
+    },
+    "decision.pointwise vs majority": {
+      "delta": 0.04700000000000004,
+      "p": 4.915299690811726e-05,
+      "n01": 42,
+      "n10": 89,
+      "ci95": [
+        0.025,
+        0.07
+      ]
+    },
+    "decision.pointwise vs majority [dream-base]": {
+      "delta": 0.018000000000000016,
+      "p": 0.3491818381705883,
+      "n": 500
+    },
+    "decision.pointwise vs majority [llada-base]": {
+      "delta": 0.07600000000000007,
+      "p": 4.5166191631196284e-07,
+      "n": 500
+    },
+    "decision.pointwise vs ar.qwen7b-cut.sum": {
+      "delta": 0.27,
+      "p": 3.0843165650834123e-60,
+      "n01": 24,
+      "n10": 294,
+      "ci95": [
+        0.239,
+        0.301
+      ]
+    },
+    "decision.pointwise vs ar.qwen7b-cut.sum [dream-base]": {
+      "delta": 0.254,
+      "p": 1.8613009251278723e-25,
+      "n": 500
+    },
+    "decision.pointwise vs ar.qwen7b-cut.sum [llada-base]": {
+      "delta": 0.28600000000000003,
+      "p": 1.1851321278320514e-37,
+      "n": 500
+    },
+    "qwen.choice vs majority": {
+      "delta": -0.16400000000000003,
+      "p": 6.092104546465819e-30,
+      "n01": 196,
+      "n10": 32,
+      "ci95": [
+        -0.192,
+        -0.137
+      ]
+    },
+    "qwen.choice vs majority [dream-base]": {
+      "delta": -0.19999999999999996,
+      "p": 1.4188339369831326e-18,
+      "n": 500
+    },
+    "qwen.choice vs majority [llada-base]": {
+      "delta": -0.128,
+      "p": 1.567340030469408e-12,
+      "n": 500
+    },
+    "qwen.choice vs ar.qwen7b-cut.sum": {
+      "delta": 0.05899999999999994,
+      "p": 0.0009750143591125604,
+      "n01": 126,
+      "n10": 185,
+      "ci95": [
+        0.024,
+        0.093
+      ]
+    },
+    "qwen.choice vs ar.qwen7b-cut.sum [dream-base]": {
+      "delta": 0.03600000000000003,
+      "p": 0.184182042366839,
+      "n": 500
+    },
+    "qwen.choice vs ar.qwen7b-cut.sum [llada-base]": {
+      "delta": 0.08199999999999996,
+      "p": 0.0009061930268517255,
+      "n": 500
+    }
+  }
+}
