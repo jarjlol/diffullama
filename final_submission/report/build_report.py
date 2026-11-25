@@ -1,4 +1,4 @@
-"""Render report.md to report.pdf with explicit four-page section grouping.
+"""Render report.md to report.pdf with explicit page grouping.
 
 Requires reportlab. Run: python3 final_submission/report/build_report.py
 The Markdown remains the content source; no measured values live in this renderer.
@@ -27,8 +27,8 @@ styles.add(ParagraphStyle("ReportTitle", fontName="Helvetica-Bold", fontSize=18,
 styles.add(ParagraphStyle("ReportHeading", fontName="Helvetica-Bold", fontSize=11.5,
                           leading=15, spaceBefore=11, spaceAfter=5, textColor=BLUE,
                           keepWithNext=True))
-styles.add(ParagraphStyle("ReportBody", fontName="Helvetica", fontSize=9.5,
-                          leading=13.3, spaceAfter=7, alignment=TA_LEFT))
+styles.add(ParagraphStyle("ReportBody", fontName="Helvetica", fontSize=11,
+                          leading=15.5, spaceAfter=8, alignment=TA_LEFT))
 styles.add(ParagraphStyle("ReportCell", parent=styles["ReportBody"], fontSize=8.6,
                           leading=11.2, spaceAfter=0))
 styles.add(ParagraphStyle("ReportBullet", parent=styles["ReportBody"],
@@ -59,7 +59,7 @@ def footer(canvas, doc):
     canvas.saveState()
     canvas.setFont("Helvetica", 8)
     canvas.setFillColor(colors.HexColor("#53616d"))
-    canvas.drawString(43, 27, "BITS F471 Group 3 | Task 5 report | 24 Nov 2026")
+    canvas.drawString(43, 27, "BITS F471 Group 3 | Task 5 report")
     canvas.drawRightString(A4[0] - 43, 27, str(doc.page))
     canvas.restoreState()
 
