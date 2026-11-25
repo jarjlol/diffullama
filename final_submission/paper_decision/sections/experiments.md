@@ -1,10 +1,13 @@
-# Experimentation / Results and Discussion
+# Results and Discussion
 
 <!-- Sources: codification/results/gsm8k_preds.jsonl, humaneval_preds.jsonl, gsm8k_decision.json, humaneval_decision.json, DECISION_RERANK_RESULTS.md (iter2/decision-rerank @ 2d2fead). CIs and McNemar p recomputed by neel's agent from the per-item files (bootstrap seed 0, 10,000 resamples). -->
 
 **Setup.** GSM8K: 500 held-out test questions per model, $N = 10$ cached candidates from Dream 7B and LLaDA 8B, scored with full coverage (500/500 per model). HumanEval: 144 test problems, $N = 10$ Dream candidates. All selectors are scored on identical candidates.
 
-**Table 1.** GSM8K test accuracy (%), $n = 500$ per model. Headroom is macro: (selector − first)/(oracle − first). The prompted Qwen2.5-7B arm is exploratory (not pre-registered).
+::: {.tcap}
+TABLE I\
+GSM8K test accuracy (%), $n = 500$ per model. Headroom is macro: (selector − first)/(oracle − first). The prompted Qwen2.5-7B arm is exploratory (not pre-registered).
+:::
 
 | Selector | Dream | LLaDA | Macro | Headroom |
 |---|---|---|---|---|
@@ -26,7 +29,10 @@
 
 **It is the model, not the prompt.** Given the same listwise context, Qwen2.5-7B picks a correct candidate 56.4% of the time. That is 5.9 points above its own likelihood score ([2.4, 9.3], $p = 0.001$), but 16.4 points below majority vote and 21.6 below the decision model. Showing an AR model all candidates at once is therefore not enough; the gain needs a model that is good at this kind of choice.
 
-**Table 2.** HumanEval pass@1 (%), Dream, 144 test problems, $N = 10$.
+::: {.tcap}
+TABLE II\
+HumanEval pass@1 (%), Dream, 144 test problems, $N = 10$.
+:::
 
 | Selector | pass@1 | Headroom |
 |---|---|---|

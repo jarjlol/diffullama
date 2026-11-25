@@ -124,8 +124,10 @@ def main() -> int:
         if not all(k in bibs for k in keys):
             unresolved.extend(k for k in keys if k not in bibs)
             return m.group(0)
-        cited.extend(keys)
-        return "(" + "; ".join(short(bibs[k]) for k in keys) + ")"
+        for k in keys:                      # IEEE: number by first citation
+            if k not in cited:
+                cited.append(k)
+        return "[" + ", ".join(str(cited.index(k) + 1) for k in keys) + "]"
 
     for slug, title, issue in ORDER:
         text, src = read(f"final_submission/paper_decision/sections/{slug}.md", issue, a.from_branches)
@@ -140,7 +142,10 @@ def main() -> int:
             k = by_name_year.get((sn.lower(), yr))
             (cited.append(k) if k else unresolved.append(f"{sn} et al., {yr}"))
         text = re.sub(r"^## ", "### ", text, flags=re.M)
-        body.append(f"## {title}\n\n{text}\n")
+        if slug == "abstract":
+            body.append(f"::: {{.abstract}}\n*Abstract*—{text}\n:::\n")
+        else:
+            body.append(f"## {title}\n\n{text}\n")
         report.append(f"section {slug}: from {src}")
 
     # Optional appendix (#36), only with --with-appendix: the 25 Nov brief is "4+1(reference) page paper" (#69), so the
@@ -156,27 +161,48 @@ def main() -> int:
         appendix_md = app
         report.append(f"appendix provenance: from {asrc}")
 
-    refs = sorted(set(cited), key=lambda k: (surname(bibs[k]).lower(), bibs[k].get("year", "")))
+    refs = list(dict.fromkeys(cited))
     lines = []
-    for k in refs:
+
+    def ieee_name(n: str) -> str:
+        n = n.strip()
+        if "," in n:
+            last, first = [x.strip() for x in n.split(",", 1)]
+        else:
+            parts = n.split(); last, first = parts[-1], " ".join(parts[:-1])
+        initials = " ".join(f"{w[0]}." for w in re.split(r"[\s]+", first) if w)
+        return f"{initials} {last}".strip()
+
+    for i, k in enumerate(refs, 1):
         e = bibs[k]
-        au = e.get("author", "").split(" and ")
-        au_s = ", ".join(au[:3]) + (", et al." if len(au) > 3 else "")
-        ident = f" arXiv:{e['eprint']}." if e.get("eprint") else ""
-        lines.append(f"- {au_s} ({e.get('year', 'n.d.')}). {e.get('title', '').strip('{}')}.{ident}")
-    md = ("---\ntitle: \"A Decision Model, Not AR Likelihood, Selects Diffusion-LM Candidates Better Than Majority Vote\"\n---\n\n"
-          + "::: {.cols}\n\n" + "\n".join(body) + "\n:::\n\n::: {.refs}\n\n## References\n\n" + "\n".join(lines) + "\n\n:::\n" + (f"\n::: {{.appendix}}\n\n{appendix_md}\n\n:::\n" if appendix_md else ""))
+        au = [ieee_name(x) for x in e.get("author", "").split(" and ")]
+        au_s = (", ".join(au[:3]) + " et al.") if len(au) > 3 else (" and ".join(au) if len(au) <= 2 else ", ".join(au[:-1]) + ", and " + au[-1])
+        ident = f" arXiv:{e['eprint']}" if e.get("eprint") else ""
+        lines.append(f"[\\[{i}\\]]{{.rn}} {au_s}, “{e.get('title', '').strip('{}')},”{ident}, {e.get('year', 'n.d.')}.\n")
+    md = ("---\ntitle: \"Knowing the Answer or Checking It? A Small Decision Model as an Answer Selector for Diffusion Language Models\"\n---\n\n"
+          + "::: {.cols}\n\n" + "\n".join(body) + "\n:::\n\n::: {.refs}\n\n## References\n\n" + "\n".join(lines) + "\n:::\n" + (f"\n::: {{.appendix}}\n\n{appendix_md}\n\n:::\n" if appendix_md else ""))
     OUT.mkdir(exist_ok=True)
     (OUT / "paper.md").write_text(md, encoding="utf-8")
     css = OUT / "paper.css"
-    css.write_text("""@page { size: A4; margin: 18mm 15mm; }
-body { font-family: 'Times New Roman', Times, serif; font-size: 9.5pt; line-height: 1.25; }
-.cols { columns: 2; column-gap: 7mm; }
-header#title-block-header { text-align: center; } h1.title { font-size: 15pt; margin: 0 0 4mm; }
-h2 { font-size: 11pt; margin: 3mm 0 1.5mm; } h3 { font-size: 10pt; margin: 2.5mm 0 1mm; } p { margin: 0 0 1.6mm; text-align: justify; }
-table { border-collapse: collapse; font-size: 7.5pt; width: 100%; margin: 1.5mm 0; } td, th { border-top: 0.4pt solid #888; padding: 0.6mm 1mm; }
-.appendix { break-before: page; font-size: 7.5pt; } .appendix table { table-layout: fixed; }
-.refs { break-before: page; columns: 2; column-gap: 7mm; font-size: 8pt; } .refs ul { padding-left: 3mm; } math { font-size: 95%; }
+    css.write_text("""@page { size: A4; margin: 17mm 14mm 18mm; }
+body { font-family: 'Times New Roman', Times, serif; font-size: 10pt; line-height: 1.2; counter-reset: sec; }
+.cols { columns: 2; column-gap: 6mm; }
+header#title-block-header { text-align: center; } h1.title { font-size: 20pt; font-weight: normal; line-height: 1.15; margin: 0 0 5mm; }
+.abstract p { font-weight: bold; font-size: 9pt; text-align: justify; margin: 0 0 2mm; }
+.abstract em { font-style: italic; }
+h2 { font-size: 10pt; font-weight: normal; font-variant: small-caps; text-align: center; margin: 3mm 0 1.5mm; counter-increment: sec; counter-reset: sub; }
+.cols h2::before { content: counter(sec, upper-roman) ". "; }
+h3 { font-size: 10pt; font-weight: normal; font-style: italic; margin: 2mm 0 1mm; counter-increment: sub; }
+h3::before { content: counter(sub, upper-alpha) ". "; }
+p { margin: 0 0 1.4mm; text-align: justify; text-indent: 0; }
+.tcap p { text-align: center; font-variant: small-caps; font-size: 8pt; margin: 2mm 0 1mm; text-indent: 0; }
+table { border-collapse: collapse; font-size: 7.5pt; width: 100%; margin: 1mm 0 2mm; border-top: 0.8pt solid #000; border-bottom: 0.8pt solid #000; }
+th { border-bottom: 0.5pt solid #000; padding: 0.5mm 1mm; font-weight: normal; } td { padding: 0.4mm 1mm; }
+ul, ol { padding-left: 4mm; margin: 0 0 1.4mm; } li { margin: 0 0 0.6mm; }
+.refs { break-before: page; columns: 2; column-gap: 6mm; font-size: 8pt; }
+.refs h2 { counter-increment: none; } .refs p { text-align: left; padding-left: 6mm; text-indent: -6mm; margin: 0 0 1mm; }
+.rn { display: inline-block; width: 6mm; text-indent: 0; }
+.appendix { break-before: page; font-size: 7.5pt; } math { font-size: 95%; }
 """, encoding="utf-8")
     subprocess.run(["pandoc", str(OUT / "paper.md"), "-s", "--mathml", "-c", "paper.css", "-o", str(OUT / "paper.html")], check=True)
     js = """const {chromium}=require('playwright');(async()=>{const b=await chromium.launch();const p=await b.newPage();
