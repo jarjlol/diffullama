@@ -14,7 +14,7 @@ import time
 
 from common import WORK, read_jsonl
 from decision_rerank import LETTERS, Pplx
-from humaneval_exec import candidate_code
+from humaneval_exec import candidate_code, problems
 
 HERE = WORK / "humaneval"
 
@@ -28,6 +28,7 @@ def main() -> int:
     a = ap.parse_args()
 
     rows = read_jsonl(HERE / "candidates" / a.model / f"{a.split}.jsonl")
+    ps = problems()
     rows = rows[: a.limit] if a.limit else rows
     out = HERE / "features" / a.model / f"{a.split}.decision-{a.mode}.jsonl"
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -38,7 +39,7 @@ def main() -> int:
     d = Pplx()
     t0 = time.time()
     for k, r in enumerate(todo, 1):
-        codes = [candidate_code(c["text"], r["question"], "") for c in r["candidates"]]
+        codes = [candidate_code(c["text"], r["question"], ps[r["uid"]]["entry_point"]) for c in r["candidates"]]
         if a.mode == "listwise":
             criteria = {LETTERS[i]: f"Candidate {LETTERS[i]}" for i in range(len(codes))}
             resp = d.decider.decide({

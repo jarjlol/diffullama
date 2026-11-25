@@ -80,7 +80,10 @@ def main() -> int:
             idx = next((j for j, ok in enumerate(examples) if ok), 0)
             choice["example-filter"] = idx
             correct["example-filter"] = bool(passed[idx])
-            fs = feats.get(uid, [{} for _ in passed])
+            fs = feats.get(uid)
+            if fs is not None and len(fs) != len(passed):
+                raise SystemExit(f"{m}/{uid}: {len(fs)} feature rows vs {len(passed)} candidates")
+            fs = fs if fs is not None else [{} for _ in passed]
             keys = {k for f in fs for k in f}
             for k in sorted(keys):
                 if k.startswith("ar.") and k.endswith(".nll_sum"):
@@ -109,6 +112,7 @@ def main() -> int:
         table[m]["random(exp.)"] = sum(r["random(exp.)"] for r in rs) / len(rs)
         table[m]["oracle"] = sum(r["oracle"] for r in rs) / len(rs)
         table[m]["n"] = len(rs)
+        table[m]["coverage"] = {n: sum(1 for r in rs if n in r["correct"]) / len(rs) for n in names}
     macro = {n: sum(table[m][n] for m in a.models if table[m][n] is not None)
              / sum(1 for m in a.models if table[m][n] is not None) for n in names}
     macro["random(exp.)"] = sum(table[m]["random(exp.)"] for m in a.models) / len(a.models)

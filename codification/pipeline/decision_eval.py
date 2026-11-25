@@ -61,7 +61,7 @@ def argmin(cands: list[dict], key: str, normalise: bool = False) -> int | None:
     for i, c in enumerate(cands):
         v = c["features"].get(key)
         n = c["features"].get(key.replace("nll_sum", "n_tokens"))
-        if v is None or (normalise and not n):
+        if v is None or not math.isfinite(v) or (normalise and (not n or not math.isfinite(n))):
             continue
         vals.append((v / n if normalise else v, i))
     return min(vals)[1] if vals else None
@@ -69,7 +69,7 @@ def argmin(cands: list[dict], key: str, normalise: bool = False) -> int | None:
 
 def argmax(cands: list[dict], key: str) -> int | None:
     vals = [(c["features"].get(key), i) for i, c in enumerate(cands)]
-    vals = [(v, i) for v, i in vals if v is not None]
+    vals = [(v, i) for v, i in vals if v is not None and math.isfinite(v)]
     return max(vals, key=lambda x: (x[0], -x[1]))[1] if vals else None
 
 
@@ -88,6 +88,10 @@ def selectors(cands: list[dict], feat_keys: set[str]) -> dict:
             name = "decision.listwise" if k == "decision.listwise.p" else (
                    "decision.pointwise" if k == "decision.pointwise.p_yes" else k[:-2])
             sel[name] = lambda c, k=k: argmax(c, k)
+        elif k == "qwen.choice.p":
+            sel["qwen.choice"] = lambda c, k=k: argmax(c, k)
+        elif k == "qwen.yes.p":
+            sel["qwen.yes"] = lambda c, k=k: argmax(c, k)
     return sel
 
 
@@ -132,17 +136,24 @@ def main() -> int:
         sel = selectors(next(iter(cands.values()))["candidates"], keys)
         for uid in sorted(cands):
             r = cands[uid]
+            fs_all = feats.get(uid)
+            if fs_all is not None and len(fs_all) != len(r["candidates"]):
+                raise SystemExit(f"{m}/{uid}: {len(fs_all)} feature rows vs "
+                                 f"{len(r['candidates'])} candidates")
             cs = []
             for j, c in enumerate(r["candidates"]):
-                fs = feats.get(uid, [{}] * len(r["candidates"]))[j]
+                fs = fs_all[j] if fs_all is not None else {}
                 cs.append({**c, "features": fs})
             g = gold[uid]
             ok = [task.is_correct(c.get("answer"), g) for c in cs]
             rec = {"uid": uid, "model": m, "n": len(cs), "oracle": any(ok),
                    "random(exp.)": sum(ok) / len(ok), "correct": {}}
+            rec["present"] = {}
             for name, f in sel.items():
                 i = f(cs)
-                rec["correct"][name] = bool(ok[i]) if i is not None else False
+                rec["present"][name] = i is not None
+                if i is not None:
+                    rec["correct"][name] = bool(ok[i])
                 rec.setdefault("choice", {})[name] = i
             per_item[(m, uid)] = rec
             rows.append(rec)
@@ -152,8 +163,10 @@ def main() -> int:
     for m in models:
         rs = [r for r in rows if r["model"] == m]
         table[m] = {n: (sum(r["correct"][n] for r in rs if n in r["correct"])
-                        / sum(1 for r in rs if n in r["correct"]))
-                    if any(n in r["correct"] for r in rs) else None for n in names}
+                        / sum(1 for r in rs if r["present"].get(n, False)))
+                    if any(r["present"].get(n, False) for r in rs) else None for n in names}
+        table[m]["coverage"] = {n: sum(1 for r in rs if r["present"].get(n, False)) / len(rs)
+                                for n in names}
         table[m]["random(exp.)"] = sum(r["random(exp.)"] for r in rs) / len(rs)
         table[m]["oracle"] = sum(r["oracle"] for r in rs) / len(rs)
         table[m]["n"] = len(rs)
@@ -170,6 +183,9 @@ def main() -> int:
     for n in names:
         cells = " ".join(f"{table[m][n]:11.3f}" if table[m][n] is not None else f"{'-':>11s}"
                          for m in models)
+        if n.startswith("decision."):
+            cov = min(table[m]["coverage"][n] for m in models if table[m][n] is not None)
+            cells += f"  cov={cov:.2f}"
         print(f"{n:28s} {cells} {macro[n]:8.3f} {head(n):9.1%}")
     print(f"{'random(exp.)':28s} " + " ".join(f"{table[m]['random(exp.)']:11.3f}" for m in models)
           + f" {macro['random(exp.)']:8.3f}")
@@ -183,8 +199,8 @@ def main() -> int:
         bb = [r["correct"][base] for r in rs]
         return aa, bb, sum(aa) / len(aa) - sum(bb) / len(bb)
 
-    best_ar = max((n for n in names if n.startswith("ar.") and n.endswith(".mean")),
-                  key=lambda n: macro[n], default=None)
+    # Pre-registered secondary comparator; do not pick the AR variant on test.
+    best_ar = "ar.qwen7b-cut.sum" if "ar.qwen7b-cut.sum" in names else None
     tests = {}
     print("\npaired exact McNemar (two-sided), stacked over models")
     for n in names:
@@ -198,6 +214,28 @@ def main() -> int:
                                       "n01": n01, "n10": n10, "ci95": [lo, hi]}
             print(f"  {n:24s} vs {base:22s} delta={delta:+.3f} "
                   f"CI[{lo:+.3f},{hi:+.3f}] p={p:.2e} ({n01}+ / {n10}-)")
+            for m in models:
+                rsm = [r for r in rows if r["model"] == m and n in r["correct"] and base in r["correct"]]
+                if not rsm:
+                    continue
+                am = [r["correct"][n] for r in rsm]; bm = [r["correct"][base] for r in rsm]
+                pm, _, _ = mcnemar_exact(am, bm)
+                tests[f"{n} vs {base} [{m}]"] = {"delta": sum(am)/len(am) - sum(bm)/len(bm),
+                                                 "p": pm, "n": len(am)}
+                print(f"    [{m:10s}] delta={tests[f'{n} vs {base} [{m}]']['delta']:+.3f} "
+                      f"p={pm:.2e} n={len(am)}")
+
+    # Holm over the pre-registered family for decision.listwise (H1, H2).
+    family = [f"decision.listwise vs {b}" for b in (["majority"] + ([best_ar] if best_ar else []))
+              if f"decision.listwise vs {b}" in tests]
+    if family:
+        ordered = sorted(family, key=lambda k: tests[k]["p"])
+        m = len(ordered); prev = 0.0
+        for i, k in enumerate(ordered):
+            adj = min(1.0, max(prev, tests[k]["p"] * (m - i)))
+            tests[k]["p_holm"] = adj; prev = adj
+        print("  Holm (H1,H2): " + ", ".join(f"{k.split(' vs ')[1]} p_adj={tests[k]['p_holm']:.2e}"
+                                            for k in ordered))
 
     if a.json:
         Path(a.json).write_text(json.dumps({"split": a.split, "models": models, "table": table,

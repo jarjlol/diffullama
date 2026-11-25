@@ -4,7 +4,7 @@
     python3 decision_rerank.py --model dream-base --split dev  --mode pointwise --limit 20
     python3 decision_rerank.py --model mock --split dev --mode listwise --limit 10   # CPU wiring test
 
-Writes work/features/<model>/<split>.nimble-<mode>.jsonl, one line per question,
+Writes work/features/<model>/<split>.decision-<mode>.jsonl, one line per question,
 `features` aligned 1:1 with the candidates in work/candidates/<model>/<split>.jsonl:
 
     decision.listwise.p      P(this candidate is the correct one), softmax over A..J
@@ -165,8 +165,8 @@ class Mock:
         return self._p(question, text), len(text.split())
 
 
-def out_path(model: str, split: str, mode: str) -> Path:
-    return WORK / "features" / model / f"{split}.nimble-{mode}.jsonl"
+def out_path(model: str, split: str, mode: str, tag: str = "") -> Path:
+    return WORK / "features" / model / f"{split}.decision-{mode}{tag}.jsonl"
 
 
 def main() -> int:
@@ -181,6 +181,7 @@ def main() -> int:
     ap.add_argument("--shuffle-seed", type=int, default=None,
                     help="present candidates in a seeded permuted order, map scores back")
     ap.add_argument("--max-prompts", type=int, default=0)
+    ap.add_argument("--out-tag", default="", help="suffix for shuffle/backend runs; keeps the primary file clean")
     a = ap.parse_args()
 
     cands = {r["uid"]: r for r in read_jsonl(WORK / "candidates" / a.model / f"{a.split}.jsonl")}
@@ -188,7 +189,7 @@ def main() -> int:
     uids = uids[: a.limit] if a.limit else uids
     uids = uids[::-1] if a.reverse else uids
 
-    out = out_path(a.model, a.split, a.mode)
+    out = out_path(a.model, a.split, a.mode, a.out_tag)
     done = {r["uid"] for r in read_jsonl(out)} if out.exists() else set()
     todo = [u for u in uids if u not in done]
     print(f"{a.model}/{a.split}/{a.mode}: {len(done)} done, {len(todo)} to go -> {out}")
@@ -207,7 +208,7 @@ def main() -> int:
             try:
                 probs, ntok = scorer.listwise(r["question"], shown)
             except Exception as e:
-                if "Length" not in type(e).__name__:
+                if "length" not in str(e).lower() and "Length" not in type(e).__name__:
                     raise
                 # Pre-registered fallback: score this item pointwise, never truncate.
                 probs, ntok = [scorer.pointwise(r["question"], t)[0] for t in shown], 0
@@ -218,7 +219,8 @@ def main() -> int:
             for pos, orig in enumerate(perm):
                 back[orig] = probs[pos]
             row = {"uid": uid, "features": [{"decision.listwise.p": p} for p in back],
-                   "prompt_tokens": ntok, "shuffle_seed": a.shuffle_seed, **row_extra}
+                   "prompt_tokens": ntok, "shuffle_seed": a.shuffle_seed,
+                   "backend": a.backend, **row_extra}
         else:
             probs, ntok = [], 0
             for t in shown:
@@ -229,7 +231,7 @@ def main() -> int:
             for pos, orig in enumerate(perm):
                 back[orig] = probs[pos]
             row = {"uid": uid, "features": [{"decision.pointwise.p_yes": p} for p in back],
-                   "prompt_tokens": ntok, "shuffle_seed": a.shuffle_seed}
+                   "prompt_tokens": ntok, "shuffle_seed": a.shuffle_seed, "backend": a.backend}
 
         append_jsonl(out, row)
         seen += 1

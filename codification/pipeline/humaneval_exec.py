@@ -3,24 +3,21 @@
     python3 humaneval_exec.py --check-canonical      # must print 164/164
     python3 humaneval_exec.py --score dream-base     # writes exec/<model>/test.jsonl
 
-A candidate passes iff its extracted code, plus the official test, defines the
-entry point and `check(entry_point)` exits 0 inside a fresh subprocess:
+A candidate passes iff its code, plus the official test, defines the entry point
+and `check(entry_point)` runs to completion inside a fresh subprocess. A sentinel
+printed only after `check` returns is required, so `sys.exit(0)` at import or
+inside `check` cannot fake a pass.
 
-  * 5 s CPU limit, 2 GB address space, 5 s wall clock;
-  * isolated interpreter (`-I`), temp cwd, env scrubbed;
-  * no network is attempted by the official tests, and the subprocess has no
-    credentials in its environment.
-
-This is a fault isolator, not a security boundary; state that in the report.
-Execution results are cached by (model, split, candidate text hash), so the
-selectors can be re-evaluated without re-running 1,440 programs.
+Sandbox: 5 s CPU limit, 2 GB address space, 5 s wall clock, isolated interpreter
+(`-I`), temp cwd, env scrubbed. This is a fault isolator, not a security
+boundary; state that in the report. Results are cached by uid.
 """
 from __future__ import annotations
 
 import argparse
-import hashlib
+import ast
+import doctest
 import json
-import os
 import re
 import resource
 import subprocess
@@ -32,17 +29,24 @@ from pathlib import Path
 from common import WORK, read_jsonl
 
 HERE = WORK / "humaneval"
+PASS_SENTINEL = "__HE_PASS__"
 
 
 def problems() -> dict[str, dict]:
     return {r["task_id"]: r for r in read_jsonl(HERE / "HumanEval.jsonl")}
 
 
+def clean_completion(text: str) -> str:
+    """Drop markdown fences, preserving the continuation's own indentation."""
+    t = text.strip("\n")
+    t = re.sub(r"^\s*```[a-zA-Z]*[ \t]*\n", "", t)
+    t = re.sub(r"\n```[ \t]*$", "", t)
+    return t
+
+
 def extract_code(text: str) -> str:
-    """Drop markdown fences and any prose before the first Python definition."""
-    t = text.strip()
-    t = re.sub(r"^```[a-zA-Z]*\s*", "", t)
-    t = re.sub(r"\s*```\s*$", "", t)
+    """From the first Python definition/import onward; body-only text is returned as-is."""
+    t = clean_completion(text)
     lines = t.splitlines()
     for i, line in enumerate(lines):
         if re.match(r"^(def |async def |from [A-Za-z_]|import [A-Za-z_]|@)", line):
@@ -50,19 +54,44 @@ def extract_code(text: str) -> str:
     return t
 
 
-def candidate_code(text: str, prompt: str, entry: str) -> str:
-    """The model's completion, completed with the prompt when it is body-only.
-
-    Base completion models continue the signature+docstring instead of repeating
-    it, so the candidate is prompt + continuation. Models that do repeat the
-    definition are used as returned.
-    """
-    code = extract_code(text)
-    m = re.search(r"def\s+(\w+)\s*\(", prompt)
-    entry = m.group(1) if m else entry
-    if entry and f"def {entry}" not in code:
-        code = prompt.rstrip("\n") + "\n" + text.strip("\n")
+def parsable_prefix(code: str) -> str:
+    """Longest line prefix that parses, so trailing prose is dropped, not executed."""
+    lines = code.splitlines()
+    for end in range(len(lines), 0, -1):
+        candidate = "\n".join(lines[:end])
+        try:
+            ast.parse(candidate)
+            return candidate
+        except SyntaxError:
+            continue
     return code
+
+
+def defines(code: str, entry: str) -> bool:
+    try:
+        tree = ast.parse(code)
+    except SyntaxError:
+        return False
+    return any(isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef)) and n.name == entry
+               for n in tree.body)
+
+
+def candidate_code(text: str, prompt: str, entry: str) -> str:
+    """Assemble the candidate into a complete function.
+
+    Base completion models continue after the signature+docstring, so the body is
+    appended to the prompt. If the model repeats the whole function but omits the
+    prompt's imports, the header is prepended. Detection uses a top-level
+    FunctionDef, not a substring.
+    """
+    body = clean_completion(text)
+    code = parsable_prefix(extract_code(body))
+    if defines(code, entry):
+        header = prompt.split(f"def {entry}", 1)[0].rstrip()
+        if header and "import" in header and "import" not in code:
+            code = header + "\n\n" + code
+        return parsable_prefix(code)
+    return parsable_prefix(prompt.rstrip("\n") + "\n" + body)
 
 
 def _limits() -> None:
@@ -75,7 +104,7 @@ def _run_source(source: str, timeout: float = 5.0) -> tuple[bool, str]:
     with tempfile.TemporaryDirectory(prefix="he_") as d:
         p = Path(d) / "candidate.py"
         p.write_text(source, encoding="utf-8")
-        env = {"PATH": "/usr/bin:/bin", "HOME": d, "PYTHONHASHSEED": "0", "LC_ALL": "C.UTF-8"}
+        env = {"PATH": "/usr/bin:/bin", "HOME": d, "LC_ALL": "C.UTF-8"}
         try:
             r = subprocess.run([sys.executable, "-I", str(p)], cwd=d, env=env,
                                stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
@@ -88,8 +117,11 @@ def _run_source(source: str, timeout: float = 5.0) -> tuple[bool, str]:
 
 
 def passes(code: str, problem: dict) -> tuple[bool, str]:
-    src = f"{code}\n\n{problem['test']}\n\ncheck({problem['entry_point']})\n"
-    return _run_source(src)
+    src = (f"{code}\n\n{problem['test']}\n\n"
+           f"try:\n    check({problem['entry_point']})\nexcept BaseException:\n    raise\n"
+           f"print({PASS_SENTINEL!r})\n")
+    ok, out = _run_source(src)
+    return ok and PASS_SENTINEL in out, out
 
 
 def check_canonical() -> int:
@@ -111,14 +143,15 @@ ns = {"__name__": "__main__"}
 exec(payload["code"], ns)
 fn = ns.get(payload["entry"])
 if fn is None:
-    print("missing entry point"); sys.exit(1)
+    sys.exit(1)
 bad = 0
 for source, want in payload["examples"]:
     try:
         got = eval(source, ns)
-        if repr(got) != want:
-            bad += 1
     except Exception:
+        bad += 1
+        continue
+    if want and repr(got) != want:
         bad += 1
 sys.exit(0 if bad == 0 else 1)
 '''
@@ -134,7 +167,7 @@ def passes_examples(code: str, examples: list[tuple[str, str]], entry: str,
                                        "examples": [list(e) for e in examples]}), encoding="utf-8")
         driver = Path(d) / "driver.py"
         driver.write_text(EXAMPLES_DRIVER, encoding="utf-8")
-        env = {"PATH": "/usr/bin:/bin", "HOME": d, "PYTHONHASHSEED": "0", "LC_ALL": "C.UTF-8"}
+        env = {"PATH": "/usr/bin:/bin", "HOME": d, "LC_ALL": "C.UTF-8"}
         try:
             r = subprocess.run([sys.executable, "-I", str(driver), str(payload)], cwd=d, env=env,
                                stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
@@ -147,8 +180,10 @@ def passes_examples(code: str, examples: list[tuple[str, str]], entry: str,
 
 
 def examples_for(problem: dict) -> list[tuple[str, str]]:
-    import doctest
-    return [(e.source, e.want) for e in doctest.DocTestParser().get_examples(problem["prompt"])]
+    """Parse only the docstring, so the closing triple quote is not part of `want`."""
+    m = re.search(r'"""(.*?)"""', problem["prompt"], re.S)
+    doc = m.group(1) if m else problem["prompt"]
+    return [(e.source, e.want.strip("\n")) for e in doctest.DocTestParser().get_examples(doc)]
 
 
 def score(model: str, split: str = "test") -> Path:
@@ -162,13 +197,14 @@ def score(model: str, split: str = "test") -> Path:
     t0 = time.time()
     for k, r in enumerate(todo, 1):
         p = ps[r["uid"]]
-        passed, examples = [], []
-        for j, c in enumerate(r["candidates"]):
+        examples = examples_for(p)
+        passed, example_passed = [], []
+        for c in r["candidates"]:
             code = candidate_code(c["text"], p["prompt"], p["entry_point"])
             ok, _ = passes(code, p)
             passed.append(ok)
-            examples.append(passes_examples(code, examples_for(p), p["entry_point"]))
-        rec = {"uid": r["uid"], "passed": passed, "example_passed": examples}
+            example_passed.append(passes_examples(code, examples, p["entry_point"]))
+        rec = {"uid": r["uid"], "passed": passed, "example_passed": example_passed}
         done[r["uid"]] = rec
         with open(out, "a", encoding="utf-8") as f:
             f.write(json.dumps(rec) + "\n")

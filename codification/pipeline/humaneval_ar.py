@@ -13,7 +13,7 @@ import argparse
 import time
 
 from common import WORK, cfg, read_jsonl
-from humaneval_exec import candidate_code
+from humaneval_exec import extract_code
 from score_candidates import HFScorer
 
 HERE = WORK / "humaneval"
@@ -40,7 +40,7 @@ def main() -> int:
     for k, r in enumerate(todo, 1):
         feats = []
         for c in r["candidates"]:
-            code = candidate_code(c["text"], r["question"], "")
+            code = extract_code(c["text"])
             ids = scorer.tok(code, add_special_tokens=False, truncation=True, max_length=512).input_ids
             code = scorer.tok.decode(ids)
             nll, n = scorer.nll(r["question"], [code])[0]
