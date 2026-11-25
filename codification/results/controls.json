@@ -1,0 +1,26 @@
+{
+  "date": "2026-11-26",
+  "gsm8k": {
+    "closed_book_2option": {"correct": 37, "n": 40, "chance": 0.5},
+    "judge_alone": {"correct": 428, "n": 1000, "prompted": 957, "trivial": 43,
+                    "note": "distinct candidate answers only, no reasoning text"},
+    "gold_injection": {"picked": 24, "n": 115, "chance_approx": 0.09,
+                       "note": "items where no candidate had the gold answer; gold added as an option"},
+    "shuffle_dev200": {"accuracy_plain": 0.745, "accuracy_shuffled": 0.745,
+                       "same_original_candidate": 0.67, "n": 200, "seed": 1},
+    "qwen_choice_exploratory": {"dream": 0.524, "llada": 0.604, "macro": 0.564}
+  },
+  "humaneval": {
+    "listwise": 0.403, "pointwise": 0.382, "example_filter_fixed_parser": 0.278,
+    "first": 0.104, "ar_mean": 0.049, "oracle": 0.403, "mbr_exec": 0.062,
+    "solvable": 58,
+    "solvable_with_examples": {"n": 38, "example_filter": 36, "listwise": 38},
+    "solvable_without_examples": {"n": 20, "example_filter": 4, "listwise": 20},
+    "order_shuffle": {"n": 50, "plain": 30, "shuffled": 30}
+  },
+  "statistics": {
+    "gsm8k_listwise_minus_majority": {"delta": 0.052, "cluster_ci95": [0.030, 0.074],
+      "cluster_p": "<1e-4", "dream_p": 0.0095, "llada_p": 0.00011,
+      "note": "cluster bootstrap resamples questions; old stacked McNemar p=4.9e-6 withdrawn"}
+  }
+}
