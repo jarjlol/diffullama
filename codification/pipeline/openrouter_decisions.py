@@ -21,7 +21,20 @@ import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 
 URL = "https://openrouter.ai/api/alpha/decisions"
-CTX = ssl._create_unverified_context()
+
+
+def _context() -> ssl.SSLContext:
+    """Verified by default. The lab firewall MITMs HTTPS, so the GPU-side runner
+    sets OPENROUTER_INSECURE=1 explicitly; that is a documented lab workaround,
+    not the default. OPENROUTER_CA_BUNDLE can point at the firewall's CA."""
+    if os.environ.get("OPENROUTER_INSECURE") == "1":
+        print("WARNING: TLS verification disabled (OPENROUTER_INSECURE=1)", flush=True)
+        return ssl._create_unverified_context()
+    cafile = os.environ.get("OPENROUTER_CA_BUNDLE")
+    return ssl.create_default_context(cafile=cafile) if cafile else ssl.create_default_context()
+
+
+CTX = _context()
 
 
 def one(req: dict, key: str, model: str, tries: int = 6) -> dict | None:
@@ -29,12 +42,16 @@ def one(req: dict, key: str, model: str, tries: int = 6) -> dict | None:
                        "questions": req["questions"]}).encode()
     for attempt in range(tries):
         try:
+            t0 = time.time()
             r = urllib.request.Request(URL, data=body, headers={
                 "Authorization": f"Bearer {key}", "Content-Type": "application/json"})
             with urllib.request.urlopen(r, timeout=120, context=CTX) as resp:
                 d = json.loads(resp.read())
+            latency = round(time.time() - t0, 3)
             ans = d["answers"]
-            out = {"uid": req["uid"], "model": req.get("model", "control")}
+            out = {"uid": req["uid"], "model": req.get("model", "control"),
+                   "latency_s": latency, "api_model": d.get("model"),
+                   "api_id": d.get("id"), "usage": d.get("usage")}
             if "idx" in req:
                 out["idx"] = req["idx"]
             if "best" in ans:
