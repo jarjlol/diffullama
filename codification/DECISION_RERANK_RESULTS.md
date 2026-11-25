@@ -46,11 +46,13 @@ listwise prompt is 2,973 tokens against the model's 30,720-token training length
 | AR qwen7b mean | 0.049 | −18.6% |
 | example-test filter | 0.264 | 53.5% |
 | **decision.listwise** | **0.403** | **100.0%** |
+| decision.pointwise | 0.382 | 93.0% |
 | oracle (pass@10) | 0.403 | |
 
 Paired exact McNemar: listwise vs example-filter +0.139, 95% CI [+0.083, +0.201],
 p=1.9e-6 (20 wins, 0 losses); vs first +0.299, CI [+0.229, +0.375], p=2.3e-13
-(43 wins, 0 losses).
+(43 wins, 0 losses). Pointwise vs example-filter +0.118, CI [+0.063, +0.181],
+p=2.2e-4; vs first +0.278, p=2.0e-11.
 
 The decision model selected a passing candidate on **58/58** problems where one
 existed, including 22 where the passer was not the first passing candidate and

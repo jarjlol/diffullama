@@ -16,27 +16,38 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--model", default="dream-base")
     ap.add_argument("--split", default="test", choices=["dev", "test"])
+    ap.add_argument("--mode", choices=["listwise", "pointwise"], default="listwise")
     a = ap.parse_args()
 
     OUT.mkdir(parents=True, exist_ok=True)
-    path = OUT / f"{a.split}.he.prompts.jsonl"
+    path = OUT / f"{a.split}.he.{a.mode}.prompts.jsonl"
     ps = problems()
     rows = read_jsonl(HERE / "candidates" / a.model / f"{a.split}.jsonl")
     with open(path, "w", encoding="utf-8") as f:
         for r in rows:
             p = ps[r["uid"]]
             codes = [candidate_code(c["text"], p["prompt"], p["entry_point"]) for c in r["candidates"]]
-            req = {
-                "uid": r["uid"], "model": a.model, "n": len(codes),
-                "state": {"problem": p["prompt"],
-                          "candidates": {LETTERS[i]: t for i, t in enumerate(codes)}},
-                "questions": {"best": {
-                    "type": "choice",
-                    "instructions": "Which candidate correctly implements the function described by the docstring and will pass the hidden tests?",
-                    "criteria": {LETTERS[i]: f"Candidate {LETTERS[i]}" for i in range(len(codes))},
-                }},
-            }
-            f.write(json.dumps(req, ensure_ascii=False) + "\n")
+            if a.mode == "listwise":
+                req = {
+                    "uid": r["uid"], "model": a.model, "n": len(codes),
+                    "state": {"problem": p["prompt"],
+                              "candidates": {LETTERS[i]: t for i, t in enumerate(codes)}},
+                    "questions": {"best": {
+                        "type": "choice",
+                        "instructions": "Which candidate correctly implements the function described by the docstring and will pass the hidden tests?",
+                        "criteria": {LETTERS[i]: f"Candidate {LETTERS[i]}" for i in range(len(codes))},
+                    }},
+                }
+                f.write(json.dumps(req, ensure_ascii=False) + "\n")
+            else:
+                for j, code in enumerate(codes):
+                    req = {"uid": r["uid"], "model": a.model, "idx": j,
+                           "state": {"problem": p["prompt"], "candidate": code},
+                           "questions": {"correct": {
+                               "type": "noul",
+                               "instructions": "Does this candidate correctly implement the function described by the docstring and will it pass the hidden tests?",
+                           }}}
+                    f.write(json.dumps(req, ensure_ascii=False) + "\n")
     print(f"wrote {len(rows)} requests -> {path} ({path.stat().st_size/1e6:.2f} MB)")
     return 0
 

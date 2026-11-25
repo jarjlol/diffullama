@@ -14,7 +14,28 @@ def main() -> int:
     ap.add_argument("--model", default="dream-base")
     ap.add_argument("--results", required=True)
     ap.add_argument("--split", default="test", choices=["dev", "test"])
+    ap.add_argument("--mode", choices=["listwise", "pointwise"], default="listwise")
     a = ap.parse_args()
+
+    if a.mode == "pointwise":
+        got = {}
+        for r in read_jsonl(a.results):
+            if "noul" in r:
+                got.setdefault(r["uid"], {})[r["idx"]] = r["noul"]
+        rows = read_jsonl(HERE / "candidates" / a.model / f"{a.split}.jsonl")
+        out = []
+        for r in rows:
+            ps = got.get(r["uid"])
+            if ps is None:
+                continue
+            n = len(r["candidates"])
+            assert set(ps) == set(range(n)), f"{r['uid']}: {sorted(ps)} vs n={n}"
+            out.append({"uid": r["uid"],
+                        "features": [{"decision.pointwise.p_yes": float(ps[j])} for j in range(n)]})
+        p = HERE / "features" / a.model / f"{a.split}.decision-pointwise.jsonl"
+        write_jsonl(p, out)
+        print(f"{a.model}: {len(out)}/{len(rows)} pointwise -> {p}")
+        return 0
 
     got = {r["uid"]: r["probs"] for r in read_jsonl(a.results) if "probs" in r}
     rows = read_jsonl(HERE / "candidates" / a.model / f"{a.split}.jsonl")
