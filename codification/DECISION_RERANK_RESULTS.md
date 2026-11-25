@@ -92,8 +92,10 @@ verifies the reasoning".
 - One decision-model snapshot, one prompt wording, no prompt tuning.
 - The decision model is used outside its curated domains; its calibration is not
   validated on these tasks.
-- GSM8K listwise prompts have median 1,423 tokens; most are below the model's
-  2,048-token training length, a minority above it.
+- GSM8K listwise prompts have mean 1,544 tokens (median 1,504, p95 2,281);
+  the model card gives a 30,720-token training length, so length is not the
+  constraint. An earlier draft said 2,048 here; that was the Nimble number and
+  is wrong for this model.
 - HumanEval uses 64 denoising steps, below Dream's published budget.
 
 ## One-paragraph summary
@@ -110,3 +112,68 @@ that it verifies reasoning. LLaDA code generation at 64 steps is unusable. MBPP 
 queued, but Dream at 64 steps produces malformed code even with a 3-shot prompt
 (0 passing candidates in the first 20), so it was stopped; the harness is
 committed (`mbpp_*.py`) and no MBPP numbers are claimed.
+
+
+## Post-review corrections (2026-11-26, after #76 reviews)
+
+**Statistics.** The stacked McNemar treats the same 500 questions twice and is
+anti-conservative. A cluster bootstrap that resamples questions and carries both
+models gives Δ = +5.2 points, 95% CI [+3.0, +7.4], p < 1e-4 (0 of 10,000
+resamples at or below zero). The valid per-model exact McNemar tests are Dream
+p = 0.0095 and LLaDA p = 0.00011. Report the cluster CI/p and the per-model
+tests; the old macro p = 4.9e-6 should not be quoted.
+
+**Judge-alone.** Removing the candidate reasoning and showing only the question
+plus the distinct candidate answers gives 428/1000 = 42.8% (957 prompted items
+plus 43 items with a single distinct answer, 42 of which are correct). The
+listwise result is 78.0%, so the reasoning text is doing real work.
+
+**Gold injection.** On the 115 items where no candidate has the gold answer, the
+gold was added as an extra option. It was chosen 24/115 = 20.9% (chance ≈ 9–10%
+for 11 options). Some answer knowledge, not enough to explain the 78%.
+
+**HumanEval baseline, corrected.** The docstring parser now also reads
+`f(x) == y` / `Example:` lines. The example filter rises from 26.4% to 27.8%.
+Of the 58 solvable problems, 38 have parseable examples: on those, example
+filter 36/38 and listwise 38/38; on the 20 without examples, 4/20 and 20/20.
+The aggregate gap is therefore concentrated where the filter has no examples.
+The execution-cluster baseline (run candidates on the docstring inputs, take the
+largest output cluster) scores 6.2% — a weak baseline here, not a substitute.
+
+**Unregistered arm.** `qwen.choice` (Qwen2.5-7B base, prompted for a letter)
+scores 56.4% macro: above AR (50.5%) but below majority (72.8%). Exploratory; not
+a pre-registered selector.
+
+**Shuffle.** 67% of GSM8K dev items choose the same original candidate under the
+seeded permutation; accuracy is 74.5% in both orders; the chosen position
+distribution is spread, not first-position.
+
+**Generation and serving rates.** Dream HumanEval: mean 45.6 s/problem
+(median 50.2, p90 60.5) for N=10, 64 steps, 512 tokens. GSM8K cached: Dream
+36.8 s, LLaDA 55.0 s (N=10, 256 tokens). MBPP: 46.4 s. Reranking adds no GPU
+generation time. OpenRouter decisions: 1,000 listwise GSM8K requests in ~50 s
+at 12 workers (~20/s); 10,000 pointwise in 213 s at 16 workers (~47/s); 1,470
+HumanEval pointwise in ~45 s. Listwise prompts average 1,544 tokens, pointwise
+233. The `:free` tier cost $0; at the paid flash price ($0.01/1M input) the
+1,000 listwise calls are about $0.015 and the 10,000 pointwise calls about
+$0.023.
+
+**Declared deviations from the pre-registration.**
+- Backend: OpenRouter `/api/alpha/decisions` (snapshot `pplx-decider-flash-v1.3-20261112`),
+  not local weights; the 9.6 GB download could not finish. Same model family.
+- H4 was registered as a Dream+LLaDA macro average; only Dream was run because
+  LLaDA code generation collapsed at 64 steps. H4 is therefore a single-model test.
+- The pointwise HumanEval wording includes “and will it pass the hidden tests?”,
+  not only “does this implement the docstring?”.
+- The probability-shuffle sentence is withdrawn; the candidate-order shuffle is
+  the position control.
+- TLS verification is disabled in the OpenRouter client because the campus
+  firewall MITMs HTTPS. This is a lab workaround, not production code; a shipped
+  client must use the system CA/certifi.
+- The model snapshot and endpoint are recorded here and in the results JSON, not
+  per request; raw API responses were not retained.
+
+**Not measured.** A fully open-ended decider-only baseline is impossible with a
+typed-choice model (it cannot write an answer). The HumanEval closed-book probe
+on the 20 dev problems was not run; the recognition/closed-book question remains
+open. GSM-Symbolic is the chosen next dataset (issue #79).
