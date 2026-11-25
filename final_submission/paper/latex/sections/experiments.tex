@@ -2,22 +2,22 @@
 \label{sec:experiments}
 
 \lead{Setup}
-We use 200 GSM8K questions for selector development and reserve 300 test questions for the final score \citep{cobbe2021gsm8k}. Each model draws $N=10$ candidates per question. The models are DiffuGPT-S, DiffuGPT-M, and DiffuLLaMA \citep{gong2025diffullama}, Dream 7B \citep{ye2025dream7b}, and the from-scratch control LLaDA \citep{nie2025llada}. The baseline uses 64 denoising steps. DiffuGPT-S uses one worked example and 192 new tokens because its 512-token context cannot hold the four-shot prompt. We score candidates with GPT-2, Qwen2.5-0.5B, and TinyLlama. We also use Qwen2.5-7B for Dream and LLaMA-2-7B for DiffuLLaMA. We compute layer-averaged linear CKA \citep{kornblith2019cka} on up to 2,000 WikiText-103 segments.
+We use 200 GSM8K questions for selector development and reserve 300 test questions for the final score \citep{cobbe2021gsm8k}. Each model draws $N=10$ candidates per question. The models are DiffuGPT-S, DiffuGPT-M, and DiffuLLaMA \citep{gong2025diffullama}, Dream 7B \citep{ye2025dream7b}, and the from-scratch control LLaDA \citep{nie2025llada}. The baseline uses 64 denoising steps. DiffuGPT-S uses one worked example and 192 new tokens because the prompt with four worked examples exceeds its 512-token context limit. We score candidates with GPT-2, Qwen2.5-0.5B, and TinyLlama. We also use Qwen2.5-7B for Dream and LLaMA-2-7B for DiffuLLaMA. We compute layer-averaged linear CKA \citep{kornblith2019cka} on up to 2,000 WikiText-103 segments.
 
-\lead{Generation fidelity}
-With 256 steps and temperature 0, greedy accuracy reaches 81.0\% on Dream with our 4-shot prompt and 73.0\% on LLaDA ($n=100$ each). The published figures are 77.2\% and 70.3\%. The first sample from the original run scored 41.0\% and 51.0\% on these questions. This points to the 64-step, temperature-0.7 sampler as the source of the earlier gap. At 256 steps, the temperature-0.7 first sample is 7.0 points below greedy on Dream and 2.9 points above it on LLaDA (paired, $n=185$ and $137$). The step budget accounts for most of the observed gap.
+\lead{Comparison with published accuracy}
+With 256 steps and no random sampling (temperature 0), accuracy reaches 81.0\% on Dream with our four-example prompt and 73.0\% on LLaDA ($n=100$ each). The published figures are 77.2\% and 70.3\%. The first sample from the original run scored 41.0\% and 51.0\% on these questions. The earlier run used 64 steps and temperature 0.7. At 256 steps, the temperature-0.7 first sample is 7.0 points below greedy on Dream and 2.9 points above it on LLaDA (paired, $n=185$ and $137$). The step budget accounts for most of the observed gap.
 
-\lead{Results on the final split}
-The best rule Arbor found weights votes by arithmetic verification. Its difference from majority vote is $-0.3$ points on Dream (95\% CI $[-2.0,+1.3]$, $p=1.00$) and 0.0 on LLaDA (95\% CI $[-1.7,+1.7]$, $p=1.00$). It improves on the first sample by $+32.0$ and $+24.3$ points, respectively. The development-set gain on Dream did not replicate. Majority vote alone recovers 61 to 69\% of available headroom on the two models, consistent with the role of agreement in self-consistency \citep{wang2023selfconsistency}.
+\lead{Accuracy on held-out questions}
+The best rule Arbor found gives more weight to solutions whose arithmetic checks out. It scores $-0.3$ points relative to majority vote on Dream (95\% confidence interval, or CI, $[-2.0,+1.3]$, $p=1.00$). On LLaDA the difference is 0.0 (95\% CI $[-1.7,+1.7]$, $p=1.00$). It improves on the first sample by $+32.0$ and $+24.3$ points, respectively. The gain on Dream's development questions disappeared on the held-out set. Majority vote closes 61 to 69\% of the gap between the first solution and oracle accuracy on the two models, consistent with earlier findings on self-consistency \citep{wang2023selfconsistency}.
 
 \begin{table}[htbp]
 \centering
-\caption{GSM8K accuracy (\%) on the 300-question final split. Headroom is the fraction $H_m$ recovered by the agent's voting rule, whose macro-average accuracy is 30.3\%. Source: \texttt{ITERATION\_1.md}, Results.}
+\caption{GSM8K accuracy (\%) on 300 held-out questions. Shots are worked examples in the prompt. Gap closed is the share $H_m$ of the possible gain recovered by the agent's rule. Its accuracy averaged across models is 30.3\%. Source: \texttt{ITERATION\_1.md}, Results.}
 \label{tab:final}
 \footnotesize
 \begin{tabular}{@{}lrrrrrr@{}}
 \toprule
-Model & Shots & First & Majority & Agent & Oracle & Headroom \\
+Model & Shots & First & Majority & Agent & Oracle & Gap closed \\
 \midrule
 DiffuGPT-S & 1 & 1.7 & 2.3 & 2.3 & 14.7 & 5\% \\
 DiffuGPT-M & 4 & 0.7 & 1.3 & 1.3 & 8.7 & 8\% \\
@@ -29,14 +29,14 @@ LLaDA 8B & 4 & 48.7 & \textbf{73.0} & 73.0 & 88.3 & 61\% \\
 \end{table}
 
 \lead{AR reranking}
-At 64 steps, scoring only through the final answer yields 48.8\% on Dream and 52.2\% on LLaDA (Table~\ref{tab:budget}). Both trail majority vote by 23.6 and 21.0 points, respectively ($p<0.001$ for both). Excluding the trailing text raises Dream's accuracy under the summed Qwen2.5-7B score by 13.0 points (95\% CI $[9.0,17.0]$) and leaves LLaDA's essentially unchanged.
+At 64 steps, scoring only through the final answer yields 48.8\% on Dream and 52.2\% on LLaDA (Table~\ref{tab:budget}). Both trail majority vote by 23.6 and 21.0 points, respectively ($p<0.001$ for both). Excluding text after the final answer raises Dream's accuracy when Qwen2.5-7B scores the whole solution by 13.0 points (95\% CI $[9.0,17.0]$) and leaves LLaDA's essentially unchanged.
 
-\lead{Denoising steps}
-Table~\ref{tab:budget} holds $N=10$ and temperature fixed. At 16, 32, and 64 steps, majority accuracy is 3.2\%, 23.4\%, and 72.4\% for Dream and 3.2\%, 51.0\%, and 73.2\% for LLaDA. At 64 steps it adds 32.0 and 24.6 points over the first sample. At 256 steps the gains are smaller, 10.3 and 6.8 points, on the random subsets ($n=185$ and $192$). At that budget the best AR scorer trails majority by 8.6 points on Dream (95\% CI $[-14.1,-3.2]$, $p=0.002$). The gap on LLaDA is 2.6 points (95\% CI $[-6.8,+1.6]$, $p=0.33$). Relative to one greedy sample, voting adds $+3.2$ points on Dream ($p=0.24$) and $+8.0$ on LLaDA ($n=137$, $p=0.007$). The $T=0.7$ results use a different sampler from the published greedy results. Generation times from shared GPUs do not establish a controlled cost comparison.
+\lead{How the number of steps affects accuracy}
+Table~\ref{tab:budget} varies the number of denoising steps while keeping $N=10$ and the sampling temperature fixed. At 16, 32, and 64 steps, majority-vote accuracy is 3.2\%, 23.4\%, and 72.4\% for Dream and 3.2\%, 51.0\%, and 73.2\% for LLaDA. At 64 steps it adds 32.0 and 24.6 points over the first sample. At 256 steps the gains are smaller, 10.3 and 6.8 points, on the random subsets ($n=185$ and $192$). At that budget the best AR scorer trails majority by 8.6 points on Dream (95\% CI $[-14.1,-3.2]$, $p=0.002$). The gap on LLaDA is 2.6 points (95\% CI $[-6.8,+1.6]$, $p=0.33$). Relative to one greedy sample, voting adds $+3.2$ points on Dream ($p=0.24$) and $+8.0$ on LLaDA ($n=137$, $p=0.007$). The published greedy results use temperature 0. Our sampled results use $T=0.7$. Generation times from shared GPUs do not establish a controlled cost comparison.
 
 \begin{table}[htbp]
 \centering
-\caption{GSM8K accuracy (\%) and generation seconds per question (s/q) for $N=10$ candidates. Runs through $K=64$ use 500 test questions. At $K=256$, Dream uses 185 questions and LLaDA 192, with 23 and 41 rows from an Ada GPU, respectively. Timing at this budget uses Blackwell rows only. Best AR uses the summed Qwen2.5-7B score through the final answer, except at $K=16$ (GPT-2 mean for Dream and Qwen2.5-0.5B summed through the answer for LLaDA). On the $K=256$ subsets, the $K=64$ first-sample scores are 42.2\% and 46.4\%, and majority scores are 74.1\% and 74.5\%. Sources: \texttt{step\_arm.md}, \texttt{cvt\_*\_test.txt}, and \texttt{k256\_results.md}.}
+\caption{GSM8K accuracy (\%) and generation seconds per question (s/q) for $N=10$ candidates. Runs through $K=64$ use 500 test questions. At $K=256$, Dream uses 185 questions and LLaDA 192, with 23 and 41 questions run on an Ada GPU, respectively. Timing at this budget uses only questions run on Blackwell GPUs. Best AR uses the summed Qwen2.5-7B score through the final answer, except at $K=16$ (GPT-2 mean for Dream and Qwen2.5-0.5B summed through the answer for LLaDA). On the $K=256$ subsets, the $K=64$ first-sample scores are 42.2\% and 46.4\%, and majority scores are 74.1\% and 74.5\%. Sources: \texttt{step\_arm.md}, \texttt{cvt\_*\_test.txt}, and \texttt{k256\_results.md}.}
 \label{tab:budget}
 \footnotesize
 \begin{tabular}{@{}lrrrrrr@{}}
@@ -56,12 +56,12 @@ LLaDA 8B & 16 & 3.6 & 3.2 & 24.6 & 3.6 & 13.7 \\
 \end{tabular}
 \end{table}
 
-\lead{Preservation and gain}
-The original scores give the predicted rank order (Table~\ref{tab:preservation}). Spearman's $\rho$ is $+1.0$ for 3 scorers, $+0.8$ for 6, and $+0.4$ for 1 (exact $p\geq 0.083$). Scoring only through the final answer changes Dream's recovered headroom under the summed Qwen2.5-7B score from $-9.7$\% to $+17.7$\%. We cannot recompute the four-model correlation because the three models with low oracle accuracy lack corrected scores. The corrected sign for Dream removes the main support for the original ordering. An exploratory per-question test on Dream also leaves the hypothesis unsupported. Over 500 questions it gives AUC 0.469, permutation $p=0.32$, and an odds ratio of 0.94 per standard deviation (95\% CI $[0.75,1.17]$). No layer is significant after Benjamini--Hochberg correction.
+\lead{Model similarity and reranking gains}
+The original scores place models with more similar activations higher on the measure of gain from reranking (Table~\ref{tab:preservation}). Spearman's rank correlation is $+1.0$ for 3 scorers, $+0.8$ for 6, and $+0.4$ for 1 (exact $p\geq 0.083$). Scoring only through the final answer changes the share of the gap closed by Qwen2.5-7B on Dream from $-9.7$\% to $+17.7$\%. We cannot recompute the four-model correlation because the three models with low oracle accuracy lack corrected scores. The change on Dream undermines the original ordering. An exploratory per-question test on Dream also leaves the hypothesis unsupported. On 500 questions, the area under the ROC curve is 0.469 (permutation $p=0.32$). The odds ratio per standard deviation of similarity is 0.94 (95\% CI $[0.75,1.17]$). The Benjamini--Hochberg adjustment accounts for testing multiple layers. After adjustment, no layer shows a statistically significant association.
 
 \begin{table}[htbp]
 \centering
-\caption{Layer-averaged CKA ($\rho_m$) and AR-recoverable headroom $H_m(s_\psi)$ on 500 test questions. Headroom uses the original summed and per-token Qwen2.5-7B scores. Scoring through the final answer changes summed headroom to $+17.7$\% for Dream and $+8.9$\% for LLaDA. The three low-accuracy models lack corrected scores. LLaDA has no AR base. Source: \texttt{analyze\_test500.txt}.}
+\caption{Average activation similarity across layers (CKA, $\rho_m$) and the share of the possible gain achieved by reranking ($H_m(s_\psi)$) on 500 test questions. The table uses the original Qwen2.5-7B scores. Scoring through the final answer changes the share under summed scoring to $+17.7$\% for Dream and $+8.9$\% for LLaDA. The three low-accuracy models lack corrected scores. LLaDA has no AR base. Source: \texttt{analyze\_test500.txt}.}
 \label{tab:preservation}
 \footnotesize
 \begin{tabular}{@{}lrrr@{}}
@@ -77,4 +77,4 @@ LLaDA 8B (control) & \textemdash & $+9.4$\% & $-8.4$\% \\
 \end{tabular}
 \end{table}
 
-We preregistered the 256-step comparison and ran its analysis once. A predeclared time limit set the sample size. We did not run the planned second Arbor search.
+We recorded the plan for the 256-step comparison in advance and ran the analysis once. The planned time limit determined how many questions we could finish. We did not run the planned second Arbor search.

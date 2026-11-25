@@ -3,24 +3,26 @@
 \usepackage[a4paper,top=17mm,bottom=17mm,left=15mm,right=15mm]{geometry}
 \usepackage{amsmath,amssymb}
 \usepackage{newtxtext,newtxmath,dsfont}
-\usepackage{booktabs,multicol}
+\usepackage{booktabs,multicol,titlesec}
 \usepackage[font=small,labelfont=bf]{caption}
 \usepackage[authoryear,round]{natbib}
 \usepackage[hidelinks]{hyperref}
 
 \setlength{\columnsep}{7mm}
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{3pt plus 1pt}
+\setlength{\parskip}{2pt plus 1pt}
 \setlength{\textfloatsep}{7pt plus 2pt minus 2pt}
 \setlength{\intextsep}{6pt plus 2pt minus 2pt}
 \setlength{\bibsep}{1pt plus 0.5pt}
 \setlength{\tabcolsep}{3pt}
 \renewcommand{\bibfont}{\footnotesize}
+\titlespacing*{\section}{0pt}{12pt plus 3pt}{5pt}
+\titlespacing*{\subsection}{0pt}{9pt plus 2pt}{3pt}
 \raggedbottom
 
 \newcommand{\lead}[1]{\textbf{#1.}\enspace}
 
-\newcommand{\papertitle}{Does Representation Preservation Predict AR Reranking Gains in Adapted Diffusion LMs?}
+\newcommand{\papertitle}{Does Similarity to the Base Model Predict Gains from Ranking Answers in Diffusion Language Models?}
 \hypersetup{pdftitle={\papertitle}}
 
 \begin{document}

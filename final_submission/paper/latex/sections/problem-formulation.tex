@@ -2,18 +2,18 @@
 \label{sec:formulation}
 
 \lead{Setting}
-Let $\mathcal{M}$ be a set of masked DLMs. Each $m \in \mathcal{M}$ has an AR base $b(m)$ or is trained from scratch, as in the control ($b(m)=\varnothing$). The dataset $\mathcal{D}=\{(q_j,a_j^\ast)\}_{j=1}^{n}$ consists of GSM8K questions $q_j$ with numeric reference answers $a_j^\ast$. For question $q_j$, model $m$ receives a $k$-shot prompt $x_j$. We model the $N$ candidate draws as independent. We did not verify independence of the samplers' random streams.
+Let $\mathcal{M}$ be a set of masked DLMs. Each $m \in \mathcal{M}$ has an AR base $b(m)$ or is trained from scratch, as in the control ($b(m)=\varnothing$). The dataset $\mathcal{D}=\{(q_j,a_j^\ast)\}_{j=1}^{n}$ consists of GSM8K questions $q_j$ with numeric reference answers $a_j^\ast$. For question $q_j$, model $m$ receives a prompt $x_j$ with $k$ worked examples. We model the $N$ candidate draws as independent. We did not verify independence of the samplers' random streams.
 \[
   y_{j,1},\dots,y_{j,N}\overset{\text{i.i.d.}}{\sim} p_m(\cdot\mid x_j).
 \]
-The extractor $\phi:\mathcal{Y}\to\mathbb{R}\cup\{\bot\}$ returns the candidate's final number or $\bot$ if extraction fails. A candidate is correct when
+The answer extractor $\phi:\mathcal{Y}\to\mathbb{R}\cup\{\bot\}$ returns the candidate's final number or $\bot$ if extraction fails. A candidate is correct when
 \[
   c_{j,i}=\mathds{1}\!\left[\left|\phi(y_{j,i})-a_j^\ast\right|<10^{-6}\right],
 \]
 with $c_{j,i}=0$ when $\phi(y_{j,i})=\bot$.
 
 \lead{Selectors}
-A selector $s$ maps $(x_j,y_{j,1:N})$ to an index in $\{1,\dots,N\}$. It can use only the item's candidates and features computed from them. The reference answer $a_j^\ast$ and other models' candidates are unavailable. Accuracy on model $m$ is
+A selector $s$ maps $(x_j,y_{j,1:N})$ to an index in $\{1,\dots,N\}$. It can use only the solutions to that question and scores or other quantities computed from them. The reference answer $a_j^\ast$ and other models' candidates are unavailable. Accuracy on model $m$ is
 \[
   \mathrm{Acc}_m(s)=\frac{1}{n}\sum_{j=1}^{n}c_{j,\,s(x_j,y_{j,1:N})}.
 \]
@@ -22,22 +22,22 @@ The first-sample selector always returns $s_{\text{first}}=1$. Majority vote ret
   s_{\psi}(\cdot)&=\arg\min_i\mathrm{NLL}_{\psi}(y_{j,i}\mid q_j),\\
   \text{or}\qquad s_{\psi}(\cdot)&=\arg\min_i\frac{\mathrm{NLL}_{\psi}(y_{j,i}\mid q_j)}{|y_{j,i}|_{\psi}}.
 \end{align*}
-The oracle (hit@$N$) gives the maximum accuracy available from the candidates, $\mathrm{Acc}_m^\ast=\frac{1}{n}\sum_j\max_i c_{j,i}$. The share of the first-to-oracle gap that a selector recovers is
+Oracle accuracy (hit@$N$) is the fraction of questions with at least one correct solution, $\mathrm{Acc}_m^\ast=\frac{1}{n}\sum_j\max_i c_{j,i}$. For a selector $s$, $H_m(s)$ is the fraction of the gap from first-solution accuracy to oracle accuracy that it closes:
 \[
   H_m(s)=\frac{\mathrm{Acc}_m(s)-\mathrm{Acc}_m(s_{\text{first}})}
                 {\mathrm{Acc}_m^\ast-\mathrm{Acc}_m(s_{\text{first}})}.
 \]
 \lead{Objective}
-We seek a training-free selector that raises macro accuracy on held-out questions. Define $\overline{\mathrm{Acc}}(s)=\frac{1}{|\mathcal{M}|}\sum_m\mathrm{Acc}_m(s)$. Success requires $\overline{\mathrm{Acc}}(s)>\overline{\mathrm{Acc}}(s_{\text{maj}})$ across models. Individual models may differ.
+We seek a rule that needs no further training and improves accuracy averaged across models on held-out questions. Define $\overline{\mathrm{Acc}}(s)=\frac{1}{|\mathcal{M}|}\sum_m\mathrm{Acc}_m(s)$. Success requires $\overline{\mathrm{Acc}}(s)>\overline{\mathrm{Acc}}(s_{\text{maj}})$ across models. Individual models may differ.
 
 \lead{Hypothesis}
-For each adapted model, let $Z_m^{(\ell)},Z_{b(m)}^{(\ell)}\in\mathbb{R}^{T\times d}$ denote the mean-pooled outputs of block $\ell$. We use the same $T$ held-out segments for $m$ (bidirectional) and $b(m)$ (causal). We measure preservation by
+For each adapted model, let $Z_m^{(\ell)},Z_{b(m)}^{(\ell)}\in\mathbb{R}^{T\times d}$ denote the mean-pooled outputs of block $\ell$. We feed both models the same $T$ held-out text segments. The DLM can use context on both sides of a position, while its AR base uses only preceding text to predict the next token. CKA compares the two models' activation patterns across inputs. We average it across layers:
 \begin{gather*}
   \rho_m=\frac{1}{L}\sum_{\ell=1}^{L}\mathrm{CKA}\!\left(Z_m^{(\ell)},Z_{b(m)}^{(\ell)}\right),\\
   \mathrm{CKA}(X,Y)=\frac{\lVert \bar{Y}^{\top}\bar{X}\rVert_F^2}
     {\lVert \bar{X}^{\top}\bar{X}\rVert_F\,\lVert \bar{Y}^{\top}\bar{Y}\rVert_F},
 \end{gather*}
-where $\bar{X}$ and $\bar{Y}$ are column-centred. The hypothesis predicts $\mathrm{Spearman}(\rho_m,H_m(s_\psi))>0$ across $\{m:b(m)\neq\varnothing\}$.
+where $\bar{X}$ and $\bar{Y}$ are column-centred. We predict that models with more similar activations recover more of the available gain under AR reranking, so $\mathrm{Spearman}(\rho_m,H_m(s_\psi))>0$ across $\{m:b(m)\neq\varnothing\}$.
 
 \lead{Assumptions and scope}
-Baseline choices for steps, temperature, and shots are fixed for each model and can differ across models. We develop selectors on development questions and use held-out questions to decide whether a selector improves the score. Only four models have AR bases, so the smallest attainable two-sided exact permutation $p$ is $1/12$. We treat the rank comparison as descriptive. The broader question is how selection compares with increasing the number of denoising steps. We compare $\mathrm{Acc}_m(s)$ at $K\in\{16,32,64\}$ for Dream and LLaDA. Shared GPUs limit what we can infer from the timing measurements.
+Each model has its own baseline settings for denoising steps, sampling temperature, and number of worked examples. We develop selectors on development questions and use held-out questions to decide whether a selector improves the score. Only four models have AR bases, so the smallest attainable two-sided exact permutation $p$ is $1/12$. We treat the rank comparison as descriptive. The broader question is how selection compares with increasing the number of denoising steps. We compare $\mathrm{Acc}_m(s)$ at $K\in\{16,32,64\}$ for Dream and LLaDA. Shared GPUs limit what we can infer from the timing measurements.
