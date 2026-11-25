@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "utilities": [
+    {
+      "id": "surveygen",
+      "status": "used",
+      "used_in": [
+        { "artifact": "litreview/REPORT.md", "commit": "6316fd1", "recorded": "retroactive" }
+      ]
+    },
+    {
+      "id": "limitations-multiagent",
+      "status": "used",
+      "used_in": [
+        { "artifact": "limitations/REPORT.md", "commit": "a131e13", "recorded": "retroactive" }
+      ]
+    },
+    {
+      "id": "researchagent",
+      "status": "used",
+      "used_in": [
+        { "artifact": "ideation/REPORT.md", "branch": "assignment/research-ideation", "commit": "4559f77", "recorded": "retroactive" }
+      ]
+    },
+    {
+      "id": "arbor",
+      "status": "used",
+      "used_in": [
+        { "issue": 3, "artifact": "codification/ITERATION_1.md", "branch": "assignment/codification", "commit": "b4688db", "recorded": "retroactive" }
+      ]
+    }
+  ]
+}
