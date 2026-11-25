@@ -1,0 +1,5 @@
+# Abstract
+
+<!-- Decision-model edition (PR #76 results only). Written by neel's agent from codification/results/* at iter2/decision-rerank @ 2d2fead; every number recomputed from the per-item files. -->
+
+Diffusion language models (DLMs) often sample a correct answer that they do not output first. We ask whether a small decision model, prompted once with all candidates, can pick the correct one better than majority vote or autoregressive (AR) likelihood. On 500 GSM8K test questions per model, with ten cached candidates from Dream 7B and LLaDA 8B, a 4B decision model (`pplx-decider-flash-v1.3`) reaches 78.0% macro accuracy in one listwise pass, against 72.8% for majority vote (+5.2 points, 95% CI [3.0, 7.4], $p = 4.9 \times 10^{-6}$) and 50.5% for the best AR-likelihood selector. On 144 HumanEval problems from Dream it reaches 40.3% pass@1, equal to the pass@10 oracle, against 26.4% for a filter that runs the docstring examples. A closed-book probe shows that the decision model knows most GSM8K answers (37/40), and HumanEval memorisation was not tested. The result therefore shows that a decision model can pick correct candidates, not that it verifies reasoning.
