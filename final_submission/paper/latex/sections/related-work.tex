@@ -1,0 +1,28 @@
+\section{Related Work}
+
+We kept 12 of 48 references from the LLM-generated survey for the first two groups below. The repository records the filtering decisions. The last two groups draw on additional work.
+
+\subsection{Text diffusion language models}
+\lead{Continuous diffusion}
+Diffusion-LM \citep{li2022diffusionlm} denoises Gaussian vectors into word embeddings and uses gradients on the latent variables to guide generation. DiffuSeq \citep{gong2022diffuseq} extends the approach to sequence-to-sequence generation.
+
+\lead{Discrete and masked diffusion}
+\citet{zheng2023reparam} reparameterise the discrete sampling process. MDLM \citep{sahoo2024mdlm} trains with a Rao-Blackwellised masked-diffusion objective that approaches AR perplexity. DiffusionBERT \citep{he2023diffusionbert} trains BERT to reverse a discrete diffusion process. SSD-LM \citep{han2023ssdlm} generates block by block and matches or exceeds GPT-2 on its generation benchmarks. For idealised finite-precision transformers of logarithmic width, \citet{svete2025reasoning} prove that masked diffusion models are equivalent to padded looped transformers and can solve every problem chain-of-thought transformers can. The theorem concerns expressivity under those assumptions. Earlier work on non-autoregressive translation \citep{gu2017nat} removes the left-to-right dependency and reduces decoding latency by an order of magnitude at a cost in BLEU.
+
+\subsection{Adapting autoregressive models}
+Continued pre-training reuses an existing model and costs less than training from scratch. \citet{ke2023continual} adapt a model to a sequence of domain corpora while limiting forgetting. DiffuLLaMA and DiffuGPT \citep{gong2025diffullama} use continued pre-training to convert GPT-2 and LLaMA models ranging from 127M to 7B parameters into diffusion models. TESS 2 \citep{tae2025tess2} adapts an AR model with a diffusion loss and then instruction-tunes it. Its authors find that the adaptation step and choice of base both affect the outcome. Dream-Coder 7B \citep{xie2025dreamcoder} adapts a pre-trained AR model for code generation.
+
+\subsection{Selecting among sampled answers}
+\lead{Voting and verifiers}
+Self-consistency \citep{wang2023selfconsistency} samples several reasoning paths and chooses their most common final answer. \citet{cobbe2021gsm8k} train a verifier to rank sampled GSM8K solutions.
+
+\lead{Diffusion-specific methods}
+HEX \citep{lee2025hex} votes over generations produced with different block sizes without additional training. Diffuse Thinking \citep{shao2025diffusethinking} uses a diffusion model to propose candidate thoughts and an LLM to evaluate them. Planner and Executor \citep{berrayana2025planner} couples a discrete diffusion model with an AR model in text space and through a learned projection between their latent spaces.
+
+Two methods rank candidates from instruction-tuned diffusion models. An outcome reward model trained on GSM8K reranks eight Dream-Instruct samples and reaches 75.13\%, compared with 60.05\% for majority vote \citep{zhan2026prm}. Bidirectional consistency (BMC) selects from three LLaDA-Instruct samples without training and reaches 77.8\%, compared with 74.3\% for self-consistency \citep{ruan2026bmc}. These studies use Instruct checkpoints and prompts that differ from our four-shot Base-model setting.
+
+\lead{Representation preservation}
+Repr-Align \citep{peng2026repralign} aligns layers during AR-to-diffusion conversion and studies the effect on training efficiency. We test representation similarity in a different setting. A frozen AR model scores answers from a diffusion model at inference, and we ask whether similarity to the original AR model predicts the gain (Section~\ref{sec:methodology}).
+
+\subsection{Automated research systems}
+The AI Scientist \citep{lu2024aiscientist} automates idea generation, coding, experiments, and paper writing. DeepScientist \citep{weng2025deepscientist} uses Bayesian optimisation over a record of prior findings. ResearchAgent \citep{baek2024researchagent} proposes research problems, methods, and experiments from the literature and refines them with reviewing agents. We use it to generate research ideas. Arbor \citep{jin2026arbor} uses a coordinator and short-lived executors to test a tree of hypotheses. A development-set improvement must hold on held-out data before Arbor accepts it. We use Arbor to search for a selection rule.

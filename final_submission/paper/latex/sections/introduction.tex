@@ -1,0 +1,20 @@
+\section{Introduction}
+\label{sec:introduction}
+
+Diffusion language models (DLMs) generate text by repeatedly unmasking tokens in parallel. \citet{gong2025diffullama} used continual pre-training to adapt autoregressive (AR) models such as GPT-2 and LLaMA-2 to diffusion. They hypothesise that ``the adapted model retains some of the abilities from the base AR model''. On SATMath, DiffuLLaMA answers 23.6\% of questions correctly with few-shot prompting and 27.7\% with majority vote over three samples, a method known as self-consistency \citep{wang2023selfconsistency}. At least one of the three samples is correct 57.7\% of the time. The authors attribute this gap to ``high uncertainty about its responses''. Their experiments leave open whether a verifier or a calibration method can close it and how widely the adaptation recipe works.
+
+We test whether the AR base can identify correct answers among the candidates of its adapted DLM without further training. Each DLM draws $N$ candidates per question, and a selector picks one. We ask whether a selector can improve on majority vote and whether similarity to the AR base predicts how much of the gap to the best achievable accuracy the scorer recovers. We measure similarity with layer-wise centred kernel alignment (CKA), denoted $\rho_m$ \citep{kornblith2019cka}. Section~\ref{sec:formulation} defines the score.
+
+\subsection{Contributions}
+
+\lead{A controlled comparison}
+We evaluate DiffuGPT-S, DiffuGPT-M, DiffuLLaMA \citep{gong2025diffullama}, and Dream 7B \citep{ye2025dream7b}, each adapted from an AR base. LLaDA-8B, which was trained from scratch, is the control \citep{nie2025llada}. Each model supplies $N = 10$ cached candidates per GSM8K question \citep{cobbe2021gsm8k}. All selectors see the same candidates and cannot access the reference answers. We compare the first sample, majority vote, AR likelihood, and the oracle, which counts a question as correct when any candidate is correct.
+
+\lead{AR selection and representation similarity}
+Scoring only through the final answer raises Dream's AR-selection accuracy by 13 points. At 64 steps on 500 test questions, the best AR selector reaches 48.8\% on Dream and 52.2\% on LLaDA, above the first sample at 40.4\% and 48.6\%. It trails majority vote by 23.6 and 21.0 points. At 256 steps the gaps narrow to 8.6 points for Dream ($p = 0.002$, $n = 185$) and 2.6 for LLaDA ($n = 192$, interval includes zero). The original scores follow the predicted order (Spearman $+1.0$ for 3 of 10 scorers and $+0.8$ for 6). With four adapted models, the smallest attainable $p$ is $1/12$. The corrected scores change the observed order for the Qwen2.5-7B scorer. An exploratory per-question test on Dream also fails to support the hypothesis (AUC 0.469, $p = 0.32$).
+
+\lead{An agent-designed voting rule}
+Arbor proposes selector changes for human review. Unanswered proposals can proceed after a timeout. Its best rule weights votes by whether the candidate's arithmetic checks out. On 300 held-out questions it differs from majority vote by $-0.3$ points on Dream and 0.0 on LLaDA. Majority vote already recovers 61 to 69\% of the gap from the first sample to the oracle. None of the tested candidate signals recovers the remaining roughly 15 points.
+
+\lead{A check of scoring and sampling settings}
+At the published decoding settings, greedy accuracy reaches 81.0\% for Dream and 73.0\% for LLaDA, compared with published scores of 77.2\% and 70.3\%. At 256 steps, the first sample at temperature 0.7 is within 7 points of greedy decoding. The comparison points to the 64-step budget as the main reason for the earlier accuracy gap. Raising the budget from 16 to 32 steps adds 9.8 and 19.2 points to the first sample. Voting at 16 steps changes accuracy by $+0.6$ and $-0.4$ points.

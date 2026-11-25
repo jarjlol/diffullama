@@ -1,0 +1,44 @@
+\documentclass[10pt,a4paper,twocolumn]{article}
+
+\usepackage[a4paper,top=17mm,bottom=17mm,left=15mm,right=15mm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{newtxtext,newtxmath,dsfont}
+\usepackage{booktabs,multicol}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage[authoryear,round]{natbib}
+\usepackage[hidelinks]{hyperref}
+
+\setlength{\columnsep}{7mm}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt plus 1pt}
+\setlength{\textfloatsep}{7pt plus 2pt minus 2pt}
+\setlength{\intextsep}{6pt plus 2pt minus 2pt}
+\setlength{\bibsep}{1pt plus 0.5pt}
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\bibfont}{\footnotesize}
+\raggedbottom
+
+\newcommand{\lead}[1]{\textbf{#1.}\enspace}
+
+\newcommand{\papertitle}{Does Representation Preservation Predict AR Reranking Gains in Adapted Diffusion LMs?}
+\hypersetup{pdftitle={\papertitle}}
+
+\begin{document}
+\twocolumn[{\centering\LARGE\bfseries\papertitle\par\vspace{12pt}}]
+\begin{abstract}
+\input{sections/abstract}
+\end{abstract}
+\input{sections/introduction}
+\input{sections/related-work}
+\input{sections/problem-formulation}
+\input{sections/methodology}
+\input{sections/experiments}
+\input{sections/conclusion}
+
+\onecolumn
+\begin{multicols}{2}[\section*{\refname}]
+\renewcommand{\bibsection}{}
+\bibliographystyle{abbrvnat}
+\bibliography{references}
+\end{multicols}
+\end{document}

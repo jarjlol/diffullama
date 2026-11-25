@@ -1,0 +1,5 @@
+\section{Conclusion}
+
+On 300 held-out questions, majority vote reaches 73.3\% on Dream and 73.0\% on LLaDA. The agent-designed rule comes within 0.3 points. On the 500-question test at 64 steps, AR selection falls 23.6 and 21.0 points below majority when scored only through the final answer. At 256 steps the gaps narrow to 8.6 points on Dream ($p = 0.002$) and 2.6 on LLaDA (interval includes zero). Majority vote still beats the first sample at 256 steps. On the full set at 64 steps, voting adds 32.0 and 24.6 points. On the 256-step subsets it adds 10.3 and 6.8 points.
+
+The evidence leaves the preservation hypothesis unsupported. The original scores gave the predicted order, but the correction reverses the sign of Dream's recovered headroom. The four-model result remains descriptive because the smallest attainable two-sided exact permutation $p$ is 0.083. Further work needs a controlled cost comparison, a 256-step run on all 500 questions, ablations, and a second dataset.
