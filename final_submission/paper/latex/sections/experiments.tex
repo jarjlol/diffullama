@@ -54,6 +54,14 @@ LLaDA 8B & 16 & 3.6 & 3.2 & 24.6 & 3.6 & 13.7 \\
 \end{tabular}
 \end{table}
 
+% Sources: codification/results/iter2/cpu/extra_3_fidelity_majority.txt and fidelity.md at 63d1bc8.
+\lead{One longer solution or ten shorter solutions}
+On the same 244 Dream questions, one 256-step greedy solution scores 82.4\%, compared with 73.4\% for voting over ten 64-step solutions. On 199 matched LLaDA questions, one greedy solution scores 72.9\%, compared with 76.4\% for voting. The more accurate choice therefore differs by model.
+
+Median greedy generation times are 16.5 seconds per question for Dream and 17.9 for LLaDA. Generating ten 64-step solutions takes a mean of 36.8 and 55.0 seconds, respectively, over 500 questions (Table~\ref{tab:budget}). The timings cover generation only, use different question sets, and come from shared GPUs.
+
+At 256 steps, voting over ten sampled solutions improves on one greedy solution by 3.2 points on Dream ($p=0.24$). On LLaDA it improves by 8.0 points ($n=137$, $p=0.007$).
+
 \lead{AR reranking}
 At 64 steps on all 500 test questions, reranking reaches 48.8\% on Dream and 52.2\% on LLaDA. These scores exceed the first solution and fall 23.6 and 21.0 points below voting ($p<0.001$ for both). On matched questions, Dream's reranking deficit falls from 20.0 points at 64 steps to 8.6 at 256 (95\% confidence interval for reranking minus voting $[-14.1,-3.2]$, $p=0.002$). LLaDA's deficit falls from 25.5 points to 2.6 (95\% confidence interval $[-6.8,+1.6]$, $p=0.33$). Both comparisons use the same AR scoring rule at each budget.
 
@@ -61,9 +69,6 @@ Excluding text after the final answer raises Dream's accuracy under the summed Q
 
 \lead{Comparison with published accuracy}
 With 256 steps and no random sampling (temperature 0), accuracy reaches 81.0\% on Dream with our four-example prompt and 73.0\% on LLaDA ($n=100$ each). The published scores are 77.2\% for Dream \citep{ye2025dream7b} and 70.3\% for LLaDA \citep{nie2025llada}. The first sample from the original run scored 41.0\% and 51.0\% on these questions. The earlier run used 64 steps and temperature 0.7. At 256 steps, the temperature-0.7 first sample is 7.0 points below greedy on Dream and 2.9 points above it on LLaDA (paired, $n=185$ and $137$). The step budget accounts for most of the observed gap.
-
-\lead{Comparison with a single greedy solution}
-With 256 steps, voting over randomly sampled solutions scores 3.2 points above one greedy solution on Dream ($p=0.24$) and 8.0 points above it on LLaDA ($n=137$, $p=0.007$). The two procedures use temperatures 0.7 and 0, respectively. Generation times from shared GPUs describe the observed runs. They cannot establish the better method at equal cost.
 
 \lead{Model similarity and reranking gains}
 The original scores place models with more similar activations higher on the measure of gain from reranking (Table~\ref{tab:preservation}). Spearman's rank correlation is $+1.0$ for 3 scorers, $+0.8$ for 6, and $+0.4$ for 1 (exact $p\geq 0.083$). Scoring only through the final answer changes the share of the gap closed by Qwen2.5-7B on Dream from $-9.7$\% to $+17.7$\%. We cannot recompute the four-model correlation because the three models with low oracle accuracy lack corrected scores. The change on Dream undermines the original ordering. We also test whether activation similarity on individual Dream questions predicts when reranking will recover a correct answer that the first solution missed. On 500 questions, the area under the ROC curve is 0.469 (permutation $p=0.32$). The odds ratio per standard deviation of similarity is 0.94 (95\% CI $[0.75,1.17]$). The Benjamini--Hochberg adjustment accounts for testing multiple layers. After adjustment, no layer shows a statistically significant association.

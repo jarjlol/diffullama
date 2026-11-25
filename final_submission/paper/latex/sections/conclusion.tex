@@ -1,5 +1,7 @@
 \section{Conclusion}
 
-On GSM8K, the benefit of choosing among diffusion model solutions depends on how the solutions are generated. Majority vote recovers more of the available improvement as Dream and LLaDA go from 16 to 64 steps. On matched questions at 256 steps it recovers a smaller share and still improves on the first solution by 10.3 and 6.8 percentage points, respectively. At 64 steps AR likelihood lags well behind voting on both models. At 256 the gap is smaller on Dream and uncertain on LLaDA.
+On the same GSM8K questions, one 256-step greedy solution outscored voting over ten 64-step solutions on Dream. Voting won on LLaDA. Single-solution generation took less time in the logs. The comparison measures generation time only.
+
+Voting recovers a larger share of the available improvement from 16 to 64 steps. At 256 steps it recovers a smaller share on matched questions and still improves on the first solution by 10.3 points on Dream and 6.8 on LLaDA. AR reranking trails voting at 64 steps. The gap narrows at 256 steps and is uncertain on LLaDA.
 
 The scoring comparison also shows how a design choice can change the answer to a research question. Excluding text after the final answer raises Dream's reranking accuracy by 13.0 points and changes the apparent relationship between activation similarity and reranking gains. The results support comparing selectors on the same set of generated solutions, with a fixed answer boundary and a voting baseline at each generation setting. In this study, similarity to the original AR model did not establish which adapted models would benefit from reranking.
