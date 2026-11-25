@@ -2,6 +2,7 @@
 
     python3 final_submission/paper/build.py                  # sections from this checkout
     python3 final_submission/paper/build.py --from-branches  # each section from its PR branch (preview before merge)
+    python3 final_submission/paper/build.py --with-appendix  # also append the provenance appendix (not in the submission PDF)
 
 Needs: pandoc (>= 2.x) and Node with Playwright's Chromium (`npm i playwright` gives `require('playwright')`).
 Writes final_submission/paper/build/{paper.md, paper.html, paper.pdf} and prints a report:
@@ -81,6 +82,8 @@ def pdf_pages(data: bytes) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--from-branches", action="store_true")
+    ap.add_argument("--with-appendix", action="store_true",
+                    help="append appendix_provenance.md after the references (off by default: the brief is 4 body + 1 reference page, #69)")
     a = ap.parse_args()
     report, body = [], []
     appendix_md = None
@@ -138,11 +141,12 @@ def main() -> int:
         body.append(f"## {title}\n\n{text}\n")
         report.append(f"section {slug}: from {src}")
 
-    # Optional appendix (#36): placed after the references as a supplementary page (outside the 4 body pages).
-    app, asrc = (git_show("origin/mesh/36-provenance-appendix", "final_submission/paper/appendix_provenance.md"), "origin/mesh/36-provenance-appendix") if a.from_branches else (None, "")
-    if app is None and (HERE / "appendix_provenance.md").exists():
+    # Optional appendix (#36), only with --with-appendix: the 25 Nov brief is "4+1(reference) page paper" (#69), so the
+    # submission PDF leaves it out; the file stays in the repo as evidence.
+    app, asrc = (None, "") if not a.with_appendix else (git_show("origin/mesh/36-provenance-appendix", "final_submission/paper/appendix_provenance.md"), "origin/mesh/36-provenance-appendix") if a.from_branches else (None, "")
+    if a.with_appendix and app is None and (HERE / "appendix_provenance.md").exists():
         app, asrc = (HERE / "appendix_provenance.md").read_text(encoding="utf-8"), "checkout"
-    if app is None and a.from_branches:
+    if a.with_appendix and app is None and a.from_branches:
         app, asrc = git_show("origin/main", "final_submission/paper/appendix_provenance.md"), "origin/main"
     if app:
         app = re.sub(r"<!--.*?-->", "", app, flags=re.S).strip()
@@ -203,7 +207,7 @@ const n=await p.evaluate(()=>{const r=document.querySelector('.refs');return r?1
         pass
     if full_body is not None:
         body_pages = full_body
-    print(f"pages: {pages} total, {body_pages} body (limit 4), {pages - body_pages} references + appendix (not capped)"
+    print(f"pages: {pages} total, {body_pages} body (limit 4), {pages - body_pages} " + ("references + appendix" if appendix_md else "references (limit 1)")
           + ("" if full_body is not None else "  [body counted from a re-render without references: pdftotext missing or no References page found]"))
     try:
         font = subprocess.run(["fc-match", "-f", "%{family}", "Times New Roman"], capture_output=True, text=True).stdout

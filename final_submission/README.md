@@ -45,7 +45,7 @@ The label `to:<handle>` on each issue is authoritative if this table is stale. k
 - One section per branch `mesh/<issue>-<slug>`, from `main`, only that section's file in the PR.
 - Receipts for every claim; `[unverified]` for anything not checked (see `docs/verification-standards.md`).
 - Do not overwrite a submitted deliverable; additions only.
-- The body is **4 pages**. References go on extra pages and are not capped at one (Moodle text relayed by aaditya on #17, 21 Nov; the earlier "one reference page" rule was our own assumption). Cite what the text needs, verify every entry, and report your count in your status comment.
+- The paper is **4 body pages + 1 reference page** (the professor's 25 Nov announcement, "4+1(reference) page paper", relayed on #69; this replaces our earlier reading that references were uncapped). `build.py` therefore leaves the provenance appendix out of the PDF by default. The appendix stays in the repo at `final_submission/paper/appendix_provenance.md`, and `build.py --with-appendix` renders it. Cite what the text needs and verify every entry.
 
 ## Pipeline code (for deliverable 3)
 
