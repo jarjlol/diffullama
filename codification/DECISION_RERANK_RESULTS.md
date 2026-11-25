@@ -90,3 +90,16 @@ verifies the reasoning".
 - GSM8K listwise prompts have median 1,423 tokens; most are below the model's
   2,048-token training length, a minority above it.
 - HumanEval uses 64 denoising steps, below Dream's published budget.
+
+## One-paragraph summary
+
+On 1,000 GSM8K test questions (Dream and LLaDA, N=10), a single typed listwise
+pass from `pplx-decider-flash-v1.3` reaches **78.0%**, beating majority vote
+(72.8%, +5.2 pts, p=4.9e-6) and the AR-likelihood verifier (50.5%, +27.5 pts);
+the yes/no variant reaches 77.5%. On 144 HumanEval problems it reaches 40.3%
+pass@1, equal to the pass@10 oracle, beating the execution-based example filter
+(26.4%) and the first sample (10.4%). The candidate-order control is flat, but a
+closed-book probe scores 92.5%, so the model knows much of the underlying math;
+the defensible claim is that a decision model can pick the correct candidate, not
+that it verifies reasoning. LLaDA code generation at 64 steps is unusable. MBPP
+is queued as a separate, exploratory replication.
