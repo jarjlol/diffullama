@@ -5,18 +5,15 @@ An autoregressive (AR) language model such as GPT-2 predicts the next token from
 
 Several attempts at the same question can contain a correct solution even when the first one is wrong. On SATMath, DiffuLLaMA answers 23.6\% correctly when the prompt includes worked examples. Majority vote over three samples raises accuracy to 27.7\%, a method known as self-consistency \citep{wang2023selfconsistency}. At least one sample is correct 57.7\% of the time. The authors attribute this gap to ``high uncertainty about its responses''. How to choose better answers remains open.
 
-We test two ways to choose from the same set of solutions, or candidates. Majority vote picks the final number that appears most often, even when the solutions reaching it use different reasoning. In AR reranking, an AR model scores each solution with its next-token probabilities and picks the highest-scoring one. The model's weights stay fixed. We ask whether reranking gains are larger when the DLM and its AR base have similar hidden activations on the same text. We call that similarity representation preservation and measure it with centred kernel alignment (CKA) \citep{kornblith2019cka}. Section~\ref{sec:formulation} defines the score.
+We test two ways to choose from the same set of solutions, or candidates. Majority vote picks the final number that appears most often, even when the solutions reaching it use different reasoning. In AR reranking, an AR model scores each solution with its next-token probabilities and picks the highest-scoring one. The model's weights stay fixed. We vary the number of denoising steps to see how the choice of answer changes as the generated solutions improve. We ask whether reranking gains are larger when the DLM and its AR base have similar hidden activations on the same text. We call that similarity representation preservation and measure it with centred kernel alignment (CKA) \citep{kornblith2019cka}. Section~\ref{sec:formulation} defines the score.
 
 \subsection{Contributions}
 
-\lead{A controlled comparison}
+\lead{A shared set of solutions}
 We evaluate DiffuGPT-S, DiffuGPT-M, DiffuLLaMA \citep{gong2025diffullama}, and Dream 7B \citep{ye2025dream7b}, each adapted from an AR base. LLaDA-8B, which was trained from scratch, is the control \citep{nie2025llada}. We save $N = 10$ solutions per model for each GSM8K math problem \citep{cobbe2021gsm8k}. All selection rules see the same solutions. They have no access to the reference answers. The first solution is the baseline for gains. Oracle accuracy is the fraction of questions with at least one correct solution. It gives the best possible score on those solutions.
 
-\lead{Ranking solutions with an AR model}
-We score text only up to the final answer. With the Qwen2.5-7B scorer, this raises Dream's reranking accuracy by 13 points. Reranking beats the first solution at 64 steps, but majority vote is more accurate. Its lead over reranking narrows at 256 steps. The score correction also changes the apparent relationship between model similarity and gains (Section~\ref{sec:experiments}).
+\lead{Answer selection across generation settings}
+Going from 16 to 32 steps improves the first solution more than voting at 16 steps. From 16 to 64 steps, voting closes a growing share of the gap to oracle accuracy. On the same questions at 64 and 256 steps, the share falls for both Dream and LLaDA, even though voting still improves accuracy at 256 steps.
 
-\lead{An agent-designed voting rule}
-The Arbor research agent proposes answer-selection rules for human review. Unanswered proposals can proceed after a timeout. Its best rule weights votes by whether the candidate's arithmetic checks out. On 300 held-out questions it matches ordinary voting within 0.3 points. The tested rules leave roughly 15 points between voting accuracy and the oracle.
-
-\lead{A check of scoring and sampling settings}
-At each step, greedy decoding picks the most likely tokens without random sampling. At 256 steps, the first solution with random sampling (temperature 0.7) scores within 7 points of greedy decoding. Running 32 steps in place of 16 adds 9.8 and 19.2 points to the first solution on Dream and LLaDA. Voting at 16 steps changes accuracy by $+0.6$ and $-0.4$ points.
+\lead{Scoring and representation similarity}
+At 64 steps, AR reranking improves on the first solution for Dream and LLaDA, with majority vote ahead of both. Scoring through the final answer raises Dream's accuracy by 13 points with the Qwen2.5-7B scorer. It also changes the apparent relationship between representation similarity and gains from reranking (Section~\ref{sec:experiments}).

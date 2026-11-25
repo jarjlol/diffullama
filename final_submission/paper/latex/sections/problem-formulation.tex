@@ -2,7 +2,7 @@
 \label{sec:formulation}
 
 \lead{Setting}
-Let $\mathcal{M}$ be a set of masked DLMs. Each $m \in \mathcal{M}$ has an AR base $b(m)$ or is trained from scratch, as in the control ($b(m)=\varnothing$). The dataset $\mathcal{D}=\{(q_j,a_j^\ast)\}_{j=1}^{n}$ consists of GSM8K questions $q_j$ with numeric reference answers $a_j^\ast$. For question $q_j$, model $m$ receives a prompt $x_j$ with $k$ worked examples. We model the $N$ candidate draws as independent. We did not verify independence of the samplers' random streams.
+Let $\mathcal{M}$ be a set of masked DLMs. Each $m \in \mathcal{M}$ has an AR base $b(m)$ or is trained from scratch, as in the control ($b(m)=\varnothing$). The dataset $\mathcal{D}=\{(q_j,a_j^\ast)\}_{j=1}^{n}$ consists of GSM8K questions $q_j$ with numeric reference answers $a_j^\ast$. For question $q_j$, model $m$ receives a prompt $x_j$ with $k$ worked examples. We treat the $N$ candidate draws as independent in the formulation.
 \[
   y_{j,1},\dots,y_{j,N}\overset{\text{i.i.d.}}{\sim} p_m(\cdot\mid x_j).
 \]
@@ -27,9 +27,6 @@ Oracle accuracy (hit@$N$) is the fraction of questions with at least one correct
   H_m(s)=\frac{\mathrm{Acc}_m(s)-\mathrm{Acc}_m(s_{\text{first}})}
                 {\mathrm{Acc}_m^\ast-\mathrm{Acc}_m(s_{\text{first}})}.
 \]
-\lead{Objective}
-We seek a rule that needs no further training and improves accuracy averaged across models on held-out questions. Define $\overline{\mathrm{Acc}}(s)=\frac{1}{|\mathcal{M}|}\sum_m\mathrm{Acc}_m(s)$. Success requires $\overline{\mathrm{Acc}}(s)>\overline{\mathrm{Acc}}(s_{\text{maj}})$ across models. Individual models may differ.
-
 \lead{Hypothesis}
 For each adapted model, let $Z_m^{(\ell)},Z_{b(m)}^{(\ell)}\in\mathbb{R}^{T\times d}$ denote the mean-pooled outputs of block $\ell$. We feed both models the same $T$ held-out text segments. The DLM can use context on both sides of a position, while its AR base uses only preceding text to predict the next token. CKA compares the two models' activation patterns across inputs. We average it across layers:
 \begin{gather*}
@@ -40,4 +37,4 @@ For each adapted model, let $Z_m^{(\ell)},Z_{b(m)}^{(\ell)}\in\mathbb{R}^{T\time
 where $\bar{X}$ and $\bar{Y}$ are column-centred. We predict that models with more similar activations recover more of the available gain under AR reranking, so $\mathrm{Spearman}(\rho_m,H_m(s_\psi))>0$ across $\{m:b(m)\neq\varnothing\}$.
 
 \lead{Assumptions and scope}
-Each model has its own baseline settings for denoising steps, sampling temperature, and number of worked examples. We develop selectors on development questions and use held-out questions to decide whether a selector improves the score. Only four models have AR bases, so the smallest attainable two-sided exact permutation $p$ is $1/12$. We treat the rank comparison as descriptive. The broader question is how selection compares with increasing the number of denoising steps. We compare $\mathrm{Acc}_m(s)$ at $K\in\{16,32,64\}$ for Dream and LLaDA. Shared GPUs limit what we can infer from the timing measurements.
+Each model has its own baseline settings for denoising steps, sampling temperature, and number of worked examples. We compare selection rules on held-out questions. Only four models have AR bases, so the smallest attainable two-sided exact permutation $p$ is $1/12$. We treat the rank comparison as descriptive. The broader question is how selection compares with increasing the number of denoising steps. We compare $\mathrm{Acc}_m(s)$ at $K\in\{16,32,64,256\}$ for Dream and LLaDA. Shared GPUs limit what we can infer from the timing measurements.

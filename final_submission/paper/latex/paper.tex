@@ -3,7 +3,7 @@
 \usepackage[a4paper,top=17mm,bottom=17mm,left=15mm,right=15mm]{geometry}
 \usepackage{amsmath,amssymb}
 \usepackage{newtxtext,newtxmath,dsfont}
-\usepackage{booktabs,multicol,titlesec}
+\usepackage{balance,booktabs,multicol,titlesec}
 \usepackage[font=small,labelfont=bf]{caption}
 \usepackage[authoryear,round]{natbib}
 \usepackage[hidelinks]{hyperref}
@@ -22,7 +22,7 @@
 
 \newcommand{\lead}[1]{\textbf{#1.}\enspace}
 
-\newcommand{\papertitle}{Does Similarity to the Base Model Predict Gains from Ranking Answers in Diffusion Language Models?}
+\newcommand{\papertitle}{When Does Answer Selection Help Diffusion Language Models?}
 \hypersetup{pdftitle={\papertitle}}
 
 \begin{document}
@@ -35,6 +35,7 @@
 \input{sections/problem-formulation}
 \input{sections/methodology}
 \input{sections/experiments}
+\balance
 \input{sections/conclusion}
 
 \onecolumn

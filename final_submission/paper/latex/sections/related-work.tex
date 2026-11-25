@@ -1,7 +1,5 @@
 \section{Related Work}
 
-The first two groups retain 12 of 48 references from our LLM-generated survey. The repository records the filtering decisions. The last two groups add other work.
-
 \subsection{Text diffusion language models}
 \lead{Continuous diffusion}
 Diffusion-LM \citep{li2022diffusionlm} denoises Gaussian vectors into word embeddings and uses gradients on the latent variables to guide generation. DiffuSeq \citep{gong2022diffuseq} extends the approach to sequence-to-sequence generation.
@@ -23,6 +21,3 @@ Two methods rank candidates from instruction-tuned diffusion models. An outcome 
 
 \lead{Representation preservation}
 Repr-Align \citep{peng2026repralign} trains the diffusion model to match the original AR model's activations at corresponding layers and studies the effect on training efficiency. We test representation similarity in a different setting. An AR model scores the diffusion model's generated solutions without updating its weights, and we ask whether similarity to the original AR model predicts the gain (Section~\ref{sec:methodology}).
-
-\subsection{Automated research systems}
-The AI Scientist \citep{lu2024aiscientist} automates idea generation, coding, experiments, and paper writing. DeepScientist \citep{weng2025deepscientist} uses Bayesian optimisation over a record of prior findings. ResearchAgent \citep{baek2024researchagent} proposes research problems, methods, and experiments from the literature and refines them with reviewing agents. We use it to generate research ideas. Arbor \citep{jin2026arbor} assigns a coordinator to propose ideas and separate agents to implement and test them. A development-set improvement must hold on held-out data before Arbor accepts it. We use Arbor to search for a selection rule.

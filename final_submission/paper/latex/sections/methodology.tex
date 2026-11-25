@@ -1,21 +1,17 @@
 \section{Methodology}
 \label{sec:methodology}
 
-ResearchAgent \citep{baek2024researchagent} proposed and ranked extensions to DiffuLLaMA. The proposal we implemented tied for the highest score (4.9/5).
-
 \subsection{Data and models}
-GSM8K contains math word problems with numeric reference answers \citep{cobbe2021gsm8k}. We check an extracted answer against the reference value. We develop rules on one set of questions and evaluate them on a separate test set.
+GSM8K contains math word problems with numeric reference answers \citep{cobbe2021gsm8k}. We check an extracted answer against the reference value. We use separate development and test sets. The test set has 500 questions, including 300 held-out questions for the five-model comparison.
 
 We evaluate five released DLMs. DiffuGPT-S, DiffuGPT-M, and DiffuLLaMA were adapted from GPT-2 or LLaMA-2 \citep{gong2025diffullama}. Dream 7B was adapted from Qwen2.5-7B \citep{ye2025dream7b}. LLaDA was trained from scratch \citep{nie2025llada}, so it provides a control with $b(m)=\varnothing$.
 
 \subsection{Candidate generation and selection}
 For each question $q_j$, model $m$ receives a prompt $x_j$ with $k$ worked examples and draws $N$ candidate solutions $y_{j,1},\dots,y_{j,N}$. We save the solutions once so all selection rules use identical candidates. Each rule sees only that question's solutions.
 
-The first-sample baseline takes the first generated solution. Majority vote chooses the most common extracted number \citep{wang2023selfconsistency}. For AR reranking, model $\psi$ assigns a probability to each next token given the question and the solution so far. The rule $s_\psi$ adds the negative log probabilities across the solution, or averages them per token. It chooses the lowest score. We score up to the final answer line because additional generated text distorted the original scores. The scorers include small AR models and the 7B bases of DiffuLLaMA (LLaMA-2-7B) and Dream (Qwen2.5-7B). The oracle counts every question with at least one correct candidate. $H_m(s)$ measures the share of the possible accuracy gain that rule $s$ achieves.
+The first-sample baseline takes the first generated solution. Majority vote chooses the most common extracted number \citep{wang2023selfconsistency}. For AR reranking, model $\psi$ assigns a probability to each next token given the question and the solution so far. The rule $s_\psi$ adds the negative log probabilities across the solution, or averages them per token. It chooses the lowest score. We score each solution up to the line containing its final answer, excluding any generated continuation. We also compare against scoring that includes the continuation to measure the effect of that choice. The scorers include small AR models and the 7B bases of DiffuLLaMA (LLaMA-2-7B) and Dream (Qwen2.5-7B). The oracle counts every question with at least one correct candidate. $H_m(s)$ measures the share of the possible accuracy gain that rule $s$ achieves.
 
 We measure representation preservation as the mean linear CKA across layers \citep{kornblith2019cka}. At each layer, we average the activations over tokens and compare the diffusion model $m$ with its AR base $b(m)$ on the same held-out text.
 
-\subsection{Search for a selection rule}
-The initial proposal omitted majority vote and used the total log-likelihood, which can favour shorter solutions. We add majority vote and a per-token score. The small number of adapted models limits the correlation analysis to a descriptive comparison.
-
-Arbor \citep{jin2026arbor} proposes related rules, explores variations of them, and implements each as a change to one selector function. It keeps a change if macro-average accuracy $\overline{\mathrm{Acc}}(s)$ improves on held-out data. Proposals go to human review before they run. For example, we rejected selectors that read other models' answers because that changes the task. The target is $\overline{\mathrm{Acc}}(s) > \overline{\mathrm{Acc}}(s_{\text{maj}})$.
+\subsection{Comparisons across denoising steps}
+We compare Dream and LLaDA at 16, 32, and 64 denoising steps on the same 500 test questions. The 256-step comparison uses a randomly ordered subset from that set. We record the analysis plan and time limit before measuring the results. The time limit determines how many questions are available for each model. For comparisons between 64 and 256 steps, we match questions within each model. We use paired comparisons to measure the gap between selection rules on the same questions.
