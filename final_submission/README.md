@@ -90,9 +90,9 @@ SHA-256 of the committed result files the paper's tables are drawn from (compute
 | `codification/results/iter2/cpu/pq_analyze.txt` | same | `c8a9b25b2a7a2bb05688b8304d08b18708c91bbf46794a0b11d3c122f654e57c` (per-question preservation test) |
 
 Iteration-2 rows added 24 Nov (same `git show … | sha256sum` method; `cpu/*` digests are byte-identical to the report's `report/evidence/iter2/` copies). GPU time, from the records (not per-job accounting):
-- **Iteration 1:** about 34 GPU-hours as planned (`codification/ITERATION_1.md`, run plan item 3).
-- **256-step check:** two Blackwell windows on Mon 23 Nov, 08:52–16:21 and 17:08–19:26 IST, on both GPUs, give about 19.6 GPU-hours. A shared Ada GPU added 23 Dream and 41 LLaDA rows (`codification/results/iter2/k256_results.md`; window times from #51 and `ops/window/RUNBOOK.md`).
-- **Lost:** about 8.5 h of queued GPU work failed after the 21 Nov GPU fault (Xid 79). Another lab user then held both GPUs from Sat 21 Nov 17:02 IST to Mon 23 Nov 08:00 IST (`codification/results/iter2/README.md` §7, #49).
-- **Not timed:** the other iteration-2 GPU jobs (fidelity, step arm K = 16/32, self-score) were not timed per job. Their s/question figures are in `step_arm.md`.
+- **Iteration 1:** about 34 GPU-hours, a planned estimate, not measured (`codification/ITERATION_1.md` run plan, branch `assignment/codification`).
+- **256-step check:** two Blackwell windows on Mon 23 Nov, 08:52–16:21 and 17:08–19:26 IST, on both GPUs, give about 19.6 GPU-hours. A shared Ada GPU added 23 Dream and 41 LLaDA rows (`codification/results/iter2/k256_results.md` and `ops/window/RUNBOOK.md` on branch `iter2/aaditya`; window times from #51). This is reserved window time, not busy time.
+- **Lost:** about 8.5 h of GPU time (06:58 to ~15:30 IST, Sat 21 Nov) after a GPU fault (Xid 79). The failed queue lines were re-queued, and no results were lost (`codification/results/iter2/README.md` §7, branch `iter2/aaditya`). Another lab user then held both GPUs from Sat 21 Nov ~17:02 IST (#4) to Mon 23 Nov 08:00 IST (#49).
+- **Not timed:** the other iteration-2 GPU jobs (fidelity, step arm K = 16/32, self-score) were not timed per job. Their s/question figures are in `final_submission/report/evidence/iter2/step_arm.md`.
 
 Iteration 1's numbers are committed under `codification/results/iter1/numbers/`; reproducing them on CPU needs the cached `items.jsonl` files (git-ignored, shared on the team Drive). Iteration 2: `codification/ITERATION_2.md` on branch `iter2/aaditya-worker` (into `iter2/aaditya` via PR #58).
