@@ -1,0 +1,75 @@
+{
+  "judge": {
+    "control": "judge",
+    "per_model": {
+      "dream-base": {
+        "n": 149,
+        "correct": 42,
+        "accuracy": 0.28187919463087246,
+        "chance": 0.12129807180142745,
+        "ci95_wilson": [
+          0.21582227454485578,
+          0.35890083748747037
+        ],
+        "mean_options": 8.577181208053691
+      },
+      "llada-base": {
+        "n": 166,
+        "correct": 48,
+        "accuracy": 0.2891566265060241,
+        "chance": 0.12983122968062732,
+        "ci95_wilson": [
+          0.22557426005414632,
+          0.3622770084218924
+        ],
+        "mean_options": 8.114457831325302
+      }
+    },
+    "macro_accuracy": 0.2855179105684483
+  },
+  "gold": {
+    "control": "gold",
+    "per_model": {
+      "dream-base": {
+        "n": 47,
+        "correct": 9,
+        "accuracy": 0.19148936170212766,
+        "chance": 0.09996085474808875,
+        "ci95_wilson": [
+          0.10415815605310119,
+          0.325442800643777
+        ],
+        "mean_options": 10.148936170212766
+      },
+      "llada-base": {
+        "n": 67,
+        "correct": 21,
+        "accuracy": 0.31343283582089554,
+        "chance": 0.09947610432685051,
+        "ci95_wilson": [
+          0.2150519322660779,
+          0.4320480767681618
+        ],
+        "mean_options": 10.134328358208956
+      }
+    },
+    "macro_accuracy": 0.25246109876151157
+  },
+  "closedbook": {
+    "control": "closedbook",
+    "n": 250,
+    "correct": 225,
+    "accuracy": 0.9,
+    "chance": 0.5,
+    "ci95_wilson": [
+      0.8565473757413067,
+      0.9313455464589946
+    ],
+    "by_gold_position": {
+      "A|miss": 11,
+      "A|ok": 113,
+      "B|miss": 14,
+      "B|ok": 112
+    }
+  }
+}

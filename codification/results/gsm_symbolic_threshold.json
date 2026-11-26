@@ -1,0 +1,100 @@
+{
+  "dev": {
+    "dream-base": {
+      "n": 200,
+      "always_majority": 0.7,
+      "always_listwise": 0.745,
+      "per_T": {
+        "4": {
+          "accuracy": 0.755,
+          "listwise_calls": 81,
+          "listwise_fraction": 0.405
+        },
+        "5": {
+          "accuracy": 0.755,
+          "listwise_calls": 102,
+          "listwise_fraction": 0.51
+        },
+        "6": {
+          "accuracy": 0.745,
+          "listwise_calls": 124,
+          "listwise_fraction": 0.62
+        }
+      }
+    },
+    "llada-base": {
+      "n": 200,
+      "always_majority": 0.745,
+      "always_listwise": 0.82,
+      "per_T": {
+        "4": {
+          "accuracy": 0.805,
+          "listwise_calls": 52,
+          "listwise_fraction": 0.26
+        },
+        "5": {
+          "accuracy": 0.825,
+          "listwise_calls": 67,
+          "listwise_fraction": 0.335
+        },
+        "6": {
+          "accuracy": 0.82,
+          "listwise_calls": 91,
+          "listwise_fraction": 0.455
+        }
+      }
+    }
+  },
+  "dev_macro": {
+    "4": 0.78,
+    "5": 0.79,
+    "6": 0.7825
+  },
+  "chosen_T": 5,
+  "test": {
+    "dream-base": {
+      "n": 148,
+      "always_majority": 0.3716216216216216,
+      "always_listwise": 0.5,
+      "per_T": {
+        "4": {
+          "accuracy": 0.49324324324324326,
+          "listwise_calls": 129,
+          "listwise_fraction": 0.8716216216216216
+        },
+        "5": {
+          "accuracy": 0.5,
+          "listwise_calls": 140,
+          "listwise_fraction": 0.9459459459459459
+        },
+        "6": {
+          "accuracy": 0.5,
+          "listwise_calls": 146,
+          "listwise_fraction": 0.9864864864864865
+        }
+      }
+    },
+    "llada-base": {
+      "n": 165,
+      "always_majority": 0.3151515151515151,
+      "always_listwise": 0.47878787878787876,
+      "per_T": {
+        "4": {
+          "accuracy": 0.4666666666666667,
+          "listwise_calls": 134,
+          "listwise_fraction": 0.8121212121212121
+        },
+        "5": {
+          "accuracy": 0.47878787878787876,
+          "listwise_calls": 150,
+          "listwise_fraction": 0.9090909090909091
+        },
+        "6": {
+          "accuracy": 0.47878787878787876,
+          "listwise_calls": 157,
+          "listwise_fraction": 0.9515151515151515
+        }
+      }
+    }
+  }
+}

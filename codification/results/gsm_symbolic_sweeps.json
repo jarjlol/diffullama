@@ -1,0 +1,144 @@
+{
+  "n": {
+    "dream-base|2": {
+      "n": 100,
+      "listwise": 0.25,
+      "majority": 0.16,
+      "first": 0.16,
+      "oracle": 0.27
+    },
+    "dream-base|4": {
+      "n": 100,
+      "listwise": 0.4,
+      "majority": 0.24,
+      "first": 0.16,
+      "oracle": 0.52
+    },
+    "dream-base|6": {
+      "n": 100,
+      "listwise": 0.48,
+      "majority": 0.34,
+      "first": 0.16,
+      "oracle": 0.62
+    },
+    "dream-base|8": {
+      "n": 100,
+      "listwise": 0.51,
+      "majority": 0.38,
+      "first": 0.16,
+      "oracle": 0.7
+    },
+    "dream-base|10": {
+      "n": 100,
+      "listwise": 0.61,
+      "majority": 0.46,
+      "first": 0.16,
+      "oracle": 0.78
+    },
+    "llada-base|2": {
+      "n": 100,
+      "listwise": 0.36,
+      "majority": 0.23,
+      "first": 0.23,
+      "oracle": 0.4
+    },
+    "llada-base|4": {
+      "n": 100,
+      "listwise": 0.46,
+      "majority": 0.34,
+      "first": 0.23,
+      "oracle": 0.56
+    },
+    "llada-base|6": {
+      "n": 100,
+      "listwise": 0.64,
+      "majority": 0.46,
+      "first": 0.23,
+      "oracle": 0.72
+    },
+    "llada-base|8": {
+      "n": 100,
+      "listwise": 0.7,
+      "majority": 0.51,
+      "first": 0.23,
+      "oracle": 0.8
+    },
+    "llada-base|10": {
+      "n": 100,
+      "listwise": 0.72,
+      "majority": 0.5,
+      "first": 0.23,
+      "oracle": 0.86
+    }
+  },
+  "order": {
+    "per_model": {
+      "dream-base": {
+        "per_seed": {
+          "1": {
+            "n": 100,
+            "accuracy": 0.58
+          },
+          "2": {
+            "n": 100,
+            "accuracy": 0.57
+          },
+          "3": {
+            "n": 100,
+            "accuracy": 0.61
+          }
+        },
+        "n_common": 100,
+        "same_candidate_all3": 0.67,
+        "unpermuted_accuracy": 0.5625,
+        "unpermuted_n": 48,
+        "plain_n10_accuracy": 0.61,
+        "plain_n10_n": 100
+      },
+      "llada-base": {
+        "per_seed": {
+          "1": {
+            "n": 100,
+            "accuracy": 0.72
+          },
+          "2": {
+            "n": 100,
+            "accuracy": 0.72
+          },
+          "3": {
+            "n": 100,
+            "accuracy": 0.72
+          }
+        },
+        "n_common": 100,
+        "same_candidate_all3": 0.66,
+        "unpermuted_accuracy": 0.6,
+        "unpermuted_n": 30,
+        "plain_n10_accuracy": 0.72,
+        "plain_n10_n": 100
+      }
+    },
+    "positions": {
+      "dream-base|A": 30,
+      "dream-base|B": 36,
+      "dream-base|C": 35,
+      "dream-base|D": 34,
+      "dream-base|E": 24,
+      "dream-base|F": 32,
+      "dream-base|G": 30,
+      "dream-base|H": 23,
+      "dream-base|I": 29,
+      "dream-base|J": 27,
+      "llada-base|A": 33,
+      "llada-base|B": 25,
+      "llada-base|C": 20,
+      "llada-base|D": 36,
+      "llada-base|E": 32,
+      "llada-base|F": 23,
+      "llada-base|G": 29,
+      "llada-base|H": 26,
+      "llada-base|I": 36,
+      "llada-base|J": 40
+    }
+  }
+}
