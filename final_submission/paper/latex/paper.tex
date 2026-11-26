@@ -1,0 +1,46 @@
+\documentclass[10pt,a4paper,twocolumn]{article}
+
+\usepackage[a4paper,top=15.5mm,bottom=15.5mm,left=14mm,right=14mm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{newtxtext,newtxmath}
+\usepackage{balance,booktabs,multicol,titlesec}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage[authoryear,round]{natbib}
+\usepackage[hidelinks]{hyperref}
+
+\setlength{\columnsep}{6.5mm}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt plus 1pt}
+\setlength{\textfloatsep}{6pt plus 2pt minus 2pt}
+\setlength{\intextsep}{5pt plus 2pt minus 2pt}
+\setlength{\bibsep}{1pt plus 0.5pt}
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\bibfont}{\footnotesize}
+\titlespacing*{\section}{0pt}{9pt plus 2pt}{3.5pt}
+\titlespacing*{\subsection}{0pt}{7pt plus 1.5pt}{2.5pt}
+\raggedbottom
+
+\newcommand{\lead}[1]{\textbf{#1.}\enspace}
+
+\newcommand{\papertitle}{When Does Selection Beat Majority Vote? Autoregressive, Step-Budget, and Decision-Model Reranking for Diffusion Language Models}
+\hypersetup{pdftitle={\papertitle}}
+
+\begin{document}
+\twocolumn[{\centering\Large\bfseries\papertitle\par\vspace{9pt}}]
+\begin{abstract}
+\input{sections/abstract}
+\end{abstract}
+\input{sections/introduction}
+\input{sections/related-work}
+\input{sections/problem-formulation}
+\input{sections/methodology}
+\input{sections/experiments}
+\input{sections/conclusion}
+
+\onecolumn
+\begin{multicols}{2}[\section*{\refname}]
+\renewcommand{\bibsection}{}
+\bibliographystyle{abbrvnat}
+\bibliography{references}
+\end{multicols}
+\end{document}

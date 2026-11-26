@@ -1,0 +1,103 @@
+\section{Experiments and Results}
+\label{sec:experiments}
+
+Does decision-model selection overcome the failure of AR reranking across math, higher denoising budgets, and code---and what do the controls reveal?
+
+\lead{Pipeline fidelity, step budget, and AR negative baseline}
+At published greedy settings ($K=256$, $T=0$, $n=100$), our pipeline reproduces and slightly exceeds reported scores: 81.0\% vs.\ 77.2\% on Dream and 73.0\% vs.\ 70.3\% on LLaDA (vs.\ 41.0\% and 51.0\% for our $K=64$, $T=0.7$ first sample on the same items), confirming the low 64-step first-sample baseline reflects the sampling budget rather than a harness bug. Across denoising budgets on 500 GSM8K questions, raising $K$ from 16 to 32 adds +9.8 points (Dream: 2.6$\to$12.4\%) and +19.2 points (LLaDA: 3.6$\to$22.8\%) to the first sample, while majority vote at $K=16$ adds only +0.6 and $-0.4$ points (3.2\% on both). Majority climbs to 23.4\% / 51.0\% at $K=32$ and 72.4\% / 73.2\% at $K=64$ (closing 64\% of macro headroom), while an automated selector search (Arbor) on 300 held-out questions ties majority within 0.3 points (73.0\% vs.\ 73.3\% / 73.0\%).
+
+Frozen AR likelihood fails across every budget. Cutting trailing text past \texttt{\#\#\#\#~N} raises Dream's Qwen2.5-7B summed-NLL accuracy by +13.0 points (95\% CI $[+9.0,+17.0]$) and leaves LLaDA unchanged, yet even with cut text the best AR selector reaches only 48.8\% (Dream) and 52.2\% (LLaDA) at $K=64$---23.6 and 21.0 points below majority (both $p<0.001$; Table~\ref{tab:gsm8k}). Diffusion self-score on the 200-question gate similarly trails majority (31.5\% Dream, 45.0\% LLaDA vs.\ 71.0\%, 73.5\%). At $K=256$, AR still loses to majority by 8.6 points on Dream (CI $[-14.1,-3.2]$, $p=0.002$) and 2.6 on LLaDA (CI $[-6.8,+1.6]$, $p=0.33$).
+
+\lead{Representation preservation is unsupported}
+On uncut scores, layer-averaged CKA ($\rho_m$: DiffuGPT-S 0.890, DiffuGPT-M 0.866, DiffuLLaMA 0.748, Dream 0.509) ordered AR headroom as predicted (Spearman $\rho=+1.0$ for 3/10 selectors, $+0.8$ for 6/10, $+0.4$ for 1/10; exact $p\ge 0.083$). However, cutting trailing text flips Dream's Qwen2.5-7B-sum headroom from $-9.7\%$ to $+17.7\%$ (LLaDA $+8.9\%$; the three floor models lack cut scores), invalidating the cross-model ordering. An exploratory per-question CKA test on Dream ($n=500$) likewise shows null association: ROC-AUC $=0.469$ (permutation $p=0.32$; odds ratio 0.94 per SD, 95\% CI $[0.75,1.17]$), with no layer significant after Benjamini--Hochberg correction.
+
+\begin{table}[t]
+\centering
+\caption{GSM8K test accuracy (\%) for $N=10$ candidates at $K=64$ ($n=500$/model) and $K=256$ ($n=185$ Dream, $192$ LLaDA). Headroom is macro $(\text{Acc}-\text{First})/(\text{Oracle}-\text{First})$. Prompted Qwen, pointwise, $K=256$, and dev-tuned hybrid ($T=5$, calling judge on 47.8\% of items) are secondary/exploratory.}
+\label{tab:gsm8k}
+\footnotesize
+\setlength{\tabcolsep}{2.6pt}
+\begin{tabular}{@{}lrrrr|rrr@{}}
+\toprule
+ & \multicolumn{4}{c|}{$K=64$ ($n=500$/model)} & \multicolumn{3}{c}{$K=256$ ($185/192$)} \\
+Selector & Dr & LL & Mac & $H$ & Dr & LL & Mac \\
+\midrule
+First sample & 40.4 & 48.6 & 44.5 & 0\% & 74.1 & 72.4 & 73.2 \\
+Uniform pick (exp.) & 41.2 & 48.8 & 45.0 & 1\% & --- & --- & --- \\
+AR Qwen-7B mean & 27.6 & 48.2 & 37.9 & $-15\%$ & 73.5 & 75.0 & 74.3 \\
+AR Qwen-7B sum & 48.8 & 52.2 & 50.5 & 14\% & 75.7 & 76.6 & 76.1 \\
+Prompted Qwen-7B & 52.4 & 60.4 & 56.4 & 27\% & --- & --- & --- \\
+Majority vote & 72.4 & 73.2 & 72.8 & 64\% & 84.3 & 79.2 & 81.7 \\
+Decision pointwise & 74.2 & \textbf{80.8} & 77.5 & 75\% & --- & --- & --- \\
+Decision listwise & 77.0 & 79.0 & 78.0 & 76\% & \textbf{87.6} & \textbf{83.9} & \textbf{85.7} \\
+Hybrid ($T=5$, 48\% calls) & \textbf{78.0} & 79.0 & \textbf{78.5} & \textbf{77\%} & --- & --- & --- \\
+\midrule
+Oracle (hit@10) & 87.8 & 89.2 & 88.5 & 100\% & 93.5 & 89.6 & 91.5 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\lead{Decision-model reranking beats majority at $K=64$ and $K=256$}
+Table~\ref{tab:gsm8k} shows that a single listwise pass of \texttt{pplx-decider-flash-v1.3} reaches 78.0\% macro accuracy at $K=64$ (77.0\% Dream, 79.0\% LLaDA), beating majority vote by \textbf{+5.2 points} (cluster 95\% CI $[+3.0,+7.4]$, $0/10,000$ resamples $\le 0$; per-model McNemar Dream +4.6, 48+/25$-$, $p=0.0095$; LLaDA +5.8, 42+/13$-$, $p=0.00011$) and AR cut-sum by \textbf{+27.5 points} (cluster CI $[+24.4,+30.7]$). Both H1 and H2 hold. Pointwise scoring reaches 77.5\% (+4.7 vs.\ majority, CI $[+2.4,+7.0]$), but is inconsistent across models (Dream +1.8, $p=0.35$; LLaDA +7.6, $p=4.5\times 10^{-7}$) and requires $10\times$ more calls; listwise vs.\ pointwise differs by +0.5 points (CI $[-1.2,+2.3]$, n.s.). Giving Qwen2.5-7B the same listwise prompt yields only 56.4\% (+5.9 over its own NLL, still $-16.4$ below majority), confirming the gain comes from the decision model rather than prompting alone.
+
+Crucially, the decision model's margin survives higher denoising budgets. On the 377 cached $K=256$ items (100\% coverage), listwise reaches \textbf{85.7\%} vs.\ 81.7\% majority (\textbf{+4.0 points}, cluster CI $[+0.9,+7.1]$, $p=0.010$; +9.6 over AR cut-sum; per-model Dream +3.2, $p=0.21$, LLaDA +4.7, $p=0.093$, underpowered at $n\approx 190$). Restricting $K=64$ to those exact 377 questions gives +3.5 points, yielding a matched diff-in-diff of \textbf{+0.5 points} (CI $[-4.0,+5.1]$, $p=0.82$): absolute headroom shrinks as majority rises, but the selector's margin over majority does not shrink measurably. An $N$-sweep on 100 $K=256$ items/model shows +6.5 points already at $N=2$ (77.5\% vs.\ 71.0\%, CI $[+2.6,+10.5]$), ruling out a list-length artifact.
+
+\lead{Weak-vote hybrid gating halves judge calls}
+Listwise selection errs on 25 Dream and 13 LLaDA items that majority got right. Tuning a top-vote gate $T\in\{4,5,6\}$ on dev ($n=200$/model) selects $T=5$ (79.0\% at 42.3\% calls). Scored once on test ($n=500$/model), keeping majority when $\ge 5$ candidates agree and calling listwise otherwise reaches \textbf{78.5\%} macro (Dream 78.0\%, LLaDA 79.0\%) with only \textbf{47.8\%} of judge calls (Dream +5.6 vs.\ majority, $p=0.00076$; LLaDA +5.8, $p=1.5\times 10^{-5}$).
+
+\begin{table}[t]
+\centering
+\caption{Code pass@1 (\%) for Dream 7B ($N=10$, $K=64$) on standard HumanEval ($n=144$) and matched HumanEval+ ($n=142$; two Plus canonical-fail items excluded from both columns).}
+\label{tab:humaneval}
+\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Selector & HE (144) & HE (142) & HE+ (142) \\
+\midrule
+AR Qwen-7B mean / sum & 4.9 / 5.6 & 4.9 / 5.6 & 4.9 / 4.2 \\
+MBR-exec (output cluster) & 6.2 & 6.3 & 5.6 \\
+Uniform pick (exp.) & 8.5 & 8.6 & 7.7 \\
+First sample & 10.4 & 10.6 & 9.2 \\
+Example filter (fixed parser) & 27.8 & 28.2 & 25.4 \\
+Decision pointwise & 38.2 & 38.7 & 33.1 \\
+\textbf{Decision listwise} & \textbf{40.3} & \textbf{40.8} & \textbf{35.9} \\
+\midrule
+Oracle (pass@10) & 40.3 & 40.8 & 37.3 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\lead{Code selection: HumanEval, HumanEval+, and the 38/20 split}
+On 144 HumanEval test problems (Table~\ref{tab:humaneval}), listwise selection picks a passing Dream candidate on all 58 solvable problems (\textbf{40.3\% pass@1 = oracle}), beating the fixed docstring-example filter (40/144 = 27.8\%, +12.5 points, 18+/0$-$, $p=7.6\times 10^{-6}$), first sample (10.4\%), MBR-exec (6.2\%), and AR NLL (4.9--5.6\%). \emph{Key caveat:} of the 58 solvable problems, 38 contain parseable docstring examples, where the filter already gets \textbf{36/38} vs.\ \textbf{38/38} for listwise (+2, $p=0.50$, n.s.); on the 20 solvable problems without examples, the filter falls back to candidate 0 (\textbf{4/20} vs.\ \textbf{20/20}, $p=3.1\times 10^{-5}$). Thus the aggregate margin concentrates where the example filter has no signal.
+
+Under stricter \textbf{HumanEval+} tests ($n=142$), listwise drops 4.9 points (40.8\%$\to$\textbf{35.9\%}, 51/142), but most of this drop is the oracle falling 40.8\%$\to$37.3\% (53/142) as false passes are rejected: 5 of 7 lost items have zero Plus-passing candidates, leaving only 2 selection misses (\textbf{51/53 = 96.2\%} of Plus-solvable items vs.\ 36/53 = 67.9\% for the example filter). LLaDA was dropped after collapsing to newline runs at $K=64$ (0/10 on \texttt{HumanEval/0}); an MBPP pilot was stopped after Dream yielded 0 passing candidates in the first 20 problems.
+
+\begin{table}[t]
+\centering
+\caption{Diagnostic controls and serving cost for \texttt{pplx-decider-flash-v1.3}. Controls separate trace-informed selection from answer familiarity or position bias.}
+\label{tab:controls}
+\scriptsize
+\setlength{\tabcolsep}{2.3pt}
+\begin{tabular}{@{}llrl@{}}
+\toprule
+Control / Metric & Split ($n$) & Result & Interpretation \\
+\midrule
+Judge-alone (no trace) & GSM8K (1k) & 42.8\% & Traces add +35.2 pts \\
+Gold injection & Oracle-miss (115) & 20.9\% & Modest recall ($\approx$9\% ch.) \\
+2-opt closed-book & GSM8K (40) & 92.5\% & Cross-Q distractor (easy) \\
+Order shuffle & GSM8K dev (200) & 74.5\% & Flat acc.; 67\% same pick \\
+Order shuffle & HE test (50) & 30/50 & Flat acc.\ both orders \\
+HE recognition & Dev+Test (60) & 98.3\% & 59/60 with docstrings \\
+HE recog.\ (no doc) & Dev (20) & 80.0\% & 16/20; CI $[58.4,91.9]\%$ \\
+\midrule
+Serving cost & Listwise (1k) & \$0.015 & 1,544 tok; 0.42\,s med. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\lead{Controls, cost, and limitations}
+Table~\ref{tab:controls} bounds what the decision model uses. Stripping reasoning to show only distinct candidate answers (\emph{judge-alone}) drops accuracy from 78.0\% to \textbf{42.8\%} (428/1,000, below uniform pick at 45.0\%), indicating that reading solution traces drives +35.2 points. On the 115 oracle-miss items with gold injected, gold is chosen \textbf{20.9\%} (24/115) of the time. By contrast, two-option closed-book reaches 92.5\% (37/40) largely because its distractor is drawn randomly from a \emph{different} GSM8K question (often mismatched in scale). Candidate-order shuffles leave accuracy flat (74.5\% both orders on GSM8K dev, 67\% choosing the same original candidate; 30/50 on HumanEval). On HumanEval recognition, the decider separates canonical code from single-token failing mutants on 59/60 items (98.3\%) with docstrings and 16/20 (80.0\%) stripped.
+
+\lead{Limitations}
+(1) Public-benchmark contamination remains live for GSM8K and HumanEval (HumanEval+ strengthens tests, not freshness); fresh \textbf{GSM-Symbolic} \citep{mirzadeh2024gsmsymbolic} evaluation is underway post-deadline. (2) At $K=256$, 94\% (Dream) and 76\% (LLaDA) of cut texts keep same-line continuation junk after \texttt{\#\#\#\#~N}, affecting AR and decision inputs identically. (3) We test one API snapshot without prompt tuning; a typed-choice endpoint cannot run an open-ended decider-only baseline. (4) Shared-GPU generation timings (36.8--55.0\,s/q at $K=64$; 151--217\,s/q at $K=256$) are advisory; reranking adds zero GPU time and costs $\approx\$0.015$/1,000 listwise calls ($\approx\$0.007$ at $T=5$).

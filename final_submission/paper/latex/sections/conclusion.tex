@@ -1,0 +1,8 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+What practical rule follows from these measurements? Across five DLMs on GSM8K, frozen AR likelihood is the wrong selector: it trails majority vote by over 20 points at 64 steps and still loses at 256, while scoring trailing text past the answer shifts Dream's accuracy by 13 points and reverses preservation trends. Representation similarity (CKA) did not predict reranking gain at the model or question level.
+
+By contrast, a single-pass 4B decision model (\texttt{pplx-decider-flash-v1.3}) beats majority by +5.2 points at 64 steps (78.0\% vs.\ 72.8\%, cluster CI $[+3.0,+7.4]$), holds its edge at 256 steps (85.7\% vs.\ 81.7\%, diff-in-diff +0.5, $p=0.82$), and reaches 78.5\% with 47.8\% of judge calls under dev-tuned weak-vote gating ($T=5$). On Dream code candidates it hits the 40.3\% HumanEval oracle (gains concentrated on the 20/58 solvable tasks without docstring examples) and retains 96.2\% of the HumanEval+ oracle (51/53 solvable).
+
+Controls show solution traces add +35.2 points over answers-only selection (42.8\%), while partial familiarity (20.9\% gold injection; 80.0\% stripped-docstring recognition) bounds our claim to trace-informed \emph{selection}, not verified reasoning. Practitioners should allocate denoising steps first, prefer majority over AR likelihood, and add weak-vote-gated decision selection; fresh benchmarks (GSM-Symbolic, puzzles) and a second code model remain key next steps.
