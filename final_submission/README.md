@@ -4,8 +4,8 @@
 
 The folder named **Final Submission** in our group folder holds exactly three items:
 
-1. the **paper**, 4 pages of content plus reference pages (Moodle title: "Task 5 (4+ reference pages)"; references do not count toward the 4, our reading, not confirmed by the instructor): `paper/` (sections in `paper/sections/`, built PDF in `paper/`);
-2. the **report**, 2 to 4 pages, observations and efforts for each task: `report/` (issue #15);
+1. the **paper**, 4 pages of content plus 1 reference page ("4+1(reference) page paper"): canonical built PDF at `paper/paper.pdf` from editable LaTeX sources in `paper/latex/` (4 body + 1 reference page, 23 verified references; earlier Markdown build retained in `paper/sections/` and `paper/build.py`);
+2. the **report**, 2 to 4 pages, observations and efforts for each task: `report/report.md` and built 3-page `report/report.pdf` (issues #15, #78);
 3. the **GitHub repo** of the pipeline and the code behind the paper: this repo (see "Pipeline code" below).
 
 Creating that folder and uploading is a human step (#16).
@@ -90,6 +90,21 @@ SHA-256 of the committed result files the paper's tables are drawn from (compute
 | `codification/results/iter2/cpu/self_dream_gate.txt` | same | `2bc62e9cf4a5f54dec3d045c24620104e25bb9a8c0571df81b8b8d66d0811ed5` (self-score, Dream gate) |
 | `codification/results/iter2/cpu/self_llada_gate.txt` | same | `a3d5d530c85c4352661afd16dc930e523b4e186edcca6305528b88b0374dea79` (self-score, LLaDA gate) |
 | `codification/results/iter2/cpu/pq_analyze.txt` | same | `c8a9b25b2a7a2bb05688b8304d08b18708c91bbf46794a0b11d3c122f654e57c` (per-question preservation test) |
+| `codification/DECISION_RERANK_PREREG.md` | `iter2/aaditya` @ 6e0e9de (PR #76) | `e764deb17cb9cf90477abef6b931d15924b808637fd524243ba146ffa943e0b4` (pre-registration) |
+| `codification/DECISION_RERANK_METHODS.md` | same | `87dd09fe5f62d24f0c3ae3d9de4bbf118fa947f624c4d49a78fc29a76466bb09` (methods, rates and post-review changes) |
+| `codification/DECISION_RERANK_RESULTS.md` | same | `34b88e92177af2df0663cf8e993803b4b632d423f909296de25238786daad2fc` (results and post-review corrections) |
+| `codification/results/gsm8k_preds.jsonl` | same | `2f21d3da57a559190064c613b50705f7b54524c52f08f6b00b645f5be5741b21` (GSM8K K=64 per-item predictions, 1,000 rows) |
+| `codification/results/humaneval_decision.json` | same | `e9271a545a7450091eda52fb9211ed9abe5269367f68ac524369fb14cfebe778` (HumanEval summary, fixed docstring parser + MBR-exec) |
+| `codification/results/humaneval_preds.jsonl` | same | `a1d558b2a043b0fa4de018d6d52abb2c8ac37a5ed4f7544e50aca8a7ddcbe04f` (HumanEval per-item predictions with `has_examples`, 144 rows) |
+| `codification/results/controls.json` | same | `d685b8b890fa58fb0ac9d0b8029a425ed65857716914ffa102d256ebd403880d` (controls summary; exact gold-injection chance 12.9%) |
+| `codification/results/receipts/README.md` | same | `fc20405a609f9c17e0900a4319f9e7e717dfcc4e1f55cf2765c9000348cf9c9c` (index of per-item control JSONL receipts in `results/receipts/`) |
+| `codification/results/k256_decision.json` | same | `a5c205c00b8ff480c1f06896ea8ab3b243017ccc58def47eb3f5bf0ddcc9b648` (K=256 step sensitivity summary, #80) |
+| `codification/results/k256_preds.jsonl` | same | `03da6b444888f10d527264edf7fa7a842814bb019578c2cfe701dc6dbcbe804a` (K=256 per-item predictions, 377 rows) |
+| `codification/results/k256_nsweep.json` | same | `f4976394d8c5116b313dcd64d4c4a62ebe59a0aa99faa2a98744bf47c4a49e88` (K=256 N-sweep, #83) |
+| `codification/results/humaneval_plus_result.json` | same | `f11f9ecd06ec1fb338589eccafb7f00b5171932a5af36f603ee217246d5a7549` (HumanEval+ re-execution, n=142, #84) |
+| `codification/results/humaneval_recognition_result.json` | same | `884233035c932ce2b072f40a2b104ce79e3be7c774250f38783b5eed69574c6a` (HumanEval recognition probe, 59/60, #81a) |
+| `codification/results/humaneval_recognition_nodoc_result.json` | same | `f67d8f8869fce4c9f4921ed8304985ca38d268c8f7a98f38a9a2b401846fae27` (HumanEval no-docstring control, 16/20, #81a) |
+| `codification/results/weak_vote_threshold.json` | same | `0b650d601bae044f98f04f9664b93577096cbd57347475ffce7ce6dbef297d89` (dev-tuned weak-vote hybrid rule T=5, #81b) |
 
 Iteration-2 rows added 24 Nov (same `git show … | sha256sum` method; `cpu/*` digests are byte-identical to the report's `report/evidence/iter2/` copies). GPU time, from the records (not per-job accounting):
 - **Iteration 1:** about 34 GPU-hours, a planned estimate, not measured (`codification/ITERATION_1.md` run plan, branch `assignment/codification`).
