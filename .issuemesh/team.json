@@ -36,6 +36,11 @@
           "name": "claude",
           "runtime": "claude-code",
           "wip": 2
+        },
+        {
+          "name": "gemini",
+          "runtime": "gemini",
+          "wip": 2
         }
       ],
       "skills": [
