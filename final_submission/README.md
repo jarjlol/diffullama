@@ -4,7 +4,7 @@
 
 The folder named **Final Submission** in our group folder holds exactly three items:
 
-1. the **paper**, 4 pages of content plus 1 reference page ("4+1(reference) page paper"): canonical built PDF at `paper/paper.pdf` from editable LaTeX sources in `paper/latex/` (4 body + 1 reference page, 23 verified references; earlier Markdown build retained in `paper/sections/` and `paper/build.py`);
+1. the **paper**, 4 pages of content plus 1 reference page ("4+1(reference) page paper"): canonical built PDF at `paper/paper.pdf` from editable IEEEtran journal LaTeX sources in `paper/latex/` (4 body + 1 reference page, 23 verified references; rebuild with Tectonic or `pdflatex`+`bibtex`; earlier Markdown build retained in `paper/sections/` and `paper/build.py`);
 2. the **report**, 2 to 4 pages, observations and efforts for each task: `report/report.md` and built 3-page `report/report.pdf` (issues #15, #78);
 3. the **GitHub repo** of the pipeline and the code behind the paper: this repo (see "Pipeline code" below).
 
