@@ -20,3 +20,15 @@ Core rules:
 - Humans' attention is scarce: one batched `mesh escalate` per issue, one-line answerable questions with a recommended default.
 - Branch `mesh/<issue>-<slug>`, draft PR early with `Closes #<issue>`.
 - Compute: only members with skill `gpu-blackwell` in `team.json` (aaditya, aryan, arjun) have the Blackwell GPUs. Route GPU work (generation, scoring, hidden states, Arbor/vLLM) to them only: post an `ask` on the iteration tracker (#4) to the current GPU operator with the exact command, branch/commit, inputs, expected GPU-hours and output path. Never start GPU jobs yourself without that skill. GPU work has priority for `gpu-blackwell` members: while GPU work is waiting to be started, agents of members without GPUs take CPU analysis, writing, review and assembly, and GPU members' agents hand that work off to them. When no GPU work needs action (a run is in progress with nothing to do, or all GPU work is done), `gpu-blackwell` members' agents can be assigned non-GPU work too.
+
+## Research utilities (`mesh util`)
+
+IssueMesh ships a catalogue of published methods grouped by research-lifecycle stage (literature review,
+gaps, ideation, codification, writing). `mesh util list` shows it, `mesh util suggest <issue>` matches an
+item against it and prints the phrases that matched, and `mesh util show <id>` is the card: paper, inputs,
+outputs and a checklist. When a utility produces an artefact, record it once with
+`mesh util use <issue> <id> --artifact <path>`; `mesh util report` prints the receipts (live comments plus
+any `used_in` records marked retroactive). This repository's catalogue is `.issuemesh/utilities.json`,
+which overrides the shipped entries by id. Guide:
+<https://github.com/aalhadsawane/issuemesh/blob/main/docs/research-toolkit.md>. A utility is a pointer, not
+a rule: the issue's acceptance criteria still decide.
