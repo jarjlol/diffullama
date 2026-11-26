@@ -1,0 +1,384 @@
+{
+  "issue": 80,
+  "status": "exploratory step-sensitivity, not a pre-registered primary test",
+  "split": "test",
+  "step": 256,
+  "models": [
+    "dream-base@k256",
+    "llada-base@k256"
+  ],
+  "n": {
+    "dream-base@k256": 185,
+    "llada-base@k256": 192
+  },
+  "table": {
+    "dream-base@k256": {
+      "first": 0.7405405405405405,
+      "majority": 0.8432432432432433,
+      "ar.qwen7b-cut.sum": 0.7567567567567568,
+      "ar.qwen7b-cut.mean": 0.7351351351351352,
+      "decision.listwise": 0.8756756756756757,
+      "random(exp.)": 0.7308108108108108,
+      "oracle": 0.9351351351351351,
+      "n": 185
+    },
+    "llada-base@k256": {
+      "first": 0.7239583333333334,
+      "majority": 0.7916666666666666,
+      "ar.qwen7b-cut.sum": 0.765625,
+      "ar.qwen7b-cut.mean": 0.75,
+      "decision.listwise": 0.8385416666666666,
+      "random(exp.)": 0.7218749999999999,
+      "oracle": 0.8958333333333334,
+      "n": 192
+    }
+  },
+  "coverage": {
+    "dream-base@k256": {
+      "first": 1.0,
+      "majority": 1.0,
+      "ar.qwen7b-cut.sum": 1.0,
+      "ar.qwen7b-cut.mean": 1.0,
+      "decision.listwise": 1.0
+    },
+    "llada-base@k256": {
+      "first": 1.0,
+      "majority": 1.0,
+      "ar.qwen7b-cut.sum": 1.0,
+      "ar.qwen7b-cut.mean": 1.0,
+      "decision.listwise": 1.0
+    }
+  },
+  "macro": {
+    "first": 0.732249436936937,
+    "majority": 0.817454954954955,
+    "ar.qwen7b-cut.sum": 0.7611908783783784,
+    "ar.qwen7b-cut.mean": 0.7425675675675676,
+    "decision.listwise": 0.8571086711711712,
+    "random(exp.)": 0.7263429054054054,
+    "oracle": 0.9154842342342342
+  },
+  "tests": {
+    "decision.listwise vs majority": {
+      "delta": 0.03965371621621622,
+      "ci95": [
+        0.008903579298433684,
+        0.07092198581560283
+      ],
+      "p_boot": 0.0104,
+      "p_boot_leq0": 0.0052,
+      "n_clusters": 203,
+      "n_boot": 10000,
+      "per_model": {
+        "dream-base@k256": {
+          "delta": 0.032432432432432434,
+          "ci95": [
+            -0.010810810810810811,
+            0.07567567567567568
+          ],
+          "p_boot": 0.1684,
+          "p_boot_leq0": 0.0842,
+          "n_clusters": 185,
+          "n_boot": 10000
+        },
+        "llada-base@k256": {
+          "delta": 0.046875,
+          "ci95": [
+            0.0,
+            0.09375
+          ],
+          "p_boot": 0.0718,
+          "p_boot_leq0": 0.0359,
+          "n_clusters": 192,
+          "n_boot": 10000
+        }
+      },
+      "mcnemar": {
+        "dream-base@k256": {
+          "delta": 0.032432432432432434,
+          "p": 0.210113525390625,
+          "wins": 11,
+          "losses": 5,
+          "n": 185
+        },
+        "llada-base@k256": {
+          "delta": 0.046875,
+          "p": 0.0931396484375,
+          "wins": 16,
+          "losses": 7,
+          "n": 192
+        }
+      }
+    },
+    "ar.qwen7b-cut.sum vs majority": {
+      "delta": -0.05626407657657658,
+      "ci95": [
+        -0.08949421883009626,
+        -0.023942378864658657
+      ],
+      "p_boot": 0.0005999999999999339,
+      "p_boot_leq0": 0.9997,
+      "n_clusters": 203,
+      "n_boot": 10000,
+      "per_model": {
+        "dream-base@k256": {
+          "delta": -0.08648648648648649,
+          "ci95": [
+            -0.14054054054054055,
+            -0.032432432432432434
+          ],
+          "p_boot": 0.0014000000000000679,
+          "p_boot_leq0": 0.9993,
+          "n_clusters": 185,
+          "n_boot": 10000
+        },
+        "llada-base@k256": {
+          "delta": -0.026041666666666668,
+          "ci95": [
+            -0.06770833333333333,
+            0.015625
+          ],
+          "p_boot": 0.17480000000000007,
+          "p_boot_leq0": 0.9126,
+          "n_clusters": 192,
+          "n_boot": 10000
+        }
+      },
+      "mcnemar": {
+        "dream-base@k256": {
+          "delta": -0.08648648648648649,
+          "p": 0.002493917942047119,
+          "wins": 5,
+          "losses": 21,
+          "n": 185
+        },
+        "llada-base@k256": {
+          "delta": -0.02604166666666663,
+          "p": 0.332305908203125,
+          "wins": 6,
+          "losses": 11,
+          "n": 192
+        }
+      }
+    },
+    "ar.qwen7b-cut.mean vs majority": {
+      "delta": -0.07488738738738739,
+      "ci95": [
+        -0.11512409159467983,
+        -0.03588156574105052
+      ],
+      "p_boot": 0.0,
+      "p_boot_leq0": 1.0,
+      "n_clusters": 203,
+      "n_boot": 10000,
+      "per_model": {
+        "dream-base@k256": {
+          "delta": -0.10810810810810811,
+          "ci95": [
+            -0.16756756756756758,
+            -0.04864864864864865
+          ],
+          "p_boot": 0.00019999999999997797,
+          "p_boot_leq0": 0.9999,
+          "n_clusters": 185,
+          "n_boot": 10000
+        },
+        "llada-base@k256": {
+          "delta": -0.041666666666666664,
+          "ci95": [
+            -0.08854166666666667,
+            0.005208333333333333
+          ],
+          "p_boot": 0.0616000000000001,
+          "p_boot_leq0": 0.9692,
+          "n_clusters": 192,
+          "n_boot": 10000
+        }
+      },
+      "mcnemar": {
+        "dream-base@k256": {
+          "delta": -0.10810810810810811,
+          "p": 0.0005350527353584766,
+          "wins": 6,
+          "losses": 26,
+          "n": 185
+        },
+        "llada-base@k256": {
+          "delta": -0.04166666666666663,
+          "p": 0.13380050659179688,
+          "wins": 7,
+          "losses": 15,
+          "n": 192
+        }
+      }
+    },
+    "decision.listwise vs ar.qwen7b-cut.sum": {
+      "delta": 0.0959177927927928,
+      "ci95": [
+        0.058823529411764705,
+        0.13426028001322896
+      ],
+      "p_boot": 0.0,
+      "p_boot_leq0": 0.0,
+      "n_clusters": 203,
+      "n_boot": 10000,
+      "per_model": {
+        "dream-base@k256": {
+          "delta": 0.11891891891891893,
+          "ci95": [
+            0.05945945945945946,
+            0.1783783783783784
+          ],
+          "p_boot": 0.0,
+          "p_boot_leq0": 0.0,
+          "n_clusters": 185,
+          "n_boot": 10000
+        },
+        "llada-base@k256": {
+          "delta": 0.07291666666666667,
+          "ci95": [
+            0.020833333333333332,
+            0.125
+          ],
+          "p_boot": 0.0044,
+          "p_boot_leq0": 0.0022,
+          "n_clusters": 192,
+          "n_boot": 10000
+        }
+      },
+      "mcnemar": {
+        "dream-base@k256": {
+          "delta": 0.11891891891891893,
+          "p": 0.00011307420209050179,
+          "wins": 27,
+          "losses": 5,
+          "n": 185
+        },
+        "llada-base@k256": {
+          "delta": 0.07291666666666663,
+          "p": 0.009355306625366211,
+          "wins": 20,
+          "losses": 6,
+          "n": 192
+        }
+      }
+    }
+  },
+  "matched_k64": {
+    "per_model": {
+      "dream-base@k256": {
+        "n": 185,
+        "k256": {
+          "decision.listwise": 0.8756756756756757,
+          "majority": 0.8432432432432433,
+          "delta": 0.032432432432432434
+        },
+        "k64": {
+          "decision.listwise": 0.7783783783783784,
+          "majority": 0.7405405405405405,
+          "delta": 0.037837837837837895
+        }
+      },
+      "llada-base@k256": {
+        "n": 192,
+        "k256": {
+          "decision.listwise": 0.8385416666666666,
+          "majority": 0.7916666666666666,
+          "delta": 0.046875
+        },
+        "k64": {
+          "decision.listwise": 0.7760416666666666,
+          "majority": 0.7447916666666666,
+          "delta": 0.03125
+        }
+      }
+    },
+    "full_k64": {
+      "dream-base": {
+        "decision.listwise": 0.77,
+        "majority": 0.724
+      },
+      "llada-base": {
+        "decision.listwise": 0.79,
+        "majority": 0.732
+      }
+    },
+    "did": {
+      "delta": 0.005109797297297297,
+      "ci95": [
+        -0.040252519402293525,
+        0.05051230085008163
+      ],
+      "p_boot": 0.8202,
+      "p_boot_leq0": 0.4101,
+      "n_clusters": 203,
+      "n_boot": 10000
+    },
+    "did_per_model": {
+      "dream-base@k256": {
+        "delta": -0.005405405405405406,
+        "ci95": [
+          -0.07567567567567568,
+          0.06486486486486487
+        ],
+        "p_boot": 0.8008,
+        "p_boot_leq0": 0.5996,
+        "n_clusters": 185,
+        "n_boot": 10000
+      },
+      "llada-base@k256": {
+        "delta": 0.015625,
+        "ci95": [
+          -0.041666666666666664,
+          0.07291666666666667
+        ],
+        "p_boot": 0.673,
+        "p_boot_leq0": 0.3365,
+        "n_clusters": 192,
+        "n_boot": 10000
+      }
+    }
+  },
+  "cost": {
+    "requests": 377,
+    "input_tokens_total": 632183,
+    "input_tokens_mean": 1676.8779840848806,
+    "output_tokens_total": 377,
+    "latency_s_median": 0.421,
+    "latency_s_p95": 0.619,
+    "latency_s_max": 1.866,
+    "api_model": [
+      "perplexity/pplx-decider-flash-v1.3-20261112"
+    ],
+    "cost_usd_free_tier": 0.0,
+    "cost_usd_at_0.01_per_1m_input": 0.006322,
+    "per_model": {
+      "dream-base@k256": {
+        "requests": 185,
+        "input_tokens": 267183,
+        "latency_s_median": 0.411
+      },
+      "llada-base@k256": {
+        "requests": 192,
+        "input_tokens": 365000,
+        "latency_s_median": 0.427
+      }
+    },
+    "k64_reference": {
+      "requests": 1000,
+      "wall_seconds": 50,
+      "workers": 12,
+      "input_tokens_mean": 1544,
+      "source": "DECISION_RERANK_RESULTS.md (K=64 run)"
+    }
+  },
+  "config": {
+    "bootstrap": 10000,
+    "seed": 0,
+    "api_model": [
+      "perplexity/pplx-decider-flash-v1.3-20261112"
+    ],
+    "prompt": "make_openrouter_prompts.py listwise (same as GSM8K run)",
+    "candidate_text": "decision_rerank.candidate_text (cut_after_answer(task.trim))"
+  }
+}

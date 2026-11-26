@@ -1,0 +1,571 @@
+{
+  "issue": 80,
+  "cross_post": 83,
+  "status": "exploratory N sweep on the K=256 subset; not pre-registered",
+  "models": [
+    "dream-base@k256",
+    "llada-base@k256"
+  ],
+  "questions_per_model": 100,
+  "selection": "first N candidates in file order, questions = first 100 uids sorted",
+  "sweep": {
+    "2": {
+      "options": 2,
+      "per_model": {
+        "dream-base@k256": {
+          "n_questions": 100,
+          "decision.listwise": 0.79,
+          "majority": 0.7,
+          "first": 0.7,
+          "oracle": 0.82,
+          "random(exp.)": 0.71,
+          "delta": 0.09000000000000008
+        },
+        "llada-base@k256": {
+          "n_questions": 100,
+          "decision.listwise": 0.76,
+          "majority": 0.72,
+          "first": 0.72,
+          "oracle": 0.78,
+          "random(exp.)": 0.7,
+          "delta": 0.040000000000000036
+        }
+      },
+      "macro": {
+        "decision.listwise": 0.775,
+        "majority": 0.71,
+        "first": 0.71,
+        "oracle": 0.8,
+        "random(exp.)": 0.705,
+        "delta": 0.06500000000000006
+      },
+      "bootstrap": {
+        "delta": 0.065,
+        "ci95": [
+          0.025833333333333333,
+          0.10516148206855558
+        ],
+        "p_boot": 0.001,
+        "p_boot_leq0": 0.0005,
+        "n_clusters": 108,
+        "n_boot": 10000
+      },
+      "per_model_bootstrap": {
+        "dream-base@k256": {
+          "delta": 0.09,
+          "ci95": [
+            0.03,
+            0.15
+          ],
+          "p_boot": 0.004,
+          "p_boot_leq0": 0.002,
+          "n_clusters": 100,
+          "n_boot": 10000
+        },
+        "llada-base@k256": {
+          "delta": 0.04,
+          "ci95": [
+            -0.01,
+            0.1
+          ],
+          "p_boot": 0.2024,
+          "p_boot_leq0": 0.1012,
+          "n_clusters": 100,
+          "n_boot": 10000
+        }
+      },
+      "mcnemar": {
+        "dream-base@k256": {
+          "delta": 0.09000000000000008,
+          "p": 0.01171875,
+          "wins": 10,
+          "losses": 1,
+          "n": 100
+        },
+        "llada-base@k256": {
+          "delta": 0.040000000000000036,
+          "p": 0.2890625,
+          "wins": 6,
+          "losses": 2,
+          "n": 100
+        }
+      },
+      "cost": {
+        "requests": 200,
+        "input_tokens_total": 91411,
+        "input_tokens_mean": 457.055,
+        "output_tokens_total": 200,
+        "latency_s_median": 0.409,
+        "latency_s_p95": 1.252,
+        "latency_s_max": 1.467,
+        "api_model": [
+          "perplexity/pplx-decider-flash-v1.3-20261112"
+        ],
+        "cost_usd_free_tier": 0.0,
+        "cost_usd_at_0.01_per_1m_input": 0.000914,
+        "per_model": {
+          "dream-base@k256": {
+            "requests": 100,
+            "input_tokens": 40514,
+            "latency_s_median": 0.416
+          },
+          "llada-base@k256": {
+            "requests": 100,
+            "input_tokens": 50897,
+            "latency_s_median": 0.399
+          }
+        }
+      }
+    },
+    "4": {
+      "options": 4,
+      "per_model": {
+        "dream-base@k256": {
+          "n_questions": 100,
+          "decision.listwise": 0.81,
+          "majority": 0.77,
+          "first": 0.7,
+          "oracle": 0.85,
+          "random(exp.)": 0.6975,
+          "delta": 0.040000000000000036
+        },
+        "llada-base@k256": {
+          "n_questions": 100,
+          "decision.listwise": 0.75,
+          "majority": 0.75,
+          "first": 0.72,
+          "oracle": 0.81,
+          "random(exp.)": 0.7,
+          "delta": 0.0
+        }
+      },
+      "macro": {
+        "decision.listwise": 0.78,
+        "majority": 0.76,
+        "first": 0.71,
+        "oracle": 0.8300000000000001,
+        "random(exp.)": 0.69875,
+        "delta": 0.020000000000000018
+      },
+      "bootstrap": {
+        "delta": 0.02,
+        "ci95": [
+          -0.019897959183673472,
+          0.059905990599059905
+        ],
+        "p_boot": 0.3288,
+        "p_boot_leq0": 0.1644,
+        "n_clusters": 108,
+        "n_boot": 10000
+      },
+      "per_model_bootstrap": {
+        "dream-base@k256": {
+          "delta": 0.04,
+          "ci95": [
+            0.0,
+            0.09
+          ],
+          "p_boot": 0.1316,
+          "p_boot_leq0": 0.0658,
+          "n_clusters": 100,
+          "n_boot": 10000
+        },
+        "llada-base@k256": {
+          "delta": 0.0,
+          "ci95": [
+            -0.06,
+            0.06
+          ],
+          "p_boot": 0.8822000000000001,
+          "p_boot_leq0": 0.5589,
+          "n_clusters": 100,
+          "n_boot": 10000
+        }
+      },
+      "mcnemar": {
+        "dream-base@k256": {
+          "delta": 0.040000000000000036,
+          "p": 0.21875,
+          "wins": 5,
+          "losses": 1,
+          "n": 100
+        },
+        "llada-base@k256": {
+          "delta": 0.0,
+          "p": 1.0,
+          "wins": 5,
+          "losses": 5,
+          "n": 100
+        }
+      },
+      "cost": {
+        "requests": 200,
+        "input_tokens_total": 152777,
+        "input_tokens_mean": 763.885,
+        "output_tokens_total": 200,
+        "latency_s_median": 0.402,
+        "latency_s_p95": 0.474,
+        "latency_s_max": 0.589,
+        "api_model": [
+          "perplexity/pplx-decider-flash-v1.3-20261112"
+        ],
+        "cost_usd_free_tier": 0.0,
+        "cost_usd_at_0.01_per_1m_input": 0.001528,
+        "per_model": {
+          "dream-base@k256": {
+            "requests": 100,
+            "input_tokens": 66435,
+            "latency_s_median": 0.405
+          },
+          "llada-base@k256": {
+            "requests": 100,
+            "input_tokens": 86342,
+            "latency_s_median": 0.401
+          }
+        }
+      }
+    },
+    "6": {
+      "options": 6,
+      "per_model": {
+        "dream-base@k256": {
+          "n_questions": 100,
+          "decision.listwise": 0.84,
+          "majority": 0.8,
+          "first": 0.7,
+          "oracle": 0.9,
+          "random(exp.)": 0.705,
+          "delta": 0.039999999999999925
+        },
+        "llada-base@k256": {
+          "n_questions": 100,
+          "decision.listwise": 0.79,
+          "majority": 0.75,
+          "first": 0.72,
+          "oracle": 0.83,
+          "random(exp.)": 0.7,
+          "delta": 0.040000000000000036
+        }
+      },
+      "macro": {
+        "decision.listwise": 0.815,
+        "majority": 0.775,
+        "first": 0.71,
+        "oracle": 0.865,
+        "random(exp.)": 0.7024999999999999,
+        "delta": 0.03999999999999998
+      },
+      "bootstrap": {
+        "delta": 0.04,
+        "ci95": [
+          0.0,
+          0.08118872549019608
+        ],
+        "p_boot": 0.057,
+        "p_boot_leq0": 0.0285,
+        "n_clusters": 108,
+        "n_boot": 10000
+      },
+      "per_model_bootstrap": {
+        "dream-base@k256": {
+          "delta": 0.04,
+          "ci95": [
+            -0.01,
+            0.1
+          ],
+          "p_boot": 0.2022,
+          "p_boot_leq0": 0.1011,
+          "n_clusters": 100,
+          "n_boot": 10000
+        },
+        "llada-base@k256": {
+          "delta": 0.04,
+          "ci95": [
+            -0.02,
+            0.1
+          ],
+          "p_boot": 0.2462,
+          "p_boot_leq0": 0.1231,
+          "n_clusters": 100,
+          "n_boot": 10000
+        }
+      },
+      "mcnemar": {
+        "dream-base@k256": {
+          "delta": 0.039999999999999925,
+          "p": 0.2890625,
+          "wins": 6,
+          "losses": 2,
+          "n": 100
+        },
+        "llada-base@k256": {
+          "delta": 0.040000000000000036,
+          "p": 0.34375,
+          "wins": 7,
+          "losses": 3,
+          "n": 100
+        }
+      },
+      "cost": {
+        "requests": 200,
+        "input_tokens_total": 215016,
+        "input_tokens_mean": 1075.08,
+        "output_tokens_total": 200,
+        "latency_s_median": 0.411,
+        "latency_s_p95": 0.478,
+        "latency_s_max": 0.544,
+        "api_model": [
+          "perplexity/pplx-decider-flash-v1.3-20261112"
+        ],
+        "cost_usd_free_tier": 0.0,
+        "cost_usd_at_0.01_per_1m_input": 0.00215,
+        "per_model": {
+          "dream-base@k256": {
+            "requests": 100,
+            "input_tokens": 93235,
+            "latency_s_median": 0.418
+          },
+          "llada-base@k256": {
+            "requests": 100,
+            "input_tokens": 121781,
+            "latency_s_median": 0.408
+          }
+        }
+      }
+    },
+    "8": {
+      "options": 8,
+      "per_model": {
+        "dream-base@k256": {
+          "n_questions": 100,
+          "decision.listwise": 0.83,
+          "majority": 0.81,
+          "first": 0.7,
+          "oracle": 0.92,
+          "random(exp.)": 0.705,
+          "delta": 0.019999999999999907
+        },
+        "llada-base@k256": {
+          "n_questions": 100,
+          "decision.listwise": 0.79,
+          "majority": 0.76,
+          "first": 0.72,
+          "oracle": 0.84,
+          "random(exp.)": 0.7,
+          "delta": 0.030000000000000027
+        }
+      },
+      "macro": {
+        "decision.listwise": 0.81,
+        "majority": 0.785,
+        "first": 0.71,
+        "oracle": 0.88,
+        "random(exp.)": 0.7024999999999999,
+        "delta": 0.024999999999999967
+      },
+      "bootstrap": {
+        "delta": 0.025,
+        "ci95": [
+          -0.015716595916717202,
+          0.06644570707070707
+        ],
+        "p_boot": 0.2656,
+        "p_boot_leq0": 0.1328,
+        "n_clusters": 108,
+        "n_boot": 10000
+      },
+      "per_model_bootstrap": {
+        "dream-base@k256": {
+          "delta": 0.02,
+          "ci95": [
+            -0.04,
+            0.08
+          ],
+          "p_boot": 0.6422,
+          "p_boot_leq0": 0.3211,
+          "n_clusters": 100,
+          "n_boot": 10000
+        },
+        "llada-base@k256": {
+          "delta": 0.03,
+          "ci95": [
+            -0.03,
+            0.09
+          ],
+          "p_boot": 0.3858,
+          "p_boot_leq0": 0.1929,
+          "n_clusters": 100,
+          "n_boot": 10000
+        }
+      },
+      "mcnemar": {
+        "dream-base@k256": {
+          "delta": 0.019999999999999907,
+          "p": 0.75390625,
+          "wins": 6,
+          "losses": 4,
+          "n": 100
+        },
+        "llada-base@k256": {
+          "delta": 0.030000000000000027,
+          "p": 0.5078125,
+          "wins": 6,
+          "losses": 3,
+          "n": 100
+        }
+      },
+      "cost": {
+        "requests": 200,
+        "input_tokens_total": 277192,
+        "input_tokens_mean": 1385.96,
+        "output_tokens_total": 200,
+        "latency_s_median": 0.412,
+        "latency_s_p95": 0.52,
+        "latency_s_max": 0.943,
+        "api_model": [
+          "perplexity/pplx-decider-flash-v1.3-20261112"
+        ],
+        "cost_usd_free_tier": 0.0,
+        "cost_usd_at_0.01_per_1m_input": 0.002772,
+        "per_model": {
+          "dream-base@k256": {
+            "requests": 100,
+            "input_tokens": 119467,
+            "latency_s_median": 0.414
+          },
+          "llada-base@k256": {
+            "requests": 100,
+            "input_tokens": 157725,
+            "latency_s_median": 0.412
+          }
+        }
+      }
+    },
+    "10": {
+      "options": 10,
+      "per_model": {
+        "dream-base@k256": {
+          "n_questions": 100,
+          "decision.listwise": 0.86,
+          "majority": 0.82,
+          "first": 0.7,
+          "oracle": 0.94,
+          "random(exp.)": 0.706,
+          "delta": 0.040000000000000036
+        },
+        "llada-base@k256": {
+          "n_questions": 100,
+          "decision.listwise": 0.79,
+          "majority": 0.76,
+          "first": 0.72,
+          "oracle": 0.85,
+          "random(exp.)": 0.703,
+          "delta": 0.030000000000000027
+        }
+      },
+      "macro": {
+        "decision.listwise": 0.825,
+        "majority": 0.79,
+        "first": 0.71,
+        "oracle": 0.895,
+        "random(exp.)": 0.7044999999999999,
+        "delta": 0.03500000000000003
+      },
+      "bootstrap": {
+        "delta": 0.035,
+        "ci95": [
+          -0.00980392156862745,
+          0.08
+        ],
+        "p_boot": 0.1308,
+        "p_boot_leq0": 0.0654,
+        "n_clusters": 108,
+        "n_boot": 10000
+      },
+      "per_model_bootstrap": {
+        "dream-base@k256": {
+          "delta": 0.04,
+          "ci95": [
+            -0.02,
+            0.1
+          ],
+          "p_boot": 0.2602,
+          "p_boot_leq0": 0.1301,
+          "n_clusters": 100,
+          "n_boot": 10000
+        },
+        "llada-base@k256": {
+          "delta": 0.03,
+          "ci95": [
+            -0.03,
+            0.09
+          ],
+          "p_boot": 0.4336,
+          "p_boot_leq0": 0.2168,
+          "n_clusters": 100,
+          "n_boot": 10000
+        }
+      },
+      "mcnemar": {
+        "dream-base@k256": {
+          "delta": 0.040000000000000036,
+          "p": 0.34375,
+          "wins": 7,
+          "losses": 3,
+          "n": 100
+        },
+        "llada-base@k256": {
+          "delta": 0.030000000000000027,
+          "p": 0.548828125,
+          "wins": 7,
+          "losses": 4,
+          "n": 100
+        }
+      },
+      "cost": {
+        "requests": 200,
+        "input_tokens_total": 338708,
+        "input_tokens_mean": 1693.54,
+        "output_tokens_total": 200,
+        "latency_s_median": 0.419,
+        "latency_s_p95": 0.496,
+        "latency_s_max": 0.693,
+        "api_model": [
+          "perplexity/pplx-decider-flash-v1.3-20261112"
+        ],
+        "cost_usd_free_tier": 0.0,
+        "cost_usd_at_0.01_per_1m_input": 0.003387,
+        "per_model": {
+          "dream-base@k256": {
+            "requests": 100,
+            "input_tokens": 145877,
+            "latency_s_median": 0.405
+          },
+          "llada-base@k256": {
+            "requests": 100,
+            "input_tokens": 192831,
+            "latency_s_median": 0.429
+          }
+        }
+      }
+    }
+  },
+  "n10_vs_main_consistency": {
+    "dream-base@k256": {
+      "n": 100,
+      "sweep_n10": 0.86,
+      "main_same_items": 0.86,
+      "diff": 0.0
+    },
+    "llada-base@k256": {
+      "n": 100,
+      "sweep_n10": 0.79,
+      "main_same_items": 0.79,
+      "diff": 0.0
+    }
+  },
+  "config": {
+    "bootstrap": 10000,
+    "seed": 0
+  }
+}

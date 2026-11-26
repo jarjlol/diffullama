@@ -1,0 +1,1481 @@
+{
+ "n_requests": 60,
+ "n_scored": 60,
+ "instructions": "Which option correctly implements the function and will pass the hidden tests?",
+ "model": "perplexity/pplx-decider-flash-v1.3:free",
+ "splits": {
+  "dev": {
+   "n": 20,
+   "correct": 20,
+   "rate": 1.0,
+   "wilson95": [
+    0.8388698745050667,
+    1.0
+   ],
+   "mean_p_canonical": 0.974992910494952,
+   "canonical_at_A": {
+    "n": 13,
+    "correct": 13,
+    "rate": 1.0
+   },
+   "canonical_at_B": {
+    "n": 7,
+    "correct": 7,
+    "rate": 1.0
+   },
+   "by_mutation_kind": {
+    "call": {
+     "n": 3,
+     "correct": 3,
+     "rate": 1.0
+    },
+    "cmp": {
+     "n": 1,
+     "correct": 1,
+     "rate": 1.0
+    },
+    "op": {
+     "n": 16,
+     "correct": 16,
+     "rate": 1.0
+    }
+   },
+   "items": [
+    {
+     "uid": "he-recog-dev-HumanEval-104",
+     "task_id": "HumanEval/104",
+     "split": "dev",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.996909025532606,
+     "p_mutant": 0.0030909744673940386,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.446,
+     "usage": {
+      "input_tokens": 589,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-dev-HumanEval-108",
+     "task_id": "HumanEval/108",
+     "split": "dev",
+     "canonical_option": "B",
+     "pick": "B",
+     "p_canonical": 0.9742090268293264,
+     "p_mutant": 0.02579097317067353,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.384,
+     "usage": {
+      "input_tokens": 676,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-dev-HumanEval-121",
+     "task_id": "HumanEval/121",
+     "split": "dev",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.9951046718222721,
+     "p_mutant": 0.004895328177727918,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.41,
+     "usage": {
+      "input_tokens": 473,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-dev-HumanEval-14",
+     "task_id": "HumanEval/14",
+     "split": "dev",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.9980863062298887,
+     "p_mutant": 0.0019136937701113152,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.385,
+     "usage": {
+      "input_tokens": 358,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-dev-HumanEval-146",
+     "task_id": "HumanEval/146",
+     "split": "dev",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.9978272307433022,
+     "p_mutant": 0.0021727692566979504,
+     "correct": true,
+     "mutation_kind": "cmp",
+     "latency_s": 0.471,
+     "usage": {
+      "input_tokens": 685,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-dev-HumanEval-148",
+     "task_id": "HumanEval/148",
+     "split": "dev",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.7728470774510222,
+     "p_mutant": 0.22715292254897776,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.429,
+     "usage": {
+      "input_tokens": 1069,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-dev-HumanEval-2",
+     "task_id": "HumanEval/2",
+     "split": "dev",
+     "canonical_option": "B",
+     "pick": "B",
+     "p_canonical": 0.9976324719982932,
+     "p_mutant": 0.0023675280017067665,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.417,
+     "usage": {
+      "input_tokens": 387,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-dev-HumanEval-27",
+     "task_id": "HumanEval/27",
+     "split": "dev",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.9986424699832539,
+     "p_mutant": 0.0013575300167460657,
+     "correct": true,
+     "mutation_kind": "call",
+     "latency_s": 0.455,
+     "usage": {
+      "input_tokens": 268,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-dev-HumanEval-29",
+     "task_id": "HumanEval/29",
+     "split": "dev",
+     "canonical_option": "B",
+     "pick": "B",
+     "p_canonical": 0.9989600362480129,
+     "p_mutant": 0.0010399637519871538,
+     "correct": true,
+     "mutation_kind": "call",
+     "latency_s": 0.425,
+     "usage": {
+      "input_tokens": 423,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-dev-HumanEval-50",
+     "task_id": "HumanEval/50",
+     "split": "dev",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.9469326057793358,
+     "p_mutant": 0.0530673942206642,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.409,
+     "usage": {
+      "input_tokens": 507,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-dev-HumanEval-54",
+     "task_id": "HumanEval/54",
+     "split": "dev",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.9897423492533484,
+     "p_mutant": 0.010257650746651564,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.418,
+     "usage": {
+      "input_tokens": 588,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-dev-HumanEval-6",
+     "task_id": "HumanEval/6",
+     "split": "dev",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.9967406021056391,
+     "p_mutant": 0.0032593978943609324,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.424,
+     "usage": {
+      "input_tokens": 644,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-dev-HumanEval-67",
+     "task_id": "HumanEval/67",
+     "split": "dev",
+     "canonical_option": "B",
+     "pick": "B",
+     "p_canonical": 0.9982215661723526,
+     "p_mutant": 0.0017784338276474788,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.384,
+     "usage": {
+      "input_tokens": 875,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-dev-HumanEval-68",
+     "task_id": "HumanEval/68",
+     "split": "dev",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.9978721350049875,
+     "p_mutant": 0.002127864995012461,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.393,
+     "usage": {
+      "input_tokens": 1258,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-dev-HumanEval-71",
+     "task_id": "HumanEval/71",
+     "split": "dev",
+     "canonical_option": "B",
+     "pick": "B",
+     "p_canonical": 0.8880562175483897,
+     "p_mutant": 0.11194378245161031,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.389,
+     "usage": {
+      "input_tokens": 642,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-dev-HumanEval-82",
+     "task_id": "HumanEval/82",
+     "split": "dev",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.9753808670059475,
+     "p_mutant": 0.02461913299405245,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.389,
+     "usage": {
+      "input_tokens": 445,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-dev-HumanEval-88",
+     "task_id": "HumanEval/88",
+     "split": "dev",
+     "canonical_option": "B",
+     "pick": "B",
+     "p_canonical": 0.993166459743146,
+     "p_mutant": 0.006833540256853881,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.455,
+     "usage": {
+      "input_tokens": 815,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-dev-HumanEval-9",
+     "task_id": "HumanEval/9",
+     "split": "dev",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.9989151650965691,
+     "p_mutant": 0.0010848349034307935,
+     "correct": true,
+     "mutation_kind": "call",
+     "latency_s": 0.44,
+     "usage": {
+      "input_tokens": 545,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-dev-HumanEval-94",
+     "task_id": "HumanEval/94",
+     "split": "dev",
+     "canonical_option": "B",
+     "pick": "B",
+     "p_canonical": 0.9883625538810697,
+     "p_mutant": 0.011637446118930347,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.408,
+     "usage": {
+      "input_tokens": 1315,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-dev-HumanEval-97",
+     "task_id": "HumanEval/97",
+     "split": "dev",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.9962493714702747,
+     "p_mutant": 0.0037506285297252136,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.438,
+     "usage": {
+      "input_tokens": 495,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    }
+   ]
+  },
+  "test": {
+   "n": 40,
+   "correct": 39,
+   "rate": 0.975,
+   "wilson95": [
+    0.8711834051199223,
+    0.9955732825922052
+   ],
+   "mean_p_canonical": 0.9637721780603368,
+   "canonical_at_A": {
+    "n": 21,
+    "correct": 20,
+    "rate": 0.9523809523809523
+   },
+   "canonical_at_B": {
+    "n": 19,
+    "correct": 19,
+    "rate": 1.0
+   },
+   "by_mutation_kind": {
+    "call": {
+     "n": 2,
+     "correct": 2,
+     "rate": 1.0
+    },
+    "cmp": {
+     "n": 3,
+     "correct": 3,
+     "rate": 1.0
+    },
+    "const": {
+     "n": 1,
+     "correct": 1,
+     "rate": 1.0
+    },
+    "op": {
+     "n": 33,
+     "correct": 32,
+     "rate": 0.9696969696969697
+    },
+    "string": {
+     "n": 1,
+     "correct": 1,
+     "rate": 1.0
+    }
+   },
+   "items": [
+    {
+     "uid": "he-recog-test-HumanEval-81",
+     "task_id": "HumanEval/81",
+     "split": "test",
+     "canonical_option": "B",
+     "pick": "B",
+     "p_canonical": 0.9475762867798603,
+     "p_mutant": 0.05242371322013972,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.422,
+     "usage": {
+      "input_tokens": 1542,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-69",
+     "task_id": "HumanEval/69",
+     "split": "test",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.9947568402196791,
+     "p_mutant": 0.005243159780320956,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.381,
+     "usage": {
+      "input_tokens": 757,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-37",
+     "task_id": "HumanEval/37",
+     "split": "test",
+     "canonical_option": "B",
+     "pick": "B",
+     "p_canonical": 0.918488740898003,
+     "p_mutant": 0.08151125910199696,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.424,
+     "usage": {
+      "input_tokens": 654,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-90",
+     "task_id": "HumanEval/90",
+     "split": "test",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.9805231827374146,
+     "p_mutant": 0.019476817262585412,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.412,
+     "usage": {
+      "input_tokens": 536,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-48",
+     "task_id": "HumanEval/48",
+     "split": "test",
+     "canonical_option": "B",
+     "pick": "B",
+     "p_canonical": 0.9955344784009751,
+     "p_mutant": 0.004465521599024864,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.425,
+     "usage": {
+      "input_tokens": 417,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-75",
+     "task_id": "HumanEval/75",
+     "split": "test",
+     "canonical_option": "B",
+     "pick": "B",
+     "p_canonical": 0.9653593539887624,
+     "p_mutant": 0.034640646011237744,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.421,
+     "usage": {
+      "input_tokens": 588,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-101",
+     "task_id": "HumanEval/101",
+     "split": "test",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.9933495223516119,
+     "p_mutant": 0.006650477648387961,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.528,
+     "usage": {
+      "input_tokens": 625,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-137",
+     "task_id": "HumanEval/137",
+     "split": "test",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.9950236412427826,
+     "p_mutant": 0.004976358757217339,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.379,
+     "usage": {
+      "input_tokens": 703,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-135",
+     "task_id": "HumanEval/135",
+     "split": "test",
+     "canonical_option": "B",
+     "pick": "B",
+     "p_canonical": 0.9977422612092932,
+     "p_mutant": 0.0022577387907068078,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.391,
+     "usage": {
+      "input_tokens": 499,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-66",
+     "task_id": "HumanEval/66",
+     "split": "test",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.996495177848437,
+     "p_mutant": 0.003504822151563073,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.376,
+     "usage": {
+      "input_tokens": 534,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-0",
+     "task_id": "HumanEval/0",
+     "split": "test",
+     "canonical_option": "B",
+     "pick": "B",
+     "p_canonical": 0.9933637205489725,
+     "p_mutant": 0.006636279451027607,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.447,
+     "usage": {
+      "input_tokens": 595,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-32",
+     "task_id": "HumanEval/32",
+     "split": "test",
+     "canonical_option": "B",
+     "pick": "B",
+     "p_canonical": 0.794301922183545,
+     "p_mutant": 0.2056980778164551,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.409,
+     "usage": {
+      "input_tokens": 1150,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-23",
+     "task_id": "HumanEval/23",
+     "split": "test",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.9987812339317831,
+     "p_mutant": 0.0012187660682168675,
+     "correct": true,
+     "mutation_kind": "call",
+     "latency_s": 0.415,
+     "usage": {
+      "input_tokens": 258,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-41",
+     "task_id": "HumanEval/41",
+     "split": "test",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.9841824994403117,
+     "p_mutant": 0.015817500559688235,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.43,
+     "usage": {
+      "input_tokens": 585,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-154",
+     "task_id": "HumanEval/154",
+     "split": "test",
+     "canonical_option": "B",
+     "pick": "B",
+     "p_canonical": 0.9931941737746611,
+     "p_mutant": 0.00680582622533883,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.424,
+     "usage": {
+      "input_tokens": 612,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-3",
+     "task_id": "HumanEval/3",
+     "split": "test",
+     "canonical_option": "B",
+     "pick": "B",
+     "p_canonical": 0.8935270796131888,
+     "p_mutant": 0.10647292038681115,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.373,
+     "usage": {
+      "input_tokens": 546,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-130",
+     "task_id": "HumanEval/130",
+     "split": "test",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.9480142761161369,
+     "p_mutant": 0.051985723883863154,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.395,
+     "usage": {
+      "input_tokens": 1043,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-28",
+     "task_id": "HumanEval/28",
+     "split": "test",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.9968553857131712,
+     "p_mutant": 0.003144614286828766,
+     "correct": true,
+     "mutation_kind": "string",
+     "latency_s": 0.43,
+     "usage": {
+      "input_tokens": 309,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-107",
+     "task_id": "HumanEval/107",
+     "split": "test",
+     "canonical_option": "B",
+     "pick": "B",
+     "p_canonical": 0.9986219820001506,
+     "p_mutant": 0.0013780179998493848,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.383,
+     "usage": {
+      "input_tokens": 1021,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-125",
+     "task_id": "HumanEval/125",
+     "split": "test",
+     "canonical_option": "B",
+     "pick": "B",
+     "p_canonical": 0.9889916270921865,
+     "p_mutant": 0.011008372907813502,
+     "correct": true,
+     "mutation_kind": "cmp",
+     "latency_s": 0.402,
+     "usage": {
+      "input_tokens": 668,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-162",
+     "task_id": "HumanEval/162",
+     "split": "test",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.9962140011268948,
+     "p_mutant": 0.0037859988731052544,
+     "correct": true,
+     "mutation_kind": "const",
+     "latency_s": 0.389,
+     "usage": {
+      "input_tokens": 412,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-46",
+     "task_id": "HumanEval/46",
+     "split": "test",
+     "canonical_option": "B",
+     "pick": "B",
+     "p_canonical": 0.9934557892491713,
+     "p_mutant": 0.006544210750828607,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.416,
+     "usage": {
+      "input_tokens": 805,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-89",
+     "task_id": "HumanEval/89",
+     "split": "test",
+     "canonical_option": "B",
+     "pick": "B",
+     "p_canonical": 0.9956016184726584,
+     "p_mutant": 0.004398381527341708,
+     "correct": true,
+     "mutation_kind": "cmp",
+     "latency_s": 0.449,
+     "usage": {
+      "input_tokens": 569,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-63",
+     "task_id": "HumanEval/63",
+     "split": "test",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.96402304544069,
+     "p_mutant": 0.03597695455931011,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.414,
+     "usage": {
+      "input_tokens": 700,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-24",
+     "task_id": "HumanEval/24",
+     "split": "test",
+     "canonical_option": "B",
+     "pick": "B",
+     "p_canonical": 0.9950412146894517,
+     "p_mutant": 0.004958785310548366,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.39,
+     "usage": {
+      "input_tokens": 312,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-21",
+     "task_id": "HumanEval/21",
+     "split": "test",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.9929627805702994,
+     "p_mutant": 0.0070372194297004574,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.419,
+     "usage": {
+      "input_tokens": 568,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-120",
+     "task_id": "HumanEval/120",
+     "split": "test",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.9952475456730414,
+     "p_mutant": 0.004752454326958635,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.418,
+     "usage": {
+      "input_tokens": 893,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-60",
+     "task_id": "HumanEval/60",
+     "split": "test",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.9939129794561632,
+     "p_mutant": 0.006087020543836672,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.421,
+     "usage": {
+      "input_tokens": 454,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-49",
+     "task_id": "HumanEval/49",
+     "split": "test",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.9940897548618318,
+     "p_mutant": 0.00591024513816816,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.437,
+     "usage": {
+      "input_tokens": 526,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-83",
+     "task_id": "HumanEval/83",
+     "split": "test",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.9553509518738948,
+     "p_mutant": 0.04464904812610521,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.389,
+     "usage": {
+      "input_tokens": 292,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-139",
+     "task_id": "HumanEval/139",
+     "split": "test",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.997224673581193,
+     "p_mutant": 0.0027753264188069065,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.503,
+     "usage": {
+      "input_tokens": 498,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-7",
+     "task_id": "HumanEval/7",
+     "split": "test",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.99893180618524,
+     "p_mutant": 0.001068193814760049,
+     "correct": true,
+     "mutation_kind": "cmp",
+     "latency_s": 0.417,
+     "usage": {
+      "input_tokens": 437,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-147",
+     "task_id": "HumanEval/147",
+     "split": "test",
+     "canonical_option": "B",
+     "pick": "B",
+     "p_canonical": 0.9985585973638014,
+     "p_mutant": 0.0014414026361985188,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.395,
+     "usage": {
+      "input_tokens": 828,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-93",
+     "task_id": "HumanEval/93",
+     "split": "test",
+     "canonical_option": "B",
+     "pick": "B",
+     "p_canonical": 0.9501539272420307,
+     "p_mutant": 0.04984607275796918,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.446,
+     "usage": {
+      "input_tokens": 603,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-127",
+     "task_id": "HumanEval/127",
+     "split": "test",
+     "canonical_option": "B",
+     "pick": "B",
+     "p_canonical": 0.9879666116277529,
+     "p_mutant": 0.012033388372247197,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.464,
+     "usage": {
+      "input_tokens": 1171,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-34",
+     "task_id": "HumanEval/34",
+     "split": "test",
+     "canonical_option": "B",
+     "pick": "B",
+     "p_canonical": 0.9986451294265745,
+     "p_mutant": 0.0013548705734255653,
+     "correct": true,
+     "mutation_kind": "call",
+     "latency_s": 0.411,
+     "usage": {
+      "input_tokens": 360,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-56",
+     "task_id": "HumanEval/56",
+     "split": "test",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.974801804502206,
+     "p_mutant": 0.02519819549779409,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.416,
+     "usage": {
+      "input_tokens": 546,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-155",
+     "task_id": "HumanEval/155",
+     "split": "test",
+     "canonical_option": "B",
+     "pick": "B",
+     "p_canonical": 0.997621038986919,
+     "p_mutant": 0.0023789610130810846,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.393,
+     "usage": {
+      "input_tokens": 435,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-129",
+     "task_id": "HumanEval/129",
+     "split": "test",
+     "canonical_option": "A",
+     "pick": "B",
+     "p_canonical": 0.4099052710842742,
+     "p_mutant": 0.5900947289157258,
+     "correct": false,
+     "mutation_kind": "op",
+     "latency_s": 0.39,
+     "usage": {
+      "input_tokens": 1738,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    },
+    {
+     "uid": "he-recog-test-HumanEval-4",
+     "task_id": "HumanEval/4",
+     "split": "test",
+     "canonical_option": "A",
+     "pick": "A",
+     "p_canonical": 0.986495194908453,
+     "p_mutant": 0.013504805091546857,
+     "correct": true,
+     "mutation_kind": "op",
+     "latency_s": 0.414,
+     "usage": {
+      "input_tokens": 526,
+      "output_tokens": 1,
+      "cost": 0,
+      "is_byok": false,
+      "cost_details": {
+       "upstream_inference_cost": 0,
+       "upstream_inference_prompt_cost": 0,
+       "upstream_inference_completions_cost": 0
+      }
+     }
+    }
+   ]
+  }
+ },
+ "pooled": {
+  "n": 60,
+  "correct": 59,
+  "rate": 0.9833333333333333
+ }
+}

@@ -1,0 +1,2144 @@
+{
+ "seed": 81,
+ "instructions": "Which option correctly implements the function and will pass the hidden tests?",
+ "problems": [
+  {
+   "task_id": "HumanEval/104",
+   "split": "dev",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "op",
+    "old": "==",
+    "new": "!=",
+    "line": 16,
+    "col": 27,
+    "line_before": "if all (int(c) % 2 == 1 for c in str(i)):",
+    "line_after": "if all (int(c) % 2 != 1 for c in str(i)):"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "==",
+     "new": "!=",
+     "line": 16,
+     "col": 27,
+     "line_before": "if all (int(c) % 2 == 1 for c in str(i)):",
+     "line_after": "if all (int(c) % 2 != 1 for c in str(i)):",
+     "result": "assert-fail",
+     "failure_tail": "ll last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_swuud7fb/candidate.py\", line 35, in <module>\n    check(unique_digits)\n    ~~~~~^^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_swuud7fb/candidate.py\", line 24, in check\n    assert candidate([15, 33, 1422, 1]) == [1, 15, 33]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/108",
+   "split": "dev",
+   "canonical_option": "B",
+   "mutation": {
+    "kind": "op",
+    "old": ">",
+    "new": ">=",
+    "line": 18,
+    "col": 39,
+    "line_before": "return len(list(filter(lambda x: x > 0, [digits_sum(i) for i in arr])))",
+    "line_after": "return len(list(filter(lambda x: x >= 0, [digits_sum(i) for i in arr])))"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "<",
+     "new": "<=",
+     "line": 14,
+     "col": 13,
+     "line_before": "if n < 0: n, neg = -1 * n, -1",
+     "line_after": "if n <= 0: n, neg = -1 * n, -1",
+     "result": "still passes"
+    },
+    {
+     "kind": "op",
+     "old": ">",
+     "new": ">=",
+     "line": 18,
+     "col": 39,
+     "line_before": "return len(list(filter(lambda x: x > 0, [digits_sum(i) for i in arr])))",
+     "line_after": "return len(list(filter(lambda x: x >= 0, [digits_sum(i) for i in arr])))",
+     "result": "assert-fail",
+     "failure_tail": "Traceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_yjeuze59/candidate.py\", line 39, in <module>\n    check(count_nums)\n    ~~~~~^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_yjeuze59/candidate.py\", line 25, in check\n    assert candidate([-1, -2, 0]) == 0\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/121",
+   "split": "dev",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "op",
+    "old": "==",
+    "new": "!=",
+    "line": 11,
+    "col": 66,
+    "line_before": "return sum([x for idx, x in enumerate(lst) if idx%2==0 and x%2==1])",
+    "line_after": "return sum([x for idx, x in enumerate(lst) if idx%2==0 and x%2!=1])"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "==",
+     "new": "!=",
+     "line": 11,
+     "col": 66,
+     "line_before": "return sum([x for idx, x in enumerate(lst) if idx%2==0 and x%2==1])",
+     "line_after": "return sum([x for idx, x in enumerate(lst) if idx%2==0 and x%2!=1])",
+     "result": "assert-fail",
+     "failure_tail": "Traceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_qdlvfank/candidate.py\", line 30, in <module>\n    check(solution)\n    ~~~~~^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_qdlvfank/candidate.py\", line 17, in check\n    assert candidate([5, 8, 7, 1])    == 12\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/14",
+   "split": "dev",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "op",
+    "old": "+",
+    "new": "-",
+    "line": 12,
+    "col": 31,
+    "line_before": "result.append(string[:i+1])",
+    "line_after": "result.append(string[:i-1])"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "+",
+     "new": "-",
+     "line": 12,
+     "col": 31,
+     "line_before": "result.append(string[:i+1])",
+     "line_after": "result.append(string[:i-1])",
+     "result": "assert-fail",
+     "failure_tail": "_vpdxy3wsh0000gn/T/he_rec_xqtcmvld/candidate.py\", line 31, in <module>\n    check(all_prefixes)\n    ~~~~~^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_xqtcmvld/candidate.py\", line 26, in check\n    assert candidate('asdfgh') == ['a', 'as', 'asd', 'asdf', 'asdfg', 'asdfgh']\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/146",
+   "split": "dev",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "cmp",
+    "old": "in",
+    "new": "not in",
+    "line": 16,
+    "col": 84,
+    "line_before": "if int(number_as_string[0]) in odd_digits and int(number_as_string[-1]) in odd_digits:",
+    "line_after": "if int(number_as_string[0]) in odd_digits and int(number_as_string[-1]) not in odd_digits:"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": ">",
+     "new": ">=",
+     "line": 13,
+     "col": 15,
+     "line_before": "if num > 10:",
+     "line_after": "if num >= 10:",
+     "result": "still passes"
+    },
+    {
+     "kind": "cmp",
+     "old": "in",
+     "new": "not in",
+     "line": 16,
+     "col": 84,
+     "line_before": "if int(number_as_string[0]) in odd_digits and int(number_as_string[-1]) in odd_digits:",
+     "line_after": "if int(number_as_string[0]) in odd_digits and int(number_as_string[-1]) not in odd_digits:",
+     "result": "assert-fail",
+     "failure_tail": "t call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_ohm0jimu/candidate.py\", line 39, in <module>\n    check(specialFilter)\n    ~~~~~^^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_ohm0jimu/candidate.py\", line 27, in check\n    assert candidate([33, -2, -3, 45, 21, 109]) == 2\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/148",
+   "split": "dev",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "op",
+    "old": "==",
+    "new": "!=",
+    "line": 19,
+    "col": 77,
+    "line_before": "if planet1 not in planet_names or planet2 not in planet_names or planet1 == planet2:",
+    "line_after": "if planet1 not in planet_names or planet2 not in planet_names or planet1 != planet2:"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "==",
+     "new": "!=",
+     "line": 19,
+     "col": 77,
+     "line_before": "if planet1 not in planet_names or planet2 not in planet_names or planet1 == planet2:",
+     "line_after": "if planet1 not in planet_names or planet2 not in planet_names or planet1 != planet2:",
+     "result": "assert-fail",
+     "failure_tail": "ate.py\", line 46, in <module>\n    check(bf)\n    ~~~~~^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_1ueawyre/candidate.py\", line 32, in check\n    assert candidate(\"Jupiter\", \"Neptune\") == (\"Saturn\", \"Uranus\"), \"First test error: \" + str(len(candidate(\"Jupiter\", \"Neptune\")))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: First test error: 0\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/2",
+   "split": "dev",
+   "canonical_option": "B",
+   "mutation": {
+    "kind": "op",
+    "old": "%",
+    "new": "*",
+    "line": 12,
+    "col": 18,
+    "line_before": "return number % 1.0",
+    "line_after": "return number * 1.0"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "%",
+     "new": "*",
+     "line": 12,
+     "col": 18,
+     "line_before": "return number % 1.0",
+     "line_after": "return number * 1.0",
+     "result": "assert-fail",
+     "failure_tail": "Traceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_29ez0fzz/candidate.py\", line 30, in <module>\n    check(truncate_number)\n    ~~~~~^^^^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_29ez0fzz/candidate.py\", line 24, in check\n    assert candidate(3.5) == 0.5\n           ^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/27",
+   "split": "dev",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "call",
+    "old": "swapcase",
+    "new": "lower",
+    "line": 8,
+    "col": 18,
+    "line_before": "return string.swapcase()",
+    "line_after": "return string.lower()"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "call",
+     "old": "swapcase",
+     "new": "lower",
+     "line": 8,
+     "col": 18,
+     "line_before": "return string.swapcase()",
+     "line_after": "return string.lower()",
+     "result": "assert-fail",
+     "failure_tail": "Traceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_zefs_9zx/candidate.py\", line 26, in <module>\n    check(flip_case)\n    ~~~~~^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_zefs_9zx/candidate.py\", line 21, in check\n    assert candidate('Hello!') == 'hELLO!'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/29",
+   "split": "dev",
+   "canonical_option": "B",
+   "mutation": {
+    "kind": "call",
+    "old": "startswith",
+    "new": "endswith",
+    "line": 11,
+    "col": 36,
+    "line_before": "return [x for x in strings if x.startswith(prefix)]",
+    "line_after": "return [x for x in strings if x.endswith(prefix)]"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "call",
+     "old": "startswith",
+     "new": "endswith",
+     "line": 11,
+     "col": 36,
+     "line_before": "return [x for x in strings if x.startswith(prefix)]",
+     "line_after": "return [x for x in strings if x.endswith(prefix)]",
+     "result": "assert-fail",
+     "failure_tail": "odule>\n    check(filter_by_prefix)\n    ~~~~~^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_6ifu1jmn/candidate.py\", line 24, in check\n    assert candidate(['xxx', 'asd', 'xxy', 'john doe', 'xxxAAA', 'xxx'], 'xxx') == ['xxx', 'xxxAAA', 'xxx']\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/50",
+   "split": "dev",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "op",
+    "old": "-",
+    "new": "+",
+    "line": 14,
+    "col": 38,
+    "line_before": "return \"\".join([chr(((ord(ch) - 5 - ord(\"a\")) % 26) + ord(\"a\")) for ch in s])",
+    "line_after": "return \"\".join([chr(((ord(ch) - 5 + ord(\"a\")) % 26) + ord(\"a\")) for ch in s])"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "%",
+     "new": "*",
+     "line": 14,
+     "col": 50,
+     "line_before": "return \"\".join([chr(((ord(ch) - 5 - ord(\"a\")) % 26) + ord(\"a\")) for ch in s])",
+     "line_after": "return \"\".join([chr(((ord(ch) - 5 - ord(\"a\")) * 26) + ord(\"a\")) for ch in s])",
+     "result": "raises/timeout",
+     "failure_tail": "ndidate(copy.deepcopy(encoded_str)) == str\n           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_ii6re0b2/candidate.py\", line 14, in decode_shift\n    return \"\".join([chr(((ord(ch) - 5 - ord(\"a\")) * 26) + ord(\"a\")) for ch in s])\n                    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: chr() arg not in range(0x110000)\n"
+    },
+    {
+     "kind": "op",
+     "old": "+",
+     "new": "-",
+     "line": 14,
+     "col": 56,
+     "line_before": "return \"\".join([chr(((ord(ch) - 5 - ord(\"a\")) % 26) + ord(\"a\")) for ch in s])",
+     "line_after": "return \"\".join([chr(((ord(ch) - 5 - ord(\"a\")) % 26) - ord(\"a\")) for ch in s])",
+     "result": "raises/timeout",
+     "failure_tail": "ndidate(copy.deepcopy(encoded_str)) == str\n           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_993gdijk/candidate.py\", line 14, in decode_shift\n    return \"\".join([chr(((ord(ch) - 5 - ord(\"a\")) % 26) - ord(\"a\")) for ch in s])\n                    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: chr() arg not in range(0x110000)\n"
+    },
+    {
+     "kind": "op",
+     "old": "-",
+     "new": "+",
+     "line": 14,
+     "col": 38,
+     "line_before": "return \"\".join([chr(((ord(ch) - 5 - ord(\"a\")) % 26) + ord(\"a\")) for ch in s])",
+     "line_after": "return \"\".join([chr(((ord(ch) - 5 + ord(\"a\")) % 26) + ord(\"a\")) for ch in s])",
+     "result": "assert-fail",
+     "failure_tail": "ll last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_8hrxvqq4/candidate.py\", line 36, in <module>\n    check(decode_shift)\n    ~~~~~^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_8hrxvqq4/candidate.py\", line 31, in check\n    assert candidate(copy.deepcopy(encoded_str)) == str\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/54",
+   "split": "dev",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "op",
+    "old": "==",
+    "new": "!=",
+    "line": 19,
+    "col": 19,
+    "line_before": "return set(s0) == set(s1)",
+    "line_after": "return set(s0) != set(s1)"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "==",
+     "new": "!=",
+     "line": 19,
+     "col": 19,
+     "line_before": "return set(s0) == set(s1)",
+     "line_after": "return set(s0) != set(s1)",
+     "result": "assert-fail",
+     "failure_tail": "File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_c0110oy_/candidate.py\", line 39, in <module>\n    check(same_chars)\n    ~~~~~^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_c0110oy_/candidate.py\", line 28, in check\n    assert candidate('eabcdzzzz', 'dddzzzzzzzddeddabc') == True\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/6",
+   "split": "dev",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "op",
+    "old": "==",
+    "new": "!=",
+    "line": 16,
+    "col": 17,
+    "line_before": "if c == '(':",
+    "line_after": "if c != '(':"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "==",
+     "new": "!=",
+     "line": 16,
+     "col": 17,
+     "line_before": "if c == '(':",
+     "line_after": "if c != '(':",
+     "result": "assert-fail",
+     "failure_tail": "hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_aba3gref/candidate.py\", line 42, in <module>\n    check(parse_nested_parens)\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_aba3gref/candidate.py\", line 36, in check\n    assert candidate('(()()) ((())) () ((())()())') == [2, 3, 1, 3]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/67",
+   "split": "dev",
+   "canonical_option": "B",
+   "mutation": {
+    "kind": "op",
+    "old": "-",
+    "new": "+",
+    "line": 19,
+    "col": 13,
+    "line_before": "return n - sum(lis)",
+    "line_after": "return n + sum(lis)"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "-",
+     "new": "+",
+     "line": 19,
+     "col": 13,
+     "line_before": "return n - sum(lis)",
+     "line_after": "return n + sum(lis)",
+     "result": "assert-fail",
+     "failure_tail": "  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_w9nbrj71/candidate.py\", line 35, in <module>\n    check(fruit_distribution)\n    ~~~~~^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_w9nbrj71/candidate.py\", line 25, in check\n    assert candidate(\"5 apples and 6 oranges\",19) == 8\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/68",
+   "split": "dev",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "op",
+    "old": "==",
+    "new": "!=",
+    "line": 37,
+    "col": 38,
+    "line_before": "evens = list(filter(lambda x: x%2 == 0, arr))",
+    "line_after": "evens = list(filter(lambda x: x%2 != 0, arr))"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "==",
+     "new": "!=",
+     "line": 37,
+     "col": 38,
+     "line_before": "evens = list(filter(lambda x: x%2 == 0, arr))",
+     "line_after": "evens = list(filter(lambda x: x%2 != 0, arr))",
+     "result": "assert-fail",
+     "failure_tail": "Traceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_fr9aq64g/candidate.py\", line 61, in <module>\n    check(pluck)\n    ~~~~~^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_fr9aq64g/candidate.py\", line 46, in check\n    assert candidate([4,2,3]) == [2, 1], \"Error\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Error\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/71",
+   "split": "dev",
+   "canonical_option": "B",
+   "mutation": {
+    "kind": "op",
+    "old": "<=",
+    "new": "<",
+    "line": 13,
+    "col": 13,
+    "line_before": "if a + b <= c or a + c <= b or b + c <= a:",
+    "line_after": "if a + b < c or a + c <= b or b + c <= a:"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "<=",
+     "new": "<",
+     "line": 13,
+     "col": 41,
+     "line_before": "if a + b <= c or a + c <= b or b + c <= a:",
+     "line_after": "if a + b <= c or a + c <= b or b + c < a:",
+     "result": "still passes"
+    },
+    {
+     "kind": "op",
+     "old": "<=",
+     "new": "<",
+     "line": 13,
+     "col": 13,
+     "line_before": "if a + b <= c or a + c <= b or b + c <= a:",
+     "line_after": "if a + b < c or a + c <= b or b + c <= a:",
+     "result": "assert-fail",
+     "failure_tail": "Traceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_rwad9mz4/candidate.py\", line 39, in <module>\n    check(triangle_area)\n    ~~~~~^^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_rwad9mz4/candidate.py\", line 28, in check\n    assert candidate(1, 2, 3) == -1\n           ^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/82",
+   "split": "dev",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "op",
+    "old": "==",
+    "new": "!=",
+    "line": 12,
+    "col": 9,
+    "line_before": "if l == 0 or l == 1:",
+    "line_after": "if l != 0 or l == 1:"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "==",
+     "new": "!=",
+     "line": 12,
+     "col": 9,
+     "line_before": "if l == 0 or l == 1:",
+     "line_after": "if l != 0 or l == 1:",
+     "result": "assert-fail",
+     "failure_tail": "Traceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec__zm3yv6v/candidate.py\", line 45, in <module>\n    check(prime_length)\n    ~~~~~^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec__zm3yv6v/candidate.py\", line 23, in check\n    assert candidate('Hello') == True\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/88",
+   "split": "dev",
+   "canonical_option": "B",
+   "mutation": {
+    "kind": "op",
+    "old": "==",
+    "new": "!=",
+    "line": 17,
+    "col": 86,
+    "line_before": "return [] if len(array) == 0 else sorted(array, reverse= (array[0]+array[-1]) % 2 == 0)",
+    "line_after": "return [] if len(array) == 0 else sorted(array, reverse= (array[0]+array[-1]) % 2 != 0)"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "==",
+     "new": "!=",
+     "line": 17,
+     "col": 86,
+     "line_before": "return [] if len(array) == 0 else sorted(array, reverse= (array[0]+array[-1]) % 2 == 0)",
+     "line_after": "return [] if len(array) == 0 else sorted(array, reverse= (array[0]+array[-1]) % 2 != 0)",
+     "result": "assert-fail",
+     "failure_tail": "ders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_68p96z8w/candidate.py\", line 38, in <module>\n    check(sort_array)\n    ~~~~~^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_68p96z8w/candidate.py\", line 26, in check\n    assert candidate([2, 4, 3, 0, 1, 5]) == [0, 1, 2, 3, 4, 5], \"Error\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Error\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/9",
+   "split": "dev",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "call",
+    "old": "max",
+    "new": "min",
+    "line": 17,
+    "col": 26,
+    "line_before": "running_max = max(running_max, n)",
+    "line_after": "running_max = min(running_max, n)"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "cmp",
+     "old": "is",
+     "new": "is not",
+     "line": 14,
+     "col": 23,
+     "line_before": "if running_max is None:",
+     "line_after": "if running_max is not None:",
+     "result": "raises/timeout",
+     "failure_tail": "folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_776hsr4w/candidate.py\", line 34, in check\n    assert candidate([1, 2, 3, 4]) == [1, 2, 3, 4]\n           ~~~~~~~~~^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_776hsr4w/candidate.py\", line 17, in rolling_max\n    running_max = max(running_max, n)\nTypeError: '>' not supported between instances of 'int' and 'NoneType'\n"
+    },
+    {
+     "kind": "const",
+     "old": "None",
+     "new": "0",
+     "line": 10,
+     "col": 18,
+     "line_before": "running_max = None",
+     "line_after": "running_max = 0",
+     "result": "still passes"
+    },
+    {
+     "kind": "const",
+     "old": "None",
+     "new": "0",
+     "line": 14,
+     "col": 26,
+     "line_before": "if running_max is None:",
+     "line_after": "if running_max is 0:",
+     "result": "raises/timeout",
+     "failure_tail": "folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_qdj_ob85/candidate.py\", line 34, in check\n    assert candidate([1, 2, 3, 4]) == [1, 2, 3, 4]\n           ~~~~~~~~~^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_qdj_ob85/candidate.py\", line 17, in rolling_max\n    running_max = max(running_max, n)\nTypeError: '>' not supported between instances of 'int' and 'NoneType'\n"
+    },
+    {
+     "kind": "call",
+     "old": "max",
+     "new": "min",
+     "line": 17,
+     "col": 26,
+     "line_before": "running_max = max(running_max, n)",
+     "line_after": "running_max = min(running_max, n)",
+     "result": "assert-fail",
+     "failure_tail": "st recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_ef0bsvt3/candidate.py\", line 40, in <module>\n    check(rolling_max)\n    ~~~~~^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_ef0bsvt3/candidate.py\", line 34, in check\n    assert candidate([1, 2, 3, 4]) == [1, 2, 3, 4]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/94",
+   "split": "dev",
+   "canonical_option": "B",
+   "mutation": {
+    "kind": "op",
+    "old": "==",
+    "new": "!=",
+    "line": 17,
+    "col": 18,
+    "line_before": "if n%i==0:",
+    "line_after": "if n%i!=0:"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "<",
+     "new": "<=",
+     "line": 23,
+     "col": 12,
+     "line_before": "while i < len(lst):",
+     "line_after": "while i <= len(lst):",
+     "result": "raises/timeout",
+     "failure_tail": "e([0,3,2,1,3,5,7,4,5,5,5,2,181,32,4,32,3,2,32,324,4,3]) == 10, \"This prints if this assert fails 1 (good for debugging!)\"\n           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_i107e239/candidate.py\", line 24, in skjkasdkd\n    if(lst[i] > maxx and isPrime(lst[i])):\n       ~~~^^^\nIndexError: list index out of range\n"
+    },
+    {
+     "kind": "op",
+     "old": ">",
+     "new": ">=",
+     "line": 24,
+     "col": 18,
+     "line_before": "if(lst[i] > maxx and isPrime(lst[i])):",
+     "line_after": "if(lst[i] >= maxx and isPrime(lst[i])):",
+     "result": "still passes"
+    },
+    {
+     "kind": "op",
+     "old": "==",
+     "new": "!=",
+     "line": 17,
+     "col": 18,
+     "line_before": "if n%i==0:",
+     "line_after": "if n%i!=0:",
+     "result": "assert-fail",
+     "failure_tail": " File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_x36rpu03/candidate.py\", line 35, in check\n    assert candidate([0,3,2,1,3,5,7,4,5,5,5,2,181,32,4,32,3,2,32,324,4,3]) == 10, \"This prints if this assert fails 1 (good for debugging!)\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: This prints if this assert fails 1 (good for debugging!)\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/97",
+   "split": "dev",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "op",
+    "old": "%",
+    "new": "*",
+    "line": 12,
+    "col": 17,
+    "line_before": "return abs(a % 10) * abs(b % 10)",
+    "line_after": "return abs(a * 10) * abs(b % 10)"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "%",
+     "new": "*",
+     "line": 12,
+     "col": 17,
+     "line_before": "return abs(a % 10) * abs(b % 10)",
+     "line_after": "return abs(a * 10) * abs(b % 10)",
+     "result": "assert-fail",
+     "failure_tail": "ers/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_q29masat/candidate.py\", line 33, in <module>\n    check(multiply)\n    ~~~~~^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_q29masat/candidate.py\", line 18, in check\n    assert candidate(148, 412) == 16, \"First test error: \" + str(candidate(148, 412))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: First test error: 2960\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/81",
+   "split": "test",
+   "canonical_option": "B",
+   "mutation": {
+    "kind": "op",
+    "old": ">",
+    "new": ">=",
+    "line": 53,
+    "col": 17,
+    "line_before": "elif gpa > 0.0:",
+    "line_after": "elif gpa >= 0.0:"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": ">",
+     "new": ">=",
+     "line": 53,
+     "col": 17,
+     "line_before": "elif gpa > 0.0:",
+     "line_after": "elif gpa >= 0.0:",
+     "result": "assert-fail",
+     "failure_tail": "ck (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_ekrv8p_9/candidate.py\", line 76, in <module>\n    check(numerical_letter_grade)\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_ekrv8p_9/candidate.py\", line 66, in check\n    assert candidate([0.0]) == ['E']\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/69",
+   "split": "test",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "op",
+    "old": ">=",
+    "new": ">",
+    "line": 19,
+    "col": 18,
+    "line_before": "if frq[i] >= i:",
+    "line_after": "if frq[i] > i:"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": ">=",
+     "new": ">",
+     "line": 19,
+     "col": 18,
+     "line_before": "if frq[i] >= i:",
+     "line_after": "if frq[i] > i:",
+     "result": "assert-fail",
+     "failure_tail": "Traceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_jp2mo5ri/candidate.py\", line 59, in <module>\n    check(search)\n    ~~~~~^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_jp2mo5ri/candidate.py\", line 28, in check\n    assert candidate([5, 5, 5, 5, 1]) == 1\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/37",
+   "split": "test",
+   "canonical_option": "B",
+   "mutation": {
+    "kind": "op",
+    "old": ">",
+    "new": ">=",
+    "line": 18,
+    "col": 18,
+    "line_before": "if len(evens) > len(odds):",
+    "line_after": "if len(evens) >= len(odds):"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": ">",
+     "new": ">=",
+     "line": 18,
+     "col": 18,
+     "line_before": "if len(evens) > len(odds):",
+     "line_after": "if len(evens) >= len(odds):",
+     "result": "assert-fail",
+     "failure_tail": "odule>\n    check(sort_even)\n    ~~~~~^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_96zo1cnd/candidate.py\", line 31, in check\n    assert tuple(candidate([5, 8, -12, 4, 23, 2, 3, 11, 12, -10])) == tuple([-12, 8, 3, 4, 5, 2, 12, 11, 23, -10])\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/90",
+   "split": "test",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "op",
+    "old": "<",
+    "new": "<=",
+    "line": 14,
+    "col": 28,
+    "line_before": "return None if len(lst) < 2 else lst[1]",
+    "line_after": "return None if len(lst) <= 2 else lst[1]"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "<",
+     "new": "<=",
+     "line": 14,
+     "col": 28,
+     "line_before": "return None if len(lst) < 2 else lst[1]",
+     "line_after": "return None if len(lst) <= 2 else lst[1]",
+     "result": "assert-fail",
+     "failure_tail": "Traceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_7tajls_5/candidate.py\", line 34, in <module>\n    check(next_smallest)\n    ~~~~~^^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_7tajls_5/candidate.py\", line 24, in check\n    assert candidate([1,1,1,1,0]) == 1\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/48",
+   "split": "test",
+   "canonical_option": "B",
+   "mutation": {
+    "kind": "op",
+    "old": "!=",
+    "new": "==",
+    "line": 16,
+    "col": 19,
+    "line_before": "if text[i] != text[len(text) - 1 - i]:",
+    "line_after": "if text[i] == text[len(text) - 1 - i]:"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "!=",
+     "new": "==",
+     "line": 16,
+     "col": 19,
+     "line_before": "if text[i] != text[len(text) - 1 - i]:",
+     "line_after": "if text[i] == text[len(text) - 1 - i]:",
+     "result": "assert-fail",
+     "failure_tail": "Traceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_rawax7ic/candidate.py\", line 38, in <module>\n    check(is_palindrome)\n    ~~~~~^^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_rawax7ic/candidate.py\", line 28, in check\n    assert candidate('aba') == True\n           ^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/75",
+   "split": "test",
+   "canonical_option": "B",
+   "mutation": {
+    "kind": "op",
+    "old": "==",
+    "new": "!=",
+    "line": 12,
+    "col": 19,
+    "line_before": "if n%j == 0:",
+    "line_after": "if n%j != 0:"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "==",
+     "new": "!=",
+     "line": 12,
+     "col": 19,
+     "line_before": "if n%j == 0:",
+     "line_after": "if n%j != 0:",
+     "result": "assert-fail",
+     "failure_tail": "Traceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_ysh3tzw7/candidate.py\", line 42, in <module>\n    check(is_multiply_prime)\n    ~~~~~^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_ysh3tzw7/candidate.py\", line 29, in check\n    assert candidate(30) == True\n           ^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/101",
+   "split": "test",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "op",
+    "old": "==",
+    "new": "!=",
+    "line": 17,
+    "col": 18,
+    "line_before": "if letter == ',':",
+    "line_after": "if letter != ',':"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "==",
+     "new": "!=",
+     "line": 17,
+     "col": 18,
+     "line_before": "if letter == ',':",
+     "line_after": "if letter != ',':",
+     "result": "assert-fail",
+     "failure_tail": "xy3wsh0000gn/T/he_rec_8vc8uwc4/candidate.py\", line 43, in <module>\n    check(words_string)\n    ~~~~~^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_8vc8uwc4/candidate.py\", line 30, in check\n    assert candidate(\"Hi, my name is John\") == [\"Hi\", \"my\", \"name\", \"is\", \"John\"]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/137",
+   "split": "test",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "op",
+    "old": "==",
+    "new": "!=",
+    "line": 17,
+    "col": 21,
+    "line_before": "if float(temp_a) == float(temp_b): return None",
+    "line_after": "if float(temp_a) != float(temp_b): return None"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": ">",
+     "new": ">=",
+     "line": 18,
+     "col": 30,
+     "line_before": "return a if float(temp_a) > float(temp_b) else b",
+     "line_after": "return a if float(temp_a) >= float(temp_b) else b",
+     "result": "still passes"
+    },
+    {
+     "kind": "op",
+     "old": "==",
+     "new": "!=",
+     "line": 17,
+     "col": 21,
+     "line_before": "if float(temp_a) == float(temp_b): return None",
+     "line_after": "if float(temp_a) != float(temp_b): return None",
+     "result": "assert-fail",
+     "failure_tail": "Traceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_pi427u5s/candidate.py\", line 39, in <module>\n    check(compare_one)\n    ~~~~~^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_pi427u5s/candidate.py\", line 24, in check\n    assert candidate(1, 2) == 2\n           ^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/135",
+   "split": "test",
+   "canonical_option": "B",
+   "mutation": {
+    "kind": "op",
+    "old": "-",
+    "new": "+",
+    "line": 12,
+    "col": 8,
+    "line_before": "ind=-1",
+    "line_after": "ind=+1"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "<",
+     "new": "<=",
+     "line": 15,
+     "col": 15,
+     "line_before": "if arr[i]<arr[i-1]:",
+     "line_after": "if arr[i]<=arr[i-1]:",
+     "result": "still passes"
+    },
+    {
+     "kind": "op",
+     "old": "<",
+     "new": "<=",
+     "line": 14,
+     "col": 11,
+     "line_before": "while i<len(arr):",
+     "line_after": "while i<=len(arr):",
+     "result": "raises/timeout",
+     "failure_tail": "(can_arrange)\n    ~~~~~^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_ge8fibh4/candidate.py\", line 24, in check\n    assert candidate([1,2,4,3,5])==3\n           ~~~~~~~~~^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_ge8fibh4/candidate.py\", line 15, in can_arrange\n    if arr[i]<arr[i-1]:\n       ~~~^^^\nIndexError: list index out of range\n"
+    },
+    {
+     "kind": "op",
+     "old": "+=",
+     "new": "-=",
+     "line": 17,
+     "col": 7,
+     "line_before": "i+=1",
+     "line_after": "i-=1",
+     "result": "raises/timeout",
+     "failure_tail": "nge)\n    ~~~~~^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_gyrrjkop/candidate.py\", line 24, in check\n    assert candidate([1,2,4,3,5])==3\n           ~~~~~~~~~^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_gyrrjkop/candidate.py\", line 15, in can_arrange\n    if arr[i]<arr[i-1]:\n              ~~~^^^^^\nIndexError: list index out of range\n"
+    },
+    {
+     "kind": "op",
+     "old": "-",
+     "new": "+",
+     "line": 12,
+     "col": 8,
+     "line_before": "ind=-1",
+     "line_after": "ind=+1",
+     "result": "assert-fail",
+     "failure_tail": "Traceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_7bp_n_v7/candidate.py\", line 35, in <module>\n    check(can_arrange)\n    ~~~~~^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_7bp_n_v7/candidate.py\", line 25, in check\n    assert candidate([1,2,4,5])==-1\n           ^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/66",
+   "split": "test",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "op",
+    "old": "==",
+    "new": "!=",
+    "line": 15,
+    "col": 9,
+    "line_before": "if s == \"\": return 0",
+    "line_after": "if s != \"\": return 0"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "==",
+     "new": "!=",
+     "line": 15,
+     "col": 9,
+     "line_before": "if s == \"\": return 0",
+     "line_after": "if s != \"\": return 0",
+     "result": "assert-fail",
+     "failure_tail": "Traceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_n3axlg9c/candidate.py\", line 38, in <module>\n    check(digitSum)\n    ~~~~~^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_n3axlg9c/candidate.py\", line 24, in check\n    assert candidate(\"abAB\") == 131, \"Error\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Error\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/0",
+   "split": "test",
+   "canonical_option": "B",
+   "mutation": {
+    "kind": "op",
+    "old": "!=",
+    "new": "==",
+    "line": 14,
+    "col": 19,
+    "line_before": "if idx != idx2:",
+    "line_after": "if idx == idx2:"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "!=",
+     "new": "==",
+     "line": 14,
+     "col": 19,
+     "line_before": "if idx != idx2:",
+     "line_after": "if idx == idx2:",
+     "result": "assert-fail",
+     "failure_tail": "26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_oc_vmrg2/candidate.py\", line 42, in <module>\n    check(has_close_elements)\n    ~~~~~^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_oc_vmrg2/candidate.py\", line 32, in check\n    assert candidate([1.0, 2.0, 3.9, 4.0, 5.0, 2.2], 0.05) == False\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/32",
+   "split": "test",
+   "canonical_option": "B",
+   "mutation": {
+    "kind": "op",
+    "old": ">",
+    "new": ">=",
+    "line": 30,
+    "col": 46,
+    "line_before": "if poly(xs, center) * poly(xs, begin) > 0:",
+    "line_after": "if poly(xs, center) * poly(xs, begin) >= 0:"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": ">",
+     "new": ">=",
+     "line": 25,
+     "col": 42,
+     "line_before": "while poly(xs, begin) * poly(xs, end) > 0:",
+     "line_after": "while poly(xs, begin) * poly(xs, end) >= 0:",
+     "result": "still passes"
+    },
+    {
+     "kind": "op",
+     "old": ">",
+     "new": ">=",
+     "line": 28,
+     "col": 22,
+     "line_before": "while end - begin > 1e-10:",
+     "line_after": "while end - begin >= 1e-10:",
+     "result": "still passes"
+    },
+    {
+     "kind": "op",
+     "old": ">",
+     "new": ">=",
+     "line": 30,
+     "col": 46,
+     "line_before": "if poly(xs, center) * poly(xs, begin) > 0:",
+     "line_after": "if poly(xs, center) * poly(xs, begin) >= 0:",
+     "result": "assert-fail",
+     "failure_tail": "most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_3nkk34gd/candidate.py\", line 61, in <module>\n    check(find_zero)\n    ~~~~~^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_3nkk34gd/candidate.py\", line 56, in check\n    assert math.fabs(poly(coeffs, solution)) < 1e-4\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/23",
+   "split": "test",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "call",
+    "old": "len",
+    "new": "id",
+    "line": 10,
+    "col": 11,
+    "line_before": "return len(string)",
+    "line_after": "return id(string)"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "call",
+     "old": "len",
+     "new": "id",
+     "line": 10,
+     "col": 11,
+     "line_before": "return len(string)",
+     "line_after": "return id(string)",
+     "result": "assert-fail",
+     "failure_tail": "Traceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_pad_kany/candidate.py\", line 28, in <module>\n    check(strlen)\n    ~~~~~^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_pad_kany/candidate.py\", line 22, in check\n    assert candidate('') == 0\n           ^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/41",
+   "split": "test",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "op",
+    "old": "**",
+    "new": "*",
+    "line": 15,
+    "col": 12,
+    "line_before": "return n**2",
+    "line_after": "return n*2"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "**",
+     "new": "*",
+     "line": 15,
+     "col": 12,
+     "line_before": "return n**2",
+     "line_after": "return n*2",
+     "result": "assert-fail",
+     "failure_tail": "Traceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_96r60kqj/candidate.py\", line 33, in <module>\n    check(car_race_collision)\n    ~~~~~^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_96r60kqj/candidate.py\", line 25, in check\n    assert candidate(3) == 9\n           ^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/154",
+   "split": "test",
+   "canonical_option": "B",
+   "mutation": {
+    "kind": "op",
+    "old": "==",
+    "new": "!=",
+    "line": 16,
+    "col": 24,
+    "line_before": "if a[i:i+l] == pat[j:j+l]:",
+    "line_after": "if a[i:i+l] != pat[j:j+l]:"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "==",
+     "new": "!=",
+     "line": 16,
+     "col": 24,
+     "line_before": "if a[i:i+l] == pat[j:j+l]:",
+     "line_after": "if a[i:i+l] != pat[j:j+l]:",
+     "result": "assert-fail",
+     "failure_tail": "):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_n0noyarq/candidate.py\", line 38, in <module>\n    check(cycpattern_check)\n    ~~~~~^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_n0noyarq/candidate.py\", line 28, in check\n    assert  candidate(\"xyzw\",\"xyw\") == False , \"test #0\"\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: test #0\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/3",
+   "split": "test",
+   "canonical_option": "B",
+   "mutation": {
+    "kind": "op",
+    "old": "<",
+    "new": "<=",
+    "line": 17,
+    "col": 19,
+    "line_before": "if balance < 0:",
+    "line_after": "if balance <= 0:"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "<",
+     "new": "<=",
+     "line": 17,
+     "col": 19,
+     "line_before": "if balance < 0:",
+     "line_after": "if balance <= 0:",
+     "result": "assert-fail",
+     "failure_tail": "st recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_mpqpmvg7/candidate.py\", line 41, in <module>\n    check(below_zero)\n    ~~~~~^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_mpqpmvg7/candidate.py\", line 33, in check\n    assert candidate([1, 2, -3, 1, 2, -3]) == False\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/130",
+   "split": "test",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "op",
+    "old": "==",
+    "new": "!=",
+    "line": 23,
+    "col": 17,
+    "line_before": "if i % 2 == 0:",
+    "line_after": "if i % 2 != 0:"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "==",
+     "new": "!=",
+     "line": 23,
+     "col": 17,
+     "line_before": "if i % 2 == 0:",
+     "line_after": "if i % 2 != 0:",
+     "result": "assert-fail",
+     "failure_tail": "Traceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_tjol_4nc/candidate.py\", line 49, in <module>\n    check(tri)\n    ~~~~~^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_tjol_4nc/candidate.py\", line 34, in check\n    assert candidate(3) == [1, 3, 2.0, 8.0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/28",
+   "split": "test",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "string",
+    "old": "''",
+    "new": "' '",
+    "line": 11,
+    "col": 11,
+    "line_before": "return ''.join(strings)",
+    "line_after": "return ' '.join(strings)"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "string",
+     "old": "''",
+     "new": "' '",
+     "line": 11,
+     "col": 11,
+     "line_before": "return ''.join(strings)",
+     "line_after": "return ' '.join(strings)",
+     "result": "assert-fail",
+     "failure_tail": "back (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_0uj_ku6f/candidate.py\", line 29, in <module>\n    check(concatenate)\n    ~~~~~^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_0uj_ku6f/candidate.py\", line 24, in check\n    assert candidate(['x', 'y', 'z']) == 'xyz'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/107",
+   "split": "test",
+   "canonical_option": "B",
+   "mutation": {
+    "kind": "op",
+    "old": "==",
+    "new": "!=",
+    "line": 26,
+    "col": 22,
+    "line_before": "return str(n) == str(n)[::-1]",
+    "line_after": "return str(n) != str(n)[::-1]"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "==",
+     "new": "!=",
+     "line": 26,
+     "col": 22,
+     "line_before": "return str(n) == str(n)[::-1]",
+     "line_after": "return str(n) != str(n)[::-1]",
+     "result": "assert-fail",
+     "failure_tail": "raceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_g4x8y3hy/candidate.py\", line 56, in <module>\n    check(even_odd_palindrome)\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_g4x8y3hy/candidate.py\", line 42, in check\n    assert candidate(123) == (8, 13)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/125",
+   "split": "test",
+   "canonical_option": "B",
+   "mutation": {
+    "kind": "cmp",
+    "old": "in",
+    "new": "not in",
+    "line": 14,
+    "col": 13,
+    "line_before": "elif \",\" in txt:",
+    "line_after": "elif \",\" not in txt:"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "cmp",
+     "old": "in",
+     "new": "not in",
+     "line": 14,
+     "col": 13,
+     "line_before": "elif \",\" in txt:",
+     "line_after": "elif \",\" not in txt:",
+     "result": "assert-fail",
+     "failure_tail": "ast):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_dlh79cq_/candidate.py\", line 33, in <module>\n    check(split_words)\n    ~~~~~^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_dlh79cq_/candidate.py\", line 23, in check\n    assert candidate(\"Hello,world!\") == [\"Hello\",\"world!\"]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/162",
+   "split": "test",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "const",
+    "old": "None",
+    "new": "0",
+    "line": 10,
+    "col": 70,
+    "line_before": "return hashlib.md5(text.encode('ascii')).hexdigest() if text else None",
+    "line_after": "return hashlib.md5(text.encode('ascii')).hexdigest() if text else 0"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "string",
+     "old": "'ascii'",
+     "new": "'utf-8'",
+     "line": 10,
+     "col": 35,
+     "line_before": "return hashlib.md5(text.encode('ascii')).hexdigest() if text else None",
+     "line_after": "return hashlib.md5(text.encode('utf-8')).hexdigest() if text else None",
+     "result": "still passes"
+    },
+    {
+     "kind": "const",
+     "old": "None",
+     "new": "0",
+     "line": 10,
+     "col": 70,
+     "line_before": "return hashlib.md5(text.encode('ascii')).hexdigest() if text else None",
+     "line_after": "return hashlib.md5(text.encode('ascii')).hexdigest() if text else 0",
+     "result": "assert-fail",
+     "failure_tail": "Traceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_y1sxwb1r/candidate.py\", line 27, in <module>\n    check(string_to_md5)\n    ~~~~~^^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_y1sxwb1r/candidate.py\", line 17, in check\n    assert candidate('') == None\n           ^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/46",
+   "split": "test",
+   "canonical_option": "B",
+   "mutation": {
+    "kind": "op",
+    "old": "-",
+    "new": "+",
+    "line": 26,
+    "col": 19,
+    "line_before": "return results[-1]",
+    "line_after": "return results[+1]"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "<",
+     "new": "<=",
+     "line": 19,
+     "col": 9,
+     "line_before": "if n < 4:",
+     "line_after": "if n <= 4:",
+     "result": "still passes"
+    },
+    {
+     "kind": "op",
+     "old": "-",
+     "new": "+",
+     "line": 26,
+     "col": 19,
+     "line_before": "return results[-1]",
+     "line_after": "return results[+1]",
+     "result": "assert-fail",
+     "failure_tail": "Traceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_um39wmxd/candidate.py\", line 43, in <module>\n    check(fib4)\n    ~~~~~^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_um39wmxd/candidate.py\", line 35, in check\n    assert candidate(5) == 4\n           ^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/89",
+   "split": "test",
+   "canonical_option": "B",
+   "mutation": {
+    "kind": "cmp",
+    "old": "in",
+    "new": "not in",
+    "line": 16,
+    "col": 13,
+    "line_before": "if c in d:",
+    "line_after": "if c not in d:"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "cmp",
+     "old": "in",
+     "new": "not in",
+     "line": 16,
+     "col": 13,
+     "line_before": "if c in d:",
+     "line_after": "if c not in d:",
+     "result": "assert-fail",
+     "failure_tail": "/he_rec_x0cssscb/candidate.py\", line 41, in <module>\n    check(encrypt)\n    ~~~~~^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_x0cssscb/candidate.py\", line 26, in check\n    assert candidate('hi') == 'lm', \"This prints if this assert fails 1 (good for debugging!)\"\n           ^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: This prints if this assert fails 1 (good for debugging!)\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/63",
+   "split": "test",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "op",
+    "old": "==",
+    "new": "!=",
+    "line": 19,
+    "col": 9,
+    "line_before": "if n == 1:",
+    "line_after": "if n != 1:"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "==",
+     "new": "!=",
+     "line": 19,
+     "col": 9,
+     "line_before": "if n == 1:",
+     "line_after": "if n != 1:",
+     "result": "assert-fail",
+     "failure_tail": "Traceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_b640xbzz/candidate.py\", line 43, in <module>\n    check(fibfib)\n    ~~~~~^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_b640xbzz/candidate.py\", line 32, in check\n    assert candidate(2) == 1\n           ^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/24",
+   "split": "test",
+   "canonical_option": "B",
+   "mutation": {
+    "kind": "op",
+    "old": "==",
+    "new": "!=",
+    "line": 9,
+    "col": 17,
+    "line_before": "if n % i == 0:",
+    "line_after": "if n % i != 0:"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "==",
+     "new": "!=",
+     "line": 9,
+     "col": 17,
+     "line_before": "if n % i == 0:",
+     "line_after": "if n % i != 0:",
+     "result": "assert-fail",
+     "failure_tail": "Traceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_ly83no6b/candidate.py\", line 30, in <module>\n    check(largest_divisor)\n    ~~~~~^^^^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_ly83no6b/candidate.py\", line 22, in check\n    assert candidate(3) == 1\n           ^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/21",
+   "split": "test",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "op",
+    "old": "/",
+    "new": "//",
+    "line": 12,
+    "col": 29,
+    "line_before": "return [(x - min_number) / (max_number - min_number) for x in numbers]",
+    "line_after": "return [(x - min_number) // (max_number - min_number) for x in numbers]"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "/",
+     "new": "//",
+     "line": 12,
+     "col": 29,
+     "line_before": "return [(x - min_number) / (max_number - min_number) for x in numbers]",
+     "line_after": "return [(x - min_number) // (max_number - min_number) for x in numbers]",
+     "result": "assert-fail",
+     "failure_tail": "xy3wsh0000gn/T/he_rec_g0g32s51/candidate.py\", line 32, in <module>\n    check(rescale_to_unit)\n    ~~~~~^^^^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_g0g32s51/candidate.py\", line 26, in check\n    assert candidate([1.0, 2.0, 3.0, 4.0, 5.0]) == [0.0, 0.25, 0.5, 0.75, 1.0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/120",
+   "split": "test",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "op",
+    "old": "==",
+    "new": "!=",
+    "line": 27,
+    "col": 9,
+    "line_before": "if k == 0:",
+    "line_after": "if k != 0:"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "==",
+     "new": "!=",
+     "line": 27,
+     "col": 9,
+     "line_before": "if k == 0:",
+     "line_after": "if k != 0:",
+     "result": "assert-fail",
+     "failure_tail": "ck (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_c4az_ht8/candidate.py\", line 54, in <module>\n    check(maximum)\n    ~~~~~^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_c4az_ht8/candidate.py\", line 37, in check\n    assert candidate([-3, -4, 5], 3) == [-4, -3, 5]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/60",
+   "split": "test",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "op",
+    "old": "+",
+    "new": "-",
+    "line": 16,
+    "col": 23,
+    "line_before": "return sum(range(n + 1))",
+    "line_after": "return sum(range(n - 1))"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "+",
+     "new": "-",
+     "line": 16,
+     "col": 23,
+     "line_before": "return sum(range(n + 1))",
+     "line_after": "return sum(range(n - 1))",
+     "result": "assert-fail",
+     "failure_tail": "Traceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_vank3y0k/candidate.py\", line 34, in <module>\n    check(sum_to_n)\n    ~~~~~^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_vank3y0k/candidate.py\", line 25, in check\n    assert candidate(1) == 1\n           ^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/49",
+   "split": "test",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "op",
+    "old": "*",
+    "new": "//",
+    "line": 18,
+    "col": 17,
+    "line_before": "ret = (2 * ret) % p",
+    "line_after": "ret = (2 // ret) % p"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "*",
+     "new": "//",
+     "line": 18,
+     "col": 17,
+     "line_before": "ret = (2 * ret) % p",
+     "line_after": "ret = (2 // ret) % p",
+     "result": "assert-fail",
+     "failure_tail": "Traceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_zmdc8zro/candidate.py\", line 39, in <module>\n    check(modp)\n    ~~~~~^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_zmdc8zro/candidate.py\", line 28, in check\n    assert candidate(3, 5) == 3\n           ^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/83",
+   "split": "test",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "op",
+    "old": "==",
+    "new": "!=",
+    "line": 7,
+    "col": 9,
+    "line_before": "if n == 1: return 1",
+    "line_after": "if n != 1: return 1"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "==",
+     "new": "!=",
+     "line": 7,
+     "col": 9,
+     "line_before": "if n == 1: return 1",
+     "line_after": "if n != 1: return 1",
+     "result": "assert-fail",
+     "failure_tail": "Traceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_1sc17kwn/candidate.py\", line 27, in <module>\n    check(starts_one_ends)\n    ~~~~~^^^^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_1sc17kwn/candidate.py\", line 15, in check\n    assert candidate(1) == 1\n           ^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/139",
+   "split": "test",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "op",
+    "old": "*=",
+    "new": "//=",
+    "line": 17,
+    "col": 15,
+    "line_before": "fact_i *= i",
+    "line_after": "fact_i //= i"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "*=",
+     "new": "//=",
+     "line": 17,
+     "col": 15,
+     "line_before": "fact_i *= i",
+     "line_after": "fact_i //= i",
+     "result": "assert-fail",
+     "failure_tail": "ceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_3xl7iyu5/candidate.py\", line 35, in <module>\n    check(special_factorial)\n    ~~~~~^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_3xl7iyu5/candidate.py\", line 25, in check\n    assert candidate(4) == 288, \"Test 4\"\n           ^^^^^^^^^^^^^^^^^^^\nAssertionError: Test 4\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/7",
+   "split": "test",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "cmp",
+    "old": "in",
+    "new": "not in",
+    "line": 11,
+    "col": 44,
+    "line_before": "return [x for x in strings if substring in x]",
+    "line_after": "return [x for x in strings if substring not in x]"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "cmp",
+     "old": "in",
+     "new": "not in",
+     "line": 11,
+     "col": 44,
+     "line_before": "return [x for x in strings if substring in x]",
+     "line_after": "return [x for x in strings if substring not in x]",
+     "result": "assert-fail",
+     "failure_tail": "\n    check(filter_by_substring)\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_g6om8r6j/candidate.py\", line 24, in check\n    assert candidate(['xxx', 'asd', 'xxy', 'john doe', 'xxxAAA', 'xxx'], 'xxx') == ['xxx', 'xxxAAA', 'xxx']\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/147",
+   "split": "test",
+   "canonical_option": "B",
+   "mutation": {
+    "kind": "op",
+    "old": "==",
+    "new": "!=",
+    "line": 21,
+    "col": 38,
+    "line_before": "if (A[i]+A[j]+A[k])%3 == 0:",
+    "line_after": "if (A[i]+A[j]+A[k])%3 != 0:"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "==",
+     "new": "!=",
+     "line": 21,
+     "col": 38,
+     "line_before": "if (A[i]+A[j]+A[k])%3 == 0:",
+     "line_after": "if (A[i]+A[j]+A[k])%3 != 0:",
+     "result": "assert-fail",
+     "failure_tail": "Traceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_ljh6ljv4/candidate.py\", line 35, in <module>\n    check(get_max_triples)\n    ~~~~~^^^^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_ljh6ljv4/candidate.py\", line 28, in check\n    assert candidate(5) == 1\n           ^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/93",
+   "split": "test",
+   "canonical_option": "B",
+   "mutation": {
+    "kind": "op",
+    "old": "+",
+    "new": "-",
+    "line": 17,
+    "col": 42,
+    "line_before": "vowels_replace = dict([(i, chr(ord(i) + 2)) for i in vowels])",
+    "line_after": "vowels_replace = dict([(i, chr(ord(i) - 2)) for i in vowels])"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "cmp",
+     "old": "in",
+     "new": "not in",
+     "line": 19,
+     "col": 43,
+     "line_before": "return ''.join([vowels_replace[i] if i in vowels else i for i in message])",
+     "line_after": "return ''.join([vowels_replace[i] if i not in vowels else i for i in message])",
+     "result": "raises/timeout",
+     "failure_tail": "didate.py\", line 25, in check\n    assert candidate('TEST') == 'tgst', \"This prints if this assert fails 1 (good for debugging!)\"\n           ~~~~~~~~~^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_hq_otcvp/candidate.py\", line 19, in encode\n    return ''.join([vowels_replace[i] if i not in vowels else i for i in message])\n                    ~~~~~~~~~~~~~~^^^\nKeyError: 't'\n"
+    },
+    {
+     "kind": "op",
+     "old": "+",
+     "new": "-",
+     "line": 17,
+     "col": 42,
+     "line_before": "vowels_replace = dict([(i, chr(ord(i) + 2)) for i in vowels])",
+     "line_after": "vowels_replace = dict([(i, chr(ord(i) - 2)) for i in vowels])",
+     "result": "assert-fail",
+     "failure_tail": "c_xj6heirq/candidate.py\", line 36, in <module>\n    check(encode)\n    ~~~~~^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_xj6heirq/candidate.py\", line 25, in check\n    assert candidate('TEST') == 'tgst', \"This prints if this assert fails 1 (good for debugging!)\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: This prints if this assert fails 1 (good for debugging!)\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/127",
+   "split": "test",
+   "canonical_option": "B",
+   "mutation": {
+    "kind": "op",
+    "old": "==",
+    "new": "!=",
+    "line": 23,
+    "col": 27,
+    "line_before": "if num == 1 or num == 0:",
+    "line_after": "if num == 1 or num != 0:"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "==",
+     "new": "!=",
+     "line": 25,
+     "col": 15,
+     "line_before": "if num == 2:",
+     "line_after": "if num != 2:",
+     "result": "still passes"
+    },
+    {
+     "kind": "op",
+     "old": "==",
+     "new": "!=",
+     "line": 23,
+     "col": 27,
+     "line_before": "if num == 1 or num == 0:",
+     "line_after": "if num == 1 or num != 0:",
+     "result": "assert-fail",
+     "failure_tail": "most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_f2f283tj/candidate.py\", line 57, in <module>\n    check(intersection)\n    ~~~~~^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_f2f283tj/candidate.py\", line 45, in check\n    assert candidate((-3, -1), (-5, 5)) == \"YES\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/34",
+   "split": "test",
+   "canonical_option": "B",
+   "mutation": {
+    "kind": "call",
+    "old": "sorted",
+    "new": "reversed",
+    "line": 8,
+    "col": 11,
+    "line_before": "return sorted(list(set(l)))",
+    "line_after": "return reversed(list(set(l)))"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "call",
+     "old": "list",
+     "new": "set",
+     "line": 8,
+     "col": 18,
+     "line_before": "return sorted(list(set(l)))",
+     "line_after": "return sorted(set(set(l)))",
+     "result": "still passes"
+    },
+    {
+     "kind": "call",
+     "old": "sorted",
+     "new": "reversed",
+     "line": 8,
+     "col": 11,
+     "line_before": "return sorted(list(set(l)))",
+     "line_after": "return reversed(list(set(l)))",
+     "result": "assert-fail",
+     "failure_tail": "rs/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_0tsif0zd/candidate.py\", line 22, in <module>\n    check(unique)\n    ~~~~~^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_0tsif0zd/candidate.py\", line 17, in check\n    assert candidate([5, 3, 5, 2, 3, 3, 9, 0, 123]) == [0, 2, 3, 5, 9, 123]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/56",
+   "split": "test",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "op",
+    "old": "<",
+    "new": "<=",
+    "line": 22,
+    "col": 17,
+    "line_before": "if depth < 0:",
+    "line_after": "if depth <= 0:"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "<",
+     "new": "<=",
+     "line": 22,
+     "col": 17,
+     "line_before": "if depth < 0:",
+     "line_after": "if depth <= 0:",
+     "result": "assert-fail",
+     "failure_tail": "Traceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_y_61z1k1/candidate.py\", line 49, in <module>\n    check(correct_bracketing)\n    ~~~~~^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_y_61z1k1/candidate.py\", line 33, in check\n    assert candidate(\"<>\")\n           ~~~~~~~~~^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/155",
+   "split": "test",
+   "canonical_option": "B",
+   "mutation": {
+    "kind": "op",
+    "old": "==",
+    "new": "!=",
+    "line": 12,
+    "col": 19,
+    "line_before": "if int(i)%2==0:",
+    "line_after": "if int(i)%2!=0:"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "==",
+     "new": "!=",
+     "line": 12,
+     "col": 19,
+     "line_before": "if int(i)%2==0:",
+     "line_after": "if int(i)%2!=0:",
+     "result": "assert-fail",
+     "failure_tail": "Traceback (most recent call last):\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_h_56gue3/candidate.py\", line 38, in <module>\n    check(even_odd_count)\n    ~~~~~^^^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_h_56gue3/candidate.py\", line 22, in check\n    assert candidate(7) == (0, 1)\n           ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/129",
+   "split": "test",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "op",
+    "old": "!=",
+    "new": "==",
+    "line": 41,
+    "col": 21,
+    "line_before": "if j != 0:",
+    "line_after": "if j == 0:"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "!=",
+     "new": "==",
+     "line": 41,
+     "col": 21,
+     "line_before": "if j != 0:",
+     "line_after": "if j == 0:",
+     "result": "assert-fail",
+     "failure_tail": "y\", line 82, in <module>\n    check(minPath)\n    ~~~~~^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_zmggt0yp/candidate.py\", line 69, in check\n    assert candidate([[8, 14, 9, 2], [6, 4, 13, 15], [5, 7, 1, 12], [3, 10, 11, 16]], 5) == [1, 7, 1, 7, 1]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  },
+  {
+   "task_id": "HumanEval/4",
+   "split": "test",
+   "canonical_option": "A",
+   "mutation": {
+    "kind": "op",
+    "old": "/",
+    "new": "//",
+    "line": 14,
+    "col": 47,
+    "line_before": "return sum(abs(x - mean) for x in numbers) / len(numbers)",
+    "line_after": "return sum(abs(x - mean) for x in numbers) // len(numbers)"
+   },
+   "mutation_result": "assert-fail",
+   "fallback": false,
+   "canonical_passes": true,
+   "mutant_passes": false,
+   "mutant_raised": false,
+   "attempts": [
+    {
+     "kind": "op",
+     "old": "/",
+     "new": "//",
+     "line": 14,
+     "col": 47,
+     "line_before": "return sum(abs(x - mean) for x in numbers) / len(numbers)",
+     "line_after": "return sum(abs(x - mean) for x in numbers) // len(numbers)",
+     "result": "assert-fail",
+     "failure_tail": "/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_n__06o6g/candidate.py\", line 33, in <module>\n    check(mean_absolute_deviation)\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/l0/sr26hjgx47zfrn_vpdxy3wsh0000gn/T/he_rec_n__06o6g/candidate.py\", line 26, in check\n    assert abs(candidate([1.0, 2.0, 3.0]) - 2.0/3.0) < 1e-6\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+   ]
+  }
+ ]
+}

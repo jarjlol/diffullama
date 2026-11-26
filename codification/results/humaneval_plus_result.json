@@ -1,0 +1,7021 @@
+{
+ "split": "test",
+ "model": "dream-base",
+ "n_canonical_plus": 162,
+ "excluded_canonical_fail": [
+  {
+   "task_id": "HumanEval/139",
+   "tail": ""
+  },
+  {
+   "task_id": "HumanEval/32",
+   "tail": "Traceback (most recent call last):\n  File \"/tmp/he_plus_8m420vx2/candidate.py\", line 62, in <module>\n    check(find_zero)\n  File \"/tmp/he_plus_8m420vx2/candidate.py\", line 58, in check\n    assert _poly(*candidate(*inp), inp) <= 0.0001\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: Value after * must be an iterable, not float\n"
+  }
+ ],
+ "n_items": 142,
+ "plus": {
+  "ar.qwen7b.mean": 0.04929577464788732,
+  "ar.qwen7b.sum": 0.04225352112676056,
+  "decision.listwise": 0.3591549295774648,
+  "decision.pointwise": 0.33098591549295775,
+  "example-filter": 0.2535211267605634,
+  "first": 0.09154929577464789,
+  "mbr-exec": 0.056338028169014086,
+  "random(exp.)": 0.07746478873239436,
+  "oracle": 0.3732394366197183,
+  "n": 142
+ },
+ "standard": {
+  "ar.qwen7b.mean": 0.04929577464788732,
+  "ar.qwen7b.sum": 0.056338028169014086,
+  "decision.listwise": 0.4084507042253521,
+  "decision.pointwise": 0.3873239436619718,
+  "example-filter": 0.28169014084507044,
+  "first": 0.1056338028169014,
+  "mbr-exec": 0.06338028169014084,
+  "random(exp.)": 0.08591549295774649,
+  "oracle": 0.4084507042253521,
+  "n": 142
+ },
+ "drop_plus_minus_standard": {
+  "ar.qwen7b.mean": 0.0,
+  "ar.qwen7b.sum": -0.014084507042253523,
+  "decision.listwise": -0.049295774647887314,
+  "decision.pointwise": -0.056338028169014065,
+  "example-filter": -0.02816901408450706,
+  "first": -0.014084507042253516,
+  "mbr-exec": -0.007042253521126758
+ },
+ "plus_solvable": {
+  "ar.qwen7b.mean": 0.1320754716981132,
+  "ar.qwen7b.sum": 0.11320754716981132,
+  "decision.listwise": 0.9622641509433962,
+  "decision.pointwise": 0.8867924528301887,
+  "example-filter": 0.6792452830188679,
+  "first": 0.24528301886792453,
+  "mbr-exec": 0.1509433962264151,
+  "n": 53
+ },
+ "n_plus_solvable": 53,
+ "items": [
+  {
+   "uid": "HumanEval/0",
+   "n": 10,
+   "plus_passed": [
+    false,
+    true,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    true,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.2,
+   "correct": {
+    "first": false,
+    "example-filter": true,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 1,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 2,
+    "ar.qwen7b.mean": 2,
+    "decision.listwise": 1,
+    "decision.pointwise": 1
+   }
+  },
+  {
+   "uid": "HumanEval/1",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 7,
+    "ar.qwen7b.mean": 7,
+    "decision.listwise": 5,
+    "decision.pointwise": 5
+   }
+  },
+  {
+   "uid": "HumanEval/3",
+   "n": 10,
+   "plus_passed": [
+    true,
+    false,
+    true,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    true
+   ],
+   "std_passed": [
+    true,
+    false,
+    true,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    true
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.4,
+   "correct": {
+    "first": true,
+    "example-filter": true,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 1,
+    "ar.qwen7b.sum": 8,
+    "ar.qwen7b.mean": 8,
+    "decision.listwise": 4,
+    "decision.pointwise": 2
+   }
+  },
+  {
+   "uid": "HumanEval/4",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 1,
+    "ar.qwen7b.sum": 2,
+    "ar.qwen7b.mean": 2,
+    "decision.listwise": 4,
+    "decision.pointwise": 4
+   }
+  },
+  {
+   "uid": "HumanEval/5",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 9,
+    "ar.qwen7b.mean": 9,
+    "decision.listwise": 7,
+    "decision.pointwise": 1
+   }
+  },
+  {
+   "uid": "HumanEval/7",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.1,
+   "correct": {
+    "first": false,
+    "example-filter": true,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 2,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 8,
+    "ar.qwen7b.mean": 8,
+    "decision.listwise": 2,
+    "decision.pointwise": 2
+   }
+  },
+  {
+   "uid": "HumanEval/8",
+   "n": 10,
+   "plus_passed": [
+    true,
+    false,
+    true,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    true,
+    false,
+    true,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.3,
+   "correct": {
+    "first": true,
+    "example-filter": true,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 1,
+    "ar.qwen7b.sum": 1,
+    "ar.qwen7b.mean": 1,
+    "decision.listwise": 0,
+    "decision.pointwise": 4
+   }
+  },
+  {
+   "uid": "HumanEval/10",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 9,
+    "ar.qwen7b.mean": 1,
+    "decision.listwise": 5,
+    "decision.pointwise": 4
+   }
+  },
+  {
+   "uid": "HumanEval/11",
+   "n": 10,
+   "plus_passed": [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    true,
+    false
+   ],
+   "std_passed": [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    true,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.3,
+   "correct": {
+    "first": true,
+    "example-filter": true,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 1,
+    "ar.qwen7b.sum": 4,
+    "ar.qwen7b.mean": 4,
+    "decision.listwise": 7,
+    "decision.pointwise": 0
+   }
+  },
+  {
+   "uid": "HumanEval/12",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 4,
+    "ar.qwen7b.mean": 4,
+    "decision.listwise": 7,
+    "decision.pointwise": 3
+   }
+  },
+  {
+   "uid": "HumanEval/13",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    true
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.1,
+   "correct": {
+    "first": false,
+    "example-filter": true,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 8,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 9,
+    "ar.qwen7b.mean": 7,
+    "decision.listwise": 9,
+    "decision.pointwise": 9
+   }
+  },
+  {
+   "uid": "HumanEval/15",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 9,
+    "ar.qwen7b.mean": 3,
+    "decision.listwise": 4,
+    "decision.pointwise": 0
+   }
+  },
+  {
+   "uid": "HumanEval/16",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 8,
+    "ar.qwen7b.mean": 7,
+    "decision.listwise": 6,
+    "decision.pointwise": 6
+   }
+  },
+  {
+   "uid": "HumanEval/17",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 0,
+    "ar.qwen7b.mean": 0,
+    "decision.listwise": 1,
+    "decision.pointwise": 6
+   }
+  },
+  {
+   "uid": "HumanEval/18",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 1,
+    "ar.qwen7b.sum": 8,
+    "ar.qwen7b.mean": 8,
+    "decision.listwise": 4,
+    "decision.pointwise": 0
+   }
+  },
+  {
+   "uid": "HumanEval/19",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 1,
+    "ar.qwen7b.mean": 1,
+    "decision.listwise": 3,
+    "decision.pointwise": 3
+   }
+  },
+  {
+   "uid": "HumanEval/20",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.1,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 1,
+    "mbr-exec": 4,
+    "ar.qwen7b.sum": 4,
+    "ar.qwen7b.mean": 5,
+    "decision.listwise": 2,
+    "decision.pointwise": 2
+   }
+  },
+  {
+   "uid": "HumanEval/21",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.1,
+   "correct": {
+    "first": false,
+    "example-filter": true,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 8,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 5,
+    "ar.qwen7b.mean": 5,
+    "decision.listwise": 8,
+    "decision.pointwise": 7
+   }
+  },
+  {
+   "uid": "HumanEval/22",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true
+   ],
+   "oracle": false,
+   "std_oracle": true,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 1,
+    "ar.qwen7b.sum": 9,
+    "ar.qwen7b.mean": 1,
+    "decision.listwise": 9,
+    "decision.pointwise": 0
+   }
+  },
+  {
+   "uid": "HumanEval/23",
+   "n": 10,
+   "plus_passed": [
+    true,
+    false,
+    false,
+    false,
+    false,
+    true,
+    true,
+    false,
+    true,
+    true
+   ],
+   "std_passed": [
+    true,
+    false,
+    false,
+    false,
+    false,
+    true,
+    true,
+    false,
+    true,
+    true
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.5,
+   "correct": {
+    "first": true,
+    "example-filter": true,
+    "mbr-exec": true,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": true,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 4,
+    "ar.qwen7b.mean": 9,
+    "decision.listwise": 8,
+    "decision.pointwise": 5
+   }
+  },
+  {
+   "uid": "HumanEval/24",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    true,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    true,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.2,
+   "correct": {
+    "first": false,
+    "example-filter": true,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": true,
+    "ar.qwen7b.mean": true,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 3,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 3,
+    "ar.qwen7b.mean": 8,
+    "decision.listwise": 8,
+    "decision.pointwise": 8
+   }
+  },
+  {
+   "uid": "HumanEval/25",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 3,
+    "ar.qwen7b.mean": 9,
+    "decision.listwise": 7,
+    "decision.pointwise": 7
+   }
+  },
+  {
+   "uid": "HumanEval/26",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 0,
+    "ar.qwen7b.mean": 0,
+    "decision.listwise": 8,
+    "decision.pointwise": 3
+   }
+  },
+  {
+   "uid": "HumanEval/28",
+   "n": 10,
+   "plus_passed": [
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.1,
+   "correct": {
+    "first": false,
+    "example-filter": true,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 1,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 7,
+    "ar.qwen7b.mean": 7,
+    "decision.listwise": 1,
+    "decision.pointwise": 1
+   }
+  },
+  {
+   "uid": "HumanEval/30",
+   "n": 10,
+   "plus_passed": [
+    false,
+    true,
+    true,
+    false,
+    true,
+    true,
+    false,
+    true,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    true,
+    true,
+    false,
+    true,
+    true,
+    false,
+    true,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.5,
+   "correct": {
+    "first": false,
+    "example-filter": true,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 1,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 9,
+    "ar.qwen7b.mean": 9,
+    "decision.listwise": 5,
+    "decision.pointwise": 5
+   }
+  },
+  {
+   "uid": "HumanEval/31",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.2,
+   "correct": {
+    "first": false,
+    "example-filter": true,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 2,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 7,
+    "ar.qwen7b.mean": 7,
+    "decision.listwise": 6,
+    "decision.pointwise": 2
+   }
+  },
+  {
+   "uid": "HumanEval/33",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 9,
+    "ar.qwen7b.mean": 8,
+    "decision.listwise": 7,
+    "decision.pointwise": 4
+   }
+  },
+  {
+   "uid": "HumanEval/34",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    true,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    true,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.2,
+   "correct": {
+    "first": false,
+    "example-filter": true,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 4,
+    "mbr-exec": 1,
+    "ar.qwen7b.sum": 3,
+    "ar.qwen7b.mean": 3,
+    "decision.listwise": 7,
+    "decision.pointwise": 4
+   }
+  },
+  {
+   "uid": "HumanEval/35",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.1,
+   "correct": {
+    "first": false,
+    "example-filter": true,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 4,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 9,
+    "ar.qwen7b.mean": 8,
+    "decision.listwise": 4,
+    "decision.pointwise": 4
+   }
+  },
+  {
+   "uid": "HumanEval/36",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    true,
+    false,
+    false,
+    true,
+    false,
+    true,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    true,
+    false,
+    false,
+    true,
+    false,
+    true,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.3,
+   "correct": {
+    "first": false,
+    "example-filter": true,
+    "mbr-exec": true,
+    "ar.qwen7b.sum": true,
+    "ar.qwen7b.mean": true,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 2,
+    "mbr-exec": 2,
+    "ar.qwen7b.sum": 2,
+    "ar.qwen7b.mean": 2,
+    "decision.listwise": 5,
+    "decision.pointwise": 5
+   }
+  },
+  {
+   "uid": "HumanEval/37",
+   "n": 10,
+   "plus_passed": [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.1,
+   "correct": {
+    "first": true,
+    "example-filter": true,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 1,
+    "ar.qwen7b.sum": 7,
+    "ar.qwen7b.mean": 5,
+    "decision.listwise": 0,
+    "decision.pointwise": 0
+   }
+  },
+  {
+   "uid": "HumanEval/38",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 4,
+    "ar.qwen7b.mean": 4,
+    "decision.listwise": 8,
+    "decision.pointwise": 8
+   }
+  },
+  {
+   "uid": "HumanEval/39",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 7,
+    "ar.qwen7b.mean": 2,
+    "decision.listwise": 9,
+    "decision.pointwise": 9
+   }
+  },
+  {
+   "uid": "HumanEval/40",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 8,
+    "ar.qwen7b.mean": 2,
+    "decision.listwise": 4,
+    "decision.pointwise": 2
+   }
+  },
+  {
+   "uid": "HumanEval/41",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 9,
+    "ar.qwen7b.mean": 0,
+    "decision.listwise": 4,
+    "decision.pointwise": 5
+   }
+  },
+  {
+   "uid": "HumanEval/42",
+   "n": 10,
+   "plus_passed": [
+    false,
+    true,
+    false,
+    true,
+    true,
+    false,
+    true,
+    false,
+    true,
+    false
+   ],
+   "std_passed": [
+    false,
+    true,
+    false,
+    true,
+    true,
+    false,
+    true,
+    false,
+    true,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.5,
+   "correct": {
+    "first": false,
+    "example-filter": true,
+    "mbr-exec": true,
+    "ar.qwen7b.sum": true,
+    "ar.qwen7b.mean": true,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 1,
+    "mbr-exec": 1,
+    "ar.qwen7b.sum": 1,
+    "ar.qwen7b.mean": 1,
+    "decision.listwise": 1,
+    "decision.pointwise": 1
+   }
+  },
+  {
+   "uid": "HumanEval/43",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.2,
+   "correct": {
+    "first": false,
+    "example-filter": true,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 3,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 5,
+    "ar.qwen7b.mean": 9,
+    "decision.listwise": 7,
+    "decision.pointwise": 3
+   }
+  },
+  {
+   "uid": "HumanEval/44",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": true,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 5,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 0,
+    "ar.qwen7b.mean": 7,
+    "decision.listwise": 5,
+    "decision.pointwise": 5
+   }
+  },
+  {
+   "uid": "HumanEval/45",
+   "n": 10,
+   "plus_passed": [
+    false,
+    true,
+    false,
+    false,
+    false,
+    true,
+    false,
+    true,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    true,
+    false,
+    false,
+    false,
+    true,
+    false,
+    true,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.3,
+   "correct": {
+    "first": false,
+    "example-filter": true,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 1,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 9,
+    "ar.qwen7b.mean": 9,
+    "decision.listwise": 1,
+    "decision.pointwise": 1
+   }
+  },
+  {
+   "uid": "HumanEval/46",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true
+   ],
+   "oracle": false,
+   "std_oracle": true,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 9,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 2,
+    "ar.qwen7b.mean": 2,
+    "decision.listwise": 9,
+    "decision.pointwise": 9
+   }
+  },
+  {
+   "uid": "HumanEval/47",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 2,
+    "ar.qwen7b.mean": 6,
+    "decision.listwise": 9,
+    "decision.pointwise": 5
+   }
+  },
+  {
+   "uid": "HumanEval/48",
+   "n": 10,
+   "plus_passed": [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    false
+   ],
+   "std_passed": [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.2,
+   "correct": {
+    "first": true,
+    "example-filter": true,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 1,
+    "ar.qwen7b.sum": 1,
+    "ar.qwen7b.mean": 1,
+    "decision.listwise": 0,
+    "decision.pointwise": 0
+   }
+  },
+  {
+   "uid": "HumanEval/49",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    true,
+    false,
+    false,
+    false,
+    false,
+    true,
+    false,
+    true,
+    false,
+    true
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.1,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 8,
+    "ar.qwen7b.mean": 8,
+    "decision.listwise": 0,
+    "decision.pointwise": 0
+   }
+  },
+  {
+   "uid": "HumanEval/51",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.1,
+   "correct": {
+    "first": false,
+    "example-filter": true,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 7,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 2,
+    "ar.qwen7b.mean": 2,
+    "decision.listwise": 7,
+    "decision.pointwise": 7
+   }
+  },
+  {
+   "uid": "HumanEval/52",
+   "n": 10,
+   "plus_passed": [
+    true,
+    false,
+    false,
+    true,
+    true,
+    false,
+    true,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    true,
+    false,
+    false,
+    true,
+    true,
+    false,
+    true,
+    false,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.4,
+   "correct": {
+    "first": true,
+    "example-filter": true,
+    "mbr-exec": true,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 8,
+    "ar.qwen7b.mean": 8,
+    "decision.listwise": 4,
+    "decision.pointwise": 0
+   }
+  },
+  {
+   "uid": "HumanEval/53",
+   "n": 10,
+   "plus_passed": [
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    true,
+    true,
+    true,
+    true
+   ],
+   "std_passed": [
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    true,
+    true,
+    true,
+    true
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.5,
+   "correct": {
+    "first": false,
+    "example-filter": true,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": true,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 1,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 2,
+    "ar.qwen7b.mean": 9,
+    "decision.listwise": 9,
+    "decision.pointwise": 6
+   }
+  },
+  {
+   "uid": "HumanEval/55",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    true,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    true,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.2,
+   "correct": {
+    "first": false,
+    "example-filter": true,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 3,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 2,
+    "ar.qwen7b.mean": 7,
+    "decision.listwise": 3,
+    "decision.pointwise": 3
+   }
+  },
+  {
+   "uid": "HumanEval/56",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.2,
+   "correct": {
+    "first": false,
+    "example-filter": true,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 3,
+    "mbr-exec": 1,
+    "ar.qwen7b.sum": 0,
+    "ar.qwen7b.mean": 9,
+    "decision.listwise": 6,
+    "decision.pointwise": 6
+   }
+  },
+  {
+   "uid": "HumanEval/57",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 5,
+    "ar.qwen7b.mean": 5,
+    "decision.listwise": 6,
+    "decision.pointwise": 0
+   }
+  },
+  {
+   "uid": "HumanEval/58",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    true,
+    false,
+    true,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    true,
+    false,
+    true,
+    false,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.2,
+   "correct": {
+    "first": false,
+    "example-filter": true,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 4,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 3,
+    "ar.qwen7b.mean": 3,
+    "decision.listwise": 6,
+    "decision.pointwise": 6
+   }
+  },
+  {
+   "uid": "HumanEval/59",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 3,
+    "ar.qwen7b.sum": 0,
+    "ar.qwen7b.mean": 0,
+    "decision.listwise": 8,
+    "decision.pointwise": 8
+   }
+  },
+  {
+   "uid": "HumanEval/60",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    true,
+    true,
+    false,
+    true,
+    false,
+    false,
+    true,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    true,
+    true,
+    false,
+    true,
+    false,
+    false,
+    true,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.4,
+   "correct": {
+    "first": false,
+    "example-filter": true,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 2,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 1,
+    "ar.qwen7b.mean": 0,
+    "decision.listwise": 3,
+    "decision.pointwise": 2
+   }
+  },
+  {
+   "uid": "HumanEval/61",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 0,
+    "ar.qwen7b.mean": 0,
+    "decision.listwise": 6,
+    "decision.pointwise": 6
+   }
+  },
+  {
+   "uid": "HumanEval/62",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.1,
+   "correct": {
+    "first": false,
+    "example-filter": true,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 8,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 0,
+    "ar.qwen7b.mean": 5,
+    "decision.listwise": 8,
+    "decision.pointwise": 8
+   }
+  },
+  {
+   "uid": "HumanEval/63",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 4,
+    "ar.qwen7b.mean": 3,
+    "decision.listwise": 6,
+    "decision.pointwise": 0
+   }
+  },
+  {
+   "uid": "HumanEval/64",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 9,
+    "ar.qwen7b.mean": 9,
+    "decision.listwise": 5,
+    "decision.pointwise": 5
+   }
+  },
+  {
+   "uid": "HumanEval/65",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 6,
+    "ar.qwen7b.mean": 2,
+    "decision.listwise": 0,
+    "decision.pointwise": 0
+   }
+  },
+  {
+   "uid": "HumanEval/66",
+   "n": 10,
+   "plus_passed": [
+    true,
+    true,
+    true,
+    false,
+    true,
+    false,
+    true,
+    false,
+    true,
+    false
+   ],
+   "std_passed": [
+    true,
+    true,
+    true,
+    false,
+    true,
+    false,
+    true,
+    false,
+    true,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.6,
+   "correct": {
+    "first": true,
+    "example-filter": true,
+    "mbr-exec": true,
+    "ar.qwen7b.sum": true,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 8,
+    "ar.qwen7b.mean": 5,
+    "decision.listwise": 4,
+    "decision.pointwise": 4
+   }
+  },
+  {
+   "uid": "HumanEval/69",
+   "n": 10,
+   "plus_passed": [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.1,
+   "correct": {
+    "first": true,
+    "example-filter": true,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 1,
+    "ar.qwen7b.sum": 1,
+    "ar.qwen7b.mean": 1,
+    "decision.listwise": 0,
+    "decision.pointwise": 0
+   }
+  },
+  {
+   "uid": "HumanEval/70",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 8,
+    "ar.qwen7b.mean": 8,
+    "decision.listwise": 9,
+    "decision.pointwise": 9
+   }
+  },
+  {
+   "uid": "HumanEval/72",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.2,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 6,
+    "ar.qwen7b.mean": 6,
+    "decision.listwise": 3,
+    "decision.pointwise": 3
+   }
+  },
+  {
+   "uid": "HumanEval/73",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 2,
+    "ar.qwen7b.mean": 2,
+    "decision.listwise": 7,
+    "decision.pointwise": 7
+   }
+  },
+  {
+   "uid": "HumanEval/74",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.1,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 2,
+    "ar.qwen7b.mean": 2,
+    "decision.listwise": 3,
+    "decision.pointwise": 3
+   }
+  },
+  {
+   "uid": "HumanEval/75",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 2,
+    "ar.qwen7b.mean": 2,
+    "decision.listwise": 0,
+    "decision.pointwise": 0
+   }
+  },
+  {
+   "uid": "HumanEval/76",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 9,
+    "ar.qwen7b.mean": 7,
+    "decision.listwise": 5,
+    "decision.pointwise": 3
+   }
+  },
+  {
+   "uid": "HumanEval/77",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": true,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 2,
+    "ar.qwen7b.mean": 2,
+    "decision.listwise": 7,
+    "decision.pointwise": 7
+   }
+  },
+  {
+   "uid": "HumanEval/78",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    true,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    true,
+    false,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.2,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 4,
+    "ar.qwen7b.mean": 0,
+    "decision.listwise": 6,
+    "decision.pointwise": 6
+   }
+  },
+  {
+   "uid": "HumanEval/79",
+   "n": 10,
+   "plus_passed": [
+    true,
+    false,
+    true,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    true,
+    false,
+    true,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.3,
+   "correct": {
+    "first": true,
+    "example-filter": true,
+    "mbr-exec": true,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 1,
+    "ar.qwen7b.mean": 1,
+    "decision.listwise": 2,
+    "decision.pointwise": 7
+   }
+  },
+  {
+   "uid": "HumanEval/80",
+   "n": 10,
+   "plus_passed": [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.1,
+   "correct": {
+    "first": true,
+    "example-filter": true,
+    "mbr-exec": true,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 9,
+    "ar.qwen7b.mean": 9,
+    "decision.listwise": 0,
+    "decision.pointwise": 0
+   }
+  },
+  {
+   "uid": "HumanEval/81",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 9,
+    "ar.qwen7b.mean": 2,
+    "decision.listwise": 4,
+    "decision.pointwise": 4
+   }
+  },
+  {
+   "uid": "HumanEval/83",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 0,
+    "ar.qwen7b.mean": 0,
+    "decision.listwise": 6,
+    "decision.pointwise": 6
+   }
+  },
+  {
+   "uid": "HumanEval/84",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 4,
+    "ar.qwen7b.mean": 4,
+    "decision.listwise": 1,
+    "decision.pointwise": 1
+   }
+  },
+  {
+   "uid": "HumanEval/85",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    true,
+    true,
+    false,
+    false,
+    false,
+    false,
+    true
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    true,
+    true,
+    false,
+    false,
+    false,
+    false,
+    true
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.3,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": true,
+    "ar.qwen7b.mean": true,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 1,
+    "ar.qwen7b.sum": 9,
+    "ar.qwen7b.mean": 9,
+    "decision.listwise": 9,
+    "decision.pointwise": 3
+   }
+  },
+  {
+   "uid": "HumanEval/86",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 5,
+    "ar.qwen7b.mean": 0,
+    "decision.listwise": 1,
+    "decision.pointwise": 6
+   }
+  },
+  {
+   "uid": "HumanEval/163",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 9,
+    "ar.qwen7b.mean": 9,
+    "decision.listwise": 3,
+    "decision.pointwise": 3
+   }
+  },
+  {
+   "uid": "HumanEval/162",
+   "n": 10,
+   "plus_passed": [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.1,
+   "correct": {
+    "first": true,
+    "example-filter": true,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 1,
+    "ar.qwen7b.sum": 6,
+    "ar.qwen7b.mean": 6,
+    "decision.listwise": 0,
+    "decision.pointwise": 0
+   }
+  },
+  {
+   "uid": "HumanEval/161",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": true,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 8,
+    "ar.qwen7b.mean": 8,
+    "decision.listwise": 5,
+    "decision.pointwise": 5
+   }
+  },
+  {
+   "uid": "HumanEval/160",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 6,
+    "ar.qwen7b.mean": 6,
+    "decision.listwise": 7,
+    "decision.pointwise": 7
+   }
+  },
+  {
+   "uid": "HumanEval/159",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 3,
+    "ar.qwen7b.mean": 3,
+    "decision.listwise": 7,
+    "decision.pointwise": 0
+   }
+  },
+  {
+   "uid": "HumanEval/158",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 3,
+    "ar.qwen7b.mean": 1,
+    "decision.listwise": 5,
+    "decision.pointwise": 5
+   }
+  },
+  {
+   "uid": "HumanEval/157",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.1,
+   "correct": {
+    "first": false,
+    "example-filter": true,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 3,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 2,
+    "ar.qwen7b.mean": 2,
+    "decision.listwise": 3,
+    "decision.pointwise": 3
+   }
+  },
+  {
+   "uid": "HumanEval/156",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 6,
+    "ar.qwen7b.mean": 9,
+    "decision.listwise": 0,
+    "decision.pointwise": 5
+   }
+  },
+  {
+   "uid": "HumanEval/155",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 3,
+    "ar.qwen7b.mean": 3,
+    "decision.listwise": 7,
+    "decision.pointwise": 7
+   }
+  },
+  {
+   "uid": "HumanEval/154",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    true,
+    true,
+    false,
+    false,
+    true,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.1,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 5,
+    "ar.qwen7b.mean": 5,
+    "decision.listwise": 7,
+    "decision.pointwise": 3
+   }
+  },
+  {
+   "uid": "HumanEval/153",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 1,
+    "ar.qwen7b.mean": 5,
+    "decision.listwise": 4,
+    "decision.pointwise": 7
+   }
+  },
+  {
+   "uid": "HumanEval/152",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true
+   ],
+   "std_passed": [
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.2,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 3,
+    "ar.qwen7b.mean": 3,
+    "decision.listwise": 2,
+    "decision.pointwise": 2
+   }
+  },
+  {
+   "uid": "HumanEval/151",
+   "n": 10,
+   "plus_passed": [
+    false,
+    true,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    true,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.2,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": true,
+    "ar.qwen7b.mean": true,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 4,
+    "ar.qwen7b.mean": 4,
+    "decision.listwise": 1,
+    "decision.pointwise": 1
+   }
+  },
+  {
+   "uid": "HumanEval/150",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 2,
+    "ar.qwen7b.mean": 8,
+    "decision.listwise": 8,
+    "decision.pointwise": 8
+   }
+  },
+  {
+   "uid": "HumanEval/149",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.1,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 0,
+    "ar.qwen7b.mean": 9,
+    "decision.listwise": 4,
+    "decision.pointwise": 4
+   }
+  },
+  {
+   "uid": "HumanEval/147",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.1,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 9,
+    "ar.qwen7b.mean": 9,
+    "decision.listwise": 5,
+    "decision.pointwise": 5
+   }
+  },
+  {
+   "uid": "HumanEval/145",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 8,
+    "ar.qwen7b.mean": 9,
+    "decision.listwise": 4,
+    "decision.pointwise": 4
+   }
+  },
+  {
+   "uid": "HumanEval/144",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 7,
+    "ar.qwen7b.mean": 7,
+    "decision.listwise": 5,
+    "decision.pointwise": 7
+   }
+  },
+  {
+   "uid": "HumanEval/143",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 7,
+    "ar.qwen7b.mean": 7,
+    "decision.listwise": 5,
+    "decision.pointwise": 5
+   }
+  },
+  {
+   "uid": "HumanEval/142",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 5,
+    "ar.qwen7b.mean": 5,
+    "decision.listwise": 8,
+    "decision.pointwise": 0
+   }
+  },
+  {
+   "uid": "HumanEval/141",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 2,
+    "ar.qwen7b.mean": 2,
+    "decision.listwise": 9,
+    "decision.pointwise": 1
+   }
+  },
+  {
+   "uid": "HumanEval/140",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 0,
+    "ar.qwen7b.mean": 0,
+    "decision.listwise": 5,
+    "decision.pointwise": 5
+   }
+  },
+  {
+   "uid": "HumanEval/138",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 0,
+    "ar.qwen7b.mean": 0,
+    "decision.listwise": 4,
+    "decision.pointwise": 4
+   }
+  },
+  {
+   "uid": "HumanEval/137",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 7,
+    "ar.qwen7b.mean": 7,
+    "decision.listwise": 1,
+    "decision.pointwise": 1
+   }
+  },
+  {
+   "uid": "HumanEval/136",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 3,
+    "ar.qwen7b.mean": 7,
+    "decision.listwise": 6,
+    "decision.pointwise": 6
+   }
+  },
+  {
+   "uid": "HumanEval/135",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 4,
+    "ar.qwen7b.mean": 7,
+    "decision.listwise": 8,
+    "decision.pointwise": 4
+   }
+  },
+  {
+   "uid": "HumanEval/134",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 0,
+    "ar.qwen7b.mean": 3,
+    "decision.listwise": 5,
+    "decision.pointwise": 2
+   }
+  },
+  {
+   "uid": "HumanEval/133",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 0,
+    "ar.qwen7b.mean": 9,
+    "decision.listwise": 3,
+    "decision.pointwise": 6
+   }
+  },
+  {
+   "uid": "HumanEval/132",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 4,
+    "ar.qwen7b.mean": 4,
+    "decision.listwise": 2,
+    "decision.pointwise": 0
+   }
+  },
+  {
+   "uid": "HumanEval/131",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 9,
+    "ar.qwen7b.mean": 9,
+    "decision.listwise": 5,
+    "decision.pointwise": 1
+   }
+  },
+  {
+   "uid": "HumanEval/130",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 7,
+    "ar.qwen7b.mean": 5,
+    "decision.listwise": 0,
+    "decision.pointwise": 5
+   }
+  },
+  {
+   "uid": "HumanEval/129",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 5,
+    "ar.qwen7b.mean": 5,
+    "decision.listwise": 8,
+    "decision.pointwise": 0
+   }
+  },
+  {
+   "uid": "HumanEval/128",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.1,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 6,
+    "ar.qwen7b.mean": 1,
+    "decision.listwise": 4,
+    "decision.pointwise": 4
+   }
+  },
+  {
+   "uid": "HumanEval/127",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 0,
+    "ar.qwen7b.mean": 0,
+    "decision.listwise": 8,
+    "decision.pointwise": 0
+   }
+  },
+  {
+   "uid": "HumanEval/126",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 0,
+    "ar.qwen7b.mean": 0,
+    "decision.listwise": 4,
+    "decision.pointwise": 0
+   }
+  },
+  {
+   "uid": "HumanEval/125",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 2,
+    "ar.qwen7b.mean": 2,
+    "decision.listwise": 1,
+    "decision.pointwise": 4
+   }
+  },
+  {
+   "uid": "HumanEval/124",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 0,
+    "ar.qwen7b.mean": 0,
+    "decision.listwise": 2,
+    "decision.pointwise": 2
+   }
+  },
+  {
+   "uid": "HumanEval/123",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 3,
+    "ar.qwen7b.mean": 3,
+    "decision.listwise": 8,
+    "decision.pointwise": 2
+   }
+  },
+  {
+   "uid": "HumanEval/122",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 4,
+    "ar.qwen7b.mean": 4,
+    "decision.listwise": 9,
+    "decision.pointwise": 0
+   }
+  },
+  {
+   "uid": "HumanEval/120",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 2,
+    "ar.qwen7b.mean": 2,
+    "decision.listwise": 3,
+    "decision.pointwise": 3
+   }
+  },
+  {
+   "uid": "HumanEval/119",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 7,
+    "ar.qwen7b.mean": 7,
+    "decision.listwise": 0,
+    "decision.pointwise": 0
+   }
+  },
+  {
+   "uid": "HumanEval/118",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 7,
+    "ar.qwen7b.mean": 7,
+    "decision.listwise": 6,
+    "decision.pointwise": 1
+   }
+  },
+  {
+   "uid": "HumanEval/117",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 3,
+    "ar.qwen7b.mean": 4,
+    "decision.listwise": 9,
+    "decision.pointwise": 0
+   }
+  },
+  {
+   "uid": "HumanEval/116",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.2,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 8,
+    "ar.qwen7b.mean": 1,
+    "decision.listwise": 3,
+    "decision.pointwise": 6
+   }
+  },
+  {
+   "uid": "HumanEval/115",
+   "n": 10,
+   "plus_passed": [
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.1,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 4,
+    "ar.qwen7b.mean": 3,
+    "decision.listwise": 1,
+    "decision.pointwise": 8
+   }
+  },
+  {
+   "uid": "HumanEval/87",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 0,
+    "ar.qwen7b.mean": 2,
+    "decision.listwise": 4,
+    "decision.pointwise": 9
+   }
+  },
+  {
+   "uid": "HumanEval/89",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 5,
+    "ar.qwen7b.mean": 5,
+    "decision.listwise": 0,
+    "decision.pointwise": 0
+   }
+  },
+  {
+   "uid": "HumanEval/90",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 6,
+    "ar.qwen7b.mean": 6,
+    "decision.listwise": 9,
+    "decision.pointwise": 9
+   }
+  },
+  {
+   "uid": "HumanEval/91",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 0,
+    "ar.qwen7b.mean": 0,
+    "decision.listwise": 5,
+    "decision.pointwise": 4
+   }
+  },
+  {
+   "uid": "HumanEval/92",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.1,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 0,
+    "ar.qwen7b.mean": 0,
+    "decision.listwise": 9,
+    "decision.pointwise": 9
+   }
+  },
+  {
+   "uid": "HumanEval/93",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 6,
+    "ar.qwen7b.mean": 9,
+    "decision.listwise": 0,
+    "decision.pointwise": 5
+   }
+  },
+  {
+   "uid": "HumanEval/95",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 9,
+    "ar.qwen7b.mean": 9,
+    "decision.listwise": 1,
+    "decision.pointwise": 1
+   }
+  },
+  {
+   "uid": "HumanEval/96",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.1,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 9,
+    "ar.qwen7b.mean": 9,
+    "decision.listwise": 8,
+    "decision.pointwise": 8
+   }
+  },
+  {
+   "uid": "HumanEval/98",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 0,
+    "ar.qwen7b.mean": 3,
+    "decision.listwise": 4,
+    "decision.pointwise": 4
+   }
+  },
+  {
+   "uid": "HumanEval/99",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 7,
+    "ar.qwen7b.mean": 7,
+    "decision.listwise": 7,
+    "decision.pointwise": 6
+   }
+  },
+  {
+   "uid": "HumanEval/100",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 0,
+    "ar.qwen7b.mean": 0,
+    "decision.listwise": 2,
+    "decision.pointwise": 5
+   }
+  },
+  {
+   "uid": "HumanEval/101",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 5,
+    "ar.qwen7b.mean": 5,
+    "decision.listwise": 3,
+    "decision.pointwise": 6
+   }
+  },
+  {
+   "uid": "HumanEval/102",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 2,
+    "ar.qwen7b.mean": 2,
+    "decision.listwise": 7,
+    "decision.pointwise": 3
+   }
+  },
+  {
+   "uid": "HumanEval/103",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 1,
+    "ar.qwen7b.mean": 6,
+    "decision.listwise": 7,
+    "decision.pointwise": 2
+   }
+  },
+  {
+   "uid": "HumanEval/105",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 4,
+    "ar.qwen7b.mean": 4,
+    "decision.listwise": 2,
+    "decision.pointwise": 1
+   }
+  },
+  {
+   "uid": "HumanEval/106",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.1,
+   "correct": {
+    "first": false,
+    "example-filter": true,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 9,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 1,
+    "ar.qwen7b.mean": 1,
+    "decision.listwise": 9,
+    "decision.pointwise": 9
+   }
+  },
+  {
+   "uid": "HumanEval/107",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.1,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 6,
+    "ar.qwen7b.mean": 6,
+    "decision.listwise": 3,
+    "decision.pointwise": 3
+   }
+  },
+  {
+   "uid": "HumanEval/109",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 3,
+    "ar.qwen7b.sum": 2,
+    "ar.qwen7b.mean": 2,
+    "decision.listwise": 5,
+    "decision.pointwise": 4
+   }
+  },
+  {
+   "uid": "HumanEval/110",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 1,
+    "ar.qwen7b.mean": 1,
+    "decision.listwise": 5,
+    "decision.pointwise": 0
+   }
+  },
+  {
+   "uid": "HumanEval/111",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 4,
+    "ar.qwen7b.mean": 1,
+    "decision.listwise": 6,
+    "decision.pointwise": 1
+   }
+  },
+  {
+   "uid": "HumanEval/112",
+   "n": 10,
+   "plus_passed": [
+    true,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    true,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": true,
+   "std_oracle": true,
+   "random(exp.)": 0.2,
+   "correct": {
+    "first": true,
+    "example-filter": true,
+    "mbr-exec": true,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": true,
+    "decision.pointwise": true
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 6,
+    "ar.qwen7b.mean": 8,
+    "decision.listwise": 2,
+    "decision.pointwise": 0
+   }
+  },
+  {
+   "uid": "HumanEval/114",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 6,
+    "ar.qwen7b.mean": 6,
+    "decision.listwise": 9,
+    "decision.pointwise": 1
+   }
+  },
+  {
+   "uid": "HumanEval/113",
+   "n": 10,
+   "plus_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "std_passed": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "oracle": false,
+   "std_oracle": false,
+   "random(exp.)": 0.0,
+   "correct": {
+    "first": false,
+    "example-filter": false,
+    "mbr-exec": false,
+    "ar.qwen7b.sum": false,
+    "ar.qwen7b.mean": false,
+    "decision.listwise": false,
+    "decision.pointwise": false
+   },
+   "choice": {
+    "first": 0,
+    "example-filter": 0,
+    "mbr-exec": 0,
+    "ar.qwen7b.sum": 7,
+    "ar.qwen7b.mean": 7,
+    "decision.listwise": 4,
+    "decision.pointwise": 3
+   }
+  }
+ ],
+ "note": "Selections are unchanged from standard HumanEval; only the test suite changes. MBR-exec choices cluster docstring examples and are therefore test-independent. HumanEval+ is stronger tests, not fresh problems, so a memorisation caveat still applies."
+}

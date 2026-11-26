@@ -1,0 +1,153 @@
+{
+ "variant": "no-docstring control",
+ "n": 20,
+ "correct": 16,
+ "rate": 0.8,
+ "wilson95": [
+  0.5839782779742401,
+  0.9193436467288
+ ],
+ "mean_p_canonical": 0.8186492096130618,
+ "items": [
+  {
+   "task_id": "HumanEval/104",
+   "canonical_option": "A",
+   "pick": "A",
+   "correct": true,
+   "p_canonical": 0.7346147524870741
+  },
+  {
+   "task_id": "HumanEval/108",
+   "canonical_option": "B",
+   "pick": "A",
+   "correct": false,
+   "p_canonical": 0.42433254595049613
+  },
+  {
+   "task_id": "HumanEval/121",
+   "canonical_option": "A",
+   "pick": "A",
+   "correct": true,
+   "p_canonical": 0.924812722640605
+  },
+  {
+   "task_id": "HumanEval/14",
+   "canonical_option": "A",
+   "pick": "A",
+   "correct": true,
+   "p_canonical": 0.9964628720530632
+  },
+  {
+   "task_id": "HumanEval/146",
+   "canonical_option": "A",
+   "pick": "A",
+   "correct": true,
+   "p_canonical": 0.7366200986740729
+  },
+  {
+   "task_id": "HumanEval/148",
+   "canonical_option": "A",
+   "pick": "A",
+   "correct": true,
+   "p_canonical": 0.7728470774510222
+  },
+  {
+   "task_id": "HumanEval/2",
+   "canonical_option": "B",
+   "pick": "B",
+   "correct": true,
+   "p_canonical": 0.737720799539725
+  },
+  {
+   "task_id": "HumanEval/27",
+   "canonical_option": "A",
+   "pick": "A",
+   "correct": true,
+   "p_canonical": 0.9885551918701228
+  },
+  {
+   "task_id": "HumanEval/29",
+   "canonical_option": "B",
+   "pick": "B",
+   "correct": true,
+   "p_canonical": 0.9964863569876604
+  },
+  {
+   "task_id": "HumanEval/50",
+   "canonical_option": "A",
+   "pick": "B",
+   "correct": false,
+   "p_canonical": 0.45735398474987293
+  },
+  {
+   "task_id": "HumanEval/54",
+   "canonical_option": "A",
+   "pick": "A",
+   "correct": true,
+   "p_canonical": 0.988033761287548
+  },
+  {
+   "task_id": "HumanEval/6",
+   "canonical_option": "A",
+   "pick": "A",
+   "correct": true,
+   "p_canonical": 0.9863503566949845
+  },
+  {
+   "task_id": "HumanEval/67",
+   "canonical_option": "B",
+   "pick": "A",
+   "correct": false,
+   "p_canonical": 0.4183608451873223
+  },
+  {
+   "task_id": "HumanEval/68",
+   "canonical_option": "A",
+   "pick": "A",
+   "correct": true,
+   "p_canonical": 0.924029559247704
+  },
+  {
+   "task_id": "HumanEval/71",
+   "canonical_option": "B",
+   "pick": "B",
+   "correct": true,
+   "p_canonical": 0.8880562175483897
+  },
+  {
+   "task_id": "HumanEval/82",
+   "canonical_option": "A",
+   "pick": "A",
+   "correct": true,
+   "p_canonical": 0.9794688175180254
+  },
+  {
+   "task_id": "HumanEval/88",
+   "canonical_option": "B",
+   "pick": "A",
+   "correct": false,
+   "p_canonical": 0.45740321546900176
+  },
+  {
+   "task_id": "HumanEval/9",
+   "canonical_option": "A",
+   "pick": "A",
+   "correct": true,
+   "p_canonical": 0.9980594118213363
+  },
+  {
+   "task_id": "HumanEval/94",
+   "canonical_option": "B",
+   "pick": "B",
+   "correct": true,
+   "p_canonical": 0.9905103747850428
+  },
+  {
+   "task_id": "HumanEval/97",
+   "canonical_option": "A",
+   "pick": "A",
+   "correct": true,
+   "p_canonical": 0.9729052302981664
+  }
+ ]
+}

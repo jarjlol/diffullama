@@ -1,0 +1,239 @@
+{
+ "thresholds": [
+  4,
+  5,
+  6
+ ],
+ "selected_on_dev": 5,
+ "dev": {
+  "models": {
+   "dream-base": {
+    "n": 200,
+    "majority": 0.7,
+    "listwise": 0.745,
+    "top_count_hist": {
+     "1": 15,
+     "2": 32,
+     "3": 34,
+     "4": 21,
+     "5": 22,
+     "6": 24,
+     "7": 20,
+     "8": 15,
+     "9": 12,
+     "10": 5
+    },
+    "mean_n_answers": 9.99,
+    "T4": {
+     "accuracy": 0.755,
+     "judge_fraction": 0.405,
+     "n_majority": 119
+    },
+    "T5": {
+     "accuracy": 0.755,
+     "judge_fraction": 0.51,
+     "n_majority": 98
+    },
+    "T6": {
+     "accuracy": 0.745,
+     "judge_fraction": 0.62,
+     "n_majority": 76
+    }
+   },
+   "llada-base": {
+    "n": 200,
+    "majority": 0.745,
+    "listwise": 0.82,
+    "top_count_hist": {
+     "1": 9,
+     "2": 19,
+     "3": 24,
+     "4": 15,
+     "5": 24,
+     "6": 23,
+     "7": 21,
+     "8": 26,
+     "9": 22,
+     "10": 17
+    },
+    "mean_n_answers": 9.925,
+    "T4": {
+     "accuracy": 0.805,
+     "judge_fraction": 0.26,
+     "n_majority": 148
+    },
+    "T5": {
+     "accuracy": 0.825,
+     "judge_fraction": 0.33499999999999996,
+     "n_majority": 133
+    },
+    "T6": {
+     "accuracy": 0.82,
+     "judge_fraction": 0.45499999999999996,
+     "n_majority": 109
+    }
+   }
+  },
+  "macro": {
+   "T4": {
+    "accuracy": 0.78,
+    "judge_fraction": 0.3325
+   },
+   "T5": {
+    "accuracy": 0.79,
+    "judge_fraction": 0.4225
+   },
+   "T6": {
+    "accuracy": 0.7825,
+    "judge_fraction": 0.5375
+   },
+   "majority": 0.7224999999999999,
+   "listwise": 0.7825
+  }
+ },
+ "test": {
+  "models": {
+   "dream-base": {
+    "n": 500,
+    "majority": 0.724,
+    "listwise": 0.77,
+    "top_count_hist": {
+     "1": 23,
+     "2": 82,
+     "3": 92,
+     "4": 69,
+     "5": 63,
+     "6": 50,
+     "7": 53,
+     "8": 34,
+     "9": 26,
+     "10": 8
+    },
+    "mean_n_answers": 9.954,
+    "T4": {
+     "accuracy": 0.774,
+     "judge_fraction": 0.394,
+     "n_majority": 303
+    },
+    "T5": {
+     "accuracy": 0.78,
+     "judge_fraction": 0.532,
+     "n_majority": 234
+    },
+    "T6": {
+     "accuracy": 0.776,
+     "judge_fraction": 0.6579999999999999,
+     "n_majority": 171
+    }
+   },
+   "llada-base": {
+    "n": 500,
+    "majority": 0.732,
+    "listwise": 0.79,
+    "top_count_hist": {
+     "1": 15,
+     "2": 60,
+     "3": 67,
+     "4": 70,
+     "5": 53,
+     "6": 56,
+     "7": 43,
+     "8": 57,
+     "9": 44,
+     "10": 35
+    },
+    "mean_n_answers": 9.994,
+    "T4": {
+     "accuracy": 0.784,
+     "judge_fraction": 0.28400000000000003,
+     "n_majority": 358
+    },
+    "T5": {
+     "accuracy": 0.79,
+     "judge_fraction": 0.42400000000000004,
+     "n_majority": 288
+    },
+    "T6": {
+     "accuracy": 0.796,
+     "judge_fraction": 0.53,
+     "n_majority": 235
+    }
+   }
+  },
+  "macro": {
+   "T4": {
+    "accuracy": 0.779,
+    "judge_fraction": 0.339
+   },
+   "T5": {
+    "accuracy": 0.785,
+    "judge_fraction": 0.47800000000000004
+   },
+   "T6": {
+    "accuracy": 0.786,
+    "judge_fraction": 0.594
+   },
+   "majority": 0.728,
+   "listwise": 0.78
+  }
+ },
+ "dev_selection": {
+  "4": {
+   "accuracy": 0.78,
+   "judge_fraction": 0.3325
+  },
+  "5": {
+   "accuracy": 0.79,
+   "judge_fraction": 0.4225
+  },
+  "6": {
+   "accuracy": 0.7825,
+   "judge_fraction": 0.5375
+  }
+ },
+ "test_tests_T5": {
+  "dream-base": {
+   "vs_listwise": {
+    "delta": 0.010000000000000009,
+    "n01": 1,
+    "n10": 6,
+    "p": 0.125
+   },
+   "vs_majority": {
+    "delta": 0.05600000000000005,
+    "n01": 19,
+    "n10": 47,
+    "p": 0.0007561070639613921
+   }
+  },
+  "llada-base": {
+   "vs_listwise": {
+    "delta": 0.0,
+    "n01": 5,
+    "n10": 5,
+    "p": 1.0
+   },
+   "vs_majority": {
+    "delta": 0.05800000000000005,
+    "n01": 8,
+    "n10": 37,
+    "p": 1.5374090196473844e-05
+   }
+  },
+  "stacked": {
+   "vs_listwise": {
+    "delta": 0.0050000000000000044,
+    "n01": 6,
+    "n10": 11,
+    "p": 0.332305908203125
+   },
+   "vs_majority": {
+    "delta": 0.05700000000000005,
+    "n01": 27,
+    "n10": 84,
+    "p": 5.46197809541596e-08
+   }
+  }
+ },
+ "note": "T is selected on dev by macro accuracy (ties -> higher T). The test columns for every T are descriptive, not tuned. McNemar is two-sided exact on stacked items."
+}
