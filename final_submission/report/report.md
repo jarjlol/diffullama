@@ -46,11 +46,19 @@ Increasing the budget from 16 to 32 steps improved first-answer accuracy by 9.8 
 
 ## Follow-up. What could a decision model select from the same answers?
 
-We gave a four-billion-parameter decision model the question and all ten candidates in a single pass. Across the same 500 GSM8K questions for Dream and LLaDA, it averaged 78.0% accuracy, 5.2 percentage points above majority vote at 72.8%. Resampling by question, keeping both models' results together, gave a 95% confidence interval of 3.0 to 7.4 points for the gain. [S14, S15]
+We gave a four-billion-parameter decision model the question and all ten candidates in a single pass. At 64 denoising steps, across the same 500 GSM8K questions for Dream and LLaDA, it averaged 78.0% accuracy, 5.2 percentage points above majority vote at 72.8%. Resampling by question, keeping both models' results together, gave a 95% confidence interval of 3.0 to 7.4 points for the gain. [S14, S15]
+
+At 256 steps, the decision model averaged 85.7% accuracy against 81.7% for majority vote on 185 Dream and 192 LLaDA question instances. The gain was 4.0 points (95% confidence interval 0.9 to 7.1). On the same questions it was 3.5 points at 64 steps. The change of 0.5 points was inconclusive (95% confidence interval -4.0 to 5.1). Many 256-step candidates still carried extra text on the answer line after trimming. [S17, S22]
+
+We used the development set to choose when to call the decision model. On the 64-step test, calling it only when fewer than five candidates agreed reached 78.5% accuracy with 47.8% of the calls. Calling it on every question reached 78.0%. The accuracy difference was inconclusive. [S21]
 
 Three controls tested what information the selector used. With only the distinct candidate answers and the question, accuracy fell to 42.8%, compared with 78.0% with the full candidates. Where the pool lacked a correct answer, adding one led the model to pick it on 24 of 115 cases (20.9%). Given two answer options on 40 questions, one correct and one drawn from another problem, it chose correctly 37 times (92.5%). The model can select correct answers. How much it relies on solving the problem, recognizing an answer, or checking the candidate's reasoning remains open. [S14, S15]
 
-On 144 HumanEval programming problems, the model selected passing code on 58 (40.3%), matching the number with at least one passing candidate among the ten samples. The corrected filter based on examples in the prompt passed 40 problems (27.8%). On the 38 solvable problems with parseable examples, the decision model passed 38 and the filter passed 36. On the 20 without examples, the counts were 20 and 4. The planned test of how much the decision model already knew about HumanEval was not run. LLaDA produced mostly newlines on code at 64 steps, so the result covers Dream only. We stopped the Mostly Basic Python Problems pilot after Dream produced no passing candidates in the first 20 problems at the same step budget. [S14, S15]
+On 144 HumanEval programming problems, the model selected passing code on 58 (40.3%), matching the number with at least one passing candidate among the ten samples. The corrected filter based on examples in the prompt passed 40 problems (27.8%). On the 38 solvable problems with parseable examples, the decision model passed 38 and the filter passed 36. On the 20 without examples, the counts were 20 and 4. [S14, S15]
+
+On the 142 problems with usable HumanEval+ tests, the same choices passed 40.8% under the standard tests and 35.9% under the stronger tests. At least one candidate passed the stronger tests on 53 problems. The decision model picked one on 51. Five of the seven lost successes came from problems where every candidate failed the stronger tests. HumanEval+ adds tests to the same problems. [S18]
+
+In a separate recognition probe, the model chose a reference solution over a known failing variant on 59 of 60 problems. On the 20 development problems, removing the function descriptions reduced correct picks from 20 to 16. The probe measures selection between two supplied candidates. LLaDA produced mostly newlines at 64 steps, so the comparison of generated code covers Dream only. We stopped the Mostly Basic Python Problems pilot after Dream produced no passing candidates on the first 20 problems at the same budget. [S14, S19, S20]
 
 ## Task 5. How did we turn the work into a paper?
 
@@ -69,6 +77,12 @@ We assembled the paper around reproducible comparisons, traced the figures to sa
 [S11]: evidence/fidelity_snapshot.json
 [S12]: https://github.com/jarjlol/diffullama/blob/88bac1b81f3e42899dfa95d09b1afd790748c6e3/final_submission/report/evidence/iter2/k256_step_arm_output.txt
 [S13]: evidence/iter2/README.md
-[S14]: https://github.com/jarjlol/diffullama/blob/9d331e950afc8fb71fe265341c2644e336708ae8/codification/DECISION_RERANK_RESULTS.md
-[S15]: https://github.com/jarjlol/diffullama/blob/9d331e950afc8fb71fe265341c2644e336708ae8/codification/results/controls.json
+[S14]: https://github.com/jarjlol/diffullama/blob/c2f01637d21faaa596948defa07eb06f17cfb075/codification/DECISION_RERANK_RESULTS.md
+[S15]: https://github.com/jarjlol/diffullama/blob/c2f01637d21faaa596948defa07eb06f17cfb075/codification/results/controls.json
 [S16]: https://github.com/jarjlol/diffullama/pull/74
+[S17]: https://github.com/jarjlol/diffullama/blob/c2f01637d21faaa596948defa07eb06f17cfb075/codification/results/k256_decision.json
+[S18]: https://github.com/jarjlol/diffullama/blob/c2f01637d21faaa596948defa07eb06f17cfb075/codification/results/humaneval_plus_result.json
+[S19]: https://github.com/jarjlol/diffullama/blob/c2f01637d21faaa596948defa07eb06f17cfb075/codification/results/humaneval_recognition_result.json
+[S20]: https://github.com/jarjlol/diffullama/blob/c2f01637d21faaa596948defa07eb06f17cfb075/codification/results/humaneval_recognition_nodoc_result.json
+[S21]: https://github.com/jarjlol/diffullama/blob/c2f01637d21faaa596948defa07eb06f17cfb075/codification/results/weak_vote_threshold.json
+[S22]: https://github.com/jarjlol/diffullama/issues/78#issuecomment-7178740360
