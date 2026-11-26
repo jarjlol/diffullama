@@ -9,8 +9,9 @@
       "ar.qwen7b.sum": 0.05555555555555555,
       "decision.listwise": 0.4027777777777778,
       "decision.pointwise": 0.3819444444444444,
-      "example-filter": 0.2638888888888889,
+      "example-filter": 0.2777777777777778,
       "first": 0.10416666666666667,
+      "mbr-exec": 0.0625,
       "random(exp.)": 0.08472222222222223,
       "oracle": 0.4027777777777778,
       "n": 144,
@@ -20,7 +21,8 @@
         "decision.listwise": 1.0,
         "decision.pointwise": 1.0,
         "example-filter": 1.0,
-        "first": 1.0
+        "first": 1.0,
+        "mbr-exec": 1.0
       }
     }
   },
@@ -29,20 +31,21 @@
     "ar.qwen7b.sum": 0.05555555555555555,
     "decision.listwise": 0.4027777777777778,
     "decision.pointwise": 0.3819444444444444,
-    "example-filter": 0.2638888888888889,
+    "example-filter": 0.2777777777777778,
     "first": 0.10416666666666667,
+    "mbr-exec": 0.0625,
     "random(exp.)": 0.08472222222222223,
     "oracle": 0.4027777777777778
   },
   "tests": {
     "decision.listwise vs example-filter": {
-      "delta": 0.1388888888888889,
-      "p": 1.9073486328125e-06,
+      "delta": 0.125,
+      "p": 7.62939453125e-06,
       "n01": 0,
-      "n10": 20,
+      "n10": 18,
       "ci95": [
-        0.08333333333333333,
-        0.2013888888888889
+        0.0763888888888889,
+        0.18055555555555555
       ]
     },
     "decision.listwise vs first": {
@@ -56,13 +59,13 @@
       ]
     },
     "decision.pointwise vs example-filter": {
-      "delta": 0.11805555555555552,
-      "p": 0.00022125244140625,
+      "delta": 0.10416666666666663,
+      "p": 0.000728607177734375,
       "n01": 2,
-      "n10": 19,
+      "n10": 17,
       "ci95": [
-        0.0625,
-        0.18055555555555555
+        0.04861111111111111,
+        0.16666666666666666
       ]
     },
     "decision.pointwise vs first": {
