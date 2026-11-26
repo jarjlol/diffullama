@@ -22,14 +22,15 @@
 \newcommand{\lead}[1]{\textbf{#1.}\enspace}
 
 \newcommand{\paperauthor}[2]{%
-  \makebox[0.235\textwidth][c]{%
-    \begin{tabular}[t]{@{}c@{}}
-      \normalsize #1\\[1pt]
-      \footnotesize #2
-    \end{tabular}%
+  \vbox{%
+    \offinterlineskip
+    \hbox to .24\textwidth{%
+      \hfil\fontsize{12}{13}\selectfont\vphantom{Ag}#1\hfil}%
+    \kern1pt
+    \hbox to .24\textwidth{%
+      \hfil\fontsize{10.5}{11.5}\selectfont#2\hfil}%
   }%
 }
-
 
 \hypersetup{pdftitle={Decision-Model Reranking for Diffusion Language Models}}
 
@@ -38,7 +39,7 @@
 \title{Decision-Model Reranking\\for Diffusion Language Models}
 
 \author{%
-  \begin{tabular}{@{}c@{}}
+  \IEEEauthorblockN{\begin{tabular}{@{}c@{}}
   \paperauthor{Neel Naik}{2023A7PS0429G}%
   \paperauthor{Aryan Bethmangalkar}{2023A7PS0433G}%
   \paperauthor{Aaditya H Vernenker}{2023A7PS1027G}%
@@ -47,10 +48,11 @@
   \paperauthor{Arjun P Thakur}{2024A7PS0006G}%
   \paperauthor{Khushi Pandey}{2023B5A70951G}%
   \paperauthor{Diya Srivastava}{2023B2A40737G}%
-  \\[7pt]
-  {\small BITS Pilani, K.\,K.\ Birla Goa Campus}\\[1pt]
-  {\footnotesize Group 3 \enspace\textbullet\enspace BITS F471 (Introduction to Large Language Models)}
-  \end{tabular}%
+  \end{tabular}}\\[5pt]
+  \IEEEauthorblockA{%
+    {\fontsize{11}{12}\selectfont\itshape BITS Pilani, K.\,K.\ Birla Goa Campus}\\[1pt]
+    {\normalsize Group 3 \enspace\textbullet\enspace BITS F471 (Introduction to Large Language Models)}%
+  }%
 }
 
 \maketitle
