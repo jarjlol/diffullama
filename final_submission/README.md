@@ -49,6 +49,8 @@ The label `to:<handle>` on each issue is authoritative if this table is stale. k
 
 ## Pipeline code (for deliverable 3)
 
+How the pipeline ran — what was manual, what was agent-assisted, how the work was coordinated, and the published methods it used: [docs/pipeline-story.md](../docs/pipeline-story.md).
+
 | Assignment | Code and output |
 |---|---|
 | Literature review | `litreview/` (on `main`) |
