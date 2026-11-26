@@ -15,7 +15,7 @@ Across five DLMs, frozen AR likelihood trails majority by 23.6 points on Dream a
 One listwise pass reaches 78.0\% macro accuracy vs.\ 72.8\% majority (+5.2 points, cluster 95\% CI $[+3.0,+7.4]$) and 50.5\% AR cut-sum. At $K=256$ it reaches 85.7\% vs.\ 81.7\% (+4.0, CI $[+0.9,+7.1]$); matched on identical questions, its edge does not shrink measurably (+0.5 diff-in-diff, $p=0.82$).
 
 \lead{3. Hybrid gating and code selection}
-Routing only weak-vote items (top vote $<5$, dev-tuned) to the decision model reaches 78.5\% test accuracy using 47.8\% of calls. On 144 Dream HumanEval tasks, listwise matches the 40.3\% pass@10 oracle vs.\ 27.8\% for a fixed example filter (the gap concentrates on the 20/58 solvable tasks without examples), and selects 51/53 solvable tasks on HumanEval+ (35.9\% vs.\ 37.3\% oracle).
+Routing only weak-vote items (top vote $<5$, dev-tuned) to the decision model reaches 78.5\% test accuracy using 47.8\% of calls. On 144 Dream HumanEval tasks, listwise matches the 40.3\% pass@10 oracle vs.\ 27.8\% for a fixed example filter (the gap concentrates on the 16/58 solvable tasks without examples), and selects 51/53 solvable tasks on HumanEval+ (35.9\% vs.\ 37.3\% oracle).
 
 \lead{4. Diagnostic controls}
 Stripping candidate reasoning drops accuracy from 78.0\% to 42.8\%, below a uniform pick (45.0\%), so traces matter, though the answers-only setup may also handicap the judge. Gold injection (20.9\% vs.\ 12.9\% chance), two-option closed-book (92.5\%) and HumanEval recognition (98.3\% with docstrings, 80.0\% stripped) show partial familiarity, bounding our claim to trace-informed selection, not verified reasoning.
