@@ -18,7 +18,7 @@
 | Deliverable | File / Location | Details |
 |---|---|---|
 | **1. Research Paper (4+1 pages)** | [`final_submission/paper/paper.pdf`](final_submission/paper/paper.pdf) | Editable IEEEtran LaTeX sources in [`final_submission/paper/latex/`](final_submission/paper/latex/) (4 body + 1 reference page, 23 verified references) |
-| **2. Project Report (3 pages)** | [`final_submission/report/report.pdf`](final_submission/report/report.pdf) | Observations & efforts across Tasks 1–5; source in [`final_submission/report/report.md`](final_submission/report/report.md) |
+| **2. Project Report (4 pages)** | [`final_submission/report/report.pdf`](final_submission/report/report.pdf) | Observations & efforts across Tasks 1–5; source in [`final_submission/report/report.md`](final_submission/report/report.md) |
 | **3. Pipeline & Reproducibility** | [`final_submission/README.md`](final_submission/README.md) | Rerun commands, GPU notes, and 30 verified SHA-256 artifact digests; human/agent workflow in [`docs/pipeline-story.md`](docs/pipeline-story.md) |
 
 ### Repository Map (Tasks 1–5)
@@ -30,7 +30,7 @@
 | Task 2: Limitation Extraction | [`limitations/`](limitations/) (`main`; multi-agent variant on `assignment/limitations-multiagent`) | Multi-agent extraction, analysis, review, citation verification, and judge pass |
 | Task 3: Research Ideation | `ideation/` on branch `assignment/research-ideation` | ResearchAgent generate/review/refine pipeline and audit |
 | Task 4: Codification & Reranking | `codification/` on `assignment/codification`, `iter2/aaditya`, `iter2/decision-rerank` | 5-DLM testbed, cut-text & step-budget diagnostics, CKA preservation, decision-model reranking (GSM8K $K=64/256$, HumanEval/HumanEval+, controls, GSM-Symbolic partial) |
-| Task 5: Paper, Report & Coordination | [`final_submission/`](final_submission/), [`docs/`](docs/), [`.issuemesh/`](.issuemesh/) (`main`) | Final 4+1 paper, 3-page report, reproducibility receipts, IssueMesh multi-agent ledger |
+| Task 5: Paper, Report & Coordination | [`final_submission/`](final_submission/), [`docs/`](docs/), [`.issuemesh/`](.issuemesh/) (`main`) | Final 4+1 paper, 4-page report, reproducibility receipts, IssueMesh multi-agent ledger |
 
 ### Team Members — Group 3
 

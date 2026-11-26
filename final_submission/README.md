@@ -5,10 +5,10 @@
 The folder named **Final Submission** in our group folder holds exactly three items:
 
 1. the **paper**, 4 pages of content plus 1 reference page ("4+1(reference) page paper"): canonical built PDF at `paper/paper.pdf` from editable IEEEtran journal LaTeX sources in `paper/latex/` (4 body + 1 reference page, 23 verified references; rebuild with Tectonic or `pdflatex`+`bibtex`; earlier Markdown build retained in `paper/sections/` and `paper/build.py`);
-2. the **report**, 2 to 4 pages, observations and efforts for each task: `report/report.md` and built 3-page `report/report.pdf` (issues #15, #78);
+2. the **report**, 2 to 4 pages, observations and efforts for each task: `report/report.md` and built 4-page `report/report.pdf` (issues #15, #78);
 3. the **GitHub repo** of the pipeline and the code behind the paper: this repo (see "Pipeline code" below).
 
-Frozen build, checked against `main` on 26 Nov 12:35 IST: `paper/paper.pdf` is **5 pages** (4 body + 1 reference; includes all 7 Group 3 author names and BITS IDs; sha256 `b73cfd92cc02200a409edf7b02c2346ebbdd02f08559cf05f8619376cabeff28`), `report/report.pdf` is **3 pages** (last PDF commit `263c3b3`, sha256 `a2ab743ceead0bf3a4b2222088ce70323e136a9ccd3af7610d9c139f62cc0af0`), neither PDF contains email addresses, and every SHA-256 row in the reproducibility table below resolves at its stated commit (`git show <commit>:<path> | sha256sum`). The canonical paper source is `main`'s `paper/latex/`; branches `mesh/75-latex-paper` and `mesh/76-decision-paper` are superseded and kept only for history.
+Frozen build, checked against `main` on 26 Nov 15:05 IST: `paper/paper.pdf` is **5 pages** (4 body + 1 reference; includes all 7 Group 3 author names and BITS IDs; sha256 `40817821ea0b04d898ca8c79b18a0908e5c520025ba7ff899f4b94880cd0580d`; the prose pass is #103 and a fresh Tectonic build of `paper/latex/` reproduces 5 pages with 0 overfull boxes and 0 unresolved citations), `report/report.pdf` is **4 pages** (last PDF commit `83640a8`, #104, sha256 `fe339cd6aa6d5906c9c337d564a71d60498451ae4581039e825556149801e7c2`; the Task 5 limit is 2 to 4 pages), neither PDF contains email addresses, and every SHA-256 row in the reproducibility table below resolves at its stated commit (`git show <commit>:<path> | sha256sum`). The canonical paper source is `main`'s `paper/latex/`; branches `mesh/75-latex-paper` and `mesh/76-decision-paper` are superseded and kept only for history.
 
 ## Who writes what
 
