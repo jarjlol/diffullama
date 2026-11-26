@@ -25,6 +25,7 @@ import argparse
 import collections
 import hashlib
 import json
+import os
 import random
 
 from common import WORK, read_jsonl, task
@@ -163,10 +164,21 @@ def _print_n(table: dict, json_out: str | None) -> None:
         print(f"wrote {json_out}")
 
 
-def eval_order(results: str, json_out: str | None) -> None:
+def eval_order(results: str, json_out: str | None, n10_results: str | None = None) -> None:
     cands = load_cands()
     rows = [json.loads(l) for l in open(results, encoding="utf-8") if l.strip()]
     rows = [r for r in rows if "probs" in r]
+    plain10: dict[str, dict[str, bool]] = collections.defaultdict(dict)
+    if n10_results and os.path.exists(n10_results):
+        for r in read_jsonl(n10_results):
+            if "probs" in r and r["uid"].endswith("::n10"):
+                base = r["uid"].rsplit("::", 1)[0]
+                row = cands[r["model"]].get(base)
+                if row is None:
+                    continue
+                j = LETTERS.index(max(r["probs"], key=r["probs"].get))
+                plain10[r["model"]][base] = task.is_correct(
+                    row["candidates"][j].get("answer"), GOLD[base])
     by = collections.defaultdict(dict)          # (model, seed) -> uid -> chosen original idx
     correct = collections.defaultdict(dict)     # (model, seed) -> uid -> bool
     positions = collections.Counter()
@@ -205,16 +217,20 @@ def eval_order(results: str, json_out: str | None) -> None:
             j = max(range(len(fs)), key=lambda i: fs[i].get("decision.listwise.p", -1))
             base_ok += int(task.is_correct(cands[model][u]["candidates"][j].get("answer"), GOLD[u]))
             base_n += 1
+        p10 = [u for u in uids if u in plain10.get(model, {})]
         out[model] = {"per_seed": per_seed, "n_common": len(uids),
                       "same_candidate_all3": same / len(uids) if uids else None,
                       "unpermuted_accuracy": base_ok / base_n if base_n else None,
-                      "unpermuted_n": base_n}
-    print(f"\n{'model':12s} {'seed1':>7s} {'seed2':>7s} {'seed3':>7s} {'same all3':>10s} {'plain':>7s}")
+                      "unpermuted_n": base_n,
+                      "plain_n10_accuracy": (sum(plain10[model][u] for u in p10) / len(p10)) if p10 else None,
+                      "plain_n10_n": len(p10)}
+    print(f"\n{'model':12s} {'seed1':>7s} {'seed2':>7s} {'seed3':>7s} {'same all3':>10s} {'plainN10':>9s}")
     for model, r in out.items():
         vals = [r["per_seed"][str(s)]["accuracy"] for s in SEEDS]
+        plain = r["plain_n10_accuracy"] if r["plain_n10_accuracy"] is not None else r["unpermuted_accuracy"]
         print(f"{model:12s} " + " ".join(f"{v:7.3f}" if v is not None else f"{'-':>7s}" for v in vals)
               + f" {r['same_candidate_all3']:10.3f} "
-              + (f"{r['unpermuted_accuracy']:7.3f}" if r["unpermuted_accuracy"] is not None else f"{'-':>7s}"))
+              + (f"{plain:9.3f}" if plain is not None else f"{'-':>9s}"))
     print("\nchosen position distribution")
     for model in ("dream-base", "llada-base"):
         tot = sum(v for (m, _), v in positions.items() if m == model)
@@ -246,7 +262,7 @@ def main() -> int:
     elif a.sweep == "n":
         eval_n(a.results, a.json)
     else:
-        eval_order(a.results, a.json)
+        eval_order(a.results, a.json, str(OUT / "n.results.jsonl"))
     return 0
 
 
