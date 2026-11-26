@@ -8,7 +8,45 @@
 [![Paper](https://img.shields.io/badge/Paper-Arvix%20Link-green)](https://arxiv.org/abs/2410.17891)
 
 
-> **BITS F471 group project (this fork).** The research paper, report and pipeline code for the Final Submission (Task 5) are indexed in [`final_submission/README.md`](final_submission/README.md): where each pipeline's code lives (`litreview/`, `limitations/`, and the `assignment/research-ideation` and `assignment/codification` branches), how to rerun it, and what needs a GPU. Everything below is the upstream DiffuLLaMA README.
+## BITS F471 — Group 3 Final Submission (Task 5)
+
+**Course:** BITS F471 (*Introduction to Large Language Models*), BITS Pilani, K. K. Birla Goa Campus  
+**Anchor Paper:** *Scaling Diffusion Language Models via Adaptation from Autoregressive Models* (Gong et al., ICLR 2025; upstream `HKUNLP/DiffuLLaMA`, this fork `jarjlol/diffullama`)
+
+### Deliverables
+
+| Deliverable | File / Location | Details |
+|---|---|---|
+| **1. Research Paper (4+1 pages)** | [`final_submission/paper/paper.pdf`](final_submission/paper/paper.pdf) | Editable IEEEtran LaTeX sources in [`final_submission/paper/latex/`](final_submission/paper/latex/) (4 body + 1 reference page, 23 verified references) |
+| **2. Project Report (3 pages)** | [`final_submission/report/report.pdf`](final_submission/report/report.pdf) | Observations & efforts across Tasks 1–5; source in [`final_submission/report/report.md`](final_submission/report/report.md) |
+| **3. Pipeline & Reproducibility** | [`final_submission/README.md`](final_submission/README.md) | Rerun commands, GPU notes, and 30 verified SHA-256 artifact digests; human/agent workflow in [`docs/pipeline-story.md`](docs/pipeline-story.md) |
+
+### Repository Map (Tasks 1–5)
+
+| Stage | Location / Branch | Summary |
+|---|---|---|
+| Proposal & Decision Log | [`project-docs/`](project-docs/) (`main`) | Project brief, dated decision log, hardware/audit records |
+| Task 1: Literature Review | [`litreview/`](litreview/) (`main`) | Deterministic OpenAlex/arXiv retrieval, ranking, 48 verified refs, anchor-overlap eval |
+| Task 2: Limitation Extraction | [`limitations/`](limitations/) (`main`; multi-agent variant on `assignment/limitations-multiagent`) | Multi-agent extraction, analysis, review, citation verification, and judge pass |
+| Task 3: Research Ideation | `ideation/` on branch `assignment/research-ideation` | ResearchAgent generate/review/refine pipeline and audit |
+| Task 4: Codification & Reranking | `codification/` on `assignment/codification`, `iter2/aaditya`, `iter2/decision-rerank` | 5-DLM testbed, cut-text & step-budget diagnostics, CKA preservation, decision-model reranking (GSM8K $K=64/256$, HumanEval/HumanEval+, controls, GSM-Symbolic partial) |
+| Task 5: Paper, Report & Coordination | [`final_submission/`](final_submission/), [`docs/`](docs/), [`.issuemesh/`](.issuemesh/) (`main`) | Final 4+1 paper, 3-page report, reproducibility receipts, IssueMesh multi-agent ledger |
+
+### Team Members — Group 3
+
+| Name | ID Number |
+|---|---|
+| Neel Naik (Group Leader) | `2023A7PS0429G` |
+| Aryan Bethmangalkar | `2023A7PS0433G` |
+| Aaditya H Vernenker | `2023A7PS1027G` |
+| Aalhad M Sawane | `2023A7PS0476G` |
+| Arjun P Thakur | `2024A7PS0006G` |
+| Khushi Pandey | `2023B5A70951G` |
+| Diya Srivastava | `2023B2A40737G` |
+
+---
+
+> Everything below is the upstream DiffuLLaMA README.
 
 ## Overview
 Current Diffusion Language Models (DLMs) have been studied at a smaller scale compared to their autoregressive (AR) counterparts and lack fair comparison on language modeling benchmarks. Additionally, training diffusion models from scratch at scale remains challenging. We propose adapting existing AR models to build text diffusion models. We demonstrate connections between AR and diffusion modeling objectives and introduce a simple continual pre-training approach for training diffusion models.
