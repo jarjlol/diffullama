@@ -38,7 +38,7 @@ Across five tasks, we tested how far language models and scripts could take a re
 
 ## The experiment we designed after both rounds
 
-After the two rounds, we discussed why the selectors were failing and brainstormed a different approach. We chose to test Perplexity's four-billion-parameter decision model through OpenRouter. The earlier likelihood scorer assigned a score to each candidate separately. We wanted to see whether a model could make a better choice by looking at the question and all ten candidates together. We reused the same candidate pools, kept majority vote as the comparison, and asked the pipeline to run controls on what the model could infer from the question or answers alone. [S17, S18]
+After two rounds, the automated search was still returning to familiar variants of voting and likelihood scoring. We had to rethink the problem ourselves and brainstorm a new direction. We chose to test Perplexity's four-billion-parameter decision model through OpenRouter. The earlier likelihood scorer assigned a score to each candidate separately. We wanted to see whether a model could make a better choice by looking at the question and all ten candidates together. We reused the same candidate pools, kept majority vote as the comparison, and asked the pipeline to run controls on what the model could infer from the question or answers alone. [S14, S17, S18]
 
 On 500 Grade School Math (GSM8K) questions per model at 64 steps, the decision model averaged **78.0%**, compared with **72.8%** for majority vote. On the smaller 256-step samples, it averaged **85.7%** versus **81.7%**. With the math questions and distinct final answers alone, accuracy fell to 42.8%. [S18, S23]
 
