@@ -54,7 +54,7 @@ We used the development set to choose when to call the decision model. On the 64
 
 Three controls tested what information the selector used. With only the distinct candidate answers and the question, accuracy fell to 42.8%, compared with 78.0% with the full candidates. Where the pool lacked a correct answer, adding one led the model to pick it on 24 of 115 cases (20.9%). Given two answer options on 40 questions, one correct and one drawn from another problem, it chose correctly 37 times (92.5%). The model can select correct answers. How much it relies on solving the problem, recognizing an answer, or checking the candidate's reasoning remains open. [S14, S15]
 
-On 144 HumanEval programming problems, the model selected passing code on 58 (40.3%), matching the number with at least one passing candidate among the ten samples. The corrected filter based on examples in the prompt passed 40 problems (27.8%). On the 38 solvable problems with parseable examples, the decision model passed 38 and the filter passed 36. On the 20 without examples, the counts were 20 and 4. [S14, S15]
+On 144 HumanEval programming problems, the model selected passing code on 58 (40.3%), matching the number with at least one passing candidate among the ten samples. The corrected filter based on examples in the prompt passed 40 problems (27.8%). On the 42 solvable problems with docstring examples, the decision model passed 42 and the filter passed 36. On the 16 without examples, the counts were 16 and 4. [S14, S15]
 
 On the 142 problems with usable HumanEval+ tests, the same choices passed 40.8% under the standard tests and 35.9% under the stronger tests. At least one candidate passed the stronger tests on 53 problems. The decision model picked one on 51. Five of the seven lost successes came from problems where every candidate failed the stronger tests. HumanEval+ adds tests to the same problems. [S18]
 
@@ -77,7 +77,7 @@ We assembled the paper around reproducible comparisons, traced the figures to sa
 [S11]: evidence/fidelity_snapshot.json
 [S12]: https://github.com/jarjlol/diffullama/blob/88bac1b81f3e42899dfa95d09b1afd790748c6e3/final_submission/report/evidence/iter2/k256_step_arm_output.txt
 [S13]: evidence/iter2/README.md
-[S14]: https://github.com/jarjlol/diffullama/blob/cf8e51c9eafb2284a1f17f1342bf73cd26c29c63/codification/DECISION_RERANK_RESULTS.md
+[S14]: https://github.com/jarjlol/diffullama/blob/fcfd46b287058ca21ad24c553cb01c70435ce2ce/codification/DECISION_RERANK_RESULTS.md
 [S15]: https://github.com/jarjlol/diffullama/blob/cf8e51c9eafb2284a1f17f1342bf73cd26c29c63/codification/results/controls.json
 [S16]: https://github.com/jarjlol/diffullama/pull/74
 [S17]: https://github.com/jarjlol/diffullama/blob/cf8e51c9eafb2284a1f17f1342bf73cd26c29c63/codification/results/k256_decision.json
