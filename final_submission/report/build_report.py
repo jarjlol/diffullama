@@ -107,7 +107,7 @@ def main():
             story.append(Paragraph(inline(" ".join(para)), styles["ReportBody"]))
     doc = SimpleDocTemplate(str(HERE / "report.pdf"), pagesize=A4,
                             rightMargin=43, leftMargin=43, topMargin=38, bottomMargin=43,
-                            title="Observations and efforts across the research cycle",
+                            title=lines[0].removeprefix("# ").strip(),
                             author="BITS F471 Group 3", invariant=1)
     doc.build(story, onFirstPage=footer, onLaterPages=footer)
     print(HERE / "report.pdf")

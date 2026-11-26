@@ -1,88 +1,74 @@
-# Observations and efforts across the research cycle
+# Automating research on diffusion language models
 
-BITS F471 Group 3 | Task 5
+BITS F471 Group 3 | Task 5 discussion report
 
-## Proposal. What could we test with the available compute?
+Across five tasks, we tested how far language models and scripts could take a research project, from finding related work to writing the paper. Our anchor was *Scaling Diffusion Language Models via Adaptation from Autoregressive Models* (DiffuLLaMA). Reading the paper alongside its released code helped us choose experiments we could run with existing models and shared computing resources. We also proposed a recurring check for whether new papers had already addressed a research gap. A related-work check led us to withdraw a broad novelty claim about structure-guided remasking. [S1, S2]
 
-We chose *Scaling Diffusion Language Models via Adaptation from Autoregressive Models* as the anchor paper. Reading the paper alongside its released inference code helped us scope a project we could run on a shared workstation. We used released checkpoints with fixed weights and varied what happened during inference. We also checked the anchor's math evaluation and found that its results on Grade School Math (GSM8K) used fine-tuning, so we treated them as a separate setting from our few-shot evaluation. [S1, S2, S7]
+## Task 1. How much of the literature review could we automate?
 
-For the research-lifecycle assignment, we proposed periodically checking whether new work has already addressed a research gap. We used that practice when a related-work check led us to withdraw a broad novelty claim about structure-guided remasking. We kept dated records of such decisions and distinguished gaps already addressed in prior work from ideas we set aside because of compute limits. [S1, S2]
+**Paper and tools.** We adapted the QUAL-SG framework from *SurveyGen: Quality-Aware Scientific Survey Generation with Large Language Models*. Python scripts retrieved papers from OpenAlex and arXiv, ranked them, and prepared a reference brief. A team member prompted Claude with that brief to draft the survey. We adapted the evaluation in *Large Language Models for Automated Literature Review* to check the citations and compare the survey with the anchor's related work. [S3, S4, S5]
 
-## Task 1. How well did the literature review recover relevant work?
+**How it worked.** The pipeline assembled 48 real references and Claude turned them into a usable first draft. The automatic matcher found 9 of the anchor's 33 related-work references. An alternative list ranked by a language model matched 11 of 33, though a manual check found one questionable title match. We checked source records, corrected a citation linked to the wrong paper, and changed the evaluator to distinguish lookup failures from missing references. For the manuscript, we reviewed which papers actually supported our questions and kept 12 of the 48 survey references. [S5, S6]
 
-We adapted a survey-generation pipeline to retrieve papers from OpenAlex and arXiv, rank them, and draft a structured review. We used term-frequency ranking because learned text embeddings were unavailable. We then implemented the second supplied paper's evaluation framework to compare the generated reference list with the anchor's related work. Some drafting stages ran in recorded agent sessions. [S3]
+## Task 2. Could agents identify research gaps we would pursue?
 
-The survey cited 48 papers. The automatic matcher recovered 9 of the anchor's 33 related-work citations. A later relevance-judged reference set recovered 11 of 33 by the same matcher, though a manual check found one questionable title match. We kept the original survey and its numbered references together so the in-text citations would still point to the right entries. [S3, S4]
+**Paper and tools.** We implemented *Multi-Agent LLMs for Generating Research Limitations*. Separate prompts asked agents to extract stated limitations, inspect the method, act as reviewers, and look for evidence in related papers. The workflow scored, revised, and combined 33 initial statements into 12 gaps. [S7, S8]
 
-## Task 2. Which limitations were worth pursuing?
-
-We assigned separate agents to extract, analyze, review and cite limitations, then collected feedback and consolidated their outputs. The multi-agent pipeline reduced 33 statements to 12 limitations. We checked these against prior work and the inference-only scope before deciding which to pursue. [S2, S5]
-
-Review revealed that one agent had attributed a code result to the released checkpoint when it came from a separately trained model. We traced the error to the review output and corrected the record. We also found that word-overlap clustering missed statements that described the same issue in different language. [S2, S5]
-
-The coverage metric rose from 0.583 to 1.000 on author-stated limitations, the same kind of text the extractor was designed to recover. The output contained fewer generic statements, from three to zero. That reduction lacks independent validation. A separate check of reviewer-stated limitations stopped when review access failed. [S5]
+**How it worked.** The roles helped us look beyond the paper's own list, but a reviewer agent attributed a coding result to the wrong model. We went back to the anchor's results table, traced the mistake to the reviewer output, and corrected the deliverable. We refined the list, ran the final judging pass ourselves, and screened the gaps against prior work and our compute budget. We set aside the twelve proposed directions after that review. The high automated coverage score mainly measured recovery of limitations the authors had already stated. [S2, S8, S9]
 
 <!-- pagebreak -->
 
-## Task 3. Which idea could we turn into an experiment?
+## Task 3. Could an agent choose a feasible idea?
 
-We used ResearchAgent to propose problems, methods and experiment designs, with review and revision at each stage. We gave it the earlier gap analysis and compute constraints, then pursued two directions: answer selection and denoising schedules. Service limits and retired model endpoints interrupted early runs. We added response caching and resumed using locally hosted models. [S6]
+**Paper and tools.** We implemented *ResearchAgent: Iterative Research Idea Generation over Scientific Literature with Large Language Models*. The pipeline proposed problems, methods, and experiments. Reviewer prompts scored each stage and fed comments back over three rounds. We added the earlier gap analysis and our resource limits, cached model replies, and resumed with locally hosted models after service limits interrupted runs. [S10, S11]
 
-The rankings helped us generate a shortlist. In the final rated set, 78 of 100 ratings were at the maximum, and the audit found errors about model ancestry and data availability. We chose answer selection because it was feasible without training and gave us a clear test of whether a selector could pick better answers from the same candidates than majority vote. We also asked whether representation similarity to an autoregressive base predicted the accuracy an autoregressive scorer could recover, and how selection gains changed with more denoising steps. [S6, S7]
+**How it worked.** The pipeline produced concrete proposals about selecting answers and changing denoising schedules. The ratings were much less useful. Of 100 final ratings, 78 were the maximum, even though some proposals contained factual or practical errors. We checked the suggestions against original papers and available datasets. Some ideas assigned Dream the wrong base model and incorrectly described LLaDA as an adapted model. Others relied on a training corpus that had never been released. We chose the answer-selection idea because we could test it on released models, with a clear comparison against majority vote. [S11, S12]
 
-## Task 4. What changed between the two implementation rounds?
+## Task 4. What did two rounds of automated experimentation achieve?
 
-**Iteration 1.** We built a pipeline to generate ten answers per question, score them with autoregressive models, and measure how closely the diffusion models' internal representations resembled those of their base models. We separated development, the merge decision and the final evaluation. Review feedback kept selectors within one model's candidate pool and directed the Arbor agent toward arithmetic checking. We also added attention checks and fixed a feature lookup error. [S7]
+**Paper and tools.** We used Arbor, the implementation of *Toward Generalist Autonomous Research via Hypothesis-Tree Refinement*, to propose, code, and test changes to an answer selector. Our Python pipeline generated ten candidate answers per question and reused them across selectors. We compared each selector with majority vote, which picks the most frequent answer. [S13, S14]
 
-On 300 held-out questions per model, the Arbor rule reached 73.0% accuracy on both Dream and LLaDA. Majority vote reached 73.3% and 73.0%, respectively. The rule improved on its starting selector during development. The final comparison showed no detectable gain over majority. The representation-similarity comparison covered only four adapted models, three of which rarely generated a correct answer. [S7, S9, S10]
+**Iteration 1.** Arbor twice proposed using another model's cached answer. We rejected that shortcut to keep every selector within one model's candidate set. We corrected a model-lineage error and directed Arbor to check the arithmetic within each candidate instead. Its resulting rule beat Arbor's starting rule. On 300 held-out questions per model, it reached 73.0% on both models, compared with 73.3% for Dream and 73.0% for LLaDA using majority vote. The automated search did not improve on the baseline we cared about. [S14]
 
-**Iteration 2.** We checked the decoding setup against published settings. On the first 100 test questions, greedy decoding at 256 steps raised Dream's first-answer accuracy from 41% to 81% and LLaDA's from 51% to 73%. We recounted the saved outputs independently. The comparison changes both sampling and step count. [S8, S11]
-
-We found that autoregressive scores included unrelated text after the final answer. On 500 questions per model at 64 denoising steps, cutting that text raised Dream's strongest score-based selector by 13.0 percentage points and left LLaDA's unchanged. The corrected selectors reached 48.8% and 52.2%, below majority at 72.4% and 73.2%. The correction also changed Dream's representation comparison enough to leave the original hypothesis unsupported. [S8, S13]
-
-Increasing the budget from 16 to 32 steps improved first-answer accuracy by 9.8 points on Dream and 19.2 on LLaDA. At 256 steps, the best autoregressive selector still trailed majority by 8.6 points on 185 Dream questions and 2.6 on 192 LLaDA questions. Only Dream's gap was statistically clear. Selection using each diffusion model's own score also trailed majority on the separate set of 200 questions used to assess candidate selector changes. An exploratory question-level analysis found no clear association between representation similarity and selection gains. We prepared a second Arbor search but did not run it because the shared accelerators were occupied. [S8, S12, S13]
+**Iteration 2.** We chose the follow-up checks ourselves and had the agents run and document them. Using published decoding settings recovered much of the first-answer accuracy we had been missing. We also found that the likelihood scorer read unrelated text after the answer and reran it on trimmed outputs. This improved Dream's score, but the corrected likelihood selectors still trailed majority vote by 23.6 points on Dream and 21.0 on LLaDA at 64 steps. The gap narrowed at 256 steps. The representation-preservation hypothesis remained unresolved, and the planned second Arbor search did not run because the shared accelerators were occupied. Both iterations clarified what was failing without producing a selector that beat majority vote. [S15, S16]
 
 <!-- pagebreak -->
 
-## Follow-up. What could a decision model select from the same answers?
+## Task 4 follow-up. What changed when we chose the next experiment ourselves?
 
-We gave a four-billion-parameter decision model the question and all ten candidates in a single pass. At 64 denoising steps, across the same 500 GSM8K questions for Dream and LLaDA, it averaged 78.0% accuracy, 5.2 percentage points above majority vote at 72.8%. Resampling by question, keeping both models' results together, gave a 95% confidence interval of 3.0 to 7.4 points for the gain. [S14, S15]
+After the two rounds, we discussed why the selectors were failing and brainstormed a different approach. We chose to test Perplexity's four-billion-parameter decision model through OpenRouter. In one pass, it saw the question and all ten candidates and picked one. We reused the same candidate pools, kept majority vote as the comparison, and asked the pipeline to run controls on what the model could infer from the question or answers alone. [S17, S18]
 
-At 256 steps, the decision model averaged 85.7% accuracy against 81.7% for majority vote on 185 Dream and 192 LLaDA question instances. The gain was 4.0 points (95% confidence interval 0.9 to 7.1). On the same questions it was 3.5 points at 64 steps. The change of 0.5 points was inconclusive (95% confidence interval -4.0 to 5.1). Many 256-step candidates still carried extra text on the answer line after trimming. [S17, S22]
+On 500 Grade School Math (GSM8K) questions per model at 64 steps, the decision model averaged **78.0%**, compared with **72.8%** for majority vote. On the smaller 256-step samples, it averaged **85.7%** versus **81.7%**. With the math questions and distinct final answers alone, accuracy fell to 42.8%. [S18, S23]
 
-We used the development set to choose when to call the decision model. On the 64-step test, calling it only when fewer than five candidates agreed reached 78.5% accuracy with 47.8% of the calls. Calling it on every question reached 78.0%. The accuracy difference was inconclusive. [S21]
+On 144 HumanEval programming problems, it selected passing code on **58 (40.3%)**. The example-based filter passed **40 (27.8%)**. The gap was larger where the filter had no examples to use. It passed 4 of 16 solvable problems without examples and 36 of 42 with them. With the stronger HumanEval+ tests, the decision model picked passing code on 51 of the 53 problems with a passing candidate. In a separate code probe, the model picked the reference solution over a known failing variant on 59 of 60 problems. We report the improvement as answer selection and leave open how the model reached each choice. [S18, S19, S24]
 
-Three controls tested what information the selector used. With only the distinct candidate answers and the question, accuracy fell to 42.8%, compared with 78.0% with the full candidates. Where the pool lacked a correct answer, adding one led the model to pick it on 24 of 115 cases (20.9%). Given two answer options on 40 questions, one correct and one drawn from another problem, it chose correctly 37 times (92.5%). The model can select correct answers. How much it relies on solving the problem, recognizing an answer, or checking the candidate's reasoning remains open. [S14, S15]
+## Task 5. How did we automate implementation, collaboration, and writing?
 
-On 144 HumanEval programming problems, the model selected passing code on 58 (40.3%), matching the number with at least one passing candidate among the ten samples. The corrected filter based on examples in the prompt passed 40 problems (27.8%). On the 42 solvable problems with docstring examples, the decision model passed 42 and the filter passed 36. On the 16 without examples, the counts were 16 and 4. [S14, S15]
+**Tools and inputs.** We used GitHub and IssueMesh to coordinate coding agents working in Claude Code, Codex, and OpenCode. IssueMesh routed assignments, recorded who was working on each item, and gave reviewers a place to find the code, commands, and results. The agents drafted sections from the outputs of Tasks 1–4, then drafted the abstract and conclusion from the assembled manuscript, *When Does Selection Beat Majority Vote?* LaTeX produced the paper PDF. [S20, S21]
 
-On the 142 problems with usable HumanEval+ tests, the same choices passed 40.8% under the standard tests and 35.9% under the stronger tests. At least one candidate passed the stronger tests on 53 problems. The decision model picked one on 51. Five of the seven lost successes came from problems where every candidate failed the stronger tests. HumanEval+ adds tests to the same problems. [S18]
+**How it worked.** Agents could pick up an issue from its recorded status, run checks, and review another member's changes. We chose which experiments to run and which claims to carry into the paper. For example, an independent recount of the saved HumanEval outputs corrected the breakdown of solvable problems with and without examples in both the paper and report. The workflow made the correction traceable to the data. The team still had to decide how that evidence should shape the final wording. [S20, S21, S22]
 
-In a separate recognition probe, the model chose a reference solution over a known failing variant on 59 of 60 problems. On the 20 development problems, removing the function descriptions reduced correct picks from 20 to 16. The probe measures selection between two supplied candidates. LLaDA produced mostly newlines at 64 steps, so the comparison of generated code covers Dream only. We stopped the Mostly Basic Python Problems pilot after Dream produced no passing candidates on the first 20 problems at the same budget. [S14, S19, S20]
-
-## Task 5. How did we turn the work into a paper?
-
-We assembled the paper around reproducible comparisons, traced the figures to saved outputs, and kept the final 300-question comparison separate from later test runs. Feedback prompted us to clarify which comparisons shared questions and which lacked a clean compute measurement. We verified the five-page build with four body pages and one page of references. The decision-model results extend the earlier selector study. They leave the representation hypothesis open and identify controls needed for a full comparison. [S16, S14]
-
-[S1]: https://github.com/jarjlol/diffullama/blob/69d76a8/project-docs/01-project-brief.md
+[S1]: https://arxiv.org/abs/2410.17891
 [S2]: https://github.com/jarjlol/diffullama/blob/69d76a8/project-docs/02-decision-log.md
-[S3]: https://github.com/jarjlol/diffullama/blob/69d76a8/litreview/REPORT.md
-[S4]: https://github.com/jarjlol/diffullama/blob/69d76a8/litreview/output/evaluation_results_llm_judged.json
-[S5]: https://github.com/jarjlol/diffullama/blob/69d76a8/limitations/REPORT.md
-[S6]: https://github.com/jarjlol/diffullama/blob/69d76a8/ideation/REPORT.md
-[S7]: https://github.com/jarjlol/diffullama/blob/69d76a8/codification/ITERATION_1.md
-[S8]: https://github.com/jarjlol/diffullama/blob/2d7cbb36e089be032ef9d27a8374d2adb3e0f38f/codification/ITERATION_2.md
-[S9]: https://github.com/jarjlol/diffullama/tree/69d76a8/codification/results/iter1/numbers
-[S10]: https://github.com/jarjlol/diffullama/blob/69d76a8/codification/results/iter1/numbers/analyze_test500.txt
-[S11]: evidence/fidelity_snapshot.json
-[S12]: https://github.com/jarjlol/diffullama/blob/88bac1b81f3e42899dfa95d09b1afd790748c6e3/final_submission/report/evidence/iter2/k256_step_arm_output.txt
-[S13]: evidence/iter2/README.md
-[S14]: https://github.com/jarjlol/diffullama/blob/fcfd46b287058ca21ad24c553cb01c70435ce2ce/codification/DECISION_RERANK_RESULTS.md
-[S15]: https://github.com/jarjlol/diffullama/blob/cf8e51c9eafb2284a1f17f1342bf73cd26c29c63/codification/results/controls.json
-[S16]: https://github.com/jarjlol/diffullama/pull/74
-[S17]: https://github.com/jarjlol/diffullama/blob/cf8e51c9eafb2284a1f17f1342bf73cd26c29c63/codification/results/k256_decision.json
-[S18]: https://github.com/jarjlol/diffullama/blob/cf8e51c9eafb2284a1f17f1342bf73cd26c29c63/codification/results/humaneval_plus_result.json
-[S19]: https://github.com/jarjlol/diffullama/blob/cf8e51c9eafb2284a1f17f1342bf73cd26c29c63/codification/results/humaneval_recognition_result.json
-[S20]: https://github.com/jarjlol/diffullama/blob/cf8e51c9eafb2284a1f17f1342bf73cd26c29c63/codification/results/humaneval_recognition_nodoc_result.json
-[S21]: https://github.com/jarjlol/diffullama/blob/cf8e51c9eafb2284a1f17f1342bf73cd26c29c63/codification/results/weak_vote_threshold.json
-[S22]: https://github.com/jarjlol/diffullama/issues/78#issuecomment-7178740360
+[S3]: https://arxiv.org/abs/2508.17647
+[S4]: https://arxiv.org/abs/2412.13612
+[S5]: https://github.com/jarjlol/diffullama/blob/69d76a8/litreview/REPORT.md
+[S6]: https://github.com/jarjlol/diffullama/blob/c85bb5c/final_submission/notes/related_work_filtering.md
+[S7]: https://arxiv.org/abs/2601.11578
+[S8]: https://github.com/jarjlol/diffullama/blob/69d76a8/limitations/REPORT.md
+[S9]: https://github.com/jarjlol/diffullama/blob/c85bb5c/docs/pipeline-story.md
+[S10]: https://arxiv.org/abs/2404.07738
+[S11]: https://github.com/jarjlol/diffullama/blob/4559f77/ideation/REPORT.md
+[S12]: https://github.com/jarjlol/diffullama/blob/69d76a8/codification/IDEA_SELECTION.md
+[S13]: https://arxiv.org/abs/2606.11926
+[S14]: https://github.com/jarjlol/diffullama/blob/69d76a8/codification/ITERATION_1.md
+[S15]: https://github.com/jarjlol/diffullama/blob/2d7cbb36e089be032ef9d27a8374d2adb3e0f38f/codification/ITERATION_2.md
+[S16]: https://github.com/jarjlol/diffullama/issues/7
+[S17]: https://github.com/jarjlol/diffullama/blob/cf8e51c/codification/DECISION_RERANK_PREREG.md
+[S18]: https://github.com/jarjlol/diffullama/blob/fcfd46b/codification/DECISION_RERANK_RESULTS.md
+[S19]: https://github.com/jarjlol/diffullama/blob/cf8e51c/codification/results/humaneval_plus_result.json
+[S20]: https://github.com/jarjlol/diffullama/blob/c85bb5c/docs/pipeline-story.md#coordination
+[S21]: https://github.com/jarjlol/diffullama/blob/c85bb5c/final_submission/paper/appendix_provenance.md
+[S22]: https://github.com/jarjlol/diffullama/issues/77#issuecomment-7182726710
+[S23]: https://github.com/jarjlol/diffullama/blob/cf8e51c/codification/results/k256_decision.json
+[S24]: https://github.com/jarjlol/diffullama/blob/cf8e51c/codification/results/humaneval_recognition_result.json
