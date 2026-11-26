@@ -6,10 +6,10 @@ linked directories.
 
 | Stage | Manual | Agent-assisted | Artefact |
 |---|---|---|---|
-| 1. Literature review | Choice of anchor, reading, and the survey prose (a person prompted Claude with the reference brief) | Deterministic retrieval and ranking (`litreview/scripts/`): 48 references retrieved and ranked; 47 of 48 verified as real; overlap with the anchor's related work measured by exact and fuzzy title matching | `litreview/REPORT.md` @ `6316fd1` |
+| 1. Literature review | Choice of anchor, reading, and the survey prose (a person prompted Claude with the reference brief) | Deterministic retrieval and ranking (`litreview/scripts/`): 48 references retrieved and ranked; all 48 verified as real (47 by DOI, 1 via Crossref); overlap with the anchor's related work measured by exact and fuzzy title matching | `litreview/REPORT.md` @ `6316fd1` |
 | 2. Research gaps | Refinement of the extracted list; the final judge pass | Extractor → Analyzer → Reviewer → Citation → Judge roles; every gap carries provenance, and author-stated is kept separate from inferred | `limitations/REPORT.md` @ `a131e13` |
 | 3. Ideation | The team's audit of the output and the final choice of idea 1.1 for task fit, not for rank | ResearchAgent implementation: generate → review → refine on five criteria over three rounds; output kept unedited, including the audit that found model-lineage errors and saturated ratings | `ideation/REPORT.md` @ `4559f77` (`assignment/research-ideation`) |
-| 4. Codification | Review of every Arbor proposal before it ran; the scope decision for iteration 2 | Arbor: hypothesis tree, one selector function per change, held-out gate. Iteration 2 added the fidelity check, cut-text re-scoring, the step arm, the self-score, the per-question test and a pre-registered K = 256 check | `codification/ITERATION_1.md` @ `b4688db` (`assignment/codification`), `ITERATION_2.md` |
+| 4. Codification | Review of Arbor proposals, with unanswered ideas auto-approved after a timeout; the scope decision for iteration 2 | Arbor: hypothesis tree, one selector function per change, held-out gate. Iteration 2 added the fidelity check, cut-text re-scoring, the step arm, the self-score, the per-question test and a pre-registered K = 256 check | `codification/ITERATION_1.md` @ `b4688db` (`assignment/codification`), `ITERATION_2.md` |
 
 ## Coordination
 
