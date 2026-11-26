@@ -10,6 +10,27 @@ before the 08:35 machine reboot. Dream has **149/250** questions; LLaDA has
 P2-0. P2-1 and P2-2 are not represented, so the subsets are template-skewed and
 must not be read as random samples of the 250. No 250-question claim is made.
 
+## Post-reboot update (10:27)
+
+Generation stopped at 08:47; the candidate files contain **Dream 175/250** and
+**LLaDA 217/250**. An incremental listwise pass scored every one of them
+(listwise coverage 1.00 for both). Pointwise was not rescored; its cells remain
+the earlier 149/165 snapshot and their coverage is shown.
+
+| selector | Dream (n=175) | LLaDA (n=217) | macro |
+|---|---:|---:|---:|
+| first | 0.114 | 0.120 | 0.117 |
+| majority | 0.320 | 0.240 | 0.280 |
+| **decision.listwise** | **0.440** | **0.364** | **0.402** |
+| decision.pointwise (cov 0.85 / 0.76) | 0.510 | 0.485 | 0.497 |
+| oracle | 0.623 | 0.461 | 0.542 |
+
+H1 on the common 175 questions: listwise − majority = **+0.137**, 95% CI
+[+0.097, +0.180]; Dream exact McNemar p=5.1e-4, LLaDA p=4.6e-7. The macro
+accuracy dropped from the 160/187 snapshot (0.446 → 0.402) because more P2-0 and
+the first P2-1 questions entered; the margin remains above the GSM8K K=64 +5.2.
+
+
 ## Final pre-reboot update (08:22)
 
 An incremental listwise pass scored every question completed before the reboot:

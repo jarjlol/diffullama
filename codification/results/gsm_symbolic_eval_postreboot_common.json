@@ -1,0 +1,147 @@
+{
+  "dataset": "gsm_symbolic",
+  "models": [
+    "dream-base",
+    "llada-base"
+  ],
+  "n_questions": 250,
+  "tag": "",
+  "common_questions_only": true,
+  "table": {
+    "dream-base": {
+      "decision.listwise": 0.44,
+      "decision.pointwise": 0.5100671140939598,
+      "first": 0.11428571428571428,
+      "majority": 0.32,
+      "coverage": {
+        "decision.listwise": 1.0,
+        "decision.pointwise": 0.8514285714285714,
+        "first": 1.0,
+        "majority": 1.0
+      },
+      "random(exp.)": 0.13028571428571428,
+      "oracle": 0.6228571428571429,
+      "n": 175
+    },
+    "llada-base": {
+      "decision.listwise": 0.4514285714285714,
+      "decision.pointwise": 0.48484848484848486,
+      "first": 0.14857142857142858,
+      "majority": 0.29714285714285715,
+      "coverage": {
+        "decision.listwise": 1.0,
+        "decision.pointwise": 0.9428571428571428,
+        "first": 1.0,
+        "majority": 1.0
+      },
+      "random(exp.)": 0.14685714285714285,
+      "oracle": 0.5657142857142857,
+      "n": 175
+    }
+  },
+  "macro": {
+    "decision.listwise": 0.44571428571428573,
+    "decision.pointwise": 0.4974577994712223,
+    "first": 0.13142857142857142,
+    "majority": 0.3085714285714286,
+    "random(exp.)": 0.13857142857142857,
+    "oracle": 0.5942857142857143
+  },
+  "tests": {
+    "decision.listwise vs majority [dream-base]": {
+      "delta": 0.12,
+      "p": 0.0005082604475319386,
+      "n01": 7,
+      "n10": 28,
+      "n": 175
+    },
+    "decision.listwise vs majority [llada-base]": {
+      "delta": 0.15428571428571425,
+      "p": 4.628673195838928e-07,
+      "n01": 2,
+      "n10": 29,
+      "n": 175
+    },
+    "decision.pointwise vs majority [dream-base]": {
+      "delta": 0.14093959731543626,
+      "p": 0.00019219517707824707,
+      "n01": 5,
+      "n10": 26,
+      "n": 149
+    },
+    "decision.pointwise vs majority [llada-base]": {
+      "delta": 0.16969696969696973,
+      "p": 5.774199962615967e-08,
+      "n01": 1,
+      "n10": 29,
+      "n": 165
+    },
+    "decision.listwise vs majority": {
+      "delta": 0.13714285714285715,
+      "ci95": [
+        0.09714285714285714,
+        0.18
+      ],
+      "n_questions": 175,
+      "reps": 10000,
+      "per_model": {
+        "dream-base": {
+          "delta": 0.12,
+          "ci95": [
+            0.05714285714285716,
+            0.18857142857142856
+          ],
+          "n_questions": 175,
+          "reps": 10000
+        },
+        "llada-base": {
+          "delta": 0.15428571428571428,
+          "ci95": [
+            0.09714285714285714,
+            0.21142857142857147
+          ],
+          "n_questions": 175,
+          "reps": 10000
+        }
+      }
+    },
+    "decision.pointwise vs majority": {
+      "delta": 0.1610738255033557,
+      "ci95": [
+        0.11409395973154368,
+        0.2080536912751678
+      ],
+      "n_questions": 149,
+      "reps": 10000,
+      "per_model": {
+        "dream-base": {
+          "delta": 0.14093959731543623,
+          "ci95": [
+            0.0738255033557047,
+            0.2147651006711409
+          ],
+          "n_questions": 149,
+          "reps": 10000
+        },
+        "llada-base": {
+          "delta": 0.1696969696969697,
+          "ci95": [
+            0.10909090909090913,
+            0.2303030303030303
+          ],
+          "n_questions": 165,
+          "reps": 10000
+        }
+      }
+    },
+    "listwise_minus_majority": {
+      "delta": 0.13714285714285712,
+      "gsm8k_k64_delta": 0.052,
+      "gsm8k_k64_ci95": [
+        0.03,
+        0.074
+      ],
+      "shrinks_vs_gsm8k": false
+    }
+  }
+}
