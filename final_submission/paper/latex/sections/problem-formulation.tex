@@ -1,10 +1,10 @@
 \section{Problem Formulation}
 \label{sec:formulation}
 
-What is the exact selection objective, and how do we measure headroom, hybrid routing, and representation similarity?
+This section defines the selection objective, the headroom metric, the hybrid rule, and the representation-similarity measure.
 
 \lead{Candidates and accuracy}
-Let $\mathcal{M}$ be a set of frozen masked DLMs and $\mathcal{D}=\{(q_j,a_j^\ast)\}_{j=1}^{n}$ a benchmark split. For each item $j$, model $m\in\mathcal{M}$ draws $N$ candidate solutions $y_{j,1:N}=(y_{j,1},\dots,y_{j,N})$ from a fixed prompt under a fixed denoising budget $K$ and sampling temperature. Candidates are generated once and cached so every selector sees identical inputs. Let $c_{j,i}\in\{0,1\}$ indicate whether candidate $y_{j,i}$ is correct: exact numeric match to $a_j^\ast$ after extraction on GSM8K, or passing all official hidden unit tests on HumanEval and HumanEval+.
+Let $\mathcal{M}$ be a set of frozen masked DLMs and $\mathcal{D}=\{(q_j,a_j^\ast)\}_{j=1}^{n}$ a benchmark split. For each item $j$, model $m\in\mathcal{M}$ draws $N$ candidate solutions $y_{j,1:N}=(y_{j,1},\dots,y_{j,N})$ from a fixed prompt under a fixed denoising budget $K$ and sampling temperature. Candidates are generated once and cached, so every selector sees identical inputs. Let $c_{j,i}\in\{0,1\}$ indicate whether candidate $y_{j,i}$ is correct: an exact numeric match to $a_j^\ast$ after extraction on GSM8K, or passing all official hidden unit tests on HumanEval and HumanEval+.
 
 A selector $s$ maps $(q_j,y_{j,1:N})$ to an index $s_j=s(q_j,y_{j,1:N})\in\{1,\dots,N\}$ without access to $a_j^\ast$ or hidden tests. Its per-model and macro accuracies are
 {\small
@@ -12,17 +12,17 @@ A selector $s$ maps $(q_j,y_{j,1:N})$ to an index $s_j=s(q_j,y_{j,1:N})\in\{1,\d
 \mathrm{Acc}_m(s)=\tfrac{1}{n}\textstyle\sum_{j=1}^{n} c_{j,s_j},\;\;
 \overline{\mathrm{Acc}}(s)=\tfrac{1}{|\mathcal{M}|}\textstyle\sum_{m\in\mathcal{M}}\mathrm{Acc}_m(s).
 \end{equation}}
-The single-sample baseline is $s_{\mathrm{first}}\equiv 1$, and the ceiling is the oracle $\mathrm{Acc}_m^\ast=\frac{1}{n}\sum_{j=1}^{n}\max_{i} c_{j,i}$ (hit@$N$ or pass@$N$). We measure the share of reachable improvement closed by $s$ as its headroom:
+The single-sample baseline is $s_{\mathrm{first}}\equiv 1$. The ceiling is the oracle $\mathrm{Acc}_m^\ast=\frac{1}{n}\sum_{j=1}^{n}\max_{i} c_{j,i}$ (hit@$N$ or pass@$N$). We measure the share of reachable improvement closed by $s$ as its headroom:
 \begin{equation}
 H_m(s)=\frac{\mathrm{Acc}_m(s)-\mathrm{Acc}_m(s_{\mathrm{first}})}{\mathrm{Acc}_m^\ast-\mathrm{Acc}_m(s_{\mathrm{first}})}.
 \end{equation}
 
 \lead{Selector families}
-Let $a(y_{j,i})$ be the extracted final number on GSM8K. Majority vote $s_{\mathrm{maj}}$ picks the earliest candidate whose answer achieves the largest vote count $v_j^\ast=\max_a \sum_{i=1}^N \mathbb{I}[a(y_{j,i})=a]$. Frozen AR reranking $s_\psi$ picks $\arg\min_i \ell_\psi(y_{j,i})$, where $\ell_\psi$ is summed or per-token NLL under an AR model $\psi$. A single-pass decision model $d$ outputs calibrated-format choice probabilities without chain of thought: the \emph{listwise} selector sees all $N$ labelled candidates jointly,
+Let $a(y_{j,i})$ be the extracted final number on GSM8K. Majority vote $s_{\mathrm{maj}}$ picks the earliest candidate whose answer achieves the largest vote count $v_j^\ast=\max_a \sum_{i=1}^N \mathbb{I}[a(y_{j,i})=a]$. Frozen AR reranking $s_\psi$ picks $\arg\min_i \ell_\psi(y_{j,i})$, where $\ell_\psi$ is summed or per-token NLL under an AR model $\psi$. A single-pass decision model $d$ returns choice probabilities in a fixed response format without chain of thought. The \emph{listwise} selector sees all $N$ labelled candidates jointly,
 \begin{equation}
 s_{\mathrm{list}}=\arg\max_{i\in\{1,\dots,N\}} P_d(\text{choice}=i \mid q_j, y_{j,1:N}),
 \end{equation}
-while the \emph{pointwise} selector runs $N$ independent yes/no calls and picks $\arg\max_i P_d(\text{yes}\mid q_j, y_{j,i})$ (ties go to the earliest index). To reduce judge cost on GSM8K, a \emph{weak-vote hybrid} selector $s_T$ with threshold $T$ returns $s_{\mathrm{maj}}$ whenever $v_j^\ast \ge T$ and invokes $s_{\mathrm{list}}$ otherwise.
+while the \emph{pointwise} selector runs $N$ independent yes/no calls and picks $\arg\max_i P_d(\text{yes}\mid q_j, y_{j,i})$; ties go to the earliest index. To reduce judge cost on GSM8K, a \emph{weak-vote hybrid} selector $s_T$ with threshold $T$ returns $s_{\mathrm{maj}}$ whenever $v_j^\ast \ge T$ and invokes $s_{\mathrm{list}}$ otherwise.
 
 \lead{Preservation metric}
-For each adapted DLM $m$ with AR base $b(m)$, we measure representation preservation $\rho_m$ as the layer-averaged linear CKA \cite{kornblith2019cka} between token-mean-pooled transformer block outputs of $m$ and $b(m)$ on held-out text, and test whether higher $\rho_m$ predicts higher AR-recoverable headroom $H_m(s_\psi)$.
+For each adapted DLM $m$ with AR base $b(m)$, representation preservation $\rho_m$ is the layer-averaged linear CKA \cite{kornblith2019cka} between token-mean-pooled transformer block outputs of $m$ and $b(m)$ on held-out text. We test whether higher $\rho_m$ predicts higher AR-recoverable headroom $H_m(s_\psi)$.
