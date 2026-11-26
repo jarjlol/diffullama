@@ -24,5 +24,3 @@ s_{\mathrm{list}}=\arg\max_{i\in\{1,\dots,N\}} P_d(\text{choice}=i \mid q_j, y_{
 \end{equation}
 while the \emph{pointwise} selector runs $N$ independent yes/no calls and picks $\arg\max_i P_d(\text{yes}\mid q_j, y_{j,i})$; ties go to the earliest index. To reduce judge cost on GSM8K, a \emph{weak-vote hybrid} selector $s_T$ with threshold $T$ returns $s_{\mathrm{maj}}$ whenever $v_j^\ast \ge T$ and invokes $s_{\mathrm{list}}$ otherwise.
 
-\lead{Preservation metric}
-For each adapted DLM $m$ with AR base $b(m)$, representation preservation $\rho_m$ is the layer-averaged linear CKA \cite{kornblith2019cka} between token-mean-pooled transformer block outputs of $m$ and $b(m)$ on held-out text. We test whether higher $\rho_m$ predicts higher AR-recoverable headroom $H_m(s_\psi)$.
