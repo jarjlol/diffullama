@@ -14,8 +14,8 @@
     "listwise": 0.403, "pointwise": 0.382, "example_filter_fixed_parser": 0.278,
     "first": 0.104, "ar_mean": 0.049, "oracle": 0.403, "mbr_exec": 0.062,
     "solvable": 58,
-    "solvable_with_examples": {"n": 38, "example_filter": 36, "listwise": 38},
-    "solvable_without_examples": {"n": 20, "example_filter": 4, "listwise": 20},
+    "solvable_with_examples": {"n": 42, "example_filter": 36, "listwise": 42},
+    "solvable_without_examples": {"n": 16, "example_filter": 4, "listwise": 16},
     "order_shuffle": {"n": 50, "plain": 30, "shuffled": 30}
   },
   "statistics": {
