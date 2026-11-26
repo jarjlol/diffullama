@@ -24,11 +24,13 @@ Across five tasks, we tested how far language models and scripts could take a re
 
 **How it worked.** The pipeline produced concrete proposals about selecting answers and changing denoising schedules. The ratings were much less useful. Of 100 final ratings, 78 were the maximum, even though some proposals contained factual or practical errors. We checked the suggestions against original papers and available datasets. Some ideas assigned Dream the wrong base model and incorrectly described LLaDA as an adapted model. Others relied on a training corpus that had never been released. We kept the generated proposals as a record of what the pipeline produced and used the audit to decide what to carry forward. We chose the answer-selection idea because we could test it on released models, with a clear comparison against majority vote. [S11, S12]
 
-<!-- pagebreak -->
-
 ## Task 4. What did two rounds of automated experimentation achieve?
 
 **Paper and tools.** We used Arbor, the implementation of *Toward Generalist Autonomous Research via Hypothesis-Tree Refinement*, to propose, code, and test changes to an answer selector. Our Python pipeline generated ten candidate answers per question and reused them across selectors. We compared each selector with majority vote, which picks the most frequent answer. [S13, S14]
+
+<!-- pagebreak -->
+
+## Task 4 continued. How the two iterations performed
 
 **Iteration 1.** Arbor twice proposed using another model's cached answer. We rejected that shortcut to keep every selector within one model's candidate set. We corrected a model-lineage error and directed Arbor to check the arithmetic within each candidate instead. Arbor accepted the resulting rule because it improved on its starting rule. We then compared it with majority vote on questions kept out of that decision. On 300 held-out questions per model, it reached 73.0% on both models, compared with 73.3% for Dream and 73.0% for LLaDA using majority vote. The automated search did not improve on the baseline we cared about. [S14]
 
@@ -44,7 +46,7 @@ On 144 HumanEval programming problems, it selected passing code on **58 (40.3%)*
 
 <!-- pagebreak -->
 
-## Task 5. How did we automate implementation, collaboration, and writing?
+## Task 5. How did we coordinate implementation and writing?
 
 **Tools and inputs.** We used GitHub and IssueMesh to coordinate coding agents working in Claude Code, Codex, and OpenCode. IssueMesh routed assignments and recorded who was working on each issue. Agents used branches to implement changes and attached commands, results, and commit links to issue updates. Reviewers could rerun the same checks, and another session could resume from the recorded status. The agents drafted sections from the outputs of Tasks 1–4, then drafted the abstract and conclusion from the assembled manuscript, *When Does Selection Beat Majority Vote?* LaTeX produced the paper PDF. [S20, S21]
 
@@ -52,15 +54,13 @@ On 144 HumanEval programming problems, it selected passing code on **58 (40.3%)*
 
 ## Conclusion. Where did automation help, and what still needs work?
 
-**Literature review.** Retrieval and drafting were useful enough to give us a substantial first pass. The remaining gap is checking whether a source supports the claim it is cited for. A tool can find a real paper without establishing that it is relevant evidence. [S5, S6]
-
-**Limitations.** Giving agents different roles widened the search for weaknesses. The remaining gap is judging whether a suggested limitation is factually correct and whether addressing it would matter. Agreement among agents or high coverage of known limitations gave us little confidence about new ones. [S8, S9]
-
-**Ideation.** The pipeline was good at producing several concrete problems and experiments quickly. Its scores were weak as a way to choose among them. Feasibility checks need to confirm that the required data and models exist, and novelty checks need to examine the literature behind each proposal. [S11, S12]
-
-**Implementation and experiments.** Automation was most dependable when it had a fixed protocol and a clear metric. It could implement a selector, run it, and report its scores. Humans still had to set the baseline, reject unfair comparisons, diagnose why the approach was failing, and decide what to try next. An automated search can improve the score it was given while making no progress on the scientific question. [S14, S15, S18]
-
-**Writing and collaboration.** IssueMesh and the drafting tools helped turn many small contributions into a readable paper with a record of what was checked. The remaining gap is deciding whether the combined evidence warrants the final claim. Across the project, automation worked best when a person could see the source, the comparison, and the reasoning behind a proposed conclusion and decide whether to accept it. [S20, S21, S22]
+| Task | Assessment |
+|---|---|
+| **Literature review** | Retrieval and drafting were useful enough to give us a substantial first pass. The remaining gap is checking whether a source supports the claim it is cited for. A tool can find a real paper without establishing that it is relevant evidence. [S5, S6] |
+| **Limitations** | Giving agents different roles widened the search for weaknesses. The remaining gap is judging whether a suggested limitation is factually correct and whether addressing it would matter. Agreement among agents or high coverage of known limitations gave us little confidence about new ones. [S8, S9] |
+| **Ideation** | The pipeline was good at producing several concrete problems and experiments quickly. Its scores were weak as a way to choose among them. Feasibility checks need to confirm that the required data and models exist, and novelty checks need to examine the literature behind each proposal. [S11, S12] |
+| **Implementation and experiments** | Automation was most dependable when it had a fixed protocol and a clear metric. It could implement a selector, run it, and report its scores. Humans still had to set the baseline, reject unfair comparisons, diagnose why the approach was failing, and decide what to try next. An automated search can improve the score it was given while making no progress on the scientific question. [S14, S15, S18] |
+| **Writing and collaboration** | IssueMesh and the drafting tools helped turn many small contributions into a readable paper with a record of what was checked. The remaining gap is deciding whether the combined evidence warrants the final claim. Across the project, automation worked best when a person could see the source, the comparison, and the reasoning behind a proposed conclusion and decide whether to accept it. [S20, S21, S22] |
 
 [S1]: https://arxiv.org/abs/2410.17891
 [S2]: https://github.com/jarjlol/diffullama/blob/69d76a8/project-docs/02-decision-log.md
