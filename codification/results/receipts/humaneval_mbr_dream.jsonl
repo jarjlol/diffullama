@@ -1,0 +1,144 @@
+{"uid": "HumanEval/0", "choice": 0, "n_examples": 2}
+{"uid": "HumanEval/1", "choice": 0, "n_examples": 1}
+{"uid": "HumanEval/3", "choice": 1, "n_examples": 2}
+{"uid": "HumanEval/4", "choice": 1, "n_examples": 1}
+{"uid": "HumanEval/5", "choice": 0, "n_examples": 2}
+{"uid": "HumanEval/7", "choice": 0, "n_examples": 2}
+{"uid": "HumanEval/8", "choice": 1, "n_examples": 2}
+{"uid": "HumanEval/10", "choice": 0}
+{"uid": "HumanEval/11", "choice": 1, "n_examples": 1}
+{"uid": "HumanEval/12", "choice": 0, "n_examples": 3}
+{"uid": "HumanEval/13", "choice": 0, "n_examples": 2}
+{"uid": "HumanEval/15", "choice": 0, "n_examples": 2}
+{"uid": "HumanEval/16", "choice": 0, "n_examples": 2}
+{"uid": "HumanEval/17", "choice": 0, "n_examples": 1}
+{"uid": "HumanEval/18", "choice": 1, "n_examples": 3}
+{"uid": "HumanEval/19", "choice": 0, "n_examples": 1}
+{"uid": "HumanEval/20", "choice": 4, "n_examples": 2}
+{"uid": "HumanEval/21", "choice": 0, "n_examples": 1}
+{"uid": "HumanEval/22", "choice": 1, "n_examples": 2}
+{"uid": "HumanEval/23", "choice": 0, "n_examples": 2}
+{"uid": "HumanEval/24", "choice": 0, "n_examples": 1}
+{"uid": "HumanEval/25", "choice": 0, "n_examples": 3}
+{"uid": "HumanEval/26", "choice": 0, "n_examples": 1}
+{"uid": "HumanEval/28", "choice": 0, "n_examples": 2}
+{"uid": "HumanEval/30", "choice": 0, "n_examples": 2}
+{"uid": "HumanEval/31", "choice": 0, "n_examples": 7}
+{"uid": "HumanEval/32", "choice": 0}
+{"uid": "HumanEval/33", "choice": 0, "n_examples": 2}
+{"uid": "HumanEval/34", "choice": 1, "n_examples": 1}
+{"uid": "HumanEval/35", "choice": 0, "n_examples": 2}
+{"uid": "HumanEval/36", "choice": 2, "n_examples": 3}
+{"uid": "HumanEval/37", "choice": 1, "n_examples": 2}
+{"uid": "HumanEval/38", "choice": 0}
+{"uid": "HumanEval/39", "choice": 0, "n_examples": 5}
+{"uid": "HumanEval/40", "choice": 0, "n_examples": 5}
+{"uid": "HumanEval/41", "choice": 0}
+{"uid": "HumanEval/42", "choice": 1, "n_examples": 2}
+{"uid": "HumanEval/43", "choice": 0, "n_examples": 5}
+{"uid": "HumanEval/44", "choice": 0, "n_examples": 3}
+{"uid": "HumanEval/45", "choice": 0, "n_examples": 1}
+{"uid": "HumanEval/46", "choice": 0, "n_examples": 3}
+{"uid": "HumanEval/47", "choice": 0, "n_examples": 2}
+{"uid": "HumanEval/48", "choice": 1, "n_examples": 4}
+{"uid": "HumanEval/49", "choice": 0, "n_examples": 5}
+{"uid": "HumanEval/51", "choice": 0, "n_examples": 6}
+{"uid": "HumanEval/52", "choice": 0, "n_examples": 2}
+{"uid": "HumanEval/53", "choice": 0, "n_examples": 2}
+{"uid": "HumanEval/55", "choice": 0, "n_examples": 3}
+{"uid": "HumanEval/56", "choice": 1, "n_examples": 4}
+{"uid": "HumanEval/57", "choice": 0, "n_examples": 3}
+{"uid": "HumanEval/58", "choice": 0, "n_examples": 2}
+{"uid": "HumanEval/59", "choice": 3, "n_examples": 2}
+{"uid": "HumanEval/60", "choice": 0, "n_examples": 5}
+{"uid": "HumanEval/61", "choice": 0, "n_examples": 4}
+{"uid": "HumanEval/62", "choice": 0, "n_examples": 2}
+{"uid": "HumanEval/63", "choice": 0, "n_examples": 7}
+{"uid": "HumanEval/64", "choice": 0}
+{"uid": "HumanEval/65", "choice": 0, "n_examples": 2}
+{"uid": "HumanEval/66", "choice": 0}
+{"uid": "HumanEval/69", "choice": 1, "n_examples": 3}
+{"uid": "HumanEval/70", "choice": 0, "n_examples": 3}
+{"uid": "HumanEval/72", "choice": 0}
+{"uid": "HumanEval/73", "choice": 0, "n_examples": 3}
+{"uid": "HumanEval/74", "choice": 0}
+{"uid": "HumanEval/75", "choice": 0, "n_examples": 1}
+{"uid": "HumanEval/76", "choice": 0}
+{"uid": "HumanEval/77", "choice": 0, "n_examples": 6}
+{"uid": "HumanEval/78", "choice": 0}
+{"uid": "HumanEval/79", "choice": 0}
+{"uid": "HumanEval/80", "choice": 0}
+{"uid": "HumanEval/81", "choice": 0, "n_examples": 1}
+{"uid": "HumanEval/83", "choice": 0}
+{"uid": "HumanEval/84", "choice": 0}
+{"uid": "HumanEval/85", "choice": 1, "n_examples": 1}
+{"uid": "HumanEval/86", "choice": 0}
+{"uid": "HumanEval/163", "choice": 0}
+{"uid": "HumanEval/162", "choice": 1, "n_examples": 1}
+{"uid": "HumanEval/161", "choice": 0}
+{"uid": "HumanEval/160", "choice": 0}
+{"uid": "HumanEval/159", "choice": 0}
+{"uid": "HumanEval/158", "choice": 0, "n_examples": 3}
+{"uid": "HumanEval/157", "choice": 0, "n_examples": 2}
+{"uid": "HumanEval/156", "choice": 0, "n_examples": 3}
+{"uid": "HumanEval/155", "choice": 0, "n_examples": 2}
+{"uid": "HumanEval/154", "choice": 0}
+{"uid": "HumanEval/153", "choice": 0}
+{"uid": "HumanEval/152", "choice": 0}
+{"uid": "HumanEval/151", "choice": 0, "n_examples": 4}
+{"uid": "HumanEval/150", "choice": 0}
+{"uid": "HumanEval/149", "choice": 0}
+{"uid": "HumanEval/147", "choice": 0}
+{"uid": "HumanEval/145", "choice": 0, "n_examples": 2}
+{"uid": "HumanEval/144", "choice": 0}
+{"uid": "HumanEval/143", "choice": 0}
+{"uid": "HumanEval/142", "choice": 0}
+{"uid": "HumanEval/141", "choice": 0}
+{"uid": "HumanEval/140", "choice": 0, "n_examples": 4}
+{"uid": "HumanEval/139", "choice": 0, "n_examples": 1}
+{"uid": "HumanEval/138", "choice": 0, "n_examples": 3}
+{"uid": "HumanEval/137", "choice": 0}
+{"uid": "HumanEval/136", "choice": 0, "n_examples": 3}
+{"uid": "HumanEval/135", "choice": 0}
+{"uid": "HumanEval/134", "choice": 0}
+{"uid": "HumanEval/133", "choice": 0}
+{"uid": "HumanEval/132", "choice": 0}
+{"uid": "HumanEval/131", "choice": 0, "n_examples": 3}
+{"uid": "HumanEval/130", "choice": 0}
+{"uid": "HumanEval/129", "choice": 0}
+{"uid": "HumanEval/128", "choice": 0, "n_examples": 3}
+{"uid": "HumanEval/127", "choice": 0, "n_examples": 3}
+{"uid": "HumanEval/126", "choice": 0}
+{"uid": "HumanEval/125", "choice": 0, "n_examples": 1}
+{"uid": "HumanEval/124", "choice": 0}
+{"uid": "HumanEval/123", "choice": 0}
+{"uid": "HumanEval/122", "choice": 0}
+{"uid": "HumanEval/120", "choice": 0}
+{"uid": "HumanEval/119", "choice": 0, "n_examples": 2}
+{"uid": "HumanEval/118", "choice": 0, "n_examples": 4}
+{"uid": "HumanEval/117", "choice": 0, "n_examples": 5}
+{"uid": "HumanEval/116", "choice": 0, "n_examples": 3}
+{"uid": "HumanEval/115", "choice": 0}
+{"uid": "HumanEval/87", "choice": 0, "n_examples": 2}
+{"uid": "HumanEval/89", "choice": 0}
+{"uid": "HumanEval/90", "choice": 0, "n_examples": 4}
+{"uid": "HumanEval/91", "choice": 0, "n_examples": 2}
+{"uid": "HumanEval/92", "choice": 0}
+{"uid": "HumanEval/93", "choice": 0, "n_examples": 2}
+{"uid": "HumanEval/95", "choice": 0}
+{"uid": "HumanEval/96", "choice": 0}
+{"uid": "HumanEval/98", "choice": 0}
+{"uid": "HumanEval/99", "choice": 0, "n_examples": 2}
+{"uid": "HumanEval/100", "choice": 0, "n_examples": 1}
+{"uid": "HumanEval/101", "choice": 0, "n_examples": 2}
+{"uid": "HumanEval/102", "choice": 0}
+{"uid": "HumanEval/103", "choice": 0}
+{"uid": "HumanEval/105", "choice": 0}
+{"uid": "HumanEval/106", "choice": 0, "n_examples": 1}
+{"uid": "HumanEval/107", "choice": 0}
+{"uid": "HumanEval/109", "choice": 3, "n_examples": 2}
+{"uid": "HumanEval/110", "choice": 0}
+{"uid": "HumanEval/111", "choice": 0, "n_examples": 5}
+{"uid": "HumanEval/112", "choice": 0}
+{"uid": "HumanEval/114", "choice": 0, "n_examples": 2}
+{"uid": "HumanEval/113", "choice": 0, "n_examples": 2}

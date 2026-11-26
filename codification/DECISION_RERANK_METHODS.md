@@ -102,7 +102,7 @@ passing candidate on all 58 solvable problems; the example filter is 27.8%
 | control | result | interpretation |
 |---|---|---|
 | judge-alone (no reasoning text) | 42.8% (428/1,000) | reasoning text adds real signal; not sufficient alone to explain 78% |
-| gold injection (115 items with no gold candidate) | 20.9% picked (24/115, chance ≈9%) | some answer knowledge; not enough to explain the result |
+| gold injection (115 items with no gold candidate) | 20.9% picked (24/115; chance 12.9%, mean 1/k over 8.46 options) | modest answer knowledge; not enough to explain the result |
 | closed-book, two options | 92.5% (37/40) | the model recognises correct answers; the ten-way task is harder |
 | candidate-order shuffle | 74.5% both orders; 67% same candidate | little position sensitivity; one seed, pilot |
 | probability shuffle | 8.4% | **withdrawn**: equals uniform pick, not a position test |

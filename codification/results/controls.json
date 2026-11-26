@@ -4,7 +4,7 @@
     "closed_book_2option": {"correct": 37, "n": 40, "chance": 0.5},
     "judge_alone": {"correct": 428, "n": 1000, "prompted": 957, "trivial": 43,
                     "note": "distinct candidate answers only, no reasoning text"},
-    "gold_injection": {"picked": 24, "n": 115, "chance_approx": 0.09,
+    "gold_injection": {"picked": 24, "n": 115, "chance_mean_inv_k": 0.1288,
                        "note": "items where no candidate had the gold answer; gold added as an option"},
     "shuffle_dev200": {"accuracy_plain": 0.745, "accuracy_shuffled": 0.745,
                        "same_original_candidate": 0.67, "n": 200, "seed": 1},
