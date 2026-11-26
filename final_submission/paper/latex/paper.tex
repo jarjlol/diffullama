@@ -21,17 +21,37 @@
 
 \newcommand{\lead}[1]{\textbf{#1.}\enspace}
 
+\newcommand{\paperauthor}[2]{%
+  \makebox[0.235\textwidth][c]{%
+    \begin{tabular}[t]{@{}c@{}}
+      \normalsize #1\\[1pt]
+      \footnotesize #2
+    \end{tabular}%
+  }%
+}
+
+
 \hypersetup{pdftitle={Decision-Model Reranking for Diffusion Language Models}}
 
 \begin{document}
 
 \title{Decision-Model Reranking\\for Diffusion Language Models}
 
-\author{\IEEEauthorblockN{\small
-Neel Naik (2023A7PS0429G),\enspace Aryan Bethmangalkar (2023A7PS0433G),\\
-Aaditya H Vernenker (2023A7PS1027G),\enspace Aalhad M Sawane (2023A7PS0476G),\enspace Arjun P Thakur (2024A7PS0006G),\\
-Khushi Pandey (2023B5A70951G),\enspace Diya Srivastava (2023B2A40737G)}\\
-\IEEEauthorblockA{\footnotesize BITS F471 (Introduction to Large Language Models) --- Group 3, BITS Pilani, K.\,K.\ Birla Goa Campus}}
+\author{%
+  \begin{tabular}{@{}c@{}}
+  \paperauthor{Neel Naik}{2023A7PS0429G}%
+  \paperauthor{Aryan Bethmangalkar}{2023A7PS0433G}%
+  \paperauthor{Aaditya H Vernenker}{2023A7PS1027G}%
+  \paperauthor{Aalhad M Sawane}{2023A7PS0476G}%
+  \\[7pt]
+  \paperauthor{Arjun P Thakur}{2024A7PS0006G}%
+  \paperauthor{Khushi Pandey}{2023B5A70951G}%
+  \paperauthor{Diya Srivastava}{2023B2A40737G}%
+  \\[7pt]
+  {\small BITS Pilani, K.\,K.\ Birla Goa Campus}\\[1pt]
+  {\footnotesize Group 3 \enspace\textbullet\enspace BITS F471 (Introduction to Large Language Models)}
+  \end{tabular}%
+}
 
 \maketitle
 
