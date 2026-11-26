@@ -8,7 +8,7 @@ The folder named **Final Submission** in our group folder holds exactly three it
 2. the **report**, 2 to 4 pages, observations and efforts for each task: `report/report.md` and built 3-page `report/report.pdf` (issues #15, #78);
 3. the **GitHub repo** of the pipeline and the code behind the paper: this repo (see "Pipeline code" below).
 
-Frozen build, checked against `main` on 26 Nov 09:20 IST: `paper/paper.pdf` is **5 pages** (4 body + 1 reference; last PDF commit `4bc968a`), `report/report.pdf` is **3 pages** (last PDF commit `01792b3`), neither PDF contains team member names or email addresses, and every SHA-256 row in the reproducibility table below resolves at its stated commit (`git show <commit>:<path> | sha256sum`).
+Frozen build, checked against `main` on 26 Nov 09:20 IST: `paper/paper.pdf` is **5 pages** (4 body + 1 reference; last PDF commit `4bc968a`), `report/report.pdf` is **3 pages** (last PDF commit `01792b3`), neither PDF contains team member names or email addresses, and every SHA-256 row in the reproducibility table below resolves at its stated commit (`git show <commit>:<path> | sha256sum`). The canonical paper source is `main`'s `paper/latex/`; branches `mesh/75-latex-paper` and `mesh/76-decision-paper` are superseded and kept only for history.
 
 ## Who writes what
 
