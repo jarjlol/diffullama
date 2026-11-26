@@ -8,7 +8,9 @@ The folder named **Final Submission** in our group folder holds exactly three it
 2. the **report**, 2 to 4 pages, observations and efforts for each task: `report/report.md` and built 4-page `report/report.pdf` (issues #15, #78);
 3. the **GitHub repo** of the pipeline and the code behind the paper: this repo (see "Pipeline code" below).
 
-Frozen build, checked against `main` on 26 Nov 15:05 IST: `paper/paper.pdf` is **5 pages** (4 body + 1 reference; includes all 7 Group 3 author names and BITS IDs; sha256 `40817821ea0b04d898ca8c79b18a0908e5c520025ba7ff899f4b94880cd0580d`; the prose pass is #103 and a fresh Tectonic build of `paper/latex/` reproduces 5 pages with 0 overfull boxes and 0 unresolved citations), `report/report.pdf` is **4 pages** (last PDF commit `83640a8`, #104, sha256 `fe339cd6aa6d5906c9c337d564a71d60498451ae4581039e825556149801e7c2`; the Task 5 limit is 2 to 4 pages), neither PDF contains email addresses, and every SHA-256 row in the reproducibility table below resolves at its stated commit (`git show <commit>:<path> | sha256sum`). The canonical paper source is `main`'s `paper/latex/`; branches `mesh/75-latex-paper` and `mesh/76-decision-paper` are superseded and kept only for history.
+Build recorded at `main @ f19711b`, checked 26 Nov 16:05 IST: `paper/paper.pdf` is **5 pages** (4 body + 1 reference; includes all 7 Group 3 author names and BITS IDs; sha256 `247e76e8ecf3300aace15f0fc76fdbe6a7e9c9c7f3e8400913060f2eb5597deb`, 94,358 B; rebuilt from `paper/latex/` by PRs #106 (`1f1ec7a`, retitle/reframe around the decision-model result), #107 (`557ac64`) and #108 (`f19711b`); a fresh Tectonic build of this source reproduces 5 pages and 0 unresolved citations) and `report/report.pdf` is **4 pages** (sha256 `80171aac5f39094524355475d483daa723dec905bc3bcf9ad39a1c797716b743`, 22,991 B, rebuilt in #106; the Task 5 limit is 2 to 4 pages). Neither PDF contains an email address, and every SHA-256 row in the reproducibility table below resolves at its stated commit (`git show <commit>:<path> | sha256sum`).
+
+The canonical paper is the **LaTeX** build: `paper/latex/` → `paper/paper.pdf`. `paper/sections/*.md` and `paper/build.py` are the earlier Markdown build of the **pre-#106** paper (negative-result framing, with the CKA/preservation hypothesis that #107 removed); they are kept for history only and are **not** the submitted paper — see `paper/sections/README.md`. Branches `mesh/75-latex-paper` and `mesh/76-decision-paper` are superseded and kept only for history.
 
 ## Who writes what
 
@@ -71,7 +73,7 @@ No step needs a secret committed to the repo, model weights in git, or a large f
 
 ### Reproducibility: the artifacts behind the paper's numbers
 
-SHA-256 of the committed result files the paper's tables are drawn from (computed with `git show origin/<branch>:<path> | sha256sum` on 2026-11-21; in a fresh clone the branch exists only as `origin/<branch>`; they match `final_submission/paper/first_draft/SOURCES.json` on branch `iter2/aryan`):
+SHA-256 of the committed result files the paper's tables are drawn from (computed with `git show origin/<branch>:<path> | shasum -a 256`; all 30 rows re-verified 2026-11-26 16:10 IST, every file resolves at its stated ref and matches; in a fresh clone the branch exists only as `origin/<branch>`; they match `final_submission/paper/first_draft/SOURCES.json` on branch `iter2/aryan`):
 
 | Artifact | Branch | SHA-256 |
 |---|---|---|

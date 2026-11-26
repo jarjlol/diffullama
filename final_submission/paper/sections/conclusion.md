@@ -1,3 +1,5 @@
+<!-- SUPERSEDED (pre-#106, negative-result framing): the submitted paper is the LaTeX build at ../paper.pdf. Numbers and claims in this file are not those of the paper; see README.md in this directory. -->
+
 # Conclusion
 
 Majority vote is a strong baseline: 73.3% for Dream and 73.0% for LLaDA on 300 held-out questions. The agent-designed arithmetic rule matches it within 0.3 points, and AR-likelihood selection is 23.6 and 21.0 points below majority on the 500-question cut-text test at 64 steps, but 8.6 (Dream, p = 0.002) and 2.6 points (LLaDA, interval includes zero) below at 256 steps. The preservation hypothesis is not confirmed: the original scores gave the predicted rank order, but the corrected scores reverse Dream's sign, and a two-sided exact permutation $p$ of at least 0.083 leaves the four-model result descriptive at best. Majority adds 32.0 and 24.6 points over the first sample at 64 steps but 10.3 and 6.8 at 256: the value of selection shrinks as the step budget grows. A conclusive next study needs a clean compute comparison, a full 500-question 256-step run, ablations and a second dataset.

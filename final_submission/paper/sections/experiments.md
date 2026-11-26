@@ -1,3 +1,5 @@
+<!-- SUPERSEDED (pre-#106, negative-result framing): the submitted paper is the LaTeX build at ../paper.pdf. Numbers and claims in this file are not those of the paper; see README.md in this directory. -->
+
 # Experimentation / Results and Discussion
 
 <!-- Owner: arjun (issue #12). Target length: ~1.25 pages. Delete this block when final. -->

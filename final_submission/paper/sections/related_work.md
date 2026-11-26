@@ -1,3 +1,5 @@
+<!-- SUPERSEDED (pre-#106, negative-result framing): the submitted paper is the LaTeX build at ../paper.pdf. Numbers and claims in this file are not those of the paper; see README.md in this directory. -->
+
 # Related Work
 
 <!-- Owner: neel (issue #9; taken over from aaditya on 2026-11-21). Sources: litreview/output/generated_survey.md (refs [n] = litreview/data/reference_brief.txt), filtered (an agent-assisted pass, ledger in) final_submission/notes/related_work_filtering.md. Groups 3 and 4 were added on 2026-11-20 at the team's request; the lit review has no papers on them, so their references come from outside it (list in the filtering notes). Citation keys in [brackets]: 20 in final_submission/paper/refs_related_work.bib, plus wang2023selfconsistency, cobbe2021gsm8k, baek2024researchagent and jin2026arbor in final_submission/paper/refs_methodology.bib (#11). 24 references in total. Claims re-checked against full texts (arxiv.org PDF/HTML) on 2026-11-21 by neel's agent after taking over #9; receipts: final_submission/notes/related_work_filtering.md, section 'Full-text receipts'. -->
