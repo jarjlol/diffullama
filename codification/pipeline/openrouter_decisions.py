@@ -87,7 +87,7 @@ def main() -> int:
     reqs = [json.loads(l) for l in open(a.inp, encoding="utf-8") if l.strip()]
     reqs = reqs[: a.limit] if a.limit else reqs
     def req_key(r: dict) -> tuple:
-        return (r["uid"], r.get("idx"))
+        return (r.get("model", "control"), r["uid"], r.get("idx"))
 
     done = set()
     if os.path.exists(a.out):
