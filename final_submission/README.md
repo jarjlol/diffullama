@@ -8,7 +8,7 @@ The folder named **Final Submission** in our group folder holds exactly three it
 2. the **report**, 2 to 4 pages, observations and efforts for each task: `report/report.md` and built 3-page `report/report.pdf` (issues #15, #78);
 3. the **GitHub repo** of the pipeline and the code behind the paper: this repo (see "Pipeline code" below).
 
-Frozen build, checked against `main` on 26 Nov 10:40 IST: `paper/paper.pdf` is **5 pages** (4 body + 1 reference; last PDF commit `263c3b3`, sha256 `f7d430e51c093bf2197f48dacc8f24e24a1e949e8c2da42edef1cde00d368952`), `report/report.pdf` is **3 pages** (last PDF commit `263c3b3`, sha256 `a2ab743ceead0bf3a4b2222088ce70323e136a9ccd3af7610d9c139f62cc0af0`), neither PDF contains team member names or email addresses, and every SHA-256 row in the reproducibility table below resolves at its stated commit (`git show <commit>:<path> | sha256sum`). The canonical paper source is `main`'s `paper/latex/`; branches `mesh/75-latex-paper` and `mesh/76-decision-paper` are superseded and kept only for history.
+Frozen build, checked against `main` on 26 Nov 10:18 IST: `paper/paper.pdf` is **5 pages** (4 body + 1 reference; sha256 `f7c6f54ef4542301fe3394bf5e63ea6c06bb9738f451610a374ff6f279489471`), `report/report.pdf` is **3 pages** (last PDF commit `263c3b3`, sha256 `a2ab743ceead0bf3a4b2222088ce70323e136a9ccd3af7610d9c139f62cc0af0`), neither PDF contains team member names or email addresses, and every SHA-256 row in the reproducibility table below resolves at its stated commit (`git show <commit>:<path> | sha256sum`). The canonical paper source is `main`'s `paper/latex/`; branches `mesh/75-latex-paper` and `mesh/76-decision-paper` are superseded and kept only for history.
 
 ## Who writes what
 
