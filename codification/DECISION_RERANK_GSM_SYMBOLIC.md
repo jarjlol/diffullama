@@ -10,6 +10,27 @@ before the 08:35 machine reboot. Dream has **149/250** questions; LLaDA has
 P2-0. P2-1 and P2-2 are not represented, so the subsets are template-skewed and
 must not be read as random samples of the 250. No 250-question claim is made.
 
+## Final pre-reboot update (08:22)
+
+An incremental listwise pass scored every question completed before the reboot:
+**Dream 160/250, LLaDA 187/250, listwise coverage 1.00 for both.** Pointwise was
+not rescored; its cells below remain the 149/165 snapshot and their coverage is
+shown.
+
+| selector | Dream (n=160) | LLaDA (n=187) | macro |
+|---|---:|---:|---:|
+| first | 0.125 | 0.139 | 0.132 |
+| majority | 0.350 | 0.278 | 0.314 |
+| **decision.listwise** | **0.469** | **0.422** | **0.446** |
+| decision.pointwise (cov 0.93 / 0.88) | 0.510 | 0.485 | 0.497 |
+| oracle | 0.656 | 0.529 | 0.593 |
+
+H1 on the common 160 questions: listwise − majority = **+0.144**, 95% CI
+[+0.100, +0.188]; Dream exact McNemar p=0.0013, LLaDA p=4.6e-7. The interim
+section below is kept for history; where they differ, this table is the later
+snapshot.
+
+
 ## Main table
 
 | selector | Dream (n=149) | LLaDA (n=165) | macro |
