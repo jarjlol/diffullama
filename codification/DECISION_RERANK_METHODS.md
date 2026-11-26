@@ -106,7 +106,7 @@ passing candidate on all 58 solvable problems; the example filter is 27.8%
 | closed-book, two options | 92.5% (37/40) | the model recognises correct answers; the ten-way task is harder |
 | candidate-order shuffle | 74.5% both orders; 67% same candidate | little position sensitivity; one seed, pilot |
 | probability shuffle | 8.4% | **withdrawn**: equals uniform pick, not a position test |
-| HumanEval example subset | 38 solvable with examples: filter 36/38, listwise 38/38; 20 without: 4/20 vs 20/20 | the aggregate gap is concentrated where the filter has no examples |
+| HumanEval example subset | 42 solvable with examples: filter 36/42, listwise 42/42 (p = 0.031); 16 without: 4/16 vs 16/16 (p = 4.9e-4) | the aggregate gap is concentrated where the filter has no examples |
 
 ## 6. What the #76 review changed
 
