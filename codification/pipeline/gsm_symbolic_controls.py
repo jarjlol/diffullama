@@ -52,6 +52,16 @@ def distinct(answers: list[str]) -> list[str]:
     return out
 
 
+def wilson(k: int, n: int, z: float = 1.96) -> tuple[float, float] | None:
+    if not n:
+        return None
+    p = k / n
+    den = 1 + z * z / n
+    mid = (p + z * z / (2 * n)) / den
+    half = z * ((p * (1 - p) + z * z / (4 * n)) / n) ** 0.5 / den
+    return max(0.0, mid - half), min(1.0, mid + half)
+
+
 def choice_request(uid: str, model: str | None, problem: str, options: list[str],
                    instructions: str = "Which option is the correct final answer to the problem?") -> dict:
     req = {
@@ -133,6 +143,7 @@ def eval_control(control: str, results: str, json_out: str | None) -> None:
             by_pos[(k["gold_letter"], ok)] += 1
         out = {"control": control, "n": n, "correct": n_ok,
                "accuracy": n_ok / n if n else None, "chance": 0.5,
+               "ci95_wilson": wilson(n_ok, n),
                "by_gold_position": {f"{p}|{'ok' if o else 'miss'}": c
                                     for (p, o), c in sorted(by_pos.items())}}
         print(f"\nclosed-book two-option: {n_ok}/{n} = {n_ok / n:.3f} (chance 0.50)")
@@ -158,6 +169,7 @@ def eval_control(control: str, results: str, json_out: str | None) -> None:
             out["per_model"][model] = {"n": n, "correct": ok,
                                        "accuracy": ok / n if n else None,
                                        "chance": chance / n if n else None,
+                                       "ci95_wilson": wilson(ok, n),
                                        "mean_options": prompts / n if n else None}
             print(f"  {model:10s} {ok}/{n} = {ok / n:.3f}  chance={chance / n:.3f}  "
                   f"mean options={prompts / n:.1f}")
