@@ -11,12 +11,12 @@ Frozen AR likelihood fails across every budget. Cutting trailing text past \text
 \lead{Representation preservation is unsupported}
 On uncut scores, layer-averaged CKA ($\rho_m$: DiffuGPT-S 0.890, DiffuGPT-M 0.866, DiffuLLaMA 0.748, Dream 0.509) ordered AR headroom as predicted (Spearman $\rho=+1.0$ for 3/10 selectors, $+0.8$ for 6/10, $+0.4$ for 1/10; exact $p\ge 0.083$). However, cutting trailing text flips Dream's Qwen2.5-7B-sum headroom from $-9.7\%$ to $+17.7\%$ (LLaDA $+8.9\%$; the three floor models lack cut scores), invalidating the cross-model ordering. An exploratory per-question CKA test on Dream ($n=500$) likewise shows null association: ROC-AUC $=0.469$ (permutation $p=0.32$; odds ratio 0.94 per SD, 95\% CI $[0.75,1.17]$), with no layer significant after Benjamini--Hochberg correction.
 
-\begin{table}[t]
+\begin{table}[!t]
 \centering
-\caption{GSM8K test accuracy (\%) for $N=10$ candidates at $K=64$ ($n=500$/model) and $K=256$ ($n=185$ Dream, $192$ LLaDA). Headroom is macro $(\text{Acc}-\text{First})/(\text{Oracle}-\text{First})$. Prompted Qwen, pointwise, $K=256$, and dev-tuned hybrid ($T=5$, calling judge on 47.8\% of items) are secondary/exploratory.}
+\caption{GSM8K accuracy (\%) for $N=10$ at $K=64$ ($n=500$/model) and $K=256$ ($185/192$). Headroom is macro $(\text{Acc}-\text{First})/(\text{Oracle}-\text{First})$; prompted Qwen, pointwise, $K=256$ and hybrid ($T=5$, 47.8\% calls) are secondary.}
 \label{tab:gsm8k}
-\footnotesize
-\setlength{\tabcolsep}{2.6pt}
+\scriptsize
+\setlength{\tabcolsep}{2.0pt}
 \begin{tabular}{@{}lrrrr|rrr@{}}
 \toprule
  & \multicolumn{4}{c|}{$K=64$ ($n=500$/model)} & \multicolumn{3}{c}{$K=256$ ($185/192$)} \\
@@ -45,12 +45,12 @@ Crucially, the decision model's margin survives higher denoising budgets. On the
 \lead{Weak-vote hybrid gating halves judge calls}
 Listwise selection errs on 25 Dream and 13 LLaDA items that majority got right. Tuning a top-vote gate $T\in\{4,5,6\}$ on dev ($n=200$/model) selects $T=5$ (79.0\% at 42.3\% calls). Scored once on test ($n=500$/model), keeping majority when $\ge 5$ candidates agree and calling listwise otherwise reaches \textbf{78.5\%} macro (Dream 78.0\%, LLaDA 79.0\%) with only \textbf{47.8\%} of judge calls (Dream +5.6 vs.\ majority, $p=0.00076$; LLaDA +5.8, $p=1.5\times 10^{-5}$).
 
-\begin{table}[t]
+\begin{table}[!t]
 \centering
-\caption{Code pass@1 (\%) for Dream 7B ($N=10$, $K=64$) on standard HumanEval ($n=144$) and matched HumanEval+ ($n=142$; two Plus canonical-fail items excluded from both columns).}
+\caption{Code pass@1 (\%) for Dream 7B ($N=10$, $K=64$) on HumanEval ($n=144$) and matched HumanEval+ ($n=142$; two Plus canonical-fail items excluded from both).}
 \label{tab:humaneval}
-\footnotesize
-\setlength{\tabcolsep}{3.5pt}
+\scriptsize
+\setlength{\tabcolsep}{2.0pt}
 \begin{tabular}{@{}lrrr@{}}
 \toprule
 Selector & HE (144) & HE (142) & HE+ (142) \\
@@ -73,25 +73,21 @@ On 144 HumanEval test problems (Table~\ref{tab:humaneval}), listwise selection p
 
 Under stricter \textbf{HumanEval+} tests ($n=142$), listwise drops 4.9 points (40.8\%$\to$\textbf{35.9\%}, 51/142), but most of this drop is the oracle falling 40.8\%$\to$37.3\% (53/142) as false passes are rejected: 5 of 7 lost items have zero Plus-passing candidates, leaving only 2 selection misses (\textbf{51/53 = 96.2\%} of Plus-solvable items vs.\ 36/53 = 67.9\% for the example filter). LLaDA was dropped after collapsing to newline runs at $K=64$ (0/10 on \texttt{HumanEval/0}); an MBPP pilot was stopped after Dream yielded 0 passing candidates in the first 20 problems.
 
-\begin{table}[t]
+\begin{table}[!t]
 \centering
-\caption{Diagnostic controls and serving cost for \texttt{pplx-decider-flash-v1.3}. Controls separate trace-informed selection from answer familiarity or position bias.}
+\caption{Diagnostic controls and serving cost. Controls separate trace-informed selection from answer familiarity or position bias.}
 \label{tab:controls}
 \scriptsize
-\setlength{\tabcolsep}{2.3pt}
+\setlength{\tabcolsep}{1.8pt}
 \begin{tabular}{@{}llrl@{}}
 \toprule
-Control / Metric & Split ($n$) & Result & Interpretation \\
+Control & Split ($n$) & Result & Note \\
 \midrule
-Judge-alone (no trace) & GSM8K (1k) & 42.8\% & Traces add +35.2 pts \\
-Gold injection & Oracle-miss (115) & 20.9\% & Modest recall (12.9\% ch.) \\
-2-opt closed-book & GSM8K (40) & 92.5\% & Cross-Q distractor (easy) \\
-Order shuffle & GSM8K dev (200) & 74.5\% & Flat acc.; 67\% same pick \\
-Order shuffle & HE test (50) & 30/50 & Flat acc.\ both orders \\
-HE recognition & Dev+Test (60) & 98.3\% & 59/60 with docstrings \\
-HE recog.\ (no doc) & Dev (20) & 80.0\% & 16/20; CI $[58.4,91.9]\%$ \\
-\midrule
-Serving cost & Listwise (1k) & \$0.015 & 1,544 tok; 0.42\,s med. \\
+Judge-alone & GSM8K (1k) & 42.8\% & +35.2 pts \\
+Gold injection & Oracle-miss (115) & 20.9\% & 12.9\% chance \\
+2-opt closed-book & GSM8K (40) & 92.5\% & Cross-question \\
+Order shuffle & GSM8K dev (200) & 74.5\% & 67\% same pick \\
+HE recognition & Dev+Test (60) & 98.3\% & 59/60 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -100,4 +96,4 @@ Serving cost & Listwise (1k) & \$0.015 & 1,544 tok; 0.42\,s med. \\
 Table~\ref{tab:controls} bounds what the decision model uses. Stripping reasoning to show only distinct candidate answers (\emph{judge-alone}) drops accuracy from 78.0\% to \textbf{42.8\%} (428/1,000, below uniform pick at 45.0\%), indicating that reading solution traces drives +35.2 points. On the 115 oracle-miss items with gold injected, gold is chosen \textbf{20.9\%} (24/115) of the time. By contrast, two-option closed-book reaches 92.5\% (37/40) largely because its distractor is drawn randomly from a \emph{different} GSM8K question (often mismatched in scale). Candidate-order shuffles leave accuracy flat (74.5\% both orders on GSM8K dev, 67\% choosing the same original candidate; 30/50 on HumanEval). On HumanEval recognition, the decider separates canonical code from single-token failing mutants on 59/60 items (98.3\%) with docstrings and 16/20 (80.0\%) stripped.
 
 \lead{Limitations}
-(1) Public-benchmark contamination remains live for GSM8K and HumanEval (HumanEval+ strengthens tests, not freshness); fresh \textbf{GSM-Symbolic} \citep{mirzadeh2024gsmsymbolic} evaluation is underway post-deadline. (2) At $K=256$, 94\% (Dream) and 76\% (LLaDA) of cut texts keep same-line continuation junk after \texttt{\#\#\#\#~N}, affecting AR and decision inputs identically. (3) We test one API snapshot without prompt tuning; a typed-choice endpoint cannot run an open-ended decider-only baseline. (4) Shared-GPU generation timings (36.8--55.0\,s/q at $K=64$; 151--217\,s/q at $K=256$) are advisory; reranking adds zero GPU time and costs $\approx\$0.015$/1,000 listwise calls ($\approx\$0.007$ at $T=5$).
+(1) Public-benchmark contamination remains live for GSM8K and HumanEval (HumanEval+ strengthens tests, not freshness); fresh \textbf{GSM-Symbolic} \cite{mirzadeh2024gsmsymbolic} evaluation is underway post-deadline. (2) At $K=256$, 94\% (Dream) and 76\% (LLaDA) of cut texts keep same-line continuation junk after \texttt{\#\#\#\#~N}, affecting AR and decision inputs identically. (3) We test one API snapshot without prompt tuning; a typed-choice endpoint cannot run an open-ended decider-only baseline. (4) Shared-GPU generation timings (36.8--55.0\,s/q at $K=64$; 151--217\,s/q at $K=256$) are advisory; reranking adds zero GPU time and costs $\approx\$0.015$/1,000 listwise calls ($\approx\$0.007$ at $T=5$).

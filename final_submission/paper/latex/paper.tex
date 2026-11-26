@@ -1,35 +1,43 @@
-\documentclass[10pt,a4paper,twocolumn]{article}
+\documentclass[journal]{IEEEtran}
 
-\usepackage[a4paper,top=15.5mm,bottom=15.5mm,left=14mm,right=14mm]{geometry}
-\usepackage{amsmath,amssymb}
-\usepackage{newtxtext,newtxmath}
-\usepackage{balance,booktabs,multicol,titlesec}
-\usepackage[font=small,labelfont=bf]{caption}
-\usepackage[authoryear,round]{natbib}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{titlesec}
 \usepackage[hidelinks]{hyperref}
+\titlespacing*{\section}{0pt}{1.0ex plus .2ex minus .1ex}{0.5ex}
+\titlespacing*{\subsection}{0pt}{0.8ex plus .1ex}{0.3ex}
 
-\setlength{\columnsep}{6.5mm}
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{2pt plus 1pt}
-\setlength{\textfloatsep}{6pt plus 2pt minus 2pt}
-\setlength{\intextsep}{5pt plus 2pt minus 2pt}
-\setlength{\bibsep}{1pt plus 0.5pt}
-\setlength{\tabcolsep}{3pt}
-\renewcommand{\bibfont}{\footnotesize}
-\titlespacing*{\section}{0pt}{9pt plus 2pt}{3.5pt}
-\titlespacing*{\subsection}{0pt}{7pt plus 1.5pt}{2.5pt}
-\raggedbottom
+\interdisplaylinepenalty=2500
+\setlength{\textfloatsep}{4pt plus 1pt minus 1pt}
+\setlength{\intextsep}{3pt plus 1pt minus 1pt}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{0pt}
 
 \newcommand{\lead}[1]{\textbf{#1.}\enspace}
 
-\newcommand{\papertitle}{When Does Selection Beat Majority Vote? Autoregressive, Step-Budget, and Decision-Model Reranking for Diffusion Language Models}
-\hypersetup{pdftitle={\papertitle}}
+\hypersetup{pdftitle={When Does Selection Beat Majority Vote? Autoregressive, Step-Budget, and Decision-Model Reranking for Diffusion Language Models}}
 
 \begin{document}
-\twocolumn[{\centering\Large\bfseries\papertitle\par\vspace{9pt}}]
+
+\title{When Does Selection Beat Majority Vote?\\Autoregressive, Step-Budget, and Decision-Model Reranking for Diffusion Language Models}
+
+\author{\IEEEauthorblockN{BITS F471 Group 3}}
+
+\maketitle
+
 \begin{abstract}
 \input{sections/abstract}
 \end{abstract}
+
+\begin{IEEEkeywords}
+diffusion language models, answer selection, reranking, self-consistency, decision models, GSM8K, HumanEval
+\end{IEEEkeywords}
+
 \input{sections/introduction}
 \input{sections/related-work}
 \input{sections/problem-formulation}
@@ -37,10 +45,8 @@
 \input{sections/experiments}
 \input{sections/conclusion}
 
-\onecolumn
-\begin{multicols}{2}[\section*{\refname}]
-\renewcommand{\bibsection}{}
-\bibliographystyle{abbrvnat}
+\clearpage
+\bibliographystyle{IEEEtran}
 \bibliography{references}
-\end{multicols}
+
 \end{document}
