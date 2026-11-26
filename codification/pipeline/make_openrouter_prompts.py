@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import json
+from pathlib import Path
 
 from common import WORK, read_jsonl
 from decision_rerank import LETTERS, candidate_text
@@ -22,15 +23,28 @@ def main() -> int:
     ap.add_argument("--split", default="test", choices=["dev", "test"])
     ap.add_argument("--models", nargs="*", default=["dream-base", "llada-base"])
     ap.add_argument("--mode", choices=["listwise", "pointwise"], default="listwise")
+    ap.add_argument("--out", default=None,
+                    help="override output path (e.g. the K=256 step-sensitivity run)")
+    ap.add_argument("--limit", type=int, default=0,
+                    help="first N questions per model, sorted by uid (parameter sweeps)")
+    ap.add_argument("--max-candidates", type=int, default=0,
+                    help="keep only the first N candidates (N sweep); order is unchanged")
     a = ap.parse_args()
 
     OUT.mkdir(parents=True, exist_ok=True)
-    path = OUT / f"{a.split}.{a.mode}.prompts.jsonl"
+    path = Path(a.out) if a.out else OUT / f"{a.split}.{a.mode}.prompts.jsonl"
+    path.parent.mkdir(parents=True, exist_ok=True)
     n = 0
     with open(path, "w", encoding="utf-8") as f:
         for model in a.models:
-            for r in read_jsonl(WORK / "candidates" / model / f"{a.split}.jsonl"):
-                texts = [candidate_text(c["text"]) for c in r["candidates"]]
+            rows = read_jsonl(WORK / "candidates" / model / f"{a.split}.jsonl")
+            if a.limit:                      # sweep subset: first N uids, deterministic
+                rows = sorted(rows, key=lambda r: r["uid"])
+            if a.limit:
+                rows = rows[: a.limit]
+            for r in rows:
+                cands = r["candidates"][: a.max_candidates] if a.max_candidates else r["candidates"]
+                texts = [candidate_text(c["text"]) for c in cands]
                 if a.mode == "listwise":
                     req = {
                         "uid": r["uid"], "model": model, "n": len(texts),

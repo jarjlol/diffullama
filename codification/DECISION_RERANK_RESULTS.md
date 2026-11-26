@@ -177,3 +177,72 @@ $0.023.
 typed-choice model (it cannot write an answer). The HumanEval closed-book probe
 on the 20 dev problems was not run; the recognition/closed-book question remains
 open. GSM-Symbolic is the chosen next dataset (issue #79).
+
+## K=256 step sensitivity (issue #80, exploratory, 2026-11-26)
+
+**Status: exploratory, not a pre-registered primary test.** The registered tests
+are still H1–H5 in `DECISION_RERANK_PREREG.md`; nothing here changes them.
+
+Data: the cached 256-step candidates, 185 Dream + 192 LLaDA GSM8K test questions
+(377 items, all inside the 500 used at K=64; spread evenly over uids 0–499), 10
+candidates each. Same `candidate_text` cut as the AR features, same listwise
+wording as the K=64 run, same API snapshot
+(`pplx-decider-flash-v1.3-20261112`). 377/377 scored, coverage 1.00, 0 errors.
+One listwise pass per question; the pointwise arm was not rerun.
+
+| selector | Dream | LLaDA | macro | headroom |
+|---|---:|---:|---:|---:|
+| first | 0.741 | 0.724 | 0.732 | 0.0% |
+| majority | 0.843 | 0.792 | 0.817 | 46.4% |
+| AR qwen7b-cut sum | 0.757 | 0.766 | 0.761 | 15.8% |
+| AR qwen7b-cut mean | 0.735 | 0.750 | 0.743 | 5.6% |
+| **decision.listwise** | **0.876** | **0.839** | **0.857** | **68.3%** |
+| oracle | 0.935 | 0.896 | 0.915 | |
+
+Cluster bootstrap by question (203 unique questions, resampling questions and
+carrying both models): listwise − majority **+0.040, 95% CI [+0.009, +0.071]**,
+p = 0.010. Per-model exact McNemar: Dream +0.032 (11 wins / 5 losses, p = 0.21),
+LLaDA +0.047 (16 / 7, p = 0.093) — neither individually significant at
+n = 185/192. Listwise − AR sum is +0.096, CI [+0.059, +0.134], p < 1e-4
+(Dream +0.119, LLaDA +0.073); AR sum still loses to majority (−0.056).
+
+**Does the K=64 advantage shrink?** The headline numbers say +5.2 points at K=64
+and +4.0 at K=256 (Dream +4.6 → +3.2, LLaDA +5.8 → +4.7). But the two runs use
+different questions, so the K=64 predictions were restricted to the same 377
+items: there the K=64 margin is **+3.5** (Dream +3.8, LLaDA +3.1), not +5.2. The
+paired difference-in-differences is **+0.5 points, 95% CI [−4.0, +5.1]**,
+p = 0.82 (Dream −0.5 [−7.6, +6.5], LLaDA +1.6 [−4.2, +7.3]). On identical
+questions the decision-model advantage does **not** shrink measurably at 256
+steps; the apparent 1.2-point drop is question-set composition. What does shrink
+is absolute headroom: majority rises 72.8% → 81.7% and oracle 88.5% → 91.5%, so
+the selector captures 68% of headroom instead of 76%. The per-model K=256 tests
+are null mainly because n is 185/192 instead of 500, not because the matched
+effect is smaller.
+
+**N sweep (issue #83 cross-post).** 100 K=256 questions per model, first N
+candidates in file order, same wording. 1,000 requests, 0 errors; the N = 10
+rows reproduce the main run exactly on those 100 items (Dream 0.86, LLaDA 0.79).
+
+| N options | Dream | LLaDA | macro | majority macro | Δ | 95% CI |
+|---:|---:|---:|---:|---:|---:|---|
+| 2 | 0.790 | 0.760 | 0.775 | 0.710 | +0.065 | [+0.026, +0.105] |
+| 4 | 0.810 | 0.750 | 0.780 | 0.760 | +0.020 | [−0.020, +0.060] |
+| 6 | 0.840 | 0.790 | 0.815 | 0.775 | +0.040 | [+0.000, +0.081] |
+| 8 | 0.830 | 0.790 | 0.810 | 0.785 | +0.025 | [−0.016, +0.066] |
+| 10 | 0.860 | 0.790 | 0.825 | 0.790 | +0.035 | [−0.010, +0.080] |
+
+The gain is not a list-length artifact (it exists at N = 2 and does not grow
+monotonically with N), but at 100 questions/model only the N = 2 interval
+excludes zero; the sweep is descriptive.
+
+**Cost and latency.** 377 listwise requests: 632,183 input tokens (mean 1,677;
+Dream 1,444, LLaDA 1,901), median latency 0.42 s (p95 0.62 s), 14 workers,
+~12 s wall. Free tier $0; at the paid flash price ($0.01/1M input) $0.0063 for
+the run. The K=64 run was 1,000 requests in ~50 s at 12 workers, mean 1,544
+tokens. The N sweep was 1.00M tokens for 1,000 requests (~$0.011).
+
+Caveats: 377/500 questions, one snapshot, one wording, selection not
+verification. The 256-step models often keep writing on the same line after
+`#### N`, so 94% (Dream) / 76% (LLaDA) of the *cut* texts still carry junk after
+the answer number; the AR features were cut identically, so the comparison is
+fair, but it is noisier input than the K=64 run.
