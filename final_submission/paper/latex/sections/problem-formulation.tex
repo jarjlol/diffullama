@@ -7,10 +7,11 @@ What is the exact selection objective, and how do we measure headroom, hybrid ro
 Let $\mathcal{M}$ be a set of frozen masked DLMs and $\mathcal{D}=\{(q_j,a_j^\ast)\}_{j=1}^{n}$ a benchmark split. For each item $j$, model $m\in\mathcal{M}$ draws $N$ candidate solutions $y_{j,1:N}=(y_{j,1},\dots,y_{j,N})$ from a fixed prompt under a fixed denoising budget $K$ and sampling temperature. Candidates are generated once and cached so every selector sees identical inputs. Let $c_{j,i}\in\{0,1\}$ indicate whether candidate $y_{j,i}$ is correct: exact numeric match to $a_j^\ast$ after extraction on GSM8K, or passing all official hidden unit tests on HumanEval and HumanEval+.
 
 A selector $s$ maps $(q_j,y_{j,1:N})$ to an index $s_j=s(q_j,y_{j,1:N})\in\{1,\dots,N\}$ without access to $a_j^\ast$ or hidden tests. Its per-model and macro accuracies are
+{\small
 \begin{equation}
-\mathrm{Acc}_m(s)=\tfrac{1}{n}\textstyle\sum_{j=1}^{n} c_{j,s_j},\quad
+\mathrm{Acc}_m(s)=\tfrac{1}{n}\textstyle\sum_{j=1}^{n} c_{j,s_j},\;\;
 \overline{\mathrm{Acc}}(s)=\tfrac{1}{|\mathcal{M}|}\textstyle\sum_{m\in\mathcal{M}}\mathrm{Acc}_m(s).
-\end{equation}
+\end{equation}}
 The single-sample baseline is $s_{\mathrm{first}}\equiv 1$, and the ceiling is the oracle $\mathrm{Acc}_m^\ast=\frac{1}{n}\sum_{j=1}^{n}\max_{i} c_{j,i}$ (hit@$N$ or pass@$N$). We measure the share of reachable improvement closed by $s$ as its headroom:
 \begin{equation}
 H_m(s)=\frac{\mathrm{Acc}_m(s)-\mathrm{Acc}_m(s_{\mathrm{first}})}{\mathrm{Acc}_m^\ast-\mathrm{Acc}_m(s_{\mathrm{first}})}.

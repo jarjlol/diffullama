@@ -75,7 +75,7 @@ Under stricter \textbf{HumanEval+} tests ($n=142$), listwise drops 4.9 points (4
 
 \begin{table}[!t]
 \centering
-\caption{Diagnostic controls and serving cost. Controls separate trace-informed selection from answer familiarity or position bias.}
+\caption{Diagnostic controls. Controls separate trace-informed selection from answer familiarity or position bias.}
 \label{tab:controls}
 \scriptsize
 \setlength{\tabcolsep}{1.8pt}
@@ -83,7 +83,7 @@ Under stricter \textbf{HumanEval+} tests ($n=142$), listwise drops 4.9 points (4
 \toprule
 Control & Split ($n$) & Result & Note \\
 \midrule
-Judge-alone & GSM8K (1k) & 42.8\% & +35.2 pts \\
+Judge-alone & GSM8K (1k) & 42.8\% & Traces +35.2 \\
 Gold injection & Oracle-miss (115) & 20.9\% & 12.9\% chance \\
 2-opt closed-book & GSM8K (40) & 92.5\% & Cross-question \\
 Order shuffle & GSM8K dev (200) & 74.5\% & 67\% same pick \\
