@@ -87,8 +87,8 @@ free. Reranking adds no GPU generation time; it is a post-hoc pass.
 
 | split | first | majority | AR cut | listwise | pointwise | oracle |
 |---|---:|---:|---:|---:|---:|---:|
-| GSM8K Dream (n=500) | 40.4 | 72.4 | 48.8 | **77.0** | 76.6 | 88.5 |
-| GSM8K LLaDA (n=500) | 48.6 | 73.2 | 52.2 | **79.0** | 78.4 | 88.5 |
+| GSM8K Dream (n=500) | 40.4 | 72.4 | 48.8 | **77.0** | 74.2 | 87.8 |
+| GSM8K LLaDA (n=500) | 48.6 | 73.2 | 52.2 | **79.0** | 80.8 | 89.2 |
 | HumanEval Dream (n=144) | 10.4 | — | 5.6 | **40.3** | 38.2 | 40.3 |
 
 The GSM8K listwise−majority delta is +5.2 points, question-clustered 95% CI

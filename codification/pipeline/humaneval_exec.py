@@ -180,10 +180,22 @@ def passes_examples(code: str, examples: list[tuple[str, str]], entry: str,
 
 
 def examples_for(problem: dict) -> list[tuple[str, str]]:
-    """Parse only the docstring, so the closing triple quote is not part of `want`."""
+    """Parse the docstring: doctest `>>>` lines and `f(x) == y` / `Example:` lines."""
     m = re.search(r'"""(.*?)"""', problem["prompt"], re.S)
     doc = m.group(1) if m else problem["prompt"]
-    return [(e.source, e.want.strip("\n")) for e in doctest.DocTestParser().get_examples(doc)]
+    out = [(e.source, e.want.strip("\n")) for e in doctest.DocTestParser().get_examples(doc)]
+    for line in doc.splitlines():
+        mm = re.match(r"^\s*(?:Examples?:)?\s*([A-Za-z_]\w*\(.*?\))\s*==\s*(.+?)\s*$", line)
+        if not mm:
+            continue
+        src, want = mm.group(1), mm.group(2)
+        try:
+            want = repr(ast.literal_eval(want))
+        except Exception:
+            pass
+        if (src, want) not in out:
+            out.append((src, want))
+    return out
 
 
 def score(model: str, split: str = "test") -> Path:

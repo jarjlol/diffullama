@@ -68,6 +68,8 @@ def main() -> int:
     for m in a.models:
         ex = load_exec(m, a.split)
         feats = load_features(m, a.split)
+        mbr_path = HERE / "mbr" / m / f"{a.split}.jsonl"
+        mbr = {r["uid"]: r["choice"] for r in read_jsonl(mbr_path)} if mbr_path.exists() else {}
         for uid in sorted(ex):
             passed = ex[uid]["passed"]
             examples = ex[uid]["example_passed"]
@@ -80,6 +82,9 @@ def main() -> int:
             idx = next((j for j, ok in enumerate(examples) if ok), 0)
             choice["example-filter"] = idx
             correct["example-filter"] = bool(passed[idx])
+            if uid in mbr:
+                choice["mbr-exec"] = mbr[uid]
+                correct["mbr-exec"] = bool(passed[mbr[uid]])
             fs = feats.get(uid)
             if fs is not None and len(fs) != len(passed):
                 raise SystemExit(f"{m}/{uid}: {len(fs)} feature rows vs {len(passed)} candidates")
