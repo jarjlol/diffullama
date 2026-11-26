@@ -129,14 +129,18 @@ plus 43 items with a single distinct answer, 42 of which are correct). The
 listwise result is 78.0%, so the reasoning text is doing real work.
 
 **Gold injection.** On the 115 items where no candidate has the gold answer, the
-gold was added as an extra option. It was chosen 24/115 = 20.9% (chance ≈ 9–10%
-for 11 options). Some answer knowledge, not enough to explain the 78%.
+gold was added as an extra option. It was chosen 24/115 = 20.9% (chance 12.9%,
+the mean 1/k over the 8.46 options presented on average). Some answer knowledge,
+not enough to explain the 78%.
 
 **HumanEval baseline, corrected.** The docstring parser now also reads
 `f(x) == y` / `Example:` lines. The example filter rises from 26.4% to 27.8%.
-Of the 58 solvable problems, 38 have parseable examples: on those, example
-filter 36/38 and listwise 38/38; on the 20 without examples, 4/20 and 20/20.
-The aggregate gap is therefore concentrated where the filter has no examples.
+Of the 58 solvable problems, 42 have docstring examples: on those, example
+filter 36/42 and listwise 42/42 (exact McNemar p = 0.031); on the 16 without
+examples the filter falls back to candidate 0, scoring 4/16 vs. 16/16
+(p = 4.9e-4). Counts are from `results/humaneval_preds.jsonl`
+(`has_examples` and `correct` fields at `cf8e51c`). The aggregate gap is
+therefore concentrated where the filter has no examples.
 The execution-cluster baseline (run candidates on the docstring inputs, take the
 largest output cluster) scores 6.2% — a weak baseline here, not a substitute.
 
