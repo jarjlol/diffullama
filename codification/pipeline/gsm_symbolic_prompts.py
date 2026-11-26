@@ -58,14 +58,15 @@ def main() -> int:
     ap.add_argument("--models", nargs="*", default=["dream-base", "llada-base"])
     ap.add_argument("--mode", choices=["listwise", "pointwise"], default="listwise")
     ap.add_argument("--limit", type=int, default=0, help="first N completed questions per model")
+    ap.add_argument("--tag", default="", help="candidate-file tag, e.g. .k256 for the K=256 subset")
     a = ap.parse_args()
 
     OUT.mkdir(parents=True, exist_ok=True)
-    path = OUT / f"{a.split}.{a.mode}.prompts.jsonl"
+    path = OUT / f"{a.split}{a.tag}.{a.mode}.prompts.jsonl"
     n = 0
     with open(path, "w", encoding="utf-8") as f:
         for model in a.models:
-            rows = read_jsonl(HERE / "candidates" / model / f"{a.split}.jsonl")
+            rows = read_jsonl(HERE / "candidates" / model / f"{a.split}{a.tag}.jsonl")
             rows = rows[: a.limit] if a.limit else rows
             for r in rows:
                 reqs = ([listwise_request(r, model)] if a.mode == "listwise"

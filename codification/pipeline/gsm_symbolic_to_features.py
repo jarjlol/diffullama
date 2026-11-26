@@ -28,6 +28,7 @@ def main() -> int:
     ap.add_argument("--results", required=True)
     ap.add_argument("--split", default="test", choices=["test"])
     ap.add_argument("--mode", choices=["listwise", "pointwise"], default="listwise")
+    ap.add_argument("--tag", default="", help="candidate-file tag, e.g. .k256 for the K=256 subset")
     a = ap.parse_args()
 
     rows = read_jsonl(a.results)
@@ -38,7 +39,7 @@ def main() -> int:
         for r in rows:
             by_model[r["model"]][r["uid"]][r["idx"]] = r["noul"]
         for model, got in sorted(by_model.items()):
-            cands = {r["uid"]: r for r in read_jsonl(HERE / "candidates" / model / f"{a.split}.jsonl")}
+            cands = {r["uid"]: r for r in read_jsonl(HERE / "candidates" / model / f"{a.split}{a.tag}.jsonl")}
             out = []
             for uid in sorted(cands):
                 ps = got.get(uid)
@@ -48,7 +49,7 @@ def main() -> int:
                 assert set(ps) == set(range(n)), f"{uid}: {sorted(ps)} vs n={n}"
                 out.append({"uid": uid,
                             "features": [{"decision.pointwise.p_yes": float(ps[j])} for j in range(n)]})
-            p = HERE / "features" / model / f"{a.split}.decision-pointwise.jsonl"
+            p = HERE / "features" / model / f"{a.split}{a.tag}.decision-pointwise.jsonl"
             write_jsonl(p, out)
             print(f"{model}: {len(out)}/{len(cands)} pointwise -> {p} ({len(errors)} errors)")
         return 0
@@ -59,7 +60,7 @@ def main() -> int:
         by_model[r["model"]][r["uid"]] = r["probs"]
 
     for model, got in sorted(by_model.items()):
-        cands = {r["uid"]: r for r in read_jsonl(HERE / "candidates" / model / f"{a.split}.jsonl")}
+        cands = {r["uid"]: r for r in read_jsonl(HERE / "candidates" / model / f"{a.split}{a.tag}.jsonl")}
         missing = sorted(set(cands) - set(got))
         extra = sorted(set(got) - set(cands))
         print(f"{model}: {len(got)} results, {len(cands)} candidates, "
@@ -73,7 +74,7 @@ def main() -> int:
             assert set(probs) == set(LETTERS[:n]), f"{uid}: prob keys {sorted(probs)} vs n={n}"
             out.append({"uid": uid,
                         "features": [{"decision.listwise.p": float(probs[L])} for L in LETTERS[:n]]})
-        p = HERE / "features" / model / f"{a.split}.decision-listwise.jsonl"
+        p = HERE / "features" / model / f"{a.split}{a.tag}.decision-listwise.jsonl"
         write_jsonl(p, out)
         print(f"  wrote {len(out)} -> {p}")
     return 0

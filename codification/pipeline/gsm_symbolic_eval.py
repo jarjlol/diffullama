@@ -38,12 +38,12 @@ def load_questions() -> dict[str, dict]:
     return {r["uid"]: r for r in read_jsonl(HERE / "questions.jsonl")}
 
 
-def load_features(model: str) -> dict[str, list[dict]]:
+def load_features(model: str, tag: str = "") -> dict[str, list[dict]]:
     out: dict[str, list[dict]] = {}
     d = HERE / "features" / model
     if not d.exists():
         return out
-    for f in sorted(d.glob("test.*.jsonl")):
+    for f in sorted(d.glob(f"test{tag}.*.jsonl")):
         for r in read_jsonl(f):
             merged = out.setdefault(r["uid"], [{} for _ in r["features"]])
             for j, fs in enumerate(r["features"]):
@@ -141,18 +141,27 @@ def main() -> int:
     ap.add_argument("--json", default=None)
     ap.add_argument("--dump", default=None)
     ap.add_argument("--reps", type=int, default=10_000)
+    ap.add_argument("--tag", default="", help="candidate-file tag, e.g. .k256 for the K=256 subset")
+    ap.add_argument("--common", action="store_true",
+                    help="score only questions present for every model (equal denominators)")
     a = ap.parse_args()
 
     questions = load_questions()
     models = a.models or sorted(p.name for p in (HERE / "candidates").iterdir()
-                                if (p / "test.jsonl").exists())
+                                if (p / f"test{a.tag}.jsonl").exists())
+    all_cands = {}
+    for m in models:
+        all_cands[m] = {r["uid"]: r for r in read_jsonl(HERE / "candidates" / m / f"test{a.tag}.jsonl")
+                        if r["uid"] in questions}
+    common = set.intersection(*(set(d) for d in all_cands.values())) if all_cands else set()
     rows, per_item = [], {}
     for m in models:
-        cands = {r["uid"]: r for r in read_jsonl(HERE / "candidates" / m / "test.jsonl")
-                 if r["uid"] in questions}
+        cands = all_cands[m]
+        if a.common:
+            cands = {u: r for u, r in cands.items() if u in common}
         if not cands:
             continue
-        feats = load_features(m)
+        feats = load_features(m, a.tag)
         keys = {k for fs in feats.values() for f in fs for k in f}
         sel = selectors(next(iter(cands.values()))["candidates"], keys)
         for uid in sorted(cands):
@@ -266,6 +275,7 @@ def main() -> int:
     if a.json:
         Path(a.json).write_text(json.dumps({
             "dataset": "gsm_symbolic", "models": models, "n_questions": len(questions),
+            "tag": a.tag, "common_questions_only": a.common,
             "table": table, "macro": macro, "tests": tests,
         }, indent=2), encoding="utf-8")
         print(f"\nwrote {a.json}")
