@@ -1,3 +1,5 @@
+<!-- SUPERSEDED (pre-#106, negative-result framing): the submitted paper is the LaTeX build at ../paper.pdf. Numbers and claims in this file are not those of the paper; see README.md in this directory. -->
+
 # Problem Formulation
 
 <!-- Owner: neel (issue #10). Target length in the final paper: ~0.5 page. Delete this comment block when the section is final. -->

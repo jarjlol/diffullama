@@ -1,3 +1,5 @@
+<!-- SUPERSEDED (pre-#106, negative-result framing): the submitted paper is the LaTeX build at ../paper.pdf. Numbers and claims in this file are not those of the paper; see README.md in this directory. -->
+
 # Methodology
 
 <!-- Owner: aaditya (issue #11). Notation: symbol table in the status comment of #10 / final_submission/paper/sections/problem_formulation.md (PR #19). Sources: ideation/output/research_problems_and_ideas.md (branch assignment/research-ideation), codification/IDEA_SELECTION.md, codification/ITERATION_1.md, codification/rerank_task/README.md (branch assignment/codification). Citation keys in [brackets] are in final_submission/paper/refs_methodology.bib (7 entries; gong2025diffullama is in refs_related_work.bib, #9). Results are out of scope (Experiments, #12). -->

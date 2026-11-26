@@ -1,6 +1,6 @@
 # Unified LaTeX Paper (Task 5 — Issue #77)
 
-IEEEtran journal source in the IEEE Transactions on Parallel and Distributed Systems (TPDS) style, for the 4+1 page Task 5 research paper, combining the five-model diffusion selection study, step-budget and preservation diagnostics, and the decision-model reranking results (GSM8K $K=64/256$, weak-vote hybrid rule, HumanEval, HumanEval+, and controls).
+IEEEtran journal source in the IEEE Transactions on Parallel and Distributed Systems (TPDS) style, for the 4+1 page Task 5 research paper, combining the five-model diffusion selection study, the step-budget controls, and the decision-model reranking results (GSM8K $K=64/256$, weak-vote hybrid rule, HumanEval, HumanEval+, and controls).
 
 ## Build (deterministic 4 body + 1 reference page = 5 pages, IEEEtran journal)
 
