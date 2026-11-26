@@ -86,10 +86,13 @@ def main() -> int:
 
     reqs = [json.loads(l) for l in open(a.inp, encoding="utf-8") if l.strip()]
     reqs = reqs[: a.limit] if a.limit else reqs
+    def key(r: dict) -> tuple:
+        return (r["uid"], r.get("idx"))
+
     done = set()
     if os.path.exists(a.out):
-        done = {json.loads(l)["uid"] for l in open(a.out, encoding="utf-8") if l.strip()}
-    todo = [r for r in reqs if r["uid"] not in done]
+        done = {key(json.loads(l)) for l in open(a.out, encoding="utf-8") if l.strip()}
+    todo = [r for r in reqs if key(r) not in done]
     print(f"{len(done)} done, {len(todo)} to go, workers={a.workers}", flush=True)
 
     t0 = time.time()

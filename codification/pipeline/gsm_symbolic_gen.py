@@ -26,10 +26,13 @@ def main() -> int:
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--reverse", action="store_true")
     ap.add_argument("--out-tag", default="")
+    ap.add_argument("--steps", type=int, default=0, help="override denoising steps (e.g. 256 for the K sweep)")
     a = ap.parse_args()
 
     c = cfg()
     spec = c["models"][a.model]
+    if a.steps:
+        spec = {**spec, "steps": a.steps}
     c = {**c, "gen_tokens": spec.get("gen_tokens", c["gen_tokens"])}
     shots = json.loads((WORK / "data" / "shots.json").read_text(encoding="utf-8"))
     shots = shots[: spec.get("n_shots", c["n_shots"])]
