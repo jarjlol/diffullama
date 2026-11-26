@@ -23,4 +23,4 @@ cd final_submission/paper/latex
 tectonic --keep-logs --outdir build paper.tex
 ```
 
-The Markdown build in `final_submission/paper/build.py` and `sections/*.md` is left untouched as the submission fallback.
+The Markdown build in `final_submission/paper/build.py` and `sections/*.md` is left untouched as the submission fallback. A built copy of this LaTeX paper is committed at `final_submission/paper/paper.pdf` (5 pages: 4 body + 1 reference) so the upload does not depend on a local TeX install.
